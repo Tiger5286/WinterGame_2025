@@ -26,7 +26,7 @@ bool Application::Init()
 	ChangeWindowMode(true);
 #endif
 	SetMainWindowText("ゲーム名"); // ウインドウのタイトルを設定
-	SetGraphMode(Game::kScreenWidth, Game::kScreenHeight, Game::kColorBitNum); // 画面サイズと色数を設定
+	SetGraphMode(GlobalConstants::kScreenWidth, GlobalConstants::kScreenHeight, GlobalConstants::kColorBitNum); // 画面サイズと色数を設定
 	if (DxLib_Init() == -1)
 	{
 		return false;

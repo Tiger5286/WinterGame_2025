@@ -1,22 +1,28 @@
 #include "Input.h"
 #include "DxLib.h"
+#include "Game.h"
 
 Input::Input() : inputData_{}, lastInputData_{}, inputTable_{}
 {
-	inputTable_["ok"] = { { PeripheralType::keyboard,KEY_INPUT_RETURN},
-						  { PeripheralType::pad1,PAD_INPUT_L } };	// PADのSELECTボタン
+	inputTable_["start"] = { { PeripheralType::keyboard,KEY_INPUT_RETURN},
+						  { PeripheralType::pad1,GlobalConstants::kPadStart } };
 
+	inputTable_["jump"] = { { PeripheralType::keyboard,KEY_INPUT_SPACE},
+						  { PeripheralType::pad1,GlobalConstants::kPadA } };
 	inputTable_["shot"] = { { PeripheralType::keyboard,KEY_INPUT_SPACE},
-						  { PeripheralType::pad1,PAD_INPUT_C } };	// PADのXボタン
+						  { PeripheralType::pad1,GlobalConstants::kPadX } };
+	inputTable_["dash"] = { { PeripheralType::keyboard,KEY_INPUT_SPACE},
+						  { PeripheralType::pad1,GlobalConstants::kPadB } };
+
 
 	inputTable_["up"] = { { PeripheralType::keyboard,KEY_INPUT_UP},
-						{ PeripheralType::pad1,PAD_INPUT_UP } };
+						{ PeripheralType::pad1,GlobalConstants::kPadUp } };
 	inputTable_["down"] = { { PeripheralType::keyboard,KEY_INPUT_DOWN},
-						  { PeripheralType::pad1,PAD_INPUT_DOWN } };
+						  { PeripheralType::pad1,GlobalConstants::kPadDown } };
 	inputTable_["left"] = { { PeripheralType::keyboard,KEY_INPUT_LEFT},
-						  { PeripheralType::pad1,PAD_INPUT_LEFT } };
+						  { PeripheralType::pad1,GlobalConstants::kPadLeft } };
 	inputTable_["right"] = { { PeripheralType::keyboard,KEY_INPUT_RIGHT},
-						  { PeripheralType::pad1,PAD_INPUT_RIGHT } };
+						  { PeripheralType::pad1,GlobalConstants::kPadRight } };
 	// あらかじめ枠を開けておく
 	for (const auto& inputInfo : inputTable_)
 	{
