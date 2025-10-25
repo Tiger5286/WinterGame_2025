@@ -1,5 +1,8 @@
 #pragma once
 #include "SceneBase.h"
+#include <memory>
+
+class Player;
 
 class SceneMain : public SceneBase
 {
@@ -10,6 +13,7 @@ public:
 	void Update() override;
 	void Draw() override;
 private:
-	int m_frameCount;
+	int _frameCount;
+	std::shared_ptr<Player> _pPlayer;
 };
 

@@ -1,4 +1,6 @@
 #pragma once
+#include "Geometry.h"
+
 class GameObject
 {
 public:
@@ -11,5 +13,6 @@ public:
 
 protected:
 	int _handle;
+	Vector2 _pos;
 };
 
