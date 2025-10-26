@@ -1,17 +1,24 @@
 #include "SceneManager.h"
 #include "SceneBase.h"
+#include "Input.h"
 
 void SceneManager::ChangeScene(std::shared_ptr<SceneBase> scene)
 {
-	m_scene = scene;
+	_scene = scene;
+	_scene->Init();
 }
 
-void SceneManager::Update()
+void SceneManager::Init()
 {
-	m_scene->Update();
+	_scene->Init();
+}
+
+void SceneManager::Update(Input input)
+{
+	_scene->Update(input);
 }
 
 void SceneManager::Draw()
 {
-	m_scene->Draw();
+	_scene->Draw();
 }

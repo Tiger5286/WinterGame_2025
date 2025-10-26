@@ -8,16 +8,21 @@ SceneMain::SceneMain() :
 	_frameCount(0)
 {
 	_pPlayer = std::make_shared<Player>();
-	_pPlayer->Init();
 }
 
 SceneMain::~SceneMain()
 {
 }
 
-void SceneMain::Update()
+void SceneMain::Init()
+{
+	_pPlayer->Init();
+}
+
+void SceneMain::Update(Input input)
 {
 	_frameCount++;
+	_pPlayer->SetInput(input);
 	_pPlayer->Update();
 }
 

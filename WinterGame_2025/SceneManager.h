@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 
+class Input;
 class SceneBase;
 
 /// <summary>
@@ -9,10 +10,11 @@ class SceneBase;
 class SceneManager
 {
 private:
-	std::shared_ptr<SceneBase> m_scene;
+	std::shared_ptr<SceneBase> _scene;
 public:
 	void ChangeScene(std::shared_ptr<SceneBase> scene);
-	void Update();
+	void Init();
+	void Update(Input input);
 	void Draw();
 };
 

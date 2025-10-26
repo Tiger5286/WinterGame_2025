@@ -7,11 +7,3 @@ SceneBase::SceneBase()
 SceneBase::~SceneBase()
 {
 }
-
-void SceneBase::Update()
-{
-}
-
-void SceneBase::Draw()
-{
-}

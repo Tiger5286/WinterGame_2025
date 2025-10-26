@@ -9,9 +9,9 @@ Input::Input() : inputData_{}, lastInputData_{}, inputTable_{}
 
 	inputTable_["jump"] = { { PeripheralType::keyboard,KEY_INPUT_SPACE},
 						  { PeripheralType::pad1,GlobalConstants::kPadA } };
-	inputTable_["shot"] = { { PeripheralType::keyboard,KEY_INPUT_SPACE},
+	inputTable_["shot"] = { { PeripheralType::keyboard,KEY_INPUT_Z},
 						  { PeripheralType::pad1,GlobalConstants::kPadX } };
-	inputTable_["dash"] = { { PeripheralType::keyboard,KEY_INPUT_SPACE},
+	inputTable_["dash"] = { { PeripheralType::keyboard,KEY_INPUT_X},
 						  { PeripheralType::pad1,GlobalConstants::kPadB } };
 
 

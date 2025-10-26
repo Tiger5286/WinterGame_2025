@@ -48,7 +48,7 @@ void Application::Run()
 		ClearDrawScreen(); // 画面をクリア
 
 		input.Update();
-		sceneManager.Update();
+		sceneManager.Update(input);
 		sceneManager.Draw();
 
 		// escキーで終了

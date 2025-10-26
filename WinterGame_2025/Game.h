@@ -23,5 +23,4 @@ namespace GlobalConstants
 	constexpr int kPadRT = 0x200;
 	constexpr int kPadBack = 0x400;
 	constexpr int kPadStart = 0x800;
-
 }
