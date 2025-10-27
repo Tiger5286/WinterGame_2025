@@ -28,17 +28,17 @@ public:
 
 	// ‰‰ZqƒI[ƒo[ƒ[ƒh
 	// ‘«‚µZ
-	Vector2 operator+(Vector2 vec) const;
-	void operator+=(Vector2 vec);
+	Vector2 operator+(const Vector2 vec) const;
+	void operator+=(const Vector2 vec);
 	// ˆø‚«Z
-	Vector2 operator-(Vector2 vec) const;
-	void operator-=(Vector2 vec);
+	Vector2 operator-(const Vector2 vec) const;
+	void operator-=(const Vector2 vec);
 	// Š|‚¯Z(ƒXƒP[ƒŠƒ“ƒO)
-	Vector2 operator*(float scale) const;
-	void operator*=(float scale);
+	Vector2 operator*(const float scale) const;
+	void operator*=(const float scale);
 	// Š„‚èZ
-	Vector2 operator/(float scale) const;
-	void operator/=(float scale);
+	Vector2 operator/(const float scale) const;
+	void operator/=(const float scale);
 	// •„†‚ğ‹t“]
 	Vector2 operator-() const;
 };

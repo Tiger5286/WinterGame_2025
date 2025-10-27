@@ -50,45 +50,45 @@ Vector2 Vector2::Normalized() const
 	}
 }
 
-Vector2 Vector2::operator+(Vector2 vec) const
+Vector2 Vector2::operator+(const Vector2 vec) const
 {
 	return { x + vec.x,y + vec.y };
 }
 
-void Vector2::operator+=(Vector2 vec)
+void Vector2::operator+=(const Vector2 vec)
 {
 	x += vec.x;
 	y += vec.y;
 }
 
-Vector2 Vector2::operator-(Vector2 vec) const
+Vector2 Vector2::operator-(const Vector2 vec) const
 {
 	return { x - vec.x,y - vec.y };
 }
 
-void Vector2::operator-=(Vector2 vec)
+void Vector2::operator-=(const Vector2 vec)
 {
 	x -= vec.x;
 	y -= vec.y;
 }
 
-Vector2 Vector2::operator*(float scale) const
+Vector2 Vector2::operator*(const float scale) const
 {
 	return { x * scale,y * scale };
 }
 
-void Vector2::operator*=(float scale)
+void Vector2::operator*=(const float scale)
 {
 	x *= scale;
 	y *= scale;
 }
 
-Vector2 Vector2::operator/(float scale) const
+Vector2 Vector2::operator/(const float scale) const
 {
 	return { x / scale,y / scale };
 }
 
-void Vector2::operator/=(float scale)
+void Vector2::operator/=(const float scale)
 {
 	x /= scale;
 	y /= scale;
