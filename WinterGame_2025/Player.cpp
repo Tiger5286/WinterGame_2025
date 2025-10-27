@@ -20,7 +20,9 @@ namespace
 }
 
 Player::Player():
-	_jumpFrame(0)
+	_jumpFrame(0),
+	_isGround(false),
+	_isJumping(false)
 {
 	_handle = LoadGraph("data/PlayerSprites.png");
 	assert(_handle != -1);
@@ -40,17 +42,26 @@ void Player::Update()
 	Gravity();	// 重力をかける
 
 	// ジャンプ処理
+	if (_input.IsPressed("jump") && _isGround)
+	{	// ジャンプが入力され、かつ接地しているならジャンプ中
+		_isJumping = true;
+	}
 	if (_input.IsPressed("jump"))
-	{
-		_jumpFrame++;
-		if (_jumpFrame < MAX_JUMP_FRAME)
+	{	// ジャンプが入力され、かつジャンプ中なら長押し有効
+		if (_isJumping)
 		{
-			_vel.y = JUMP_POWER;
+			_jumpFrame++;
+			_isGround = false;
+			if (_jumpFrame < MAX_JUMP_FRAME)
+			{
+				_vel.y = JUMP_POWER;
+			}
 		}
 	}
 	else
-	{
+	{	// ジャンプが入力されていないならジャンプ中を解除
 		_jumpFrame = 0;
+		_isJumping = false;
 	}
 
 	// 左右移動処理
@@ -95,6 +106,7 @@ void Player::Update()
 	if (_pos.y > GROUND_HEIGHT)	// 位置が地面の高さを上回ったら補正
 	{
 		_pos.y = GROUND_HEIGHT;
+		_isGround = true;
 		_vel.y = 0.0f;
 	}
 }

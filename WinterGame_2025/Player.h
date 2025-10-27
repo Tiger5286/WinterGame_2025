@@ -16,5 +16,7 @@ public:
 private:
 	Input _input;
 	int _jumpFrame;
+	bool _isGround;
+	bool _isJumping;
 };
 
