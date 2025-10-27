@@ -24,7 +24,7 @@ Player::Player():
 	_isGround(false),
 	_isJumping(false)
 {
-	_handle = LoadGraph("data/PlayerSprites.png");
+	_handle = LoadGraph("data/Player.png");
 	assert(_handle != -1);
 }
 
