@@ -1,7 +1,9 @@
 #pragma once
 #include "Geometry.h"
+#include <memory>
 
 class Input;
+class Collider;
 
 class GameObject
 {
@@ -20,5 +22,6 @@ protected:
 	int _handle;
 	Vector2 _pos;
 	Vector2 _vel;
+	std::shared_ptr<Collider> _collider;
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Input.h"
+#include <memory>
 
 class Player : public GameObject
 {

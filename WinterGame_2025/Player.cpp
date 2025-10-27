@@ -2,15 +2,22 @@
 #include "Dxlib.h"
 #include <cassert>
 #include "input.h"
+#include "BoxCollider.h"
 
 namespace
 {
-	constexpr int PLAYER_CUT_W = 40;
-	constexpr int PLAYER_CUT_H = 40;
-	constexpr float PLAYER_SCALE = 4.0f;
+	// 描画関連
+	constexpr int GRAPH_CUT_W = 40;
+	constexpr int GRAPH_CUT_H = 40;
+	constexpr float DRAW_SCALE = 4.0f;
 
-	constexpr float GROUND_HEIGHT = 800.0f;
+	// 当たり判定
+	constexpr float COLLIDER_W = 80.0f;
+	constexpr float COLLIDER_H = 110.0f;
 
+	constexpr float GROUND_H = 800.0f;
+
+	// 動きの制御関連
 	constexpr float JUMP_POWER = -15.0f;
 	constexpr int MAX_JUMP_FRAME = 15;
 
@@ -26,6 +33,7 @@ Player::Player():
 {
 	_handle = LoadGraph("data/Player.png");
 	assert(_handle != -1);
+	_collider = std::make_shared<BoxCollider>(_pos,Vector2(COLLIDER_W, COLLIDER_H));
 }
 
 Player::~Player()
@@ -103,17 +111,20 @@ void Player::Update()
 
 	_pos += _vel;	// 速度ベクトルを位置に足しこむ
 
-	if (_pos.y > GROUND_HEIGHT)	// 位置が地面の高さを上回ったら補正
+	if (_pos.y > GROUND_H)	// 位置が地面の高さを上回ったら補正
 	{
-		_pos.y = GROUND_HEIGHT;
+		_pos.y = GROUND_H;
 		_isGround = true;
 		_vel.y = 0.0f;
 	}
+
+	_collider->SetPos(_pos);
 }
 
 void Player::Draw()
 {
-	DrawRectRotaGraph(_pos.x,_pos.y,PLAYER_CUT_W * 0,PLAYER_CUT_H * 2,PLAYER_CUT_W,PLAYER_CUT_H,PLAYER_SCALE,0,_handle,true);
+	DrawRectRotaGraph(_pos.x, _pos.y - GRAPH_CUT_H / 2 * DRAW_SCALE, GRAPH_CUT_W * 0, GRAPH_CUT_H * 2, GRAPH_CUT_W, GRAPH_CUT_H, DRAW_SCALE, 0, _handle, true);
+	_collider->Draw();
 }
 
 void Player::SetInput(const Input& input)
