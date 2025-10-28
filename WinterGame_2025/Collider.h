@@ -23,4 +23,3 @@ public:
 protected:
 	Vector2 _pos;
 };
-

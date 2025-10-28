@@ -24,4 +24,3 @@ protected:
 	Vector2 _vel;
 	std::shared_ptr<Collider> _collider;
 };
-
