@@ -23,3 +23,8 @@ void GameObject::Gravity()
 		_vel.y = MAX_FALL_SPEED;
 	}
 }
+
+void GameObject::SetHandle(int handle)
+{
+	_handle = handle;
+}

@@ -14,7 +14,12 @@ public:
 	void Init() override;
 	void Update(Input input) override;
 	void Draw() override;
+
 private:
+	/*‰æ‘œƒnƒ“ƒhƒ‹*/
+	int _playerH;
+	int _playerShotH;
+
 	int _frameCount;
 	std::shared_ptr<Player> _pPlayer;
 };

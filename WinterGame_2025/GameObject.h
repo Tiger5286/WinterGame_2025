@@ -15,6 +15,8 @@ public:
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 
+	void SetHandle(int handle);
+
 protected:
 	void Gravity();
 

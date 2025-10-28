@@ -29,10 +29,9 @@ namespace
 Player::Player():
 	_jumpFrame(0),
 	_isGround(false),
-	_isJumping(false)
+	_isJumping(false),
+	_isTurn(false)
 {
-	_handle = LoadGraph("data/Player.png");
-	assert(_handle != -1);
 	_collider = std::make_shared<BoxCollider>(_pos,Vector2(COLLIDER_W, COLLIDER_H));
 }
 
@@ -78,6 +77,7 @@ void Player::Update()
 	{
 		_vel.x++;
 		isMove = true;
+		_isTurn = false;
 		if (_vel.x > MAX_MOVE_SPEED)
 		{
 			_vel.x = MAX_MOVE_SPEED;
@@ -87,6 +87,7 @@ void Player::Update()
 	{
 		_vel.x--;
 		isMove = true;
+		_isTurn = true;
 		if (_vel.x < -MAX_MOVE_SPEED)
 		{
 			_vel.x = -MAX_MOVE_SPEED;
@@ -123,8 +124,10 @@ void Player::Update()
 
 void Player::Draw()
 {
-	DrawRectRotaGraph(_pos.x, _pos.y - GRAPH_CUT_H / 2 * DRAW_SCALE, GRAPH_CUT_W * 0, GRAPH_CUT_H * 2, GRAPH_CUT_W, GRAPH_CUT_H, DRAW_SCALE, 0, _handle, true);
+	DrawRectRotaGraph(_pos.x, _pos.y - GRAPH_CUT_H / 2 * DRAW_SCALE, GRAPH_CUT_W * 0, GRAPH_CUT_H * 2, GRAPH_CUT_W, GRAPH_CUT_H, DRAW_SCALE, 0, _handle, true, _isTurn);
+#ifdef _DEBUG
 	_collider->Draw();
+#endif // _DEBUG
 }
 
 void Player::SetInput(const Input& input)
