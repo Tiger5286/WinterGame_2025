@@ -28,3 +28,8 @@ void GameObject::SetHandle(int handle)
 {
 	_handle = handle;
 }
+
+std::shared_ptr<Collider> GameObject::GetCollider()
+{
+	return _collider;
+}

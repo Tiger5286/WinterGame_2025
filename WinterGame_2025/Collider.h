@@ -1,5 +1,6 @@
 #pragma once
 #include "Geometry.h"
+#include <memory>
 
 /// <summary>
 /// “–‚½‚è”»’è‚ð‚·‚éŠî’êƒNƒ‰ƒX
@@ -11,7 +12,7 @@ public:
 	Collider(Vector2 pos, Vector2 size);
 	virtual ~Collider();
 
-	virtual bool CheckCollision(const Collider& other) const = 0;
+	virtual bool CheckCollision(const std::shared_ptr<Collider> other) const = 0;
 	virtual void Draw() const = 0;
 
 	enum class Type

@@ -64,6 +64,7 @@ void SceneMain::Update(Input input)
 			bullet->Update();
 		}
 	}
+	_pWalkEnemy->SetContext(_pBullets);
 	_pWalkEnemy->Update();
 }
 
@@ -73,10 +74,7 @@ void SceneMain::Draw()
 	_pPlayer->Draw();
 	for (auto& bullet : _pBullets)
 	{
-		if (bullet->GetAlive())
-		{
-			bullet->Draw();
-		}
+		bullet->Draw();
 	}
 
 	DrawString(0,0,"SceneMain",0xffffff);

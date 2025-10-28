@@ -46,13 +46,17 @@ void Bullet::Update()
 	{
 		_isAlive = false;
 	}
+	_collider->SetPos(_pos);
 }
 
 void Bullet::Draw()
 {
-	DrawRectRotaGraph(_pos.x, _pos.y, GRAPH_CUT_W * 0, GRAPH_CUT_H * 1, GRAPH_CUT_W, GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true,_isTurn);
+	if (_isAlive)
+	{
+		DrawRectRotaGraph(_pos.x, _pos.y, GRAPH_CUT_W * 0, GRAPH_CUT_H * 1, GRAPH_CUT_W, GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true, _isTurn);
+	}
 #ifdef _DEBUG
-	DrawCircle(_pos.x, _pos.y, COLLIDER_R, 0xff0000, false);
+	_collider->Draw();
 #endif
 }
 

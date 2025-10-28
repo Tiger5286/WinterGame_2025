@@ -16,6 +16,7 @@ public:
 	virtual void Draw() = 0;
 
 	void SetHandle(int handle);
+	std::shared_ptr<Collider> GetCollider();
 
 protected:
 	void Gravity();

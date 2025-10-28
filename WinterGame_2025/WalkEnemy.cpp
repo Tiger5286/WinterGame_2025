@@ -1,6 +1,7 @@
 #include "WalkEnemy.h"
 #include "BoxCollider.h"
 #include "Dxlib.h"
+#include "Bullet.h"
 
 namespace
 {
@@ -39,12 +40,29 @@ void WalkEnemy::Update()
 		_pos.y = GROUND_H;
 		_vel.y = 0.0f;
 	}
+	_collider->SetPos(_pos);
+
+	for (auto& bullet : _pBullets)
+	{
+		if (bullet->GetAlive())
+		{
+			if (_collider->CheckCollision(bullet->GetCollider()))
+			{
+				bullet->SetAlive(false);
+			}
+		}
+	}
 }
 
 void WalkEnemy::Draw()
 {
 	DrawRectRotaGraph(_pos.x, _pos.y - GRAPH_CUT_H / 2 * DRAW_SCALE, GRAPH_CUT_W * 0, GRAPH_CUT_H * 0, GRAPH_CUT_W, GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true);
 #ifdef _DEBUG
-	DrawBox(_pos.x - COLLIDER_W / 2, _pos.y - COLLIDER_H, _pos.x + COLLIDER_W / 2, _pos.y, 0xff0000, false);
+	_collider->Draw();
 #endif
+}
+
+void WalkEnemy::SetContext(const std::vector<std::shared_ptr<Bullet>>& pBullets)
+{
+	_pBullets = pBullets;
 }

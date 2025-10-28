@@ -11,17 +11,31 @@ CircleCollider::~CircleCollider()
 {
 }
 
-bool CircleCollider::CheckCollision(const Collider& other) const
+bool CircleCollider::CheckCollision(const std::shared_ptr<Collider> other) const
 {
-	if (other.GetType() == Type::Circle)
+	if (other->GetType() == Type::Circle)
 	{
-		float hitDis = _radius + other.GetRadius();
-		//float disX = _pos.x - other
-
+		// ‰~“¯Žm‚Ì“–‚½‚è”»’è
+		float hitDis = _radius + other->GetRadius();
+		float disX = _pos.x - other->GetPos().x;
+		float disY = _pos.y - other->GetPos().y;
+		float dis = sqrtf(disX * disX + disY * disY);
+		if (dis < hitDis)
+		{
+			return true;
+		}
 	}
-	else if (other.GetType() == Type::Box)
+	else if (other->GetType() == Type::Box)
 	{
-
+		// ‰~‚Æ‹éŒ`‚Ì“–‚½‚è”»’è
+		float hitDisX = _radius + other->GetSize().x;
+		float hitDisY = _radius + other->GetSize().y;
+		float disX = _pos.x - other->GetPos().x;
+		float disY = _pos.y - other->GetPos().y;
+		if ((disX < hitDisX) && (disY < hitDisY))
+		{
+			return true;
+		}
 	}
 	return false;
 }
