@@ -23,15 +23,24 @@ namespace
 	constexpr int MAX_JUMP_FRAME = 15;
 
 	constexpr float MAX_MOVE_SPEED = 10.0f;
-	constexpr float STOP_SPEED = 1.0f;
+	constexpr float STOP_SPEED = 0.9f;
 	constexpr float FRICTION_POWER = 0.3f;
+
+	// ダッシュ関連
+	constexpr int DASH_COOL_TIME = 120;
+	constexpr float DASH_SPEED = 20.0f;
+	constexpr int DASHING_TIME = 15;
 }
 
 Player::Player():
 	_jumpFrame(0),
 	_isGround(false),
 	_isJumping(false),
-	_isTurn(false)
+	_isTurn(false),
+	_dashCoolTime(0),
+	_dashFrame(0),
+	_isDashing(false),
+	_isTurnDashing(false)
 {
 	_collider = std::make_shared<BoxCollider>(_pos,Vector2(COLLIDER_W, COLLIDER_H));
 }
@@ -58,6 +67,9 @@ void Player::Update()
 	// 射撃処理
 	Shot();
 
+	// ダッシュ処理
+	Dash();
+
 	_pos += _vel;	// 速度ベクトルを位置に足しこむ
 
 	if (_pos.y > GROUND_H)	// 位置が地面の高さを上回ったら補正
@@ -67,7 +79,7 @@ void Player::Update()
 		_vel.y = 0.0f;
 	}
 
-	if (_isTurn)
+	if (_isTurn)	// 弾を召喚する位置を設定
 	{
 		_shotPos = { _pos.x - COLLIDER_W / 2, _pos.y - COLLIDER_H / 2 };
 	}
@@ -76,6 +88,7 @@ void Player::Update()
 		_shotPos = { _pos.x + COLLIDER_W / 2, _pos.y - COLLIDER_H / 2 };
 	}
 
+	// 当たり判定の位置を設定
 	_collider->SetPos(_pos);
 }
 
@@ -120,42 +133,39 @@ void Player::Jump()
 
 void Player::Move()
 {
-	bool isMove = false;
 	if (_input.IsPressed("right"))
 	{
 		_vel.x++;
-		isMove = true;
 		_isTurn = false;
-		if (_vel.x > MAX_MOVE_SPEED)
-		{
-			_vel.x = MAX_MOVE_SPEED;
-		}
 	}
 	if (_input.IsPressed("left"))
 	{
 		_vel.x--;
-		isMove = true;
 		_isTurn = true;
-		if (_vel.x < -MAX_MOVE_SPEED)
-		{
-			_vel.x = -MAX_MOVE_SPEED;
-		}
 	}
-	// 自然に止まる力
-	if (!isMove)
+
+	// 最高速度以上は出ないようにする
+	if (_vel.x > MAX_MOVE_SPEED)
 	{
-		if (_vel.x >= -STOP_SPEED && _vel.x <= STOP_SPEED)
-		{
-			_vel.x = 0.0f;
-		}
-		if (_vel.x > STOP_SPEED)
-		{
-			_vel.x -= FRICTION_POWER;
-		}
-		if (_vel.x < -STOP_SPEED)
-		{
-			_vel.x += FRICTION_POWER;
-		}
+		_vel.x = MAX_MOVE_SPEED;
+	}
+	if (_vel.x < -MAX_MOVE_SPEED)
+	{
+		_vel.x = -MAX_MOVE_SPEED;
+	}
+
+	// 自然に止まる力
+	if (_vel.x >= -STOP_SPEED && _vel.x <= STOP_SPEED)
+	{
+		_vel.x = 0.0f;
+	}
+	if (_vel.x > STOP_SPEED)
+	{
+		_vel.x -= FRICTION_POWER;
+	}
+	if (_vel.x < -STOP_SPEED)
+	{
+		_vel.x += FRICTION_POWER;
 	}
 }
 
@@ -172,6 +182,39 @@ void Player::Shot()
 				bullet->SetIsTurn(_isTurn);
 				break;
 			}
+		}
+	}
+}
+
+void Player::Dash()
+{
+	// クールタイムを減らす
+	if (_dashCoolTime > 0)
+	{
+		_dashCoolTime--;
+	}
+	if (_input.IsTriggered("dash") && _dashCoolTime == 0)
+	{	// ダッシュが入力され、かつクールタイムが終わっているなら
+		_isTurnDashing = _isTurn;
+		_isDashing = true;
+		_dashCoolTime = DASH_COOL_TIME;
+	}
+	if (_isDashing)
+	{	// ダッシュ本体の処理
+		_dashFrame++;
+		_vel.y = 0.0f;
+		if (_isTurnDashing)
+		{
+			_vel.x = -DASH_SPEED;
+		}
+		else
+		{
+			_vel.x = DASH_SPEED;
+		}
+		if (_dashFrame > DASHING_TIME)
+		{
+			_dashFrame = 0;
+			_isDashing = false;
 		}
 	}
 }

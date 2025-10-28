@@ -1,9 +1,9 @@
 #include "CircleCollider.h"
 #include "Dxlib.h"
+#include <cmath>
 
 CircleCollider::CircleCollider(Vector2 pos, float radius) :
-	Collider(pos),
-	_radius(radius)
+	Collider(pos,radius)
 {
 }
 
@@ -13,6 +13,16 @@ CircleCollider::~CircleCollider()
 
 bool CircleCollider::CheckCollision(const Collider& other) const
 {
+	if (other.GetType() == Type::Circle)
+	{
+		float hitDis = _radius + other.GetRadius();
+		//float disX = _pos.x - other
+
+	}
+	else if (other.GetType() == Type::Box)
+	{
+
+	}
 	return false;
 }
 

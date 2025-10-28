@@ -27,13 +27,23 @@ private:
 	void Jump();
 	void Move();
 	void Shot();
+	void Dash();
 
 private:
 	Input _input;
 	std::vector<std::shared_ptr<Bullet>> _pBullets;
-	int _jumpFrame;
-	bool _isGround;
-	bool _isJumping;
+
+	// ジャンプ関連変数
+	int _jumpFrame;		// ジャンプ長押し時間
+	bool _isGround;		// 接地フラグ
+	bool _isJumping;	// ジャンプ中フラグ
+
 	bool _isTurn;	// true:左向き/false:右向き
-	Vector2 _shotPos;
+	Vector2 _shotPos;	// 弾を召喚する位置
+
+	// ダッシュ関連変数
+	int _dashCoolTime;	// ダッシュのクールタイム
+	int _dashFrame;		// ダッシュ中の時間
+	bool _isDashing;	// ダッシュ中フラグ
+	bool _isTurnDashing;// ダッシュ中の向き // true:左向き/false:右向き
 };

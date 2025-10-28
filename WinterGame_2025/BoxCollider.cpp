@@ -2,8 +2,7 @@
 #include "Dxlib.h"
 
 BoxCollider::BoxCollider(Vector2 pos, Vector2 size) :
-	Collider(pos),
-	_size(size)
+	Collider(pos,size)
 {
 }
 

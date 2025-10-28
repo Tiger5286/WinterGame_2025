@@ -9,7 +9,4 @@ public:
 	bool CheckCollision(const Collider& other) const override;
 	void Draw() const override;
 	Type GetType() const override { return Type::Box; }
-private:
-	Vector2 _size;
 };
-

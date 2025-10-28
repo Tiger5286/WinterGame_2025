@@ -13,8 +13,6 @@ public:
 
 	bool CheckCollision(const Collider& other) const override;
 	void Draw() const override;
-	Type GetType() const override { return Type::Circle; }
-private:
-	float _radius;
-};
 
+	Type GetType() const override { return Type::Circle; }
+};
