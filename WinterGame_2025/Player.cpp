@@ -3,6 +3,7 @@
 #include <cassert>
 #include "input.h"
 #include "BoxCollider.h"
+#include "Bullet.h"
 
 namespace
 {
@@ -49,6 +50,51 @@ void Player::Update()
 	Gravity();	// 重力をかける
 
 	// ジャンプ処理
+	Jump();
+
+	// 左右移動処理
+	Move();
+
+	// 射撃処理
+	Shot();
+
+	_pos += _vel;	// 速度ベクトルを位置に足しこむ
+
+	if (_pos.y > GROUND_H)	// 位置が地面の高さを上回ったら補正
+	{
+		_pos.y = GROUND_H;
+		_isGround = true;
+		_vel.y = 0.0f;
+	}
+
+	if (_isTurn)
+	{
+		_shotPos = { _pos.x - COLLIDER_W / 2, _pos.y - COLLIDER_H / 2 };
+	}
+	else
+	{
+		_shotPos = { _pos.x + COLLIDER_W / 2, _pos.y - COLLIDER_H / 2 };
+	}
+
+	_collider->SetPos(_pos);
+}
+
+void Player::Draw()
+{
+	DrawRectRotaGraph(_pos.x, _pos.y - GRAPH_CUT_H / 2 * DRAW_SCALE, GRAPH_CUT_W * 0, GRAPH_CUT_H * 2, GRAPH_CUT_W, GRAPH_CUT_H, DRAW_SCALE, 0, _handle, true, _isTurn);
+#ifdef _DEBUG
+	_collider->Draw();
+#endif // _DEBUG
+}
+
+void Player::SetContext(const Input& input, std::vector<std::shared_ptr<Bullet>>& pBullets)
+{
+	_input = input;
+	_pBullets = pBullets;
+}
+
+void Player::Jump()
+{
 	if (_input.IsPressed("jump") && _isGround)
 	{	// ジャンプが入力され、かつ接地しているならジャンプ中
 		_isJumping = true;
@@ -70,8 +116,10 @@ void Player::Update()
 		_jumpFrame = 0;
 		_isJumping = false;
 	}
+}
 
-	// 左右移動処理
+void Player::Move()
+{
 	bool isMove = false;
 	if (_input.IsPressed("right"))
 	{
@@ -109,28 +157,21 @@ void Player::Update()
 			_vel.x += FRICTION_POWER;
 		}
 	}
+}
 
-	_pos += _vel;	// 速度ベクトルを位置に足しこむ
-
-	if (_pos.y > GROUND_H)	// 位置が地面の高さを上回ったら補正
+void Player::Shot()
+{
+	if (_input.IsTriggered("shot"))
 	{
-		_pos.y = GROUND_H;
-		_isGround = true;
-		_vel.y = 0.0f;
+		for (auto& bullet : _pBullets)
+		{
+			if (!bullet->GetAlive())
+			{
+				bullet->SetAlive(true);
+				bullet->SetPos(_shotPos);
+				bullet->SetIsTurn(_isTurn);
+				break;
+			}
+		}
 	}
-
-	_collider->SetPos(_pos);
-}
-
-void Player::Draw()
-{
-	DrawRectRotaGraph(_pos.x, _pos.y - GRAPH_CUT_H / 2 * DRAW_SCALE, GRAPH_CUT_W * 0, GRAPH_CUT_H * 2, GRAPH_CUT_W, GRAPH_CUT_H, DRAW_SCALE, 0, _handle, true, _isTurn);
-#ifdef _DEBUG
-	_collider->Draw();
-#endif // _DEBUG
-}
-
-void Player::SetInput(const Input& input)
-{
-	_input = input;
 }
