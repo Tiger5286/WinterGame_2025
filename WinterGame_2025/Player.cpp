@@ -22,9 +22,10 @@ namespace
 	constexpr float JUMP_POWER = -15.0f;
 	constexpr int MAX_JUMP_FRAME = 15;
 
+	constexpr float MOVE_SPEED = 2.0f;
 	constexpr float MAX_MOVE_SPEED = 10.0f;
 	constexpr float STOP_SPEED = 0.9f;
-	constexpr float FRICTION_POWER = 0.3f;
+	constexpr float FRICTION_POWER = 0.7f;
 
 	// ダッシュ関連
 	constexpr int DASH_COOL_TIME = 120;
@@ -135,12 +136,12 @@ void Player::Move()
 {
 	if (_input.IsPressed("right"))
 	{
-		_vel.x++;
+		_vel.x += MOVE_SPEED;
 		_isTurn = false;
 	}
 	if (_input.IsPressed("left"))
 	{
-		_vel.x--;
+		_vel.x -= MOVE_SPEED;
 		_isTurn = true;
 	}
 

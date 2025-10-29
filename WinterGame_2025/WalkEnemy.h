@@ -1,11 +1,9 @@
 #pragma once
-#include "GameObject.h"
+#include "Enemy.h"
 #include <vector>
 #include <memory>
 
-class Bullet;
-
-class WalkEnemy : public GameObject
+class WalkEnemy : public Enemy
 {
 public:
 	WalkEnemy();
@@ -14,9 +12,5 @@ public:
 	void Init() override;
 	void Update() override;
 	void Draw() override;
-
-	void SetContext(const std::vector<std::shared_ptr<Bullet>>& pBullets);
-private:
-	std::vector<std::shared_ptr<Bullet>> _pBullets;
 };
 

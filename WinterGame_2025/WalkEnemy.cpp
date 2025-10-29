@@ -13,9 +13,12 @@ namespace
 	constexpr float COLLIDER_H = 110;
 
 	constexpr float GROUND_H = 800.0f;
+
+	constexpr int MAX_HP = 5;
 }
 
-WalkEnemy::WalkEnemy()
+WalkEnemy::WalkEnemy():
+	Enemy(MAX_HP)
 {
 	_collider = std::make_shared<BoxCollider>(_pos, Vector2{ COLLIDER_W,COLLIDER_H });
 }
@@ -49,6 +52,7 @@ void WalkEnemy::Update()
 			if (_collider->CheckCollision(bullet->GetCollider()))
 			{
 				bullet->SetAlive(false);
+				_hp--;
 			}
 		}
 	}
@@ -60,9 +64,4 @@ void WalkEnemy::Draw()
 #ifdef _DEBUG
 	_collider->Draw();
 #endif
-}
-
-void WalkEnemy::SetContext(const std::vector<std::shared_ptr<Bullet>>& pBullets)
-{
-	_pBullets = pBullets;
 }

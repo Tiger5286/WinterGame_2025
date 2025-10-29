@@ -55,8 +55,12 @@ void SceneMain::Init()
 void SceneMain::Update(Input input)
 {
 	_frameCount++;
+
+	// ƒvƒŒƒCƒ„[§Œä
 	_pPlayer->SetContext(input,_pBullets);
 	_pPlayer->Update();
+
+	// ’e§Œä
 	for (auto& bullet : _pBullets)
 	{
 		if (bullet->GetAlive())
@@ -64,13 +68,25 @@ void SceneMain::Update(Input input)
 			bullet->Update();
 		}
 	}
-	_pWalkEnemy->SetContext(_pBullets);
-	_pWalkEnemy->Update();
+
+	// “G§Œä
+	if (_pWalkEnemy != nullptr)
+	{
+		_pWalkEnemy->SetContext(_pBullets);
+		_pWalkEnemy->Update();
+		if (_pWalkEnemy->GetHp() <= 0)
+		{
+			_pWalkEnemy = nullptr;
+		}
+	}
 }
 
 void SceneMain::Draw()
 {
-	_pWalkEnemy->Draw();
+	if (_pWalkEnemy != nullptr)
+	{
+		_pWalkEnemy->Draw();
+	}
 	_pPlayer->Draw();
 	for (auto& bullet : _pBullets)
 	{
