@@ -17,6 +17,12 @@ public:
 	void Draw() override;
 
 	/// <summary>
+	/// 追加の画像ハンドルをセットする
+	/// </summary>
+	/// <param name="chargeParticleH">チャージエフェクトの画像ハンドル</param>
+	void SetOtherHandle(int chargeParticleH);
+
+	/// <summary>
 	/// 必要な情報を受け取る関数
 	/// </summary>
 	/// <param name="input">Inputクラスのインスタンス</param>
@@ -27,11 +33,15 @@ private:
 	void Jump();
 	void Move();
 	void Shot();
+	void ChargeShot();
 	void Dash();
 
 private:
 	Input _input;
 	std::vector<std::shared_ptr<Bullet>> _pBullets;
+
+	// 画像ハンドル
+	int _chargeParticleH;	// チャージエフェクトの画像ハンドル
 
 	// ジャンプ関連変数
 	int _jumpFrame;		// ジャンプ長押し時間
@@ -46,4 +56,8 @@ private:
 	int _dashFrame;		// ダッシュ中の時間
 	bool _isDashing;	// ダッシュ中フラグ
 	bool _isTurnDashing;// ダッシュ中の向き // true:左向き/false:右向き
+
+	// チャージショット関連変数
+	int _chargeFrame;
+	bool _isCharging;
 };

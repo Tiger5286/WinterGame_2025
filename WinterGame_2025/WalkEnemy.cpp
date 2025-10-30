@@ -5,12 +5,12 @@
 
 namespace
 {
-	constexpr int GRAPH_CUT_W = 32;
-	constexpr int GRAPH_CUT_H = 36;
-	constexpr float DRAW_SCALE = 4.0f;
+	constexpr int PLAYER_GRAPH_CUT_W = 32;
+	constexpr int PLAYER_GRAPH_CUT_H = 36;
+	constexpr float DRAW_SCALE = 3.0f;
 
-	constexpr float COLLIDER_W = 100;
-	constexpr float COLLIDER_H = 110;
+	constexpr float COLLIDER_W = 80;
+	constexpr float COLLIDER_H = 80;
 
 	constexpr float GROUND_H = 800.0f;
 
@@ -45,6 +45,7 @@ void WalkEnemy::Update()
 	}
 	_collider->SetPos(_pos);
 
+	// ’e‚Æ‚Ì“–‚½‚è”»’è
 	for (auto& bullet : _pBullets)
 	{
 		if (bullet->GetAlive())
@@ -60,7 +61,7 @@ void WalkEnemy::Update()
 
 void WalkEnemy::Draw()
 {
-	DrawRectRotaGraph(_pos.x, _pos.y - GRAPH_CUT_H / 2 * DRAW_SCALE, GRAPH_CUT_W * 0, GRAPH_CUT_H * 0, GRAPH_CUT_W, GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true);
+	DrawRectRotaGraph(_pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE, PLAYER_GRAPH_CUT_W * 0, PLAYER_GRAPH_CUT_H * 0, PLAYER_GRAPH_CUT_W, PLAYER_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true);
 #ifdef _DEBUG
 	_collider->Draw();
 #endif

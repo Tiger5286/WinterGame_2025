@@ -50,5 +50,12 @@ public:
 	/// <param name="name">イベント名</param>
 	/// <returns>今押された瞬間:true / 押されてないor押しっぱなし:false</returns>
 	bool IsTriggered(const char* name)const;
+
+	/// <summary>
+	/// 特定のボタンが今離されたか(離された瞬間にしか反応しない)
+	/// </summary>
+	/// <param name="name">イベント名</param>
+	/// <returns>今離された瞬間:true / 押されているor離しっぱなし:false</returns>
+	bool IsReleased(const char* name)const;
 };
 

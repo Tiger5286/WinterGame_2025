@@ -22,6 +22,8 @@ private:
 	/*‰æ‘œƒnƒ“ƒhƒ‹*/
 	int _playerH;
 	int _playerShotH;
+	int _chargeShotH;
+	int _chargeParticleH;
 	int _walkEnemyH;
 
 	int _frameCount;

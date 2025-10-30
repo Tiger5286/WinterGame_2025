@@ -5,11 +5,11 @@
 
 namespace
 {
-	constexpr int GRAPH_CUT_W = 16;
-	constexpr int GRAPH_CUT_H = 16;
-	constexpr float DRAW_SCALE = 3.0f;
+	constexpr int PLAYER_GRAPH_CUT_W = 16;
+	constexpr int PLAYER_GRAPH_CUT_H = 16;
+	constexpr float DRAW_SCALE = 2.0f;
 
-	constexpr float COLLIDER_R = 20.0f;
+	constexpr float COLLIDER_R = 15.0f;
 
 	constexpr float MOVE_SPEED = 20.0f;
 }
@@ -53,7 +53,7 @@ void Bullet::Draw()
 {
 	if (_isAlive)
 	{
-		DrawRectRotaGraph(_pos.x, _pos.y, GRAPH_CUT_W * 0, GRAPH_CUT_H * 1, GRAPH_CUT_W, GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true, _isTurn);
+		DrawRectRotaGraph(_pos.x, _pos.y, PLAYER_GRAPH_CUT_W * 0, PLAYER_GRAPH_CUT_H * 1, PLAYER_GRAPH_CUT_W, PLAYER_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true, _isTurn);
 	}
 #ifdef _DEBUG
 	_collider->Draw();

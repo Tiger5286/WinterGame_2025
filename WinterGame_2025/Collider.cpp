@@ -12,6 +12,7 @@ Collider::Collider(Vector2 pos, Vector2 size):
 	_size(size),
 	_radius(0.0f)
 {
+	_pos.y -= _size.y / 2;
 }
 
 Collider::~Collider()
@@ -21,6 +22,7 @@ Collider::~Collider()
 void Collider::SetPos(const Vector2 pos)
 {
 	_pos = pos;
+	_pos.y -= _size.y / 2;
 }
 
 Vector2 Collider::GetPos() const

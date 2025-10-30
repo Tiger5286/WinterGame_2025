@@ -8,13 +8,16 @@
 namespace
 {
 	// 描画関連
-	constexpr int GRAPH_CUT_W = 40;
-	constexpr int GRAPH_CUT_H = 40;
-	constexpr float DRAW_SCALE = 4.0f;
+	constexpr int PLAYER_GRAPH_CUT_W = 40;
+	constexpr int PLAYER_GRAPH_CUT_H = 40;
+	constexpr float DRAW_SCALE = 3.0f;
+
+	constexpr int CHARGE_PARTICLE_GRAPH_CUT_W = 64;
+	constexpr int CHARGE_PARTICLE_GRAPH_CUT_H = 64;
 
 	// 当たり判定
-	constexpr float COLLIDER_W = 80.0f;
-	constexpr float COLLIDER_H = 110.0f;
+	constexpr float COLLIDER_W = 60.0f;
+	constexpr float COLLIDER_H = 80.0f;
 
 	constexpr float GROUND_H = 800.0f;
 
@@ -34,6 +37,7 @@ namespace
 }
 
 Player::Player():
+	_chargeParticleH(-1),
 	_jumpFrame(0),
 	_isGround(false),
 	_isJumping(false),
@@ -41,7 +45,9 @@ Player::Player():
 	_dashCoolTime(0),
 	_dashFrame(0),
 	_isDashing(false),
-	_isTurnDashing(false)
+	_isTurnDashing(false),
+	_chargeFrame(0),
+	_isCharging(false)
 {
 	_collider = std::make_shared<BoxCollider>(_pos,Vector2(COLLIDER_W, COLLIDER_H));
 }
@@ -67,6 +73,7 @@ void Player::Update()
 
 	// 射撃処理
 	Shot();
+	ChargeShot();
 
 	// ダッシュ処理
 	Dash();
@@ -95,10 +102,23 @@ void Player::Update()
 
 void Player::Draw()
 {
-	DrawRectRotaGraph(_pos.x, _pos.y - GRAPH_CUT_H / 2 * DRAW_SCALE, GRAPH_CUT_W * 0, GRAPH_CUT_H * 2, GRAPH_CUT_W, GRAPH_CUT_H, DRAW_SCALE, 0, _handle, true, _isTurn);
+	DrawRectRotaGraph(_pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE, PLAYER_GRAPH_CUT_W * 0, PLAYER_GRAPH_CUT_H * 2, PLAYER_GRAPH_CUT_W, PLAYER_GRAPH_CUT_H, DRAW_SCALE, 0, _handle, true, _isTurn);
+
+	// チャージ中にパーティクルを描画
+	if (_isCharging)
+	{
+		DrawRectRotaGraph(_pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE,
+			CHARGE_PARTICLE_GRAPH_CUT_W * 3, 0,
+			CHARGE_PARTICLE_GRAPH_CUT_W, CHARGE_PARTICLE_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _chargeParticleH, true);
+	}
 #ifdef _DEBUG
 	_collider->Draw();
 #endif // _DEBUG
+}
+
+void Player::SetOtherHandle(int chargeParticleH)
+{
+	_chargeParticleH = chargeParticleH;
 }
 
 void Player::SetContext(const Input& input, std::vector<std::shared_ptr<Bullet>>& pBullets)
@@ -184,6 +204,27 @@ void Player::Shot()
 				break;
 			}
 		}
+	}
+}
+
+void Player::ChargeShot()
+{
+	if (_input.IsPressed("shot"))
+	{
+		_chargeFrame++;
+		if (_chargeFrame > 60)
+		{
+			_isCharging = true;
+		}
+	}
+	else
+	{
+		if (_chargeFrame > 60)
+		{
+			printfDx("チャージ弾発射\n");
+		}
+		_chargeFrame = 0;
+		_isCharging = false;
 	}
 }
 

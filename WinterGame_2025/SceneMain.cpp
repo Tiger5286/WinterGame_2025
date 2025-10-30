@@ -19,11 +19,16 @@ SceneMain::SceneMain() :
 	assert(_playerH != -1);
 	_playerShotH = LoadGraph("data/Player/Shot.png");
 	assert(_playerShotH != -1);
+	_chargeShotH = LoadGraph("data/Player/ChargeShot.png");
+	assert(_chargeShotH != -1);
+	_chargeParticleH = LoadGraph("data/Player/ChargeParticle.png");
+	assert(_chargeParticleH != -1);
 	_walkEnemyH = LoadGraph("data/Enemy/WalkEnemy.png");
 	assert(_walkEnemyH != -1);
 
 	_pPlayer = std::make_shared<Player>();
 	_pPlayer->SetHandle(_playerH);
+	_pPlayer->SetOtherHandle(_chargeParticleH);
 
 	_pBullets.resize(BULLET_NUM);
 	for (auto& bullet : _pBullets)
