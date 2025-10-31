@@ -14,10 +14,15 @@ public:
 	virtual void Update() override = 0;
 	virtual void Draw() override = 0;
 
-	void SetContext(const std::vector<std::shared_ptr<Bullet>>& pBullets) { _pBullets = pBullets; }
+	void SetHp(int hp) { _hp = hp; }
 	int GetHp() const { return _hp; }
+	void Delete() { _isAlive = false; }
+	bool GetIsAlive()const { return _isAlive; }
+	void SetIsHitChargeShot(bool ishit) { _isHitChargeShot = ishit; }
+	bool GetIsHitChargeShot()const { return _isHitChargeShot; }
 protected:
 	int _hp;
-	std::vector<std::shared_ptr<Bullet>> _pBullets;
+	bool _isAlive;
+	bool _isHitChargeShot;
 };
 

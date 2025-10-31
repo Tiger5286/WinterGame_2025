@@ -2,6 +2,7 @@
 #include "CircleCollider.h"
 #include "Dxlib.h"
 #include "Game.h"
+#include "Enemy.h"
 
 namespace
 {
@@ -15,6 +16,9 @@ namespace
 	constexpr float CHARGE_COLLIDER_R = 25.0f;
 
 	constexpr float MOVE_SPEED = 20.0f;
+
+	constexpr int NORMAL_SHOT_DAMAGE = 1;
+	constexpr int CHARGE_SHOT_DAMAGE = 3;
 }
 
 Bullet::Bullet():
@@ -53,6 +57,32 @@ void Bullet::Update()
 		_isAlive = false;
 	}
 	_collider->SetPos(_pos);
+
+	// 弾と敵の当たり判定
+	for (auto& enemy : _pEnemys)
+	{
+		if (_collider->CheckCollision(enemy->GetCollider()))	// 敵と当たっているかチェック
+		{
+			if (_type == BulletType::NormalShot)
+			{	// 通常弾ならダメージ与えて弾消える
+				enemy->SetHp(enemy->GetHp() - NORMAL_SHOT_DAMAGE);
+				_isAlive = false;
+			}
+			else if (_type == BulletType::ChargeShot)
+			{	// チャージ弾なら最初に当たったときだけダメージ与える
+				bool isPrevHit = enemy->GetIsHitChargeShot();	// 前のフレームで敵に当たったか
+				enemy->SetIsHitChargeShot(true);	// 敵が持っている弾に当たったフラグをつける
+				if (enemy->GetIsHitChargeShot() && !isPrevHit)	// 今のフレームで当たっている、かつ前のフレームで当たっていない
+				{	// ダメージを与える
+					enemy->SetHp(enemy->GetHp() - CHARGE_SHOT_DAMAGE);
+				}
+			}
+		}
+		else if (_type == BulletType::ChargeShot)
+		{	// チャージショットが当たっていない時に当たったフラグを消す
+			enemy->SetIsHitChargeShot(false);
+		}
+	}
 }
 
 void Bullet::Draw()
@@ -90,33 +120,13 @@ void Bullet::Shot(BulletType type, Vector2 shotPos, bool isTurn)
 	}
 }
 
+void Bullet::SetContext(std::vector<std::shared_ptr<Enemy>> pEnemys)
+{
+	_pEnemys = pEnemys;
+}
+
 void Bullet::SetHandle(int shotH,int chargeShotH)
 {
 	_shotH = shotH;
 	_chargeShotH = chargeShotH;
-}
-
-void Bullet::SetType(BulletType type)
-{
-	_type = type;
-}
-
-void Bullet::SetAlive(bool isAlive)
-{
-	_isAlive = isAlive;
-}
-
-bool Bullet::GetAlive()
-{
-	return _isAlive;
-}
-
-void Bullet::SetPos(Vector2 pos)
-{
-	_pos = pos;
-}
-
-void Bullet::SetIsTurn(bool isTurn)
-{
-	_isTurn = isTurn;
 }

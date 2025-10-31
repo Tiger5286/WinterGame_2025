@@ -1,8 +1,10 @@
 #include "Enemy.h"
 
-Enemy::Enemy(int hp)
+Enemy::Enemy(int hp) :
+	_hp(hp),
+	_isAlive(true),
+	_isHitChargeShot(false)
 {
-	_hp = hp;
 }
 
 Enemy::~Enemy()

@@ -8,7 +8,7 @@
 class Collider
 {
 public:
-	Collider(Vector2 pos,float radius);
+	Collider(Vector2 pos, float radius);
 	Collider(Vector2 pos, Vector2 size);
 	virtual ~Collider();
 
@@ -21,12 +21,14 @@ public:
 		Box
 	};
 	virtual Type GetType() const = 0;
-	void SetPos(const Vector2 pos);
 
-	Vector2 GetPos() const;
-	float GetRadius() const;
-	void SetRadius(float radius);
-	Vector2 GetSize() const;
+	void SetPos(const Vector2 pos) { _pos = { pos.x,pos.y - _size.y / 2 }; }
+	Vector2 GetPos() const { return _pos; }
+
+	float GetRadius() const { return _radius; }
+	void SetRadius(float radius) { _radius = radius; }
+
+	Vector2 GetSize() const { return _size; }
 	
 protected:
 	Vector2 _pos;

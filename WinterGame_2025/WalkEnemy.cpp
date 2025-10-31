@@ -17,9 +17,12 @@ namespace
 	constexpr int MAX_HP = 5;
 }
 
-WalkEnemy::WalkEnemy():
-	Enemy(MAX_HP)
+WalkEnemy::WalkEnemy(int handle):
+	Enemy(MAX_HP),
+	_handle(-1),
+	_isHitChargeShot(false)
 {
+	_handle = handle;
 	_collider = std::make_shared<BoxCollider>(_pos, Vector2{ COLLIDER_W,COLLIDER_H });
 }
 
@@ -29,7 +32,6 @@ WalkEnemy::~WalkEnemy()
 
 void WalkEnemy::Init()
 {
-	_pos = { 300.0f,100.0f };
 }
 
 void WalkEnemy::Update()
@@ -44,19 +46,6 @@ void WalkEnemy::Update()
 		_vel.y = 0.0f;
 	}
 	_collider->SetPos(_pos);
-
-	// ’e‚Æ‚Ì“–‚½‚è”»’è
-	for (auto& bullet : _pBullets)
-	{
-		if (bullet->GetAlive())
-		{
-			if (_collider->CheckCollision(bullet->GetCollider()))
-			{
-				bullet->SetAlive(false);
-				_hp--;
-			}
-		}
-	}
 }
 
 void WalkEnemy::Draw()
@@ -65,9 +54,4 @@ void WalkEnemy::Draw()
 #ifdef _DEBUG
 	_collider->Draw();
 #endif
-}
-
-void WalkEnemy::SetHandle(int handle)
-{
-	_handle = handle;
 }

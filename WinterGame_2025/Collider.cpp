@@ -18,29 +18,3 @@ Collider::Collider(Vector2 pos, Vector2 size):
 Collider::~Collider()
 {
 }
-
-void Collider::SetPos(const Vector2 pos)
-{
-	_pos = pos;
-	_pos.y -= _size.y / 2;
-}
-
-Vector2 Collider::GetPos() const
-{
-	return _pos;
-}
-
-float Collider::GetRadius() const
-{
-	return _radius;
-}
-
-void Collider::SetRadius(float radius)
-{
-	_radius = radius;
-}
-
-Vector2 Collider::GetSize() const
-{
-	return _size;
-}

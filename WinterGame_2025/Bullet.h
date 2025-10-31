@@ -1,6 +1,9 @@
 #pragma once
 #include "GameObject.h"
 #include "Geometry.h"
+#include "vector"
+
+class Enemy;
 
 enum class BulletType
 {
@@ -20,20 +23,23 @@ public:
 
 	void Shot(BulletType type, Vector2 shotPos, bool isTurn);
 
+	void SetContext(std::vector<std::shared_ptr<Enemy>> pEnemys);
+
 	void SetHandle(int shotH,int chargeShotH);
-	void SetType(BulletType type);
+	void SetIsTurn(bool isTurn) { _isTurn = isTurn; }
 
-	void SetAlive(bool isAlive);
-	bool GetAlive();
+	void SetAlive(bool isAlive) { _isAlive = isAlive; }
+	bool GetAlive() const { return _isAlive; }
 
-	void SetPos(Vector2 pos);
-	void SetIsTurn(bool isTurn);
+	void SetType(BulletType type) { _type = type; }
+	BulletType GetType() const { return _type; }
 private:
 	int _shotH;
 	int _chargeShotH;
 
-	BulletType _type;
+	std::vector<std::shared_ptr<Enemy>> _pEnemys;
 
+	BulletType _type;
 	bool _isAlive;
 	bool _isTurn;
 };

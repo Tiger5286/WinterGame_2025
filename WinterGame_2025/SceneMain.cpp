@@ -36,8 +36,10 @@ SceneMain::SceneMain() :
 		bullet->SetHandle(_playerShotH,_chargeShotH);
 	}
 
-	_pWalkEnemy = std::make_shared<WalkEnemy>();
-	_pWalkEnemy->SetHandle(_walkEnemyH);
+	_pEnemys.push_back(std::make_shared<WalkEnemy>(_walkEnemyH));
+	_pEnemys.push_back(std::make_shared<WalkEnemy>(_walkEnemyH));
+	_pEnemys[0]->SetPos({ 300.0f,100.0f });
+	_pEnemys[1]->SetPos({ 500.0f,100.0f });
 }
 
 SceneMain::~SceneMain()
@@ -53,7 +55,10 @@ void SceneMain::Init()
 	{
 		bullet->Init();
 	}
-	_pWalkEnemy->Init();
+	for (auto& enemy : _pEnemys)
+	{
+		enemy->Init();
+	}
 }
 
 void SceneMain::Update(Input input)
@@ -64,32 +69,47 @@ void SceneMain::Update(Input input)
 	_pPlayer->SetContext(input,_pBullets);
 	_pPlayer->Update();
 
+	// “G§Œä
+	for (auto& enemy : _pEnemys)
+	{
+		if (enemy != nullptr)
+		{
+			enemy->Update();
+			// ‘Ì—Í‚ª0ˆÈ‰º‚É‚È‚Á‚½‚çÁ‚·
+			if (enemy->GetHp() <= 0)
+			{
+				enemy->Delete();
+				// €‚ñ‚¾“G‚ğvector‚©‚çíœ‚·‚é(ˆÓ–¡‚í‚©‚ç‚ñ)
+				_pEnemys.erase(
+					std::remove_if(_pEnemys.begin(), _pEnemys.end(),
+						[](const std::shared_ptr<Enemy>& enemy) {
+							return !enemy->GetIsAlive();
+						}),
+					_pEnemys.end()
+				);
+			}
+		}
+	}
+
 	// ’e§Œä
 	for (auto& bullet : _pBullets)
 	{
 		if (bullet->GetAlive())
 		{
+			bullet->SetContext(_pEnemys);
 			bullet->Update();
-		}
-	}
-
-	// “G§Œä
-	if (_pWalkEnemy != nullptr)
-	{
-		_pWalkEnemy->SetContext(_pBullets);
-		_pWalkEnemy->Update();
-		if (_pWalkEnemy->GetHp() <= 0)
-		{
-			_pWalkEnemy = nullptr;
 		}
 	}
 }
 
 void SceneMain::Draw()
 {
-	if (_pWalkEnemy != nullptr)
+	for (auto& enemy : _pEnemys)
 	{
-		_pWalkEnemy->Draw();
+		if (enemy != nullptr)
+		{
+			enemy->Draw();
+		}
 	}
 	_pPlayer->Draw();
 	for (auto& bullet : _pBullets)
