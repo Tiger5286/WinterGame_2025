@@ -12,5 +12,9 @@ public:
 	void Init() override;
 	void Update() override;
 	void Draw() override;
+
+	void SetHandle(int handle);
+private:
+	int _handle;
 };
 

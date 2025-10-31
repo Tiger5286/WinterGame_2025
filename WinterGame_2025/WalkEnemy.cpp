@@ -66,3 +66,8 @@ void WalkEnemy::Draw()
 	_collider->Draw();
 #endif
 }
+
+void WalkEnemy::SetHandle(int handle)
+{
+	_handle = handle;
+}

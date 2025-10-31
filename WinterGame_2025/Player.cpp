@@ -34,9 +34,13 @@ namespace
 	constexpr int DASH_COOL_TIME = 120;
 	constexpr float DASH_SPEED = 20.0f;
 	constexpr int DASHING_TIME = 15;
+
+	// 射撃関連
+	constexpr int SHOT_CHARGE_TIME = 60;
 }
 
 Player::Player():
+	_playerH(-1),
 	_chargeParticleH(-1),
 	_jumpFrame(0),
 	_isGround(false),
@@ -102,7 +106,7 @@ void Player::Update()
 
 void Player::Draw()
 {
-	DrawRectRotaGraph(_pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE, PLAYER_GRAPH_CUT_W * 0, PLAYER_GRAPH_CUT_H * 2, PLAYER_GRAPH_CUT_W, PLAYER_GRAPH_CUT_H, DRAW_SCALE, 0, _handle, true, _isTurn);
+	DrawRectRotaGraph(_pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE, PLAYER_GRAPH_CUT_W * 0, PLAYER_GRAPH_CUT_H * 2, PLAYER_GRAPH_CUT_W, PLAYER_GRAPH_CUT_H, DRAW_SCALE, 0, _playerH, true, _isTurn);
 
 	// チャージ中にパーティクルを描画
 	if (_isCharging)
@@ -116,8 +120,9 @@ void Player::Draw()
 #endif // _DEBUG
 }
 
-void Player::SetOtherHandle(int chargeParticleH)
+void Player::SetHandle(int playerH, int chargeParticleH)
 {
+	_playerH = playerH;
 	_chargeParticleH = chargeParticleH;
 }
 
@@ -198,9 +203,7 @@ void Player::Shot()
 		{
 			if (!bullet->GetAlive())
 			{
-				bullet->SetAlive(true);
-				bullet->SetPos(_shotPos);
-				bullet->SetIsTurn(_isTurn);
+				bullet->Shot(BulletType::NormalShot,_shotPos,_isTurn);
 				break;
 			}
 		}
@@ -219,9 +222,16 @@ void Player::ChargeShot()
 	}
 	else
 	{
-		if (_chargeFrame > 60)
+		if (_chargeFrame > SHOT_CHARGE_TIME)
 		{
-			printfDx("チャージ弾発射\n");
+			for (auto& bullet : _pBullets)
+			{
+				if (!bullet->GetAlive())
+				{
+					bullet->Shot(BulletType::ChargeShot, _shotPos, _isTurn);
+					break;
+				}
+			}
 		}
 		_chargeFrame = 0;
 		_isCharging = false;

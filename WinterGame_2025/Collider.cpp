@@ -35,6 +35,11 @@ float Collider::GetRadius() const
 	return _radius;
 }
 
+void Collider::SetRadius(float radius)
+{
+	_radius = radius;
+}
+
 Vector2 Collider::GetSize() const
 {
 	return _size;

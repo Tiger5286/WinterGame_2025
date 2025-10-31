@@ -27,14 +27,13 @@ SceneMain::SceneMain() :
 	assert(_walkEnemyH != -1);
 
 	_pPlayer = std::make_shared<Player>();
-	_pPlayer->SetHandle(_playerH);
-	_pPlayer->SetOtherHandle(_chargeParticleH);
+	_pPlayer->SetHandle(_playerH,_chargeParticleH);
 
 	_pBullets.resize(BULLET_NUM);
 	for (auto& bullet : _pBullets)
 	{
 		bullet = std::make_shared<Bullet>();
-		bullet->SetHandle(_playerShotH);
+		bullet->SetHandle(_playerShotH,_chargeShotH);
 	}
 
 	_pWalkEnemy = std::make_shared<WalkEnemy>();

@@ -25,6 +25,7 @@ public:
 
 	Vector2 GetPos() const;
 	float GetRadius() const;
+	void SetRadius(float radius);
 	Vector2 GetSize() const;
 	
 protected:

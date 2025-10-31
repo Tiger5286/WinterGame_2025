@@ -20,7 +20,7 @@ public:
 	/// 追加の画像ハンドルをセットする
 	/// </summary>
 	/// <param name="chargeParticleH">チャージエフェクトの画像ハンドル</param>
-	void SetOtherHandle(int chargeParticleH);
+	void SetHandle(int playerH, int chargeParticleH);
 
 	/// <summary>
 	/// 必要な情報を受け取る関数
@@ -41,6 +41,7 @@ private:
 	std::vector<std::shared_ptr<Bullet>> _pBullets;
 
 	// 画像ハンドル
+	int _playerH;
 	int _chargeParticleH;	// チャージエフェクトの画像ハンドル
 
 	// ジャンプ関連変数
