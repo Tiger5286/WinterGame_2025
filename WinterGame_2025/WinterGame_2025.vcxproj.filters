@@ -13,17 +13,14 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ソース ファイル\GameObjects">
-      <UniqueIdentifier>{7656d4a8-c9b3-42b8-b0d2-d783dfe894ad}</UniqueIdentifier>
+    <Filter Include="GameObjects">
+      <UniqueIdentifier>{455f0d31-5d76-45ef-b087-b0f9a5e5b735}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Scenes">
-      <UniqueIdentifier>{c6dcc469-dc0a-4997-a1e9-1de2eb951c6a}</UniqueIdentifier>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{cd89a558-8baa-458c-bf64-1948398e3eb3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\GameObjects">
-      <UniqueIdentifier>{af025baa-08fe-476a-8b0a-f3b583f7176c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Scenes">
-      <UniqueIdentifier>{5ff0f6a1-a4ac-4af5-be29-7792c6203e8f}</UniqueIdentifier>
+    <Filter Include="General">
+      <UniqueIdentifier>{e4d11fd0-6ad7-494c-b984-f9141ee88cda}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,47 +30,50 @@
     <ClCompile Include="Application.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Geometry.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>ソース ファイル\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneMain.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneBase.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CircleCollider.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="BoxCollider.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Bullet.cpp">
-      <Filter>ソース ファイル\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="WalkEnemy.cpp">
-      <Filter>ソース ファイル\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="SceneTitle.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneMain.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneBase.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxCollider.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleCollider.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>General</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -86,44 +86,47 @@
     <ClInclude Include="Input.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>ヘッダー ファイル\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>ヘッダー ファイル\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneMain.h">
-      <Filter>ヘッダー ファイル\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneBase.h">
-      <Filter>ヘッダー ファイル\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CircleCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="BoxCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Bullet.h">
-      <Filter>ヘッダー ファイル\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="WalkEnemy.h">
-      <Filter>ヘッダー ファイル\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル\GameObjects</Filter>
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="WalkEnemy.h">
+      <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="SceneTitle.h">
-      <Filter>ヘッダー ファイル\Scenes</Filter>
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMain.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBase.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxCollider.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleCollider.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>General</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

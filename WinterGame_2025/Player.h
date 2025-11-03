@@ -35,6 +35,7 @@ private:
 	void Shot();
 	void ChargeShot();
 	void Dash();
+	void ChangeAnim(Animation anim);
 
 private:
 	Input _input;
@@ -43,6 +44,14 @@ private:
 	// 画像ハンドル
 	int _playerH;
 	int _chargeParticleH;	// チャージエフェクトの画像ハンドル
+
+	// アニメーション
+	Animation _idleAnim;
+	Animation _moveAnim;
+	Animation _jumpAnim;
+	Animation _fallAnim;
+
+	Animation _ChargeParticleAnim;
 
 	// ジャンプ関連変数
 	int _jumpFrame;		// ジャンプ長押し時間

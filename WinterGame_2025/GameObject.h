@@ -1,5 +1,6 @@
 #pragma once
 #include "Geometry.h"
+#include "Animation.h"
 #include <memory>
 
 class Input;
@@ -27,4 +28,5 @@ protected:
 	Vector2 _pos;
 	Vector2 _vel;
 	std::shared_ptr<Collider> _collider;
+	Animation _nowAnim;
 };

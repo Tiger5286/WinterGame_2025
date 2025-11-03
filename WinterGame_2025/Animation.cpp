@@ -1,0 +1,60 @@
+#include "Animation.h"
+#include "Dxlib.h"
+
+Animation::Animation():
+	_drawHandle(-1),
+	_animIndex(0),
+	_frameSize({ 0.0f,0.0f }),
+	_maxAnimNum(0),
+	_nowAnimNum(0),
+	_oneAnimFrame(0),
+	_frameCount(0),
+	_scale(1.0f),
+	_rotate(0.0f)
+{
+}
+
+Animation::~Animation()
+{
+}
+
+void Animation::Init(int drawHandle, int animIndex, Vector2 frameSize, int maxAnimNum, int oneAnimFrame, float scale)
+{
+	_drawHandle = drawHandle;
+	_animIndex = animIndex;
+	_frameSize = frameSize;
+	_maxAnimNum = maxAnimNum;
+	_oneAnimFrame = oneAnimFrame;
+	_scale = scale;
+	_nowAnimNum = 0;
+	_frameCount = 0;
+}
+
+void Animation::Update()
+{
+	_frameCount++;	// フレームカウントを進める
+	if (_frameCount >= _oneAnimFrame)	// 1コマ分のフレームが経過したら
+	{
+		_frameCount = 0;
+		_nowAnimNum++;	// アニメーション番号を進める
+		if (_nowAnimNum >= _maxAnimNum)
+		{	// 最大コマ数を超えたら最初に戻す
+			_nowAnimNum = 0;
+		}
+	}
+}
+
+void Animation::Draw(Vector2 pos, bool isTurn)
+{
+	DrawRectRotaGraph(pos.x, pos.y,
+		_frameSize.x * _nowAnimNum, _animIndex * _frameSize.y,
+		_frameSize.x, _frameSize.y, 
+		_scale, _rotate, _drawHandle, true, isTurn);
+}
+
+bool Animation::operator!=(const Animation& other) const
+{
+	if (_drawHandle != other._drawHandle) return true;
+	if (_animIndex != other._animIndex) return true;
+	return false;
+}

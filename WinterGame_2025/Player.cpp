@@ -10,10 +10,20 @@ namespace
 	// 描画関連
 	constexpr int PLAYER_GRAPH_CUT_W = 40;
 	constexpr int PLAYER_GRAPH_CUT_H = 40;
+	const Vector2 PLAYER_FRAME_SIZE = { PLAYER_GRAPH_CUT_W,PLAYER_GRAPH_CUT_H };
 	constexpr float DRAW_SCALE = 3.0f;
 
 	constexpr int CHARGE_PARTICLE_GRAPH_CUT_W = 64;
 	constexpr int CHARGE_PARTICLE_GRAPH_CUT_H = 64;
+	const Vector2 CHARGE_PARTICLE_FRAME_SIZE = { CHARGE_PARTICLE_GRAPH_CUT_W,CHARGE_PARTICLE_GRAPH_CUT_H };
+
+	// アニメーション関連
+	constexpr int PLAYER_IDLE_ANIM_MAX_NUM = 5;
+	constexpr int PLAYER_MOVE_ANIM_MAX_NUM = 8;
+
+	constexpr int CHARGE_PARTICLE_ANIM_MAX_NUM = 7;
+
+	constexpr int ONE_ANIM_FRAME = 6;
 
 	// 当たり判定
 	constexpr float COLLIDER_W = 60.0f;
@@ -39,6 +49,18 @@ namespace
 	constexpr int SHOT_CHARGE_TIME = 60;
 }
 
+// アニメーション種類
+enum class AnimType : int
+{	// 画像の切り取り位置に対応
+	Idle = 0,
+	Move,
+	Damage = 3,
+	Dash = 6,
+	Death,
+	Jump,
+	Fall = 8
+};
+
 Player::Player():
 	_playerH(-1),
 	_chargeParticleH(-1),
@@ -63,6 +85,10 @@ Player::~Player()
 void Player::Init()
 {
 	_pos = { 100.0f,100.0f };
+	_ChargeParticleAnim.Init(_chargeParticleH, 0, CHARGE_PARTICLE_FRAME_SIZE, CHARGE_PARTICLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	_idleAnim.Init(_playerH,static_cast<int>(AnimType::Idle), PLAYER_FRAME_SIZE, PLAYER_IDLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	_moveAnim.Init(_playerH, static_cast<int>(AnimType::Move), PLAYER_FRAME_SIZE, PLAYER_MOVE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	_nowAnim = _moveAnim;
 }
 
 void Player::Update()
@@ -102,18 +128,35 @@ void Player::Update()
 
 	// 当たり判定の位置を設定
 	_collider->SetPos(_pos);
+
+	if (abs(_vel.x) > 1.0f && abs(_vel.y == 0.0f))
+	{
+		ChangeAnim(_moveAnim);	// 移動アニメーションに切り替え
+	}
+	else if (_vel.y < 0)
+	{
+		//ChangeAnim(_jumpAnim);	// ジャンプアニメーションに切り替え
+	}
+	else if (_vel.y > 0)
+	{
+		//ChangeAnim(_fallAnim);	// 落下アニメーションに切り替え
+	}
+	else
+	{
+		ChangeAnim(_idleAnim);	// 移動アニメーションに切り替え
+	}
+	_nowAnim.Update();	// アニメーション更新
+	_ChargeParticleAnim.Update(); // チャージパーティクルアニメーション更新
 }
 
 void Player::Draw()
 {
-	DrawRectRotaGraph(_pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE, PLAYER_GRAPH_CUT_W * 0, PLAYER_GRAPH_CUT_H * 2, PLAYER_GRAPH_CUT_W, PLAYER_GRAPH_CUT_H, DRAW_SCALE, 0, _playerH, true, _isTurn);
+	_nowAnim.Draw({ _pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE }, _isTurn);
 
 	// チャージ中にパーティクルを描画
 	if (_isCharging)
 	{
-		DrawRectRotaGraph(_pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE,
-			CHARGE_PARTICLE_GRAPH_CUT_W * 3, 0,
-			CHARGE_PARTICLE_GRAPH_CUT_W, CHARGE_PARTICLE_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _chargeParticleH, true);
+		_ChargeParticleAnim.Draw({ _pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE },true);
 	}
 #ifdef _DEBUG
 	_collider->Draw();
@@ -268,5 +311,13 @@ void Player::Dash()
 			_dashFrame = 0;
 			_isDashing = false;
 		}
+	}
+}
+
+void Player::ChangeAnim(Animation anim)
+{
+	if (_nowAnim != anim)
+	{
+		_nowAnim = anim;
 	}
 }
