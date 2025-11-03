@@ -16,10 +16,6 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	/// <summary>
-	/// 追加の画像ハンドルをセットする
-	/// </summary>
-	/// <param name="chargeParticleH">チャージエフェクトの画像ハンドル</param>
 	void SetHandle(int playerH, int chargeParticleH);
 
 	/// <summary>

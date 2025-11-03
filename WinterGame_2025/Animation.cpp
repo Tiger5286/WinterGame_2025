@@ -30,9 +30,22 @@ void Animation::Init(int drawHandle, int animIndex, Vector2 frameSize, int maxAn
 	_frameCount = 0;
 }
 
+void Animation::Init(int drawHandle, int animIndexY, int animIndexX, Vector2 frameSize, float scale)
+{
+	_drawHandle = drawHandle;
+	_animIndex = animIndexY;
+	_frameSize = frameSize;
+	_maxAnimNum = 1;
+	_oneAnimFrame = 0;
+	_scale = scale;
+	_nowAnimNum = animIndexX;
+	_frameCount = 0;
+}
+
 void Animation::Update()
 {
 	_frameCount++;	// フレームカウントを進める
+	if (_oneAnimFrame == 0) return;	// 1コマあたりのフレーム数が0なら処理を抜ける
 	if (_frameCount >= _oneAnimFrame)	// 1コマ分のフレームが経過したら
 	{
 		_frameCount = 0;

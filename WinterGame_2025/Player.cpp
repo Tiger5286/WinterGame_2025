@@ -86,24 +86,24 @@ void Player::Init()
 {
 	_pos = { 100.0f,100.0f };
 	_ChargeParticleAnim.Init(_chargeParticleH, 0, CHARGE_PARTICLE_FRAME_SIZE, CHARGE_PARTICLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	
 	_idleAnim.Init(_playerH,static_cast<int>(AnimType::Idle), PLAYER_FRAME_SIZE, PLAYER_IDLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	_moveAnim.Init(_playerH, static_cast<int>(AnimType::Move), PLAYER_FRAME_SIZE, PLAYER_MOVE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-	_nowAnim = _moveAnim;
+	_jumpAnim.Init(_playerH, static_cast<int>(AnimType::Jump), PLAYER_FRAME_SIZE, 1, ONE_ANIM_FRAME, DRAW_SCALE);
+	_fallAnim.Init(_playerH, static_cast<int>(AnimType::Fall), 2, PLAYER_FRAME_SIZE, DRAW_SCALE);
+	_nowAnim = _idleAnim;
 }
 
 void Player::Update()
 {
-	Gravity();	// 重力をかける
+	// 重力をかける
+	Gravity();
 
 	// ジャンプ処理
 	Jump();
 
 	// 左右移動処理
 	Move();
-
-	// 射撃処理
-	Shot();
-	ChargeShot();
 
 	// ダッシュ処理
 	Dash();
@@ -129,17 +129,21 @@ void Player::Update()
 	// 当たり判定の位置を設定
 	_collider->SetPos(_pos);
 
+	// 射撃処理
+	Shot();
+	ChargeShot();
+
 	if (abs(_vel.x) > 1.0f && abs(_vel.y == 0.0f))
 	{
 		ChangeAnim(_moveAnim);	// 移動アニメーションに切り替え
 	}
 	else if (_vel.y < 0)
 	{
-		//ChangeAnim(_jumpAnim);	// ジャンプアニメーションに切り替え
+		ChangeAnim(_jumpAnim);	// ジャンプアニメーションに切り替え
 	}
 	else if (_vel.y > 0)
 	{
-		//ChangeAnim(_fallAnim);	// 落下アニメーションに切り替え
+		ChangeAnim(_fallAnim);	// 落下アニメーションに切り替え
 	}
 	else
 	{
