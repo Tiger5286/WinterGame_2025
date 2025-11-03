@@ -1,6 +1,7 @@
 #include "SceneBase.h"
 
-SceneBase::SceneBase()
+SceneBase::SceneBase(SceneManager& manager):
+	_manager(manager)
 {
 }
 

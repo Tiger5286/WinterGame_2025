@@ -12,7 +12,7 @@ class WalkEnemy;
 class SceneMain : public SceneBase
 {
 public:
-	SceneMain();
+	SceneMain(SceneManager& manager);
 	~SceneMain();
 
 	void Init() override;

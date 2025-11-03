@@ -40,7 +40,7 @@ void Application::Run()
 
 	Input input;
 	SceneManager sceneManager;
-	sceneManager.ChangeScene(std::make_shared<SceneMain>());
+	sceneManager.ChangeScene(std::make_shared<SceneMain>(sceneManager));
 
 	while (ProcessMessage() != -1)
 	{

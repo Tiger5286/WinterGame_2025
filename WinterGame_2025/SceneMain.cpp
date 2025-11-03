@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "WalkEnemy.h"
+#include "SceneManager.h"
+#include "SceneTitle.h"
 #include <cassert>
 
 namespace
@@ -12,7 +14,8 @@ namespace
 	constexpr int BULLET_NUM = 15;
 }
 
-SceneMain::SceneMain() :
+SceneMain::SceneMain(SceneManager& manager) :
+	SceneBase(manager),
 	_frameCount(0)
 {
 	_playerH = LoadGraph("data/Player/Player.png");
@@ -99,6 +102,11 @@ void SceneMain::Update(Input input)
 			bullet->SetContext(_pEnemys);
 			bullet->Update();
 		}
+	}
+
+	if (input.IsTriggered("select"))
+	{
+		_manager.ChangeScene(std::make_shared<SceneTitle>(_manager));
 	}
 }
 

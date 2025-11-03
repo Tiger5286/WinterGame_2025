@@ -4,8 +4,10 @@
 
 Input::Input() : inputData_{}, lastInputData_{}, inputTable_{}
 {
-	inputTable_["start"] = { { PeripheralType::keyboard,KEY_INPUT_RETURN},
+	inputTable_["start"] = { { PeripheralType::keyboard,KEY_INPUT_P},
 						  { PeripheralType::pad1,GlobalConstants::PAD_START } };
+	inputTable_["select"] = { { PeripheralType::keyboard,KEY_INPUT_RETURN},
+						  { PeripheralType::pad1,GlobalConstants::PAD_SELECT } };
 
 	inputTable_["jump"] = { { PeripheralType::keyboard,KEY_INPUT_SPACE},
 						  { PeripheralType::pad1,GlobalConstants::PAD_A } };
