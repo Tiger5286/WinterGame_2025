@@ -34,6 +34,7 @@ private:
 	void UpdateAnim();
 	void UpdateAfterimage();
 
+	// 残像を表す構造体
 	struct PlayerAfterimage
 	{
 		Vector2 pos = { 0.0f,0.0f };
@@ -73,7 +74,7 @@ private:
 	int _dashFrame;		// ダッシュ中の時間
 	bool _isDashing;	// ダッシュ中フラグ
 	bool _isTurnDashing;// ダッシュ中の向き // true:左向き/false:右向き
-	std::vector<PlayerAfterimage> _playerAfterimage;
+	std::vector<PlayerAfterimage> _playerAfterimage;	// 残像を格納する配列
 
 	// チャージショット関連変数
 	int _chargeFrame;

@@ -4,6 +4,7 @@
 #include "input.h"
 #include "SceneManager.h"
 #include "SceneMain.h"
+#include "DebugScene.h"
 
 Application::Application()
 {
@@ -40,7 +41,11 @@ void Application::Run()
 
 	Input input;
 	SceneManager sceneManager;
+#ifdef _DEBUG
+	sceneManager.ChangeScene(std::make_shared<DebugScene>(sceneManager));
+#else
 	sceneManager.ChangeScene(std::make_shared<SceneMain>(sceneManager));
+#endif
 
 	while (ProcessMessage() != -1)
 	{

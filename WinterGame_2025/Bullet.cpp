@@ -97,11 +97,10 @@ void Bullet::Draw()
 		{
 			DrawRectRotaGraph(_pos.x, _pos.y, CHARGE_GRAPH_CUT_W * 0, CHARGE_GRAPH_CUT_H * 1, CHARGE_GRAPH_CUT_W, CHARGE_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _chargeShotH, true, _isTurn);
 		}
-		
-	}
 #ifdef _DEBUG
-	_collider->Draw();
+		_collider->Draw();
 #endif
+	}
 }
 
 void Bullet::Shot(BulletType type, Vector2 shotPos, bool isTurn)

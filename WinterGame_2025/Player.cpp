@@ -44,6 +44,8 @@ namespace
 	constexpr int DASH_COOL_TIME = 120;	// ダッシュのクールタイム
 	constexpr float DASH_SPEED = 20.0f;	// ダッシュの速度
 	constexpr int DASHING_TIME = 15;	// ダッシュの持続時間
+	constexpr int DASH_GRAPH_INDEX_X = 1;	// ダッシュ時の画像の切り取り位置X
+	constexpr int DASH_GRAPH_INDEX_Y = 5;	// ダッシュ時の画像の切り取り位置Y
 
 	constexpr int AFTERIMAGE_NUM = 4;	// 残像の数
 	constexpr int AFTERIMAGE_FRAME_MAX = 10;	// 残像が消えるまでのフレーム数
@@ -163,6 +165,7 @@ void Player::Draw()
 		afterimage.Draw();
 	}
 
+	// プレイヤー本体の描画
 	_nowAnim.Draw({ _pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE }, _isTurn);
 
 	// チャージ中にパーティクルを描画
@@ -219,6 +222,7 @@ void Player::Jump()
 
 void Player::Move()
 {
+	// 左右移動の入力処理
 	if (_input.IsPressed("right"))
 	{
 		_vel.x += MOVE_SPEED;
@@ -257,10 +261,11 @@ void Player::Move()
 
 void Player::Shot()
 {
+	// 通常射撃処理
 	if (_input.IsTriggered("shot"))
-	{
+	{	
 		for (auto& bullet : _pBullets)
-		{
+		{	// 空いている弾を探して発射
 			if (!bullet->GetAlive())
 			{
 				bullet->Shot(BulletType::NormalShot,_shotPos,_isTurn);
@@ -271,9 +276,9 @@ void Player::Shot()
 }
 
 void Player::ChargeShot()
-{
+{	// チャージショット処理
 	if (_input.IsPressed("shot"))
-	{
+	{	// チャージ中
 		_chargeFrame++;
 		if (_chargeFrame > SHOT_CHARGE_TIME)
 		{
@@ -281,9 +286,9 @@ void Player::ChargeShot()
 		}
 	}
 	else
-	{
+	{	
 		if (_chargeFrame > SHOT_CHARGE_TIME)
-		{
+		{	// チャージが完了しているならチャージショットを発射
 			for (auto& bullet : _pBullets)
 			{
 				if (!bullet->GetAlive())
@@ -390,10 +395,10 @@ void Player::PlayerAfterimage::Draw()
 	alpha *= 255;	// 0~255の範囲に変換
 	SetDrawBright(AFTERIMAGE_COLOR_R, AFTERIMAGE_COLOR_G, AFTERIMAGE_COLOR_B);	// 残像の色を設定
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(alpha));	// 透明度を設定
-	DrawRectRotaGraph(pos.x, pos.y - 40 / 2 * 3,	// 描画処理
-		40 * 1,40 * 5,
-		40,40,
-		3.0f,0.0f,handle,true, isTurn);
+	DrawRectRotaGraph(pos.x, pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE,	// 描画処理
+		PLAYER_GRAPH_CUT_W * DASH_GRAPH_INDEX_X, PLAYER_GRAPH_CUT_H * DASH_GRAPH_INDEX_Y,
+		PLAYER_GRAPH_CUT_W, PLAYER_GRAPH_CUT_H,
+		DRAW_SCALE, 0.0f, handle, true, isTurn);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);	// 元に戻す
 	SetDrawBright(255, 255, 255);
 }

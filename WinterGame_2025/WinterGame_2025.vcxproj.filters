@@ -75,6 +75,9 @@
     <ClCompile Include="Animation.cpp">
       <Filter>General</Filter>
     </ClCompile>
+    <ClCompile Include="DebugScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugScene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

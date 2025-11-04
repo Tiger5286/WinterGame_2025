@@ -6,7 +6,7 @@
 #include "Bullet.h"
 #include "WalkEnemy.h"
 #include "SceneManager.h"
-#include "SceneTitle.h"
+#include "DebugScene.h"
 #include <cassert>
 
 namespace
@@ -109,7 +109,7 @@ void SceneMain::Update(Input input)
 
 	if (input.IsTriggered("select"))
 	{
-		_manager.ChangeScene(std::make_shared<SceneTitle>(_manager));
+		_manager.ChangeScene(std::make_shared<DebugScene>(_manager));
 	}
 }
 

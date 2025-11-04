@@ -2,7 +2,7 @@
 #include "Dxlib.h"
 #include "Input.h"
 #include "SceneManager.h"
-#include "SceneMain.h"
+#include "DebugScene.h"
 
 SceneTitle::SceneTitle(SceneManager& manager):
 	SceneBase(manager)
@@ -21,7 +21,7 @@ void SceneTitle::Update(Input input)
 {
 	if (input.IsTriggered("select"))
 	{
-		_manager.ChangeScene(std::make_shared<SceneMain>(_manager));
+		_manager.ChangeScene(std::make_shared<DebugScene>(_manager));
 	}
 }
 
