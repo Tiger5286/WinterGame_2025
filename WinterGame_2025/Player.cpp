@@ -8,54 +8,57 @@
 namespace
 {
 	// 描画関連
-	constexpr int PLAYER_GRAPH_CUT_W = 40;
+	constexpr int PLAYER_GRAPH_CUT_W = 40;	// プレイヤー画像の切り取りサイズ
 	constexpr int PLAYER_GRAPH_CUT_H = 40;
 	const Vector2 PLAYER_FRAME_SIZE = { PLAYER_GRAPH_CUT_W,PLAYER_GRAPH_CUT_H };
-	constexpr float DRAW_SCALE = 3.0f;
+	constexpr float DRAW_SCALE = 3.0f;	// 描画倍率
 
-	constexpr int CHARGE_PARTICLE_GRAPH_CUT_W = 64;
+	constexpr int CHARGE_PARTICLE_GRAPH_CUT_W = 64;	// チャージパーティクル画像の切り取りサイズ
 	constexpr int CHARGE_PARTICLE_GRAPH_CUT_H = 64;
 	const Vector2 CHARGE_PARTICLE_FRAME_SIZE = { CHARGE_PARTICLE_GRAPH_CUT_W,CHARGE_PARTICLE_GRAPH_CUT_H };
 
 	// アニメーション関連
-	constexpr int PLAYER_IDLE_ANIM_MAX_NUM = 5;
+	constexpr int PLAYER_IDLE_ANIM_MAX_NUM = 5;	// アニメーションの枚数
 	constexpr int PLAYER_MOVE_ANIM_MAX_NUM = 8;
 
 	constexpr int CHARGE_PARTICLE_ANIM_MAX_NUM = 7;
 
-	constexpr int ONE_ANIM_FRAME = 6;
+	constexpr int ONE_ANIM_FRAME = 6;	// 何フレームでアニメーションを切り替えるか
 
 	// 当たり判定
-	constexpr float COLLIDER_W = 60.0f;
+	constexpr float COLLIDER_W = 60.0f;	// 当たり判定のサイズ
 	constexpr float COLLIDER_H = 80.0f;
 
-	constexpr float GROUND_H = 800.0f;
+	constexpr float GROUND_H = 800.0f;	// 地面の高さ(仮)
 
 	// 動きの制御関連
-	constexpr float JUMP_POWER = -15.0f;
-	constexpr int MAX_JUMP_FRAME = 15;
+	constexpr float JUMP_POWER = -15.0f;	// ジャンプ力
+	constexpr int MAX_JUMP_FRAME = 15;	// ジャンプを長押しできる最大時間
 
-	constexpr float MOVE_SPEED = 2.0f;
-	constexpr float MAX_MOVE_SPEED = 10.0f;
-	constexpr float STOP_SPEED = 0.9f;
-	constexpr float FRICTION_POWER = 0.7f;
+	constexpr float MOVE_SPEED = 2.0f;	// 横移動速度
+	constexpr float MAX_MOVE_SPEED = 10.0f;	// 最高移動速度
+	constexpr float STOP_SPEED = 0.9f;	// 横移動速度がこれ以下になったら完全に停止する
+	constexpr float FRICTION_POWER = 0.7f;	// 自然に止まる力
 
 	// ダッシュ関連
-	constexpr int DASH_COOL_TIME = 120;
-	constexpr float DASH_SPEED = 20.0f;
-	constexpr int DASHING_TIME = 15;
+	constexpr int DASH_COOL_TIME = 120;	// ダッシュのクールタイム
+	constexpr float DASH_SPEED = 20.0f;	// ダッシュの速度
+	constexpr int DASHING_TIME = 15;	// ダッシュの持続時間
 
 	// 射撃関連
-	constexpr int SHOT_CHARGE_TIME = 60;
+	constexpr int SHOT_CHARGE_TIME = 60;	// チャージショットのチャージ時間
 }
 
 // アニメーション種類
-enum class AnimType : int
+enum class PlayerAnimType : int
 {	// 画像の切り取り位置に対応
 	Idle = 0,
 	Move,
-	Damage = 3,
-	Dash = 6,
+	Shot,
+	Damage,
+	GrabWall,
+	Dash,
+	FlameDash,
 	Death,
 	Jump,
 	Fall = 8
@@ -76,6 +79,11 @@ Player::Player():
 	_isCharging(false)
 {
 	_collider = std::make_shared<BoxCollider>(_pos,Vector2(COLLIDER_W, COLLIDER_H));
+	_playerAfterimage.resize(3);
+	for (auto& afterimage : _playerAfterimage)
+	{
+		afterimage.frame = 0;
+	}
 }
 
 Player::~Player()
@@ -87,10 +95,11 @@ void Player::Init()
 	_pos = { 100.0f,100.0f };
 	_ChargeParticleAnim.Init(_chargeParticleH, 0, CHARGE_PARTICLE_FRAME_SIZE, CHARGE_PARTICLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	
-	_idleAnim.Init(_playerH,static_cast<int>(AnimType::Idle), PLAYER_FRAME_SIZE, PLAYER_IDLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-	_moveAnim.Init(_playerH, static_cast<int>(AnimType::Move), PLAYER_FRAME_SIZE, PLAYER_MOVE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-	_jumpAnim.Init(_playerH, static_cast<int>(AnimType::Jump), PLAYER_FRAME_SIZE, 1, ONE_ANIM_FRAME, DRAW_SCALE);
-	_fallAnim.Init(_playerH, static_cast<int>(AnimType::Fall), 2, PLAYER_FRAME_SIZE, DRAW_SCALE);
+	_idleAnim.Init(_playerH,static_cast<int>(PlayerAnimType::Idle), PLAYER_FRAME_SIZE, PLAYER_IDLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	_moveAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Move), PLAYER_FRAME_SIZE, PLAYER_MOVE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	_jumpAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Jump), PLAYER_FRAME_SIZE, 1, ONE_ANIM_FRAME, DRAW_SCALE);
+	_fallAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Fall), 2, PLAYER_FRAME_SIZE, DRAW_SCALE);
+	_dashAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Dash), 1, PLAYER_FRAME_SIZE, DRAW_SCALE);
 	_nowAnim = _idleAnim;
 }
 
@@ -133,28 +142,38 @@ void Player::Update()
 	Shot();
 	ChargeShot();
 
-	if (abs(_vel.x) > 1.0f && abs(_vel.y == 0.0f))
+	if (_dashFrame % 5 == 0 && _isDashing)
 	{
-		ChangeAnim(_moveAnim);	// 移動アニメーションに切り替え
+		for (auto& afterimage : _playerAfterimage)
+		{
+			if (afterimage.frame > 10)
+			{
+				afterimage.frame = 0;
+				afterimage.Pos = _pos;
+				afterimage.isTurn = _isTurn;
+				break;
+			}
+		}
 	}
-	else if (_vel.y < 0)
+	
+	for (auto& afterimage : _playerAfterimage)
 	{
-		ChangeAnim(_jumpAnim);	// ジャンプアニメーションに切り替え
+		if (afterimage.frame <= 10)
+		{
+			afterimage.frame++;
+		}
 	}
-	else if (_vel.y > 0)
-	{
-		ChangeAnim(_fallAnim);	// 落下アニメーションに切り替え
-	}
-	else
-	{
-		ChangeAnim(_idleAnim);	// 移動アニメーションに切り替え
-	}
-	_nowAnim.Update();	// アニメーション更新
-	_ChargeParticleAnim.Update(); // チャージパーティクルアニメーション更新
+	// アニメーション処理
+	UpdateAnim();
 }
 
 void Player::Draw()
 {
+	for (auto& afterimage : _playerAfterimage)
+	{
+		afterimage.Draw();
+	}
+
 	_nowAnim.Draw({ _pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE }, _isTurn);
 
 	// チャージ中にパーティクルを描画
@@ -171,6 +190,10 @@ void Player::SetHandle(int playerH, int chargeParticleH)
 {
 	_playerH = playerH;
 	_chargeParticleH = chargeParticleH;
+	for (auto& afterimage : _playerAfterimage)
+	{
+		afterimage.handle = playerH;
+	}
 }
 
 void Player::SetContext(const Input& input, std::vector<std::shared_ptr<Bullet>>& pBullets)
@@ -318,10 +341,36 @@ void Player::Dash()
 	}
 }
 
-void Player::ChangeAnim(Animation anim)
+void Player::UpdateAnim()
 {
-	if (_nowAnim != anim)
+	if (_isDashing)
 	{
-		_nowAnim = anim;
+		ChangeAnim(_dashAnim);
 	}
+	else if (_vel.y < 0)
+	{
+		ChangeAnim(_jumpAnim);	// ジャンプアニメーションに切り替え
+	}
+	else if (_vel.y > 0)
+	{
+		ChangeAnim(_fallAnim);	// 落下アニメーションに切り替え
+	}
+	else if (abs(_vel.x) > 1.0f)
+	{
+		ChangeAnim(_moveAnim);	// 移動アニメーションに切り替え
+	}
+	else
+	{
+		ChangeAnim(_idleAnim);	// 移動アニメーションに切り替え
+	}
+	_nowAnim.Update();	// アニメーション更新
+	_ChargeParticleAnim.Update(); // チャージパーティクルアニメーション更新
+}
+
+void PlayerAfterimage::Draw()
+{
+	DrawRectRotaGraph(Pos.x,Pos.y - 40,
+		40 * 1,40 * 5,
+		40,40,
+		3.0f,0.0f,handle,isTurn,true);
 }

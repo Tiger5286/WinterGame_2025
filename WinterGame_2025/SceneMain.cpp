@@ -49,6 +49,9 @@ SceneMain::~SceneMain()
 {
 	DeleteGraph(_playerH);
 	DeleteGraph(_playerShotH);
+	DeleteGraph(_chargeShotH);
+	DeleteGraph(_chargeParticleH);
+	DeleteGraph(_walkEnemyH);
 }
 
 void SceneMain::Init()

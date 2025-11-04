@@ -6,6 +6,15 @@
 
 class Bullet;
 
+struct PlayerAfterimage
+{
+	Vector2 Pos = { 0.0f,0.0f };
+	int frame = 0;
+	int handle = -1;
+	bool isTurn = false;
+	void Draw();
+};
+
 class Player : public GameObject
 {
 public:
@@ -31,7 +40,7 @@ private:
 	void Shot();
 	void ChargeShot();
 	void Dash();
-	void ChangeAnim(Animation anim);
+	void UpdateAnim();
 
 private:
 	Input _input;
@@ -46,6 +55,7 @@ private:
 	Animation _moveAnim;
 	Animation _jumpAnim;
 	Animation _fallAnim;
+	Animation _dashAnim;
 
 	Animation _ChargeParticleAnim;
 
@@ -62,6 +72,7 @@ private:
 	int _dashFrame;		// ダッシュ中の時間
 	bool _isDashing;	// ダッシュ中フラグ
 	bool _isTurnDashing;// ダッシュ中の向き // true:左向き/false:右向き
+	std::vector<PlayerAfterimage> _playerAfterimage;
 
 	// チャージショット関連変数
 	int _chargeFrame;

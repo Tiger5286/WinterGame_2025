@@ -14,6 +14,16 @@ GameObject::~GameObject()
 {
 }
 
+
+void GameObject::ChangeAnim(Animation anim)
+{
+	if (_nowAnim != anim)
+	{
+		_nowAnim = anim;
+	}
+}
+
+
 void GameObject::Gravity()
 {
 	_vel += GRAVITY;

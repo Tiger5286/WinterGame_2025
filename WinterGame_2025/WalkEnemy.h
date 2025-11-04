@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include <vector>
 #include <memory>
+#include "Animation.h"
 
 class WalkEnemy : public Enemy
 {
@@ -16,6 +17,10 @@ public:
 
 private:
 	int _handle;
+	bool _isTurn;
 	bool _isHitChargeShot;
+	Animation _idleAnim;
+	Animation _moveAnim;
+	Animation _fallAnim;
 };
 

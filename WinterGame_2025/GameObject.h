@@ -16,6 +16,8 @@ public:
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 
+	void ChangeAnim(Animation anim);
+
 	void SetPos(Vector2 pos) { _pos = pos; }
 	Vector2 GetPos() { return _pos; }
 

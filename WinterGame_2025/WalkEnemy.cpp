@@ -5,22 +5,44 @@
 
 namespace
 {
-	constexpr int PLAYER_GRAPH_CUT_W = 32;
-	constexpr int PLAYER_GRAPH_CUT_H = 36;
+	// 描画関係
+	constexpr int WALKENEMY_GRAPH_CUT_W = 32;
+	constexpr int WALKENEMY_GRAPH_CUT_H = 36;
+	const Vector2 WALKENEMY_FRAME_SIZE = { WALKENEMY_GRAPH_CUT_W,WALKENEMY_GRAPH_CUT_H };
 	constexpr float DRAW_SCALE = 3.0f;
 
+	// 動き関連
+	constexpr float MOVE_SPEED = 4.0f;
+
+	// 当たり判定
 	constexpr float COLLIDER_W = 80;
 	constexpr float COLLIDER_H = 80;
 
 	constexpr float GROUND_H = 800.0f;
 
+	// アニメーション
+	constexpr int WALKENEMY_IDLE_ANIM_MAX_NUM = 5;
+	constexpr int WALKENEMY_MOVE_ANIM_MAX_NUM = 8;
+	constexpr int WALKENEMY_FALL_ANIM_MAX_NUM = 1;
+
+	constexpr int WALKENEMY_ONE_ANIM_FRAME = 6;
+
+	// HP
 	constexpr int MAX_HP = 5;
 }
+
+enum class WalkEnemyAnimType : int
+{
+	Idle = 0,
+	Move,
+	Fall
+};
 
 WalkEnemy::WalkEnemy(int handle):
 	Enemy(MAX_HP),
 	_handle(-1),
-	_isHitChargeShot(false)
+	_isHitChargeShot(false),
+	_isTurn(false)
 {
 	_handle = handle;
 	_collider = std::make_shared<BoxCollider>(_pos, Vector2{ COLLIDER_W,COLLIDER_H });
@@ -32,11 +54,24 @@ WalkEnemy::~WalkEnemy()
 
 void WalkEnemy::Init()
 {
+	_idleAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Idle), WALKENEMY_FRAME_SIZE, WALKENEMY_IDLE_ANIM_MAX_NUM, WALKENEMY_ONE_ANIM_FRAME, DRAW_SCALE);
+	_moveAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Move), WALKENEMY_FRAME_SIZE, WALKENEMY_MOVE_ANIM_MAX_NUM, WALKENEMY_ONE_ANIM_FRAME, DRAW_SCALE);
+	_fallAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Fall), WALKENEMY_FRAME_SIZE, WALKENEMY_FALL_ANIM_MAX_NUM, WALKENEMY_ONE_ANIM_FRAME, DRAW_SCALE);
+	_nowAnim = _idleAnim;
 }
 
 void WalkEnemy::Update()
 {
 	Gravity();
+
+	if (_isTurn)
+	{
+		_vel.x = -MOVE_SPEED;
+	}
+	else
+	{
+		_vel.x = MOVE_SPEED;
+	}
 
 	_pos += _vel;
 
@@ -46,11 +81,26 @@ void WalkEnemy::Update()
 		_vel.y = 0.0f;
 	}
 	_collider->SetPos(_pos);
+
+	if (abs(_vel.y > 0))
+	{
+		ChangeAnim(_fallAnim);
+	}
+	else if (abs(_vel.x > 1.0f))
+	{
+		ChangeAnim(_moveAnim);
+	}
+	else
+	{
+		ChangeAnim(_idleAnim);
+	}
+	_nowAnim.Update();
 }
 
 void WalkEnemy::Draw()
 {
-	DrawRectRotaGraph(_pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE, PLAYER_GRAPH_CUT_W * 0, PLAYER_GRAPH_CUT_H * 0, PLAYER_GRAPH_CUT_W, PLAYER_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true);
+	//DrawRectRotaGraph(_pos.x, _pos.y - WALKENEMY_GRAPH_CUT_H / 2 * DRAW_SCALE, WALKENEMY_GRAPH_CUT_W * 0, WALKENEMY_GRAPH_CUT_H * 0, WALKENEMY_GRAPH_CUT_W, WALKENEMY_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true);
+	_nowAnim.Draw({ _pos.x,_pos.y - WALKENEMY_GRAPH_CUT_H / 2 * DRAW_SCALE }, _isTurn);
 #ifdef _DEBUG
 	_collider->Draw();
 #endif
