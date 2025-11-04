@@ -45,6 +45,13 @@ namespace
 	constexpr float DASH_SPEED = 20.0f;	// ダッシュの速度
 	constexpr int DASHING_TIME = 15;	// ダッシュの持続時間
 
+	constexpr int AFTERIMAGE_NUM = 4;	// 残像の数
+	constexpr int AFTERIMAGE_FRAME_MAX = 10;	// 残像が消えるまでのフレーム数
+	constexpr int AFTERIMAGE_FRAME_INTERVAL = 3;	// 残像が出る間隔
+	constexpr int AFTERIMAGE_COLOR_R = 32;	// 残像の色
+	constexpr int AFTERIMAGE_COLOR_G = 32;
+	constexpr int AFTERIMAGE_COLOR_B = 255;
+
 	// 射撃関連
 	constexpr int SHOT_CHARGE_TIME = 60;	// チャージショットのチャージ時間
 }
@@ -79,10 +86,10 @@ Player::Player():
 	_isCharging(false)
 {
 	_collider = std::make_shared<BoxCollider>(_pos,Vector2(COLLIDER_W, COLLIDER_H));
-	_playerAfterimage.resize(3);
+	_playerAfterimage.resize(AFTERIMAGE_NUM);
 	for (auto& afterimage : _playerAfterimage)
 	{
-		afterimage.frame = 0;
+		afterimage.frame = AFTERIMAGE_FRAME_MAX + 1;
 	}
 }
 
@@ -126,6 +133,10 @@ void Player::Update()
 		_vel.y = 0.0f;
 	}
 
+	// 当たり判定の位置を設定
+	_collider->SetPos(_pos);
+
+	// 射撃処理
 	if (_isTurn)	// 弾を召喚する位置を設定
 	{
 		_shotPos = { _pos.x - COLLIDER_W / 2, _pos.y - COLLIDER_H / 2 };
@@ -134,41 +145,19 @@ void Player::Update()
 	{
 		_shotPos = { _pos.x + COLLIDER_W / 2, _pos.y - COLLIDER_H / 2 };
 	}
-
-	// 当たり判定の位置を設定
-	_collider->SetPos(_pos);
-
-	// 射撃処理
 	Shot();
 	ChargeShot();
 
-	if (_dashFrame % 5 == 0 && _isDashing)
-	{
-		for (auto& afterimage : _playerAfterimage)
-		{
-			if (afterimage.frame > 10)
-			{
-				afterimage.frame = 0;
-				afterimage.Pos = _pos;
-				afterimage.isTurn = _isTurn;
-				break;
-			}
-		}
-	}
-	
-	for (auto& afterimage : _playerAfterimage)
-	{
-		if (afterimage.frame <= 10)
-		{
-			afterimage.frame++;
-		}
-	}
+	// 残像の更新
+	UpdateAfterimage();
+
 	// アニメーション処理
 	UpdateAnim();
 }
 
 void Player::Draw()
 {
+	// 残像の描画
 	for (auto& afterimage : _playerAfterimage)
 	{
 		afterimage.Draw();
@@ -193,6 +182,7 @@ void Player::SetHandle(int playerH, int chargeParticleH)
 	for (auto& afterimage : _playerAfterimage)
 	{
 		afterimage.handle = playerH;
+		assert(afterimage.handle != -1);
 	}
 }
 
@@ -232,12 +222,12 @@ void Player::Move()
 	if (_input.IsPressed("right"))
 	{
 		_vel.x += MOVE_SPEED;
-		_isTurn = false;
+		if (!_isDashing) _isTurn = false;
 	}
 	if (_input.IsPressed("left"))
 	{
 		_vel.x -= MOVE_SPEED;
-		_isTurn = true;
+		if (!_isDashing) _isTurn = true;
 	}
 
 	// 最高速度以上は出ないようにする
@@ -285,7 +275,7 @@ void Player::ChargeShot()
 	if (_input.IsPressed("shot"))
 	{
 		_chargeFrame++;
-		if (_chargeFrame > 60)
+		if (_chargeFrame > SHOT_CHARGE_TIME)
 		{
 			_isCharging = true;
 		}
@@ -343,34 +333,67 @@ void Player::Dash()
 
 void Player::UpdateAnim()
 {
-	if (_isDashing)
+	if (_isDashing)	// ダッシュ中ならダッシュアニメーションに切り替え
 	{
 		ChangeAnim(_dashAnim);
 	}
-	else if (_vel.y < 0)
+	else if (_vel.y < 0)	// 上昇中ならジャンプアニメーションに切り替え
 	{
-		ChangeAnim(_jumpAnim);	// ジャンプアニメーションに切り替え
+		ChangeAnim(_jumpAnim);
 	}
-	else if (_vel.y > 0)
+	else if (_vel.y > 0)	// 下降中なら落下アニメーションに切り替え
 	{
-		ChangeAnim(_fallAnim);	// 落下アニメーションに切り替え
+		ChangeAnim(_fallAnim);
 	}
-	else if (abs(_vel.x) > 1.0f)
+	else if (abs(_vel.x) > 1.0f)	// 横移動中なら移動アニメーションに切り替え
 	{
-		ChangeAnim(_moveAnim);	// 移動アニメーションに切り替え
+		ChangeAnim(_moveAnim);
 	}
-	else
+	else	// それ以外は待機アニメーションに切り替え
 	{
-		ChangeAnim(_idleAnim);	// 移動アニメーションに切り替え
+		ChangeAnim(_idleAnim);
 	}
 	_nowAnim.Update();	// アニメーション更新
 	_ChargeParticleAnim.Update(); // チャージパーティクルアニメーション更新
 }
 
-void PlayerAfterimage::Draw()
+void Player::UpdateAfterimage()
 {
-	DrawRectRotaGraph(Pos.x,Pos.y - 40,
+	if (_dashFrame % AFTERIMAGE_FRAME_INTERVAL == 0 && _isDashing)	// ダッシュ中、一定間隔で残像を出す
+	{	// 空いている残像データに情報をセット
+		for (auto& afterimage : _playerAfterimage)
+		{	// フレームが最大値を超えているものを探す
+			if (afterimage.frame > AFTERIMAGE_FRAME_MAX)
+			{
+				afterimage.isTurn = _isTurn;
+				afterimage.frame = 0;
+				afterimage.pos = _pos;
+				break;
+			}
+		}
+	}
+
+	for (auto& afterimage : _playerAfterimage)	// 残像のフレームを進める
+	{	// 最大値以下ならフレームを進める
+		if (afterimage.frame <= AFTERIMAGE_FRAME_MAX)
+		{
+			afterimage.frame++;
+		}
+	}
+}
+
+void Player::PlayerAfterimage::Draw()
+{
+	// 透明度を計算して描画
+	float alpha = static_cast<float>(frame) / (AFTERIMAGE_FRAME_MAX + 1);	// 透明度の割合
+	alpha = 1 - alpha;	// 逆転させる
+	alpha *= 255;	// 0~255の範囲に変換
+	SetDrawBright(AFTERIMAGE_COLOR_R, AFTERIMAGE_COLOR_G, AFTERIMAGE_COLOR_B);	// 残像の色を設定
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(alpha));	// 透明度を設定
+	DrawRectRotaGraph(pos.x, pos.y - 40 / 2 * 3,	// 描画処理
 		40 * 1,40 * 5,
 		40,40,
-		3.0f,0.0f,handle,isTurn,true);
+		3.0f,0.0f,handle,true, isTurn);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);	// 元に戻す
+	SetDrawBright(255, 255, 255);
 }

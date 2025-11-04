@@ -6,15 +6,6 @@
 
 class Bullet;
 
-struct PlayerAfterimage
-{
-	Vector2 Pos = { 0.0f,0.0f };
-	int frame = 0;
-	int handle = -1;
-	bool isTurn = false;
-	void Draw();
-};
-
 class Player : public GameObject
 {
 public:
@@ -41,6 +32,16 @@ private:
 	void ChargeShot();
 	void Dash();
 	void UpdateAnim();
+	void UpdateAfterimage();
+
+	struct PlayerAfterimage
+	{
+		Vector2 pos = { 0.0f,0.0f };
+		int frame = 0;
+		int handle = -1;
+		bool isTurn = false;
+		void Draw();
+	};
 
 private:
 	Input _input;
