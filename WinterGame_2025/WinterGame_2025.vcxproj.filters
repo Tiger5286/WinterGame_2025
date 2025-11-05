@@ -22,6 +22,9 @@
     <Filter Include="General">
       <UniqueIdentifier>{e4d11fd0-6ad7-494c-b984-f9141ee88cda}</UniqueIdentifier>
     </Filter>
+    <Filter Include="General\Collider">
+      <UniqueIdentifier>{01b8360c-ed2e-43b7-8ed9-3d02cedfc190}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -57,15 +60,6 @@
     <ClCompile Include="SceneBase.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="BoxCollider.cpp">
-      <Filter>General</Filter>
-    </ClCompile>
-    <ClCompile Include="CircleCollider.cpp">
-      <Filter>General</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>General</Filter>
-    </ClCompile>
     <ClCompile Include="Geometry.cpp">
       <Filter>General</Filter>
     </ClCompile>
@@ -78,15 +72,21 @@
     <ClCompile Include="DebugScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="BoxCollider.cpp">
+      <Filter>General\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleCollider.cpp">
+      <Filter>General\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>General\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
@@ -116,15 +116,6 @@
     <ClInclude Include="SceneBase.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="BoxCollider.h">
-      <Filter>General</Filter>
-    </ClInclude>
-    <ClInclude Include="CircleCollider.h">
-      <Filter>General</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>General</Filter>
-    </ClInclude>
     <ClInclude Include="Geometry.h">
       <Filter>General</Filter>
     </ClInclude>
@@ -133,6 +124,18 @@
     </ClInclude>
     <ClInclude Include="DebugScene.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxCollider.h">
+      <Filter>General\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleCollider.h">
+      <Filter>General\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>General\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>General</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

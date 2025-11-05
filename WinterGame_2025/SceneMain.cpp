@@ -85,7 +85,7 @@ void SceneMain::Update(Input input)
 			if (enemy->GetHp() <= 0)
 			{
 				enemy->Delete();
-				// €‚ñ‚¾“G‚ğvector‚©‚çíœ‚·‚é(ˆÓ–¡‚í‚©‚ç‚ñ)
+				// €‚ñ‚¾“G‚ğvector‚©‚çíœ‚·‚é(‚ ‚ñ‚ÜˆÓ–¡‚í‚©‚ç‚ñ)
 				_pEnemys.erase(
 					std::remove_if(_pEnemys.begin(), _pEnemys.end(),
 						[](const std::shared_ptr<Enemy>& enemy) {
@@ -115,6 +115,7 @@ void SceneMain::Update(Input input)
 
 void SceneMain::Draw()
 {
+	//DrawBox(0, 0, GlobalConstants::SCREEN_WIDTH, GlobalConstants::SCREEN_HEIGHT, 0xffffff, true);
 	for (auto& enemy : _pEnemys)
 	{
 		if (enemy != nullptr)

@@ -50,8 +50,8 @@ namespace
 	constexpr int AFTERIMAGE_NUM = 4;	// 残像の数
 	constexpr int AFTERIMAGE_FRAME_MAX = 10;	// 残像が消えるまでのフレーム数
 	constexpr int AFTERIMAGE_FRAME_INTERVAL = 3;	// 残像が出る間隔
-	constexpr int AFTERIMAGE_COLOR_R = 32;	// 残像の色
-	constexpr int AFTERIMAGE_COLOR_G = 32;
+	constexpr int AFTERIMAGE_COLOR_R = 64;	// 残像の色
+	constexpr int AFTERIMAGE_COLOR_G = 64;
 	constexpr int AFTERIMAGE_COLOR_B = 255;
 
 	// 射撃関連
@@ -392,7 +392,7 @@ void Player::PlayerAfterimage::Draw()
 	// 透明度を計算して描画
 	float alpha = static_cast<float>(frame) / (AFTERIMAGE_FRAME_MAX + 1);	// 透明度の割合
 	alpha = 1 - alpha;	// 逆転させる
-	alpha *= 255;	// 0~255の範囲に変換
+	alpha *= 255 / 2;	// 0~255の範囲に変換
 	SetDrawBright(AFTERIMAGE_COLOR_R, AFTERIMAGE_COLOR_G, AFTERIMAGE_COLOR_B);	// 残像の色を設定
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(alpha));	// 透明度を設定
 	DrawRectRotaGraph(pos.x, pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE,	// 描画処理
