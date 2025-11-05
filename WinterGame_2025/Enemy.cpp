@@ -1,9 +1,10 @@
 #include "Enemy.h"
 
-Enemy::Enemy(int hp) :
+Enemy::Enemy(int hp, std::shared_ptr<Player> pPlayer) :
 	_hp(hp),
 	_isAlive(true),
-	_isHitChargeShot(false)
+	_isHitChargeShot(false),
+	_pPlayer(pPlayer)
 {
 }
 

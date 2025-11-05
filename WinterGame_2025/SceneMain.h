@@ -8,6 +8,7 @@ class Player;
 class Bullet;
 class Enemy;
 class WalkEnemy;
+class FlyEnemy;
 
 class SceneMain : public SceneBase
 {
@@ -26,6 +27,7 @@ private:
 	int _chargeShotH;
 	int _chargeParticleH;
 	int _walkEnemyH;
+	int _flyEnemyH;
 
 	int _frameCount;
 	std::shared_ptr<Player> _pPlayer;

@@ -173,6 +173,7 @@ void Player::Draw()
 	{
 		_ChargeParticleAnim.Draw({ _pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE },true);
 	}
+
 #ifdef _DEBUG
 	_collider->Draw();
 #endif // _DEBUG

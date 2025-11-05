@@ -2,6 +2,7 @@
 #include "BoxCollider.h"
 #include "Dxlib.h"
 #include "Bullet.h"
+#include "Player.h"
 
 namespace
 {
@@ -38,11 +39,12 @@ enum class WalkEnemyAnimType : int
 	Fall
 };
 
-WalkEnemy::WalkEnemy(int handle):
-	Enemy(MAX_HP),
+WalkEnemy::WalkEnemy(int handle, std::shared_ptr<Player>pPlayer):
+	Enemy(MAX_HP,pPlayer),
 	_handle(-1),
 	_isHitChargeShot(false),
-	_isTurn(false)
+	_isTurn(false),
+	_state(WalkEnemyState::Idle)
 {
 	_handle = handle;
 	_collider = std::make_shared<BoxCollider>(_pos, Vector2{ COLLIDER_W,COLLIDER_H });
@@ -64,13 +66,29 @@ void WalkEnemy::Update()
 {
 	Gravity();
 
-	if (_isTurn)
+	if (_state == WalkEnemyState::Idle)
 	{
-		_vel.x = -MOVE_SPEED;
+		_vel.x = 0.0f;
+		float toPlayerDis = _pPlayer->GetPos().x - _pos.x;
+		if (toPlayerDis < 0)
+		{
+			_isTurn = true;
+		}
+		else
+		{
+			_isTurn = false;
+		}
 	}
-	else
+	else if (_state == WalkEnemyState::Move)
 	{
-		_vel.x = MOVE_SPEED;
+		if (_isTurn)
+		{
+			_vel.x = -MOVE_SPEED;
+		}
+		else
+		{
+			_vel.x = MOVE_SPEED;
+		}
 	}
 
 	_pos += _vel;

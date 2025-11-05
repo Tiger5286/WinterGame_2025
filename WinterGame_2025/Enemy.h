@@ -2,12 +2,12 @@
 #include "GameObject.h"
 #include <vector>
 
-class Bullet;
+class Player;
 
 class Enemy : public GameObject
 {
 public:
-	Enemy(int hp);
+	Enemy(int hp,std::shared_ptr<Player> pPlayer);
 	virtual ~Enemy();
 
 	virtual void Init() override = 0;
@@ -18,11 +18,12 @@ public:
 	int GetHp() const { return _hp; }
 	void Delete() { _isAlive = false; }
 	bool GetIsAlive()const { return _isAlive; }
-	void SetIsHitChargeShot(bool ishit) { _isHitChargeShot = ishit; }
+	void SetIsHitChargeShot(bool isHit) { _isHitChargeShot = isHit; }
 	bool GetIsHitChargeShot()const { return _isHitChargeShot; }
 protected:
 	int _hp;
 	bool _isAlive;
 	bool _isHitChargeShot;
+	std::shared_ptr<Player> _pPlayer;
 };
 

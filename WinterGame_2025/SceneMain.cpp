@@ -5,9 +5,11 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "WalkEnemy.h"
+#include "FlyEnemy.h"
 #include "SceneManager.h"
 #include "DebugScene.h"
 #include <cassert>
+#include "Game.h"
 
 namespace
 {
@@ -28,6 +30,8 @@ SceneMain::SceneMain(SceneManager& manager) :
 	assert(_chargeParticleH != -1);
 	_walkEnemyH = LoadGraph("data/Enemy/WalkEnemy.png");
 	assert(_walkEnemyH != -1);
+	_flyEnemyH = LoadGraph("data/Enemy/FlyEnemy.png");
+	assert(_flyEnemyH != -1);
 
 	_pPlayer = std::make_shared<Player>();
 	_pPlayer->SetHandle(_playerH,_chargeParticleH);
@@ -39,10 +43,14 @@ SceneMain::SceneMain(SceneManager& manager) :
 		bullet->SetHandle(_playerShotH,_chargeShotH);
 	}
 
-	_pEnemys.push_back(std::make_shared<WalkEnemy>(_walkEnemyH));
-	_pEnemys.push_back(std::make_shared<WalkEnemy>(_walkEnemyH));
+	_pEnemys.push_back(std::make_shared<WalkEnemy>(_walkEnemyH, _pPlayer));
+	_pEnemys.push_back(std::make_shared<WalkEnemy>(_walkEnemyH, _pPlayer));
 	_pEnemys[0]->SetPos({ 300.0f,100.0f });
+	std::shared_ptr<WalkEnemy> tempEnemy = std::dynamic_pointer_cast<WalkEnemy>(_pEnemys[0]);
+	tempEnemy->SetState(WalkEnemyState::Move);
 	_pEnemys[1]->SetPos({ 500.0f,100.0f });
+	_pEnemys.push_back(std::make_shared<FlyEnemy>(_flyEnemyH,_pPlayer));
+	_pEnemys[2]->SetPos({ 400.0f,600.0f });
 }
 
 SceneMain::~SceneMain()
@@ -115,7 +123,7 @@ void SceneMain::Update(Input input)
 
 void SceneMain::Draw()
 {
-	//DrawBox(0, 0, GlobalConstants::SCREEN_WIDTH, GlobalConstants::SCREEN_HEIGHT, 0xffffff, true);
+	DrawBox(0, 0, GlobalConstants::SCREEN_WIDTH, GlobalConstants::SCREEN_HEIGHT, 0xffffff, true);
 	for (auto& enemy : _pEnemys)
 	{
 		if (enemy != nullptr)
