@@ -8,20 +8,18 @@
 
 namespace
 {
-	// 画像のマップチップ数
-	constexpr int GRAPH_CHIP_NUM_X = 528 / 16;
-	constexpr int GRAPH_CHIP_NUM_Y = 624 / 16;
-
 	// マップチップのサイズと描画倍率
 	constexpr int CHIP_SIZE = 16;
 	constexpr float DRAW_SCALE = 3.0f;
+
+	// 画像のマップチップ数
+	constexpr int GRAPH_CHIP_NUM_X = 528 / 16;
+	constexpr int GRAPH_CHIP_NUM_Y = 624 / 16;
 }
 
 Map::Map(int handle) :
 	_handle(handle)
 {
-	_chipData.resize(CHIP_NUM_X, std::vector<int>(CHIP_NUM_Y, 0));
-	LoadMapData();
 }
 
 Map::~Map()
@@ -34,9 +32,9 @@ void Map::Draw(Vector2 offset)
 	constexpr int drawChipSizeHalf = drawChipSize / 2;
 
 	// マップチップの描画
-	for (int y = 0; y < CHIP_NUM_Y; y++)
+	for (int y = 0; y < _chipNumY; y++)
 	{
-		for (int x = 0; x < CHIP_NUM_X; x++)
+		for (int x = 0; x < _chipNumX; x++)
 		{
 
 			int posX = x * drawChipSize + drawChipSizeHalf;
@@ -76,9 +74,9 @@ void Map::Draw(Vector2 offset)
 
 bool Map::IsCollision(std::shared_ptr<Collider> pCollider, Vector2& hitChipPos)
 {
-	for (int x = 0; x < CHIP_NUM_X; x++)
+	for (int x = 0; x < _chipNumX; x++)
 	{
-		for (int y = 0; y < CHIP_NUM_Y; y++)
+		for (int y = 0; y < _chipNumY; y++)
 		{
 			// 0番のチップには当たり判定がないので無視
 			if (_chipData[x][y] == 0) continue;
@@ -120,34 +118,45 @@ bool Map::IsCollision(std::shared_ptr<Collider> pCollider, Vector2& hitChipPos)
 
 int Map::GetStageWidth() const
 {
-	return CHIP_NUM_X * CHIP_SIZE * DRAW_SCALE;
+	return _chipNumX * CHIP_SIZE * DRAW_SCALE;
 }
 
-void Map::LoadMapData()
+void Map::LoadMapData(std::string fileName)
 {
-	// std::ifstreamとは ファイルからデータを読み込むためのクラス
-	std::ifstream file("data/Map/Map.csv");
+	std::ifstream file(fileName);
 	std::string line;
+	std::vector<std::vector<int>> tempData;
 
-	// getline関数で1行ずつ読み込む
-	int y = 0;
-	// std::getlineとは ファイルや文字列から1行ずつデータを読み込むための関数
-	// std::getlineの引数には、読み込み先のストリーム、読み込んだ行を格納する文字列変数が必要
-	while (std::getline(file, line) && y < CHIP_NUM_Y)
+	while (std::getline(file, line))
 	{
-		// std::istringstreamとは 文字列をストリームとして扱うためのクラス
-		std::istringstream stream(line);	// 読み込んだ行をストリームに変換
-		std::string field;	// 各フィールドを格納するための文字列変数
-		// フィールドとは データベースやCSVファイルなどで、1つのレコード内の個々のデータ要素を指す
+		std::istringstream stream(line);	
+		std::string field;	
+		std::vector<int> row;
 
-		// カンマ区切りで分割して読み込む
-		int x = 0;
-		// ここでは getline関数を使って、カンマ（,）を区切り文字として各フィールドを読み込む
-		while (getline(stream, field, ',') && x < CHIP_NUM_X)	// std::getlineの第3引数には区切り文字を指定できる
+		while (getline(stream, field, ','))	
 		{
-			_chipData[x][y] = std::stoi(field); // 文字列を整数に変換して格納
-			x++;
+			row.push_back(std::stoi(field));
 		}
-		y++;
+		tempData.push_back(row);
+	}
+
+	// Yが1多くて範囲外アクセスするので-1してます
+	// これはcsvの最後に空行があるためです
+	_chipNumY = static_cast<int>(tempData.size() - 1);
+	if (_chipNumY > 0)
+	{
+		_chipNumX = static_cast<int>(tempData[0].size());
+	}
+	else
+	{
+		_chipNumX = 0;
+	}
+	_chipData = std::vector<std::vector<int>>(_chipNumX, std::vector<int>(_chipNumY, 0));
+	for (int y = 0; y < _chipNumY; y++)
+	{
+		for (int x = 0; x < _chipNumX; x++)
+		{
+			_chipData[x][y] = tempData[y][x];
+		}
 	}
 }

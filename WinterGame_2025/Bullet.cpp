@@ -22,9 +22,9 @@ namespace
 	constexpr int CHARGE_SHOT_DAMAGE = 3;
 }
 
-Bullet::Bullet():
-	_shotH(-1),
-	_chargeShotH(-1),
+Bullet::Bullet(int shotH, int chargeShotH):
+	_shotH(shotH),
+	_chargeShotH(chargeShotH),
 	_type(BulletType::NormalShot),
 	_isAlive(false),
 	_isTurn(false)
@@ -147,10 +147,4 @@ void Bullet::Shot(BulletType type, Vector2 shotPos, bool isTurn)
 void Bullet::SetContext(std::vector<std::shared_ptr<Enemy>> pEnemys)
 {
 	_pEnemys = pEnemys;
-}
-
-void Bullet::SetHandle(int shotH,int chargeShotH)
-{
-	_shotH = shotH;
-	_chargeShotH = chargeShotH;
 }

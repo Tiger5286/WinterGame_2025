@@ -4,6 +4,7 @@
 #include "input.h"
 #include "BoxCollider.h"
 #include "Bullet.h"
+#include "Map.h"
 
 namespace
 {
@@ -73,9 +74,9 @@ enum class PlayerAnimType : int
 	Fall = 8
 };
 
-Player::Player():
-	_playerH(-1),
-	_chargeParticleH(-1),
+Player::Player(int playerH, int chargeParticleH):
+	_playerH(playerH),
+	_chargeParticleH(chargeParticleH),
 	_jumpFrame(0),
 	_isJumping(false),
 	_isTurn(false),
@@ -91,6 +92,7 @@ Player::Player():
 	for (auto& afterimage : _playerAfterimage)
 	{
 		afterimage.frame = AFTERIMAGE_FRAME_MAX + 1;
+		afterimage.handle = _playerH;
 	}
 }
 
@@ -134,6 +136,18 @@ void Player::Update(Map& map)
 	// マップとの当たり判定処理
 	MapCollision(map);
 
+	// 画面外に出ないようにする
+	if (_pos.x < COLLIDER_W / 2)
+	{
+		_pos.x = COLLIDER_W / 2;
+		_vel.x = 0.0f;
+	}
+	if (_pos.x > map.GetStageWidth() - COLLIDER_W / 2)
+	{
+		_pos.x = map.GetStageWidth() - COLLIDER_W / 2;
+		_vel.x = 0.0f;
+	}
+
 
 	// 射撃処理
 	if (_isTurn)	// 弾を召喚する位置を設定
@@ -174,17 +188,6 @@ void Player::Draw(Vector2 offset)
 #ifdef _DEBUG
 	_collider->Draw(offset);
 #endif // _DEBUG
-}
-
-void Player::SetHandle(int playerH, int chargeParticleH)
-{
-	_playerH = playerH;
-	_chargeParticleH = chargeParticleH;
-	for (auto& afterimage : _playerAfterimage)
-	{
-		afterimage.handle = playerH;
-		assert(afterimage.handle != -1);
-	}
 }
 
 void Player::SetContext(const Input& input, std::vector<std::shared_ptr<Bullet>>& pBullets)

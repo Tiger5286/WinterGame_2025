@@ -10,14 +10,12 @@ class Map;
 class Player : public GameObject
 {
 public:
-	Player();
+	Player(int playerH, int chargeParticleH);
 	~Player();
 
 	void Init() override;
 	void Update(Map& map) override;
 	void Draw(Vector2 offset) override;
-
-	void SetHandle(int playerH, int chargeParticleH);
 
 	/// <summary>
 	/// •K—v‚Èî•ñ‚ğó‚¯æ‚éŠÖ”

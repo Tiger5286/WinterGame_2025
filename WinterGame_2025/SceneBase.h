@@ -18,4 +18,3 @@ public:
 protected:
 	SceneManager& _manager;
 };
-

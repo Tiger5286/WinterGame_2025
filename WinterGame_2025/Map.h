@@ -2,6 +2,7 @@
 #include <vector>
 #include "Geometry.h"
 #include <memory>
+#include <string>
 
 class Collider;
 
@@ -17,14 +18,13 @@ public:
 
 	int GetStageWidth() const;
 
-private:
-	void LoadMapData();
+	void LoadMapData(std::string fileName);
+
 private:
 	int _handle;
 
 	// マップデータ
-	static constexpr int CHIP_NUM_X = 120;
-	static constexpr int CHIP_NUM_Y = 23;
+	int _chipNumX;
+	int _chipNumY;
 	std::vector<std::vector<int>> _chipData;
 };
-

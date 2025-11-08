@@ -40,15 +40,13 @@ SceneMain::SceneMain(SceneManager& manager) :
 
 	// オブジェクトの生成
 	// プレイヤー
-	_pPlayer = std::make_shared<Player>();
-	_pPlayer->SetHandle(_playerH,_chargeParticleH);
+	_pPlayer = std::make_shared<Player>(_playerH, _chargeParticleH);
 
 	// 弾
 	_pBullets.resize(BULLET_NUM);
 	for (auto& bullet : _pBullets)
 	{
-		bullet = std::make_shared<Bullet>();
-		bullet->SetHandle(_playerShotH,_chargeShotH);
+		bullet = std::make_shared<Bullet>(_playerShotH, _chargeShotH);
 	}
 
 	// 敵
@@ -63,6 +61,7 @@ SceneMain::SceneMain(SceneManager& manager) :
 
 	// マップ
 	_pMap = std::make_shared<Map>(_mapChipH);
+	_pMap->LoadMapData("data/Map/Map.csv");
 
 	// カメラ
 	_pCamera = std::make_shared<Camera>(_pMap->GetStageWidth());

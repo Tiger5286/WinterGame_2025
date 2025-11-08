@@ -11,6 +11,7 @@ Camera::Camera(int stageWidth):
 	STAGE_WIDTH(stageWidth)
 {
 	// 初期位置を画面中央に設定(マップチップ0.5個分下にずらす)
+	_pos.x = GlobalConstants::SCREEN_WIDTH / 2;
 	_pos.y = GlobalConstants::SCREEN_HEIGHT / 2 + CHIP_SIZE * DRAW_SCALE / 2;
 }
 

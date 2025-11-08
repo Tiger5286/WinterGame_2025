@@ -14,7 +14,7 @@ enum class BulletType
 class Bullet : public GameObject
 {
 public:
-	Bullet();
+	Bullet(int shotH, int chargeShotH);
 	~Bullet();
 
 	void Init() override;
@@ -26,7 +26,6 @@ public:
 
 	void SetContext(std::vector<std::shared_ptr<Enemy>> pEnemys);
 
-	void SetHandle(int shotH,int chargeShotH);
 	void SetIsTurn(bool isTurn) { _isTurn = isTurn; }
 
 	void SetAlive(bool isAlive) { _isAlive = isAlive; }
