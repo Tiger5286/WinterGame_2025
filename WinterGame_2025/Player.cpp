@@ -77,7 +77,6 @@ Player::Player():
 	_playerH(-1),
 	_chargeParticleH(-1),
 	_jumpFrame(0),
-	_isGround(false),
 	_isJumping(false),
 	_isTurn(false),
 	_dashCoolTime(0),
@@ -114,6 +113,11 @@ void Player::Init()
 
 void Player::Update()
 {
+	printfDx("Player Update()が呼ばれています。Player::Update(Map& map)を使用してください。\n");
+}
+
+void Player::Update(Map& map)
+{
 	// 重力をかける
 	Gravity();
 
@@ -126,17 +130,25 @@ void Player::Update()
 	// ダッシュ処理
 	Dash();
 
-	_pos += _vel;	// 速度ベクトルを位置に足しこむ
-
-	if (_pos.y > GROUND_H)	// 位置が地面の高さを上回ったら補正
+	// 落下中なら接地フラグをfalseにする
+	if (_vel.y > 0)
 	{
-		_pos.y = GROUND_H;
-		_isGround = true;
-		_vel.y = 0.0f;
+		_isGround = false;
 	}
+	// マップとの当たり判定処理
+	MapCollision(map);
+
+	//_pos += _vel;	// 速度ベクトルを位置に足しこむ
+
+	//if (_pos.y > GROUND_H)	// 位置が地面の高さを上回ったら補正
+	//{
+	//	_pos.y = GROUND_H;
+	//	_isGround = true;
+	//	_vel.y = 0.0f;
+	//}
 
 	// 当たり判定の位置を設定
-	_collider->SetPos(_pos);
+	//_collider->SetPos(_pos);
 
 	// 射撃処理
 	if (_isTurn)	// 弾を召喚する位置を設定
@@ -155,11 +167,6 @@ void Player::Update()
 
 	// アニメーション処理
 	UpdateAnim();
-}
-
-void Player::Draw()
-{
-
 }
 
 void Player::Draw(Vector2 offset)

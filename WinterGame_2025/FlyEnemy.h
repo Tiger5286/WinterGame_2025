@@ -9,7 +9,7 @@ public:
 
 	void Init() override;
 	void Update() override;
-	void Draw() override;
+	void Draw(Vector2 offset) override;
 private:
 	int _handle;
 

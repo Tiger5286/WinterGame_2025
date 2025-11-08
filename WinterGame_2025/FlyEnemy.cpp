@@ -47,11 +47,11 @@ void FlyEnemy::Update()
 	_collider->SetPos(adjustPos);
 }
 
-void FlyEnemy::Draw()
+void FlyEnemy::Draw(Vector2 offset)
 {
-	const Vector2 adjustPos = { _pos.x, _pos.y + sinf(_angle) * WAVE_HEIGHT };
+	const Vector2 adjustPos = { _pos.x - offset.x, _pos.y - offset.y + sinf(_angle) * WAVE_HEIGHT };
 	_nowAnim.Draw(adjustPos, false);
 #ifdef _DEBUG
-	_collider->Draw({0.0f,0.0f});
+	_collider->Draw(offset);
 #endif
 }

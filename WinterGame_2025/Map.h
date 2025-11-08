@@ -1,6 +1,9 @@
 #pragma once
 #include <vector>
 #include "Geometry.h"
+#include <memory>
+
+class Collider;
 
 class Map
 {
@@ -9,6 +12,8 @@ public:
 	~Map();
 
 	void Draw(Vector2 offset);
+
+	bool IsCollision(std::shared_ptr<Collider> pCollider, Vector2& hitChipPos);
 
 	int GetStageWidth() const;
 

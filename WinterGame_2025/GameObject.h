@@ -5,6 +5,7 @@
 
 class Input;
 class Collider;
+class Map;
 
 class GameObject
 {
@@ -14,7 +15,9 @@ public:
 
 	virtual void Init() = 0;
 	virtual void Update() = 0;
-	virtual void Draw() = 0;
+	virtual void Draw(Vector2 offset) = 0;
+
+	void MapCollision(Map& map);
 
 	void ChangeAnim(Animation anim);
 
@@ -31,4 +34,5 @@ protected:
 	Vector2 _vel;
 	std::shared_ptr<Collider> _collider;
 	Animation _nowAnim;
+	bool _isGround;		// Ú’nƒtƒ‰ƒO
 };

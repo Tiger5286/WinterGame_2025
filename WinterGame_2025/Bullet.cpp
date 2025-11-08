@@ -41,6 +41,11 @@ void Bullet::Init()
 
 void Bullet::Update()
 {
+	printfDx("Bullet Update()が呼ばれています。Bullet::Update(Vector2 cameraPos)を使用してください。\n");
+}
+
+void Bullet::Update(Vector2 cameraPos)
+{
 	if (_isTurn)
 	{
 		_vel = { -MOVE_SPEED,0.0f };
@@ -52,7 +57,9 @@ void Bullet::Update()
 
 	_pos += _vel;
 
-	if (_pos.x < 0 || _pos.x > GlobalConstants::SCREEN_WIDTH)
+	// 画面外に出たら消す
+	if (_pos.x < cameraPos.x - GlobalConstants::SCREEN_WIDTH / 2 ||
+		_pos.x > cameraPos.x + GlobalConstants::SCREEN_WIDTH / 2)
 	{
 		_isAlive = false;
 	}
@@ -85,20 +92,31 @@ void Bullet::Update()
 	}
 }
 
-void Bullet::Draw()
+void Bullet::Draw(Vector2 offset)
 {
 	if (_isAlive)
 	{
 		if (_type == BulletType::NormalShot)
 		{
-			DrawRectRotaGraph(_pos.x, _pos.y, NORMAL_GRAPH_CUT_W * 0, NORMAL_GRAPH_CUT_H * 1, NORMAL_GRAPH_CUT_W, NORMAL_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _shotH, true, _isTurn);
+			DrawRectRotaGraph(_pos.x - offset.x,
+				_pos.y - offset.y,
+				NORMAL_GRAPH_CUT_W * 0,
+				NORMAL_GRAPH_CUT_H * 1,
+				NORMAL_GRAPH_CUT_W,
+				NORMAL_GRAPH_CUT_H,
+				DRAW_SCALE, 0.0f, _shotH, true, _isTurn);
 		}
 		else if (_type == BulletType::ChargeShot)
 		{
-			DrawRectRotaGraph(_pos.x, _pos.y, CHARGE_GRAPH_CUT_W * 0, CHARGE_GRAPH_CUT_H * 1, CHARGE_GRAPH_CUT_W, CHARGE_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _chargeShotH, true, _isTurn);
+			DrawRectRotaGraph(_pos.x - offset.x,
+				_pos.y - offset.y,
+				CHARGE_GRAPH_CUT_W * 0,
+				CHARGE_GRAPH_CUT_H * 1,
+				CHARGE_GRAPH_CUT_W, CHARGE_GRAPH_CUT_H,
+				DRAW_SCALE, 0.0f, _chargeShotH, true, _isTurn);
 		}
 #ifdef _DEBUG
-		_collider->Draw({0.0f,0.0f});
+		_collider->Draw(offset);
 #endif
 	}
 }

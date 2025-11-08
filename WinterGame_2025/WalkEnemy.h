@@ -19,7 +19,7 @@ public:
 
 	void Init() override;
 	void Update() override;
-	void Draw() override;
+	void Draw(Vector2 offset) override;
 
 	void SetIsTurn(bool isTurn) { _isTurn = isTurn; }
 	void SetState(WalkEnemyState state) { _state = state; }

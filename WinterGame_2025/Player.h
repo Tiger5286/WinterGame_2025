@@ -5,6 +5,7 @@
 #include <vector>
 
 class Bullet;
+class Map;
 
 class Player : public GameObject
 {
@@ -14,8 +15,8 @@ public:
 
 	void Init() override;
 	void Update() override;
-	void Draw() override;
-	void Draw(Vector2 offset);
+	void Update(Map& map);
+	void Draw(Vector2 offset) override;
 
 	void SetHandle(int playerH, int chargeParticleH);
 
@@ -64,7 +65,6 @@ private:
 
 	// ジャンプ関連変数
 	int _jumpFrame;		// ジャンプ長押し時間
-	bool _isGround;		// 接地フラグ
 	bool _isJumping;	// ジャンプ中フラグ
 
 	bool _isTurn;	// true:左向き/false:右向き

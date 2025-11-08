@@ -19,7 +19,8 @@ public:
 
 	void Init() override;
 	void Update() override;
-	void Draw() override;
+	void Update(Vector2 cameraPos);
+	void Draw(Vector2 offset) override;
 
 	void Shot(BulletType type, Vector2 shotPos, bool isTurn);
 

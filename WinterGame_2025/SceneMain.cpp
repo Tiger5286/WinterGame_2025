@@ -98,7 +98,7 @@ void SceneMain::Update(Input input)
 
 	// ƒvƒŒƒCƒ„[§Œä
 	_pPlayer->SetContext(input,_pBullets);
-	_pPlayer->Update();
+	_pPlayer->Update(*_pMap);
 	_pCamera->Update(_pPlayer->GetPos().x);
 
 	// “G§Œä
@@ -129,7 +129,7 @@ void SceneMain::Update(Input input)
 		if (bullet->GetAlive())
 		{
 			bullet->SetContext(_pEnemys);
-			bullet->Update();
+			bullet->Update(_pCamera->GetPos());
 		}
 	}
 
@@ -147,13 +147,13 @@ void SceneMain::Draw()
 	{
 		if (enemy != nullptr)
 		{
-			enemy->Draw();
+			enemy->Draw(_pCamera->GetDrawOffset());
 		}
 	}
 	_pPlayer->Draw(_pCamera->GetDrawOffset());
 	for (auto& bullet : _pBullets)
 	{
-		bullet->Draw();
+		bullet->Draw(_pCamera->GetDrawOffset());
 	}
 
 	DrawString(0,0,"SceneMain",0xffffff);
