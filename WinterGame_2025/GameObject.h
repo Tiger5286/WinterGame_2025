@@ -14,10 +14,10 @@ public:
 	virtual ~GameObject();
 
 	virtual void Init() = 0;
-	virtual void Update() = 0;
+	virtual void Update(Map& map) = 0;
 	virtual void Draw(Vector2 offset) = 0;
 
-	void MapCollision(Map& map);
+	bool MapCollision(Map& map);
 
 	void ChangeAnim(Animation anim);
 

@@ -3,6 +3,7 @@
 #include "Dxlib.h"
 #include "Bullet.h"
 #include "Player.h"
+#include "Map.h"
 
 namespace
 {
@@ -62,7 +63,7 @@ void WalkEnemy::Init()
 	_nowAnim = _idleAnim;
 }
 
-void WalkEnemy::Update()
+void WalkEnemy::Update(Map& map)
 {
 	Gravity();
 
@@ -91,15 +92,22 @@ void WalkEnemy::Update()
 		}
 	}
 
-	_pos += _vel;
+	MapCollision(map);
 
-	if (_pos.y > GROUND_H)	// ˆÊ’u‚ª’n–Ê‚Ì‚‚³‚ðã‰ñ‚Á‚½‚ç•â³
-	{
-		_pos.y = GROUND_H;
-		_vel.y = 0.0f;
-	}
-	_collider->SetPos(_pos);
+	UpdateAnim();
+}
 
+void WalkEnemy::Draw(Vector2 offset)
+{
+	//DrawRectRotaGraph(_pos.x, _pos.y - WALKENEMY_GRAPH_CUT_H / 2 * DRAW_SCALE, WALKENEMY_GRAPH_CUT_W * 0, WALKENEMY_GRAPH_CUT_H * 0, WALKENEMY_GRAPH_CUT_W, WALKENEMY_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true);
+	_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - WALKENEMY_GRAPH_CUT_H / 2 * DRAW_SCALE }, _isTurn);
+#ifdef _DEBUG
+	_collider->Draw(offset);
+#endif
+}
+
+void WalkEnemy::UpdateAnim()
+{
 	if (abs(_vel.y > 0))
 	{
 		ChangeAnim(_fallAnim);
@@ -113,13 +121,4 @@ void WalkEnemy::Update()
 		ChangeAnim(_idleAnim);
 	}
 	_nowAnim.Update();
-}
-
-void WalkEnemy::Draw(Vector2 offset)
-{
-	//DrawRectRotaGraph(_pos.x, _pos.y - WALKENEMY_GRAPH_CUT_H / 2 * DRAW_SCALE, WALKENEMY_GRAPH_CUT_W * 0, WALKENEMY_GRAPH_CUT_H * 0, WALKENEMY_GRAPH_CUT_W, WALKENEMY_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true);
-	_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - WALKENEMY_GRAPH_CUT_H / 2 * DRAW_SCALE }, _isTurn);
-#ifdef _DEBUG
-	_collider->Draw(offset);
-#endif
 }

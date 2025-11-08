@@ -18,11 +18,14 @@ public:
 	~WalkEnemy();
 
 	void Init() override;
-	void Update() override;
+	void Update(Map& map) override;
 	void Draw(Vector2 offset) override;
 
 	void SetIsTurn(bool isTurn) { _isTurn = isTurn; }
 	void SetState(WalkEnemyState state) { _state = state; }
+
+private:
+	void UpdateAnim();
 
 private:
 	int _handle;

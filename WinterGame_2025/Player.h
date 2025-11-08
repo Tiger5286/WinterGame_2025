@@ -14,8 +14,7 @@ public:
 	~Player();
 
 	void Init() override;
-	void Update() override;
-	void Update(Map& map);
+	void Update(Map& map) override;
 	void Draw(Vector2 offset) override;
 
 	void SetHandle(int playerH, int chargeParticleH);

@@ -18,8 +18,8 @@ public:
 	~Bullet();
 
 	void Init() override;
-	void Update() override;
-	void Update(Vector2 cameraPos);
+	void Update(Map& map) override;
+	void Update(Map& map, Vector2 cameraPos);
 	void Draw(Vector2 offset) override;
 
 	void Shot(BulletType type, Vector2 shotPos, bool isTurn);

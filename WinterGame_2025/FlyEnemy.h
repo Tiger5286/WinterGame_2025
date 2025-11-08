@@ -8,7 +8,7 @@ public:
 	~FlyEnemy();
 
 	void Init() override;
-	void Update() override;
+	void Update(Map& map) override;
 	void Draw(Vector2 offset) override;
 private:
 	int _handle;

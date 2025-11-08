@@ -35,7 +35,7 @@ void FlyEnemy::Init()
 	_nowAnim.Init(_handle, 0, FRAME_SIZE, ANIM_FRAME_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 }
 
-void FlyEnemy::Update()
+void FlyEnemy::Update(Map& map)
 {
 	_nowAnim.Update();
 

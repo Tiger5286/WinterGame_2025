@@ -11,7 +11,7 @@ public:
 	virtual ~Enemy();
 
 	virtual void Init() override = 0;
-	virtual void Update() override = 0;
+	virtual void Update(Map& map) override = 0;
 	virtual void Draw(Vector2 offset) override = 0;
 
 	void SetHp(int hp) { _hp = hp; }

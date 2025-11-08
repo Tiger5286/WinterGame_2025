@@ -106,7 +106,7 @@ void SceneMain::Update(Input input)
 	{
 		if (enemy != nullptr)
 		{
-			enemy->Update();
+			enemy->Update(*_pMap);
 			// ‘Ì—Í‚ª0ˆÈ‰º‚É‚È‚Á‚½‚çÁ‚·
 			if (enemy->GetHp() <= 0)
 			{
@@ -129,7 +129,7 @@ void SceneMain::Update(Input input)
 		if (bullet->GetAlive())
 		{
 			bullet->SetContext(_pEnemys);
-			bullet->Update(_pCamera->GetPos());
+			bullet->Update(*_pMap,_pCamera->GetPos());
 		}
 	}
 

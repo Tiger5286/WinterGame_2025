@@ -3,6 +3,7 @@
 #include "Dxlib.h"
 #include "Game.h"
 #include "Enemy.h"
+#include "Map.h"
 
 namespace
 {
@@ -39,12 +40,12 @@ void Bullet::Init()
 {
 }
 
-void Bullet::Update()
+void Bullet::Update(Map& map)
 {
-	printfDx("Bullet Update()が呼ばれています。Bullet::Update(Vector2 cameraPos)を使用してください。\n");
+	printfDx("Bullet::Update(Map& map)が呼ばれました。Bullet::Update(Map& map, Vector2 cameraPos)を使用してください。\n");
 }
 
-void Bullet::Update(Vector2 cameraPos)
+void Bullet::Update(Map& map,Vector2 cameraPos)
 {
 	if (_isTurn)
 	{
@@ -64,6 +65,12 @@ void Bullet::Update(Vector2 cameraPos)
 		_isAlive = false;
 	}
 	_collider->SetPos(_pos);
+
+	Vector2 hitChipPos;	// 未使用
+	if (map.IsCollision(_collider,hitChipPos))
+	{	// マップチップに当たったら消える
+		_isAlive = false;
+	}
 
 	// 弾と敵の当たり判定
 	for (auto& enemy : _pEnemys)

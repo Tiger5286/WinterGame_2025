@@ -19,8 +19,9 @@ GameObject::~GameObject()
 }
 
 
-void GameObject::MapCollision(Map& map)
+bool GameObject::MapCollision(Map& map)
 {
+	bool collided = false;
 	_pos.x += _vel.x;
 	_collider->SetPos(_pos);
 	Vector2 hitChipPos;
@@ -40,6 +41,7 @@ void GameObject::MapCollision(Map& map)
 		}
 		_vel.x = 0.0f;
 		_collider->SetPos(_pos);
+		collided = true;
 	}
 	_pos.y += _vel.y;
 	_collider->SetPos(_pos);
@@ -60,7 +62,9 @@ void GameObject::MapCollision(Map& map)
 		}
 		_vel.y = 0.0f;
 		_collider->SetPos(_pos);
+		collided = true;
 	}
+	return collided;
 }
 
 void GameObject::ChangeAnim(Animation anim)

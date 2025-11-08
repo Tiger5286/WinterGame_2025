@@ -111,11 +111,6 @@ void Player::Init()
 	_nowAnim = _idleAnim;
 }
 
-void Player::Update()
-{
-	printfDx("Player Update()が呼ばれています。Player::Update(Map& map)を使用してください。\n");
-}
-
 void Player::Update(Map& map)
 {
 	// 重力をかける
@@ -135,20 +130,10 @@ void Player::Update(Map& map)
 	{
 		_isGround = false;
 	}
+
 	// マップとの当たり判定処理
 	MapCollision(map);
 
-	//_pos += _vel;	// 速度ベクトルを位置に足しこむ
-
-	//if (_pos.y > GROUND_H)	// 位置が地面の高さを上回ったら補正
-	//{
-	//	_pos.y = GROUND_H;
-	//	_isGround = true;
-	//	_vel.y = 0.0f;
-	//}
-
-	// 当たり判定の位置を設定
-	//_collider->SetPos(_pos);
 
 	// 射撃処理
 	if (_isTurn)	// 弾を召喚する位置を設定
