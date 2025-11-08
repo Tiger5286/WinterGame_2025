@@ -7,6 +7,6 @@ public:
 	~BoxCollider();
 
 	bool CheckCollision(const std::shared_ptr<Collider> other) const override;
-	void Draw() const override;
+	void Draw(Vector2 offset) const override;
 	Type GetType() const override { return Type::Box; }
 };

@@ -159,23 +159,28 @@ void Player::Update()
 
 void Player::Draw()
 {
+
+}
+
+void Player::Draw(Vector2 offset)
+{
 	// 残像の描画
 	for (auto& afterimage : _playerAfterimage)
 	{
-		afterimage.Draw();
+		afterimage.Draw(offset);
 	}
 
 	// プレイヤー本体の描画
-	_nowAnim.Draw({ _pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE }, _isTurn);
+	_nowAnim.Draw({ _pos.x - offset.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y }, _isTurn);
 
 	// チャージ中にパーティクルを描画
 	if (_isCharging)
 	{
-		_ChargeParticleAnim.Draw({ _pos.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE },true);
+		_ChargeParticleAnim.Draw({ _pos.x - offset.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y }, true);
 	}
 
 #ifdef _DEBUG
-	_collider->Draw();
+	_collider->Draw(offset);
 #endif // _DEBUG
 }
 
@@ -388,18 +393,21 @@ void Player::UpdateAfterimage()
 	}
 }
 
-void Player::PlayerAfterimage::Draw()
+void Player::PlayerAfterimage::Draw(Vector2 offset)
 {
 	// 透明度を計算して描画
 	float alpha = static_cast<float>(frame) / (AFTERIMAGE_FRAME_MAX + 1);	// 透明度の割合
 	alpha = 1 - alpha;	// 逆転させる
 	alpha *= 255 / 2;	// 0~255の範囲に変換
+
 	SetDrawBright(AFTERIMAGE_COLOR_R, AFTERIMAGE_COLOR_G, AFTERIMAGE_COLOR_B);	// 残像の色を設定
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(alpha));	// 透明度を設定
-	DrawRectRotaGraph(pos.x, pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE,	// 描画処理
+
+	DrawRectRotaGraph(pos.x - offset.x, pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y,	// 描画処理
 		PLAYER_GRAPH_CUT_W * DASH_GRAPH_INDEX_X, PLAYER_GRAPH_CUT_H * DASH_GRAPH_INDEX_Y,
 		PLAYER_GRAPH_CUT_W, PLAYER_GRAPH_CUT_H,
 		DRAW_SCALE, 0.0f, handle, true, isTurn);
+
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);	// 元に戻す
 	SetDrawBright(255, 255, 255);
 }

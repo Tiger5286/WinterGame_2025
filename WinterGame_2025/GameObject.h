@@ -21,7 +21,7 @@ public:
 	void SetPos(Vector2 pos) { _pos = pos; }
 	Vector2 GetPos() { return _pos; }
 
-	std::shared_ptr<Collider> GetCollider();
+	std::shared_ptr<Collider> GetCollider() { return _collider; }
 
 protected:
 	void Gravity();

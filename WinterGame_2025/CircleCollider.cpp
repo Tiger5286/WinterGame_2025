@@ -40,7 +40,7 @@ bool CircleCollider::CheckCollision(const std::shared_ptr<Collider> other) const
 	return false;
 }
 
-void CircleCollider::Draw() const
+void CircleCollider::Draw(Vector2 offset) const
 {
-	DrawCircle(_pos.x, _pos.y, _radius, 0xff0000, false);
+	DrawCircle(_pos.x - offset.x, _pos.y - offset.y, _radius, 0xff0000, false);
 }

@@ -32,8 +32,3 @@ void GameObject::Gravity()
 		_vel.y = MAX_FALL_SPEED;
 	}
 }
-
-std::shared_ptr<Collider> GameObject::GetCollider()
-{
-	return _collider;
-}

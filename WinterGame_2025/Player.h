@@ -15,6 +15,7 @@ public:
 	void Init() override;
 	void Update() override;
 	void Draw() override;
+	void Draw(Vector2 offset);
 
 	void SetHandle(int playerH, int chargeParticleH);
 
@@ -41,7 +42,7 @@ private:
 		int frame = 0;
 		int handle = -1;
 		bool isTurn = false;
-		void Draw();
+		void Draw(Vector2 offset);
 	};
 
 private:

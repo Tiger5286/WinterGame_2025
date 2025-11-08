@@ -120,6 +120,6 @@ void WalkEnemy::Draw()
 	//DrawRectRotaGraph(_pos.x, _pos.y - WALKENEMY_GRAPH_CUT_H / 2 * DRAW_SCALE, WALKENEMY_GRAPH_CUT_W * 0, WALKENEMY_GRAPH_CUT_H * 0, WALKENEMY_GRAPH_CUT_W, WALKENEMY_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true);
 	_nowAnim.Draw({ _pos.x,_pos.y - WALKENEMY_GRAPH_CUT_H / 2 * DRAW_SCALE }, _isTurn);
 #ifdef _DEBUG
-	_collider->Draw();
+	_collider->Draw({0.0f,0.0f});
 #endif
 }

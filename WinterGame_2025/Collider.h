@@ -13,7 +13,7 @@ public:
 	virtual ~Collider();
 
 	virtual bool CheckCollision(const std::shared_ptr<Collider> other) const = 0;
-	virtual void Draw() const = 0;
+	virtual void Draw(Vector2 offset) const = 0;
 
 	enum class Type
 	{

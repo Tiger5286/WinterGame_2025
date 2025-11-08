@@ -10,6 +10,8 @@
 #include "DebugScene.h"
 #include <cassert>
 #include "Game.h"
+#include "Map.h"
+#include "Camera.h"
 
 namespace
 {
@@ -20,6 +22,7 @@ SceneMain::SceneMain(SceneManager& manager) :
 	SceneBase(manager),
 	_frameCount(0)
 {
+	/*画像の読み込み*/
 	_playerH = LoadGraph("data/Player/Player.png");
 	assert(_playerH != -1);
 	_playerShotH = LoadGraph("data/Player/Shot.png");
@@ -32,10 +35,15 @@ SceneMain::SceneMain(SceneManager& manager) :
 	assert(_walkEnemyH != -1);
 	_flyEnemyH = LoadGraph("data/Enemy/FlyEnemy.png");
 	assert(_flyEnemyH != -1);
+	_mapChipH = LoadGraph("data/Map/MapChip.png");
+	assert(_mapChipH != -1);
 
+	// オブジェクトの生成
+	// プレイヤー
 	_pPlayer = std::make_shared<Player>();
 	_pPlayer->SetHandle(_playerH,_chargeParticleH);
 
+	// 弾
 	_pBullets.resize(BULLET_NUM);
 	for (auto& bullet : _pBullets)
 	{
@@ -43,6 +51,7 @@ SceneMain::SceneMain(SceneManager& manager) :
 		bullet->SetHandle(_playerShotH,_chargeShotH);
 	}
 
+	// 敵
 	_pEnemys.push_back(std::make_shared<WalkEnemy>(_walkEnemyH, _pPlayer));
 	_pEnemys.push_back(std::make_shared<WalkEnemy>(_walkEnemyH, _pPlayer));
 	_pEnemys[0]->SetPos({ 300.0f,100.0f });
@@ -51,6 +60,12 @@ SceneMain::SceneMain(SceneManager& manager) :
 	_pEnemys[1]->SetPos({ 500.0f,100.0f });
 	_pEnemys.push_back(std::make_shared<FlyEnemy>(_flyEnemyH,_pPlayer));
 	_pEnemys[2]->SetPos({ 400.0f,600.0f });
+
+	// マップ
+	_pMap = std::make_shared<Map>(_mapChipH);
+
+	// カメラ
+	_pCamera = std::make_shared<Camera>(_pMap->GetStageWidth());
 }
 
 SceneMain::~SceneMain()
@@ -60,6 +75,8 @@ SceneMain::~SceneMain()
 	DeleteGraph(_chargeShotH);
 	DeleteGraph(_chargeParticleH);
 	DeleteGraph(_walkEnemyH);
+	DeleteGraph(_flyEnemyH);
+	DeleteGraph(_mapChipH);
 }
 
 void SceneMain::Init()
@@ -82,6 +99,7 @@ void SceneMain::Update(Input input)
 	// プレイヤー制御
 	_pPlayer->SetContext(input,_pBullets);
 	_pPlayer->Update();
+	_pCamera->Update(_pPlayer->GetPos().x);
 
 	// 敵制御
 	for (auto& enemy : _pEnemys)
@@ -123,7 +141,8 @@ void SceneMain::Update(Input input)
 
 void SceneMain::Draw()
 {
-	DrawBox(0, 0, GlobalConstants::SCREEN_WIDTH, GlobalConstants::SCREEN_HEIGHT, 0xffffff, true);
+	_pMap->Draw(_pCamera->GetDrawOffset());
+	//DrawBox(0, 0, GlobalConstants::SCREEN_WIDTH, GlobalConstants::SCREEN_HEIGHT, 0xffffff, true);
 	for (auto& enemy : _pEnemys)
 	{
 		if (enemy != nullptr)
@@ -131,7 +150,7 @@ void SceneMain::Draw()
 			enemy->Draw();
 		}
 	}
-	_pPlayer->Draw();
+	_pPlayer->Draw(_pCamera->GetDrawOffset());
 	for (auto& bullet : _pBullets)
 	{
 		bullet->Draw();

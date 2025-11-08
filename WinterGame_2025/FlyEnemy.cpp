@@ -52,6 +52,6 @@ void FlyEnemy::Draw()
 	const Vector2 adjustPos = { _pos.x, _pos.y + sinf(_angle) * WAVE_HEIGHT };
 	_nowAnim.Draw(adjustPos, false);
 #ifdef _DEBUG
-	_collider->Draw();
+	_collider->Draw({0.0f,0.0f});
 #endif
 }

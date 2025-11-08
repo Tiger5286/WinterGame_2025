@@ -40,7 +40,11 @@ bool BoxCollider::CheckCollision(const std::shared_ptr<Collider> other) const
 	return false;
 }
 
-void BoxCollider::Draw() const
+void BoxCollider::Draw(Vector2 offset) const
 {
-	DrawBox(_pos.x - _size.x / 2, _pos.y - _size.y / 2, _pos.x + _size.x / 2, _pos.y + _size.y / 2, 0xff0000, false);
+	DrawBox(_pos.x - _size.x / 2 - offset.x,
+		_pos.y - _size.y / 2 - offset.y,
+		_pos.x + _size.x / 2 - offset.x,
+		_pos.y + _size.y / 2 - offset.y,
+		0xff0000, false);
 }
