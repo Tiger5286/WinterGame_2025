@@ -35,7 +35,8 @@ namespace
 
 	// ダメージ関連
 	constexpr int INVINCIBLE_FRAME_MAX = 180;	// ダメージを受けてからの無敵時間
-	constexpr float KNOCKBACK_POWER = 15.0f;	// ダメージを受けたときのノックバック力
+	constexpr float KNOCKBACK_POWER_X = 12.0f;	// ダメージを受けたときのノックバックの力X
+	constexpr float KNOCKBACK_POWER_Y = 10.0f;	// ダメージを受けたときのノックバックの力Y
 	constexpr int DAMAGE_ANIMATION_END_FRAME = INVINCIBLE_FRAME_MAX - PLAYER_DAMAGE_ANIM_MAX_NUM * ONE_ANIM_FRAME;	// ダメージアニメーションが終わるフレーム
 	constexpr int FLICKER_INTERVAL = 5;	// 点滅の間隔
 
@@ -257,14 +258,16 @@ void Player::TakeDamage()
 	{	// ダッシュ中でなく、無敵時間でなければダメージを受ける
 		_invincibleFrame = INVINCIBLE_FRAME_MAX;	// 無敵時間をセット
 		_isCanControll = false;	// 操作不可にする
-		_vel.y = -KNOCKBACK_POWER;	// 上方向に吹き飛ぶ
+		_vel.y = -KNOCKBACK_POWER_Y;	// 上方向に吹き飛ぶ
+		_isCharging = false;	// チャージ中なら解除する
+		_chargeFrame = 0;	// チャージフレームをリセット
 		if (_isTurn)	// ダメージを受けた方向と逆に吹き飛ぶ
 		{
-			_vel.x = KNOCKBACK_POWER;
+			_vel.x = KNOCKBACK_POWER_X;
 		}
 		else
 		{
-			_vel.x = -KNOCKBACK_POWER;
+			_vel.x = -KNOCKBACK_POWER_X;
 		}
 	}
 }
