@@ -1,6 +1,7 @@
 #include "FlyEnemy.h"
 #include "CircleCollider.h"
 #include <cmath>
+#include "Player.h"
 
 namespace
 {
@@ -45,6 +46,12 @@ void FlyEnemy::Update(Map& map)
 	const Vector2 adjustPos = { _pos.x, _pos.y + sinf(_angle) * WAVE_HEIGHT };
 
 	_collider->SetPos(adjustPos);
+
+	// プレイヤーに当たったらダメージを与える
+	if (_collider->CheckCollision(_pPlayer->GetCollider()))
+	{
+		_pPlayer->TakeDamage();
+	}
 }
 
 void FlyEnemy::Draw(Vector2 offset)

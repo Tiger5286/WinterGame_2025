@@ -24,9 +24,13 @@ public:
 	/// <param name="pBullets">Bulletの配列情報</param>
 	void SetContext(const Input& input,std::vector<std::shared_ptr<Bullet>>& pBullets);
 
+	void TakeDamage();
+
 private:
 	void Jump();
 	void Move();
+	void MoveSpeedLimit();	// 移動速度制限
+	void MoveResistance();	// 移動抵抗
 	void Shot();
 	void ChargeShot();
 	void Dash();
@@ -54,6 +58,7 @@ private:
 	// アニメーション
 	Animation _idleAnim;
 	Animation _moveAnim;
+	Animation _damageAnim;
 	Animation _jumpAnim;
 	Animation _fallAnim;
 	Animation _dashAnim;
@@ -66,6 +71,11 @@ private:
 
 	bool _isTurn;	// true:左向き/false:右向き
 	Vector2 _shotPos;	// 弾を召喚する位置
+
+	// ダメージ関連変数
+	bool _isCanControll; // プレイヤー操作可能フラグ
+	int _invincibleFrame; // 無敵時間
+	bool _isFrickering; // 点滅中フラグ
 
 	// ダッシュ関連変数
 	int _dashCoolTime;	// ダッシュのクールタイム

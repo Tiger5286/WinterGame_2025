@@ -21,6 +21,7 @@ namespace
 	// アニメーション関連
 	constexpr int PLAYER_IDLE_ANIM_MAX_NUM = 5;	// アニメーションの枚数
 	constexpr int PLAYER_MOVE_ANIM_MAX_NUM = 8;
+	constexpr int PLAYER_DAMAGE_ANIM_MAX_NUM = 9;
 
 	constexpr int CHARGE_PARTICLE_ANIM_MAX_NUM = 7;
 
@@ -31,6 +32,12 @@ namespace
 	constexpr float COLLIDER_H = 80.0f;
 
 	constexpr float GROUND_H = 800.0f;	// 地面の高さ(仮)
+
+	// ダメージ関連
+	constexpr int INVINCIBLE_FRAME_MAX = 180;	// ダメージを受けてからの無敵時間
+	constexpr float KNOCKBACK_POWER = 15.0f;	// ダメージを受けたときのノックバック力
+	constexpr int DAMAGE_ANIMATION_END_FRAME = INVINCIBLE_FRAME_MAX - PLAYER_DAMAGE_ANIM_MAX_NUM * ONE_ANIM_FRAME;	// ダメージアニメーションが終わるフレーム
+	constexpr int FLICKER_INTERVAL = 5;	// 点滅の間隔
 
 	// 動きの制御関連
 	constexpr float JUMP_POWER = -15.0f;	// ジャンプ力
@@ -81,6 +88,9 @@ Player::Player(Vector2 firstPos,int playerH, int chargeParticleH):
 	_jumpFrame(0),
 	_isJumping(false),
 	_isTurn(false),
+	_isCanControll(true),
+	_invincibleFrame(0),
+	_isFrickering(false),
 	_dashCoolTime(0),
 	_dashFrame(0),
 	_isDashing(false),
@@ -95,6 +105,16 @@ Player::Player(Vector2 firstPos,int playerH, int chargeParticleH):
 		afterimage.frame = AFTERIMAGE_FRAME_MAX + 1;
 		afterimage.handle = _playerH;
 	}
+
+	_ChargeParticleAnim.Init(_chargeParticleH, 0, CHARGE_PARTICLE_FRAME_SIZE, CHARGE_PARTICLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+
+	_idleAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Idle), PLAYER_FRAME_SIZE, PLAYER_IDLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	_moveAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Move), PLAYER_FRAME_SIZE, PLAYER_MOVE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	_damageAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Damage), PLAYER_FRAME_SIZE, PLAYER_DAMAGE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	_jumpAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Jump), PLAYER_FRAME_SIZE, 1, ONE_ANIM_FRAME, DRAW_SCALE);
+	_fallAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Fall), 2, PLAYER_FRAME_SIZE, DRAW_SCALE);
+	_dashAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Dash), 1, PLAYER_FRAME_SIZE, DRAW_SCALE);
+	_nowAnim = _idleAnim;
 }
 
 Player::~Player()
@@ -103,14 +123,7 @@ Player::~Player()
 
 void Player::Init()
 {
-	_ChargeParticleAnim.Init(_chargeParticleH, 0, CHARGE_PARTICLE_FRAME_SIZE, CHARGE_PARTICLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	
-	_idleAnim.Init(_playerH,static_cast<int>(PlayerAnimType::Idle), PLAYER_FRAME_SIZE, PLAYER_IDLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-	_moveAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Move), PLAYER_FRAME_SIZE, PLAYER_MOVE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-	_jumpAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Jump), PLAYER_FRAME_SIZE, 1, ONE_ANIM_FRAME, DRAW_SCALE);
-	_fallAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Fall), 2, PLAYER_FRAME_SIZE, DRAW_SCALE);
-	_dashAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Dash), 1, PLAYER_FRAME_SIZE, DRAW_SCALE);
-	_nowAnim = _idleAnim;
 }
 
 void Player::Update(Map& map)
@@ -118,14 +131,37 @@ void Player::Update(Map& map)
 	// 重力をかける
 	Gravity();
 
-	// ジャンプ処理
-	Jump();
+	if (_isCanControll)
+	{
+		// ジャンプ処理
+		Jump();
 
-	// 左右移動処理
-	Move();
+		// 左右移動処理
+		Move();
 
-	// ダッシュ処理
-	Dash();
+		// ダッシュ処理
+		Dash();
+
+		// 射撃処理
+		if (_isTurn)	// 弾を召喚する位置を設定
+		{
+			_shotPos = { _pos.x - COLLIDER_W / 2, _pos.y - COLLIDER_H / 2 };
+		}
+		else
+		{
+			_shotPos = { _pos.x + COLLIDER_W / 2, _pos.y - COLLIDER_H / 2 };
+		}
+		Shot();
+		ChargeShot();
+	}
+	if (!_isDashing && _invincibleFrame < DAMAGE_ANIMATION_END_FRAME)	// ダッシュ中でなく、被弾アニメーション中でなければ
+	{
+		// 移動速度制限処理
+		MoveSpeedLimit();
+	}
+	// 移動抵抗処理
+	MoveResistance();
+	
 
 	// 落下中なら接地フラグをfalseにする
 	if (_vel.y > 0)
@@ -135,6 +171,21 @@ void Player::Update(Map& map)
 
 	// マップとの当たり判定処理
 	MapCollision(map);
+
+	// ダメージを受けているときの処理
+	if (_invincibleFrame > 0)
+	{
+		_invincibleFrame--;
+		if (_invincibleFrame == DAMAGE_ANIMATION_END_FRAME)
+		{	// 被弾アニメーションが終わったら操作可能にする
+			_isCanControll = true;
+			_isFrickering = true;
+		}
+	}
+	else if (_invincibleFrame == 0)
+	{	// 無敵時間が終了したら点滅も終了
+		_isFrickering = false;
+	}
 
 	// 画面外に出ないようにする
 	if (_pos.x < COLLIDER_W / 2)
@@ -147,19 +198,7 @@ void Player::Update(Map& map)
 		_pos.x = map.GetStageWidth() - COLLIDER_W / 2;
 		_vel.x = 0.0f;
 	}
-
-
-	// 射撃処理
-	if (_isTurn)	// 弾を召喚する位置を設定
-	{
-		_shotPos = { _pos.x - COLLIDER_W / 2, _pos.y - COLLIDER_H / 2 };
-	}
-	else
-	{
-		_shotPos = { _pos.x + COLLIDER_W / 2, _pos.y - COLLIDER_H / 2 };
-	}
-	Shot();
-	ChargeShot();
+	
 
 	// 残像の更新
 	UpdateAfterimage();
@@ -177,11 +216,22 @@ void Player::Draw(Vector2 offset)
 	}
 
 	// プレイヤー本体の描画
-	if (_dashCoolTime > 0)	// ダッシュがクールタイム中なら
+	if (_dashCoolTime > 0 && _invincibleFrame == 0)	// ダッシュがクールタイム中なら
 	{	// 少し暗く青みがかった色で描画
 		SetDrawBright(0xaa, 0xaa, 0xdd);
 	}
-	_nowAnim.Draw({ _pos.x - offset.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y }, _isTurn);
+	if (_isFrickering)	// 点滅中なら
+	{	// 一定間隔で描画・非描画を切り替える
+		if (_invincibleFrame % FLICKER_INTERVAL * 2 < FLICKER_INTERVAL)
+		{
+			_nowAnim.Draw({ _pos.x - offset.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y }, _isTurn);
+		}
+	}
+	else
+	{	// 通常描画
+		_nowAnim.Draw({ _pos.x - offset.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y }, _isTurn);
+	}
+	
 	SetDrawBright(255, 255, 255);	// 元の色に戻す
 
 	// チャージ中にパーティクルを描画
@@ -199,6 +249,24 @@ void Player::SetContext(const Input& input, std::vector<std::shared_ptr<Bullet>>
 {
 	_input = input;
 	_pBullets = pBullets;
+}
+
+void Player::TakeDamage()
+{
+	if (!_isDashing && _invincibleFrame == 0)
+	{	// ダッシュ中でなく、無敵時間でなければダメージを受ける
+		_invincibleFrame = INVINCIBLE_FRAME_MAX;	// 無敵時間をセット
+		_isCanControll = false;	// 操作不可にする
+		_vel.y = -KNOCKBACK_POWER;	// 上方向に吹き飛ぶ
+		if (_isTurn)	// ダメージを受けた方向と逆に吹き飛ぶ
+		{
+			_vel.x = KNOCKBACK_POWER;
+		}
+		else
+		{
+			_vel.x = -KNOCKBACK_POWER;
+		}
+	}
 }
 
 void Player::Jump()
@@ -239,7 +307,10 @@ void Player::Move()
 		_vel.x -= MOVE_SPEED;
 		if (!_isDashing) _isTurn = true;
 	}
+}
 
+void Player::MoveSpeedLimit()
+{
 	// 最高速度以上は出ないようにする
 	if (_vel.x > MAX_MOVE_SPEED)
 	{
@@ -249,7 +320,10 @@ void Player::Move()
 	{
 		_vel.x = -MAX_MOVE_SPEED;
 	}
+}
 
+void Player::MoveResistance()
+{
 	// 自然に止まる力
 	if (_vel.x >= -STOP_SPEED && _vel.x <= STOP_SPEED)
 	{
@@ -344,7 +418,11 @@ void Player::Dash()
 
 void Player::UpdateAnim()
 {
-	if (_isDashing)	// ダッシュ中ならダッシュアニメーションに切り替え
+	if (_invincibleFrame > DAMAGE_ANIMATION_END_FRAME)	// 無敵時間中にダメージアニメーション一回分の時間ダメージアニメーションに切り替え
+	{
+		ChangeAnim(_damageAnim);
+	}
+	else if (_isDashing)	// ダッシュ中ならダッシュアニメーションに切り替え
 	{
 		ChangeAnim(_dashAnim);
 	}

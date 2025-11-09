@@ -94,6 +94,12 @@ void WalkEnemy::Update(Map& map)
 
 	MapCollision(map);
 
+	// プレイヤーに当たったらダメージを与える
+	if (_collider->CheckCollision(_pPlayer->GetCollider()))
+	{
+		_pPlayer->TakeDamage();
+	}
+
 	UpdateAnim();
 }
 

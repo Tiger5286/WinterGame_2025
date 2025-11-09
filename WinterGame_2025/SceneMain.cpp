@@ -38,7 +38,7 @@ SceneMain::SceneMain(SceneManager& manager) :
 	_mapChipH = LoadGraph("data/Map/MapChip.png");
 	assert(_mapChipH != -1);
 
-	// オブジェクトの生成
+	/*オブジェクトの生成*/
 	// プレイヤー
 	_pPlayer = std::make_shared<Player>(Vector2(3*48,19*48),_playerH, _chargeParticleH);
 
@@ -52,8 +52,8 @@ SceneMain::SceneMain(SceneManager& manager) :
 
 	// 敵
 	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(24 * 48, 19 * 48),WalkEnemyState::Idle, false,_walkEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(51*48,16*48),WalkEnemyState::Move, true,_walkEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(60*48,15*48), _flyEnemyH,_pPlayer));
+	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(51 * 48, 16 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
+	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(60 * 48, 15 * 48), _flyEnemyH, _pPlayer));
 	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(57 * 48, 19 * 48), WalkEnemyState::Move, false, _walkEnemyH, _pPlayer));
 	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(77 * 48, 19 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
 	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(93 * 48, 13 * 48), _flyEnemyH, _pPlayer));
