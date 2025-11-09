@@ -14,7 +14,7 @@ class WalkEnemy : public Enemy
 {
 public:
 	//WalkEnemy();
-	WalkEnemy(int handle, std::shared_ptr<Player>pPlayer);
+	WalkEnemy(Vector2 firstPos,WalkEnemyState state,bool isTurn,int handle, std::shared_ptr<Player>pPlayer);
 	~WalkEnemy();
 
 	void Init() override;

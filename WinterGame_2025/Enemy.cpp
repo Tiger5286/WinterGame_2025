@@ -1,6 +1,7 @@
 #include "Enemy.h"
 
-Enemy::Enemy(int hp, std::shared_ptr<Player> pPlayer) :
+Enemy::Enemy(Vector2 firstPos,int hp, std::shared_ptr<Player> pPlayer) :
+	GameObject(firstPos),
 	_hp(hp),
 	_isAlive(true),
 	_isHitChargeShot(false),

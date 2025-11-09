@@ -10,7 +10,7 @@ class Map;
 class Player : public GameObject
 {
 public:
-	Player(int playerH, int chargeParticleH);
+	Player(Vector2 firstPos,int playerH, int chargeParticleH);
 	~Player();
 
 	void Init() override;

@@ -18,8 +18,8 @@ namespace
 	constexpr float WAVE_HEIGHT = 20.0f;
 }
 
-FlyEnemy::FlyEnemy(int handle, std::shared_ptr<Player> pPlayer) :
-	Enemy(5,pPlayer),
+FlyEnemy::FlyEnemy(Vector2 firstPos,int handle, std::shared_ptr<Player> pPlayer) :
+	Enemy(firstPos,5,pPlayer),
 	_handle(handle),
 	_angle(0.0f)
 {

@@ -19,10 +19,11 @@ namespace
 	constexpr float MOVE_SPEED = 20.0f;
 
 	constexpr int NORMAL_SHOT_DAMAGE = 1;
-	constexpr int CHARGE_SHOT_DAMAGE = 3;
+	constexpr int CHARGE_SHOT_DAMAGE = 5;
 }
 
-Bullet::Bullet(int shotH, int chargeShotH):
+Bullet::Bullet(Vector2 firstPos,int shotH, int chargeShotH):
+	GameObject(firstPos),
 	_shotH(shotH),
 	_chargeShotH(chargeShotH),
 	_type(BulletType::NormalShot),

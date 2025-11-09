@@ -10,7 +10,7 @@ class Map;
 class GameObject
 {
 public:
-	GameObject();
+	GameObject(Vector2 firstPos);
 	virtual ~GameObject();
 
 	virtual void Init() = 0;

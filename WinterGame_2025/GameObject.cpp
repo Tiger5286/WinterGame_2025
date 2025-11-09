@@ -9,7 +9,8 @@ namespace
 	constexpr float DRAW_SCALE = 3.0f;
 }
 
-GameObject::GameObject():
+GameObject::GameObject(Vector2 firstPos):
+	_pos(firstPos),
 	_isGround(false)
 {
 }

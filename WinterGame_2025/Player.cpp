@@ -74,7 +74,8 @@ enum class PlayerAnimType : int
 	Fall = 8
 };
 
-Player::Player(int playerH, int chargeParticleH):
+Player::Player(Vector2 firstPos,int playerH, int chargeParticleH):
+	GameObject(firstPos),
 	_playerH(playerH),
 	_chargeParticleH(chargeParticleH),
 	_jumpFrame(0),
@@ -102,7 +103,6 @@ Player::~Player()
 
 void Player::Init()
 {
-	_pos = { 100.0f,100.0f };
 	_ChargeParticleAnim.Init(_chargeParticleH, 0, CHARGE_PARTICLE_FRAME_SIZE, CHARGE_PARTICLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	
 	_idleAnim.Init(_playerH,static_cast<int>(PlayerAnimType::Idle), PLAYER_FRAME_SIZE, PLAYER_IDLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
@@ -177,7 +177,12 @@ void Player::Draw(Vector2 offset)
 	}
 
 	// プレイヤー本体の描画
+	if (_dashCoolTime > 0)	// ダッシュがクールタイム中なら
+	{	// 少し暗く青みがかった色で描画
+		SetDrawBright(0xaa, 0xaa, 0xdd);
+	}
 	_nowAnim.Draw({ _pos.x - offset.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y }, _isTurn);
+	SetDrawBright(255, 255, 255);	// 元の色に戻す
 
 	// チャージ中にパーティクルを描画
 	if (_isCharging)

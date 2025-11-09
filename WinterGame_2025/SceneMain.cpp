@@ -40,24 +40,29 @@ SceneMain::SceneMain(SceneManager& manager) :
 
 	// オブジェクトの生成
 	// プレイヤー
-	_pPlayer = std::make_shared<Player>(_playerH, _chargeParticleH);
+	_pPlayer = std::make_shared<Player>(Vector2(3*48,19*48),_playerH, _chargeParticleH);
+
 
 	// 弾
 	_pBullets.resize(BULLET_NUM);
 	for (auto& bullet : _pBullets)
 	{
-		bullet = std::make_shared<Bullet>(_playerShotH, _chargeShotH);
+		bullet = std::make_shared<Bullet>(Vector2(),_playerShotH, _chargeShotH);
 	}
 
 	// 敵
-	_pEnemys.push_back(std::make_shared<WalkEnemy>(_walkEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<WalkEnemy>(_walkEnemyH, _pPlayer));
-	_pEnemys[0]->SetPos({ 300.0f,100.0f });
-	std::shared_ptr<WalkEnemy> tempEnemy = std::dynamic_pointer_cast<WalkEnemy>(_pEnemys[0]);
-	tempEnemy->SetState(WalkEnemyState::Move);
-	_pEnemys[1]->SetPos({ 500.0f,100.0f });
-	_pEnemys.push_back(std::make_shared<FlyEnemy>(_flyEnemyH,_pPlayer));
-	_pEnemys[2]->SetPos({ 400.0f,600.0f });
+	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(24 * 48, 19 * 48),WalkEnemyState::Idle, false,_walkEnemyH, _pPlayer));
+	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(51*48,16*48),WalkEnemyState::Move, true,_walkEnemyH, _pPlayer));
+	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(60*48,15*48), _flyEnemyH,_pPlayer));
+	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(57 * 48, 19 * 48), WalkEnemyState::Move, false, _walkEnemyH, _pPlayer));
+	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(77 * 48, 19 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
+	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(93 * 48, 13 * 48), _flyEnemyH, _pPlayer));
+	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(96 * 48, 13 * 48), _flyEnemyH, _pPlayer));
+	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(99 * 48, 13 * 48), _flyEnemyH, _pPlayer));
+	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(102 * 48, 13 * 48), _flyEnemyH, _pPlayer));
+	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(105 * 48, 13 * 48), _flyEnemyH, _pPlayer));
+	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(115* 48, 7 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
+	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(142 * 48, 9 * 48), WalkEnemyState::Idle, false, _walkEnemyH, _pPlayer));
 
 	// マップ
 	_pMap = std::make_shared<Map>(_mapChipH);
@@ -105,7 +110,12 @@ void SceneMain::Update(Input input)
 	{
 		if (enemy != nullptr)
 		{
-			enemy->Update(*_pMap);
+			float toCameraDisX = enemy->GetPos().x - _pCamera->GetPos().x;
+			// カメラの画面内にいる敵だけ更新する
+			if (abs(toCameraDisX) < GlobalConstants::SCREEN_WIDTH / 2 + 100)
+			{
+				enemy->Update(*_pMap);
+			}
 			// 体力が0以下になったら消す
 			if (enemy->GetHp() <= 0)
 			{
@@ -141,6 +151,17 @@ void SceneMain::Update(Input input)
 void SceneMain::Draw()
 {
 	_pMap->Draw(_pCamera->GetDrawOffset());
+
+	DrawString(9 * 48 - _pCamera->GetDrawOffset().x,
+		15 * 48 - _pCamera->GetDrawOffset().y,
+		"Xで射撃\nAでジャンプ", 0xffffff);
+	DrawString(83 * 48 - _pCamera->GetDrawOffset().x,
+		13 * 48 - _pCamera->GetDrawOffset().y,
+		"X長押しでチャージショット", 0xffffff);
+	DrawString(116 * 48 - _pCamera->GetDrawOffset().x,
+		11 * 48 - _pCamera->GetDrawOffset().y,
+		"Bでダッシュ", 0xffffff);
+
 	//DrawBox(0, 0, GlobalConstants::SCREEN_WIDTH, GlobalConstants::SCREEN_HEIGHT, 0xffffff, true);
 	for (auto& enemy : _pEnemys)
 	{

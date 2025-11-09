@@ -14,7 +14,7 @@ enum class BulletType
 class Bullet : public GameObject
 {
 public:
-	Bullet(int shotH, int chargeShotH);
+	Bullet(Vector2 firstPos,int shotH, int chargeShotH);
 	~Bullet();
 
 	void Init() override;
