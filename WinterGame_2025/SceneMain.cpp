@@ -25,6 +25,8 @@ SceneMain::SceneMain(SceneManager& manager) :
 	/*画像の読み込み*/
 	_playerH = LoadGraph("data/Player/Player.png");
 	assert(_playerH != -1);
+	_playerWhiteH = LoadGraph("data/Player/PlayerWhite.png");
+	assert(_playerWhiteH != -1);
 	_playerShotH = LoadGraph("data/Player/Shot.png");
 	assert(_playerShotH != -1);
 	_chargeShotH = LoadGraph("data/Player/ChargeShot.png");
@@ -37,10 +39,12 @@ SceneMain::SceneMain(SceneManager& manager) :
 	assert(_flyEnemyH != -1);
 	_mapChipH = LoadGraph("data/Map/MapChip.png");
 	assert(_mapChipH != -1);
+	_lazerH = LoadGraph("data/Enemy/Lazer.png");
+	assert(_lazerH != -1);
 
 	/*オブジェクトの生成*/
 	// プレイヤー
-	_pPlayer = std::make_shared<Player>(Vector2(3*48,19*48),_playerH, _chargeParticleH);
+	_pPlayer = std::make_shared<Player>(Vector2(3*48,19*48),_playerH, _playerWhiteH,_chargeParticleH);
 
 
 	// 弾
@@ -161,6 +165,15 @@ void SceneMain::Draw()
 	DrawString(116 * 48 - _pCamera->GetDrawOffset().x,
 		11 * 48 - _pCamera->GetDrawOffset().y,
 		"Bでダッシュ", 0xffffff);
+
+	// 【テスト】レーザーを描画
+	int y = 12 * 48;
+	for (int i = 0; i < 7 * 48; i++)
+	{
+		DrawRotaGraph(139 * 48 - _pCamera->GetDrawOffset().x,
+			y + i - _pCamera->GetDrawOffset().y,
+			1.0, 0, _lazerH, true);
+	}
 
 	//DrawBox(0, 0, GlobalConstants::SCREEN_WIDTH, GlobalConstants::SCREEN_HEIGHT, 0xffffff, true);
 	for (auto& enemy : _pEnemys)

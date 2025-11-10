@@ -10,6 +10,7 @@ public:
 	void Init(int drawHandle, int animIndexY, int animIndexX, Vector2 frameSize, float scale);	// 一枚絵アニメーション初期化(ほぼfall用)
 	void Update();
 	void Draw(Vector2 pos,bool isTurn);
+	void Draw(int drawHandle,Vector2 pos, bool isTurn);
 
 	bool operator!=(const Animation& other) const;
 private:

@@ -12,6 +12,7 @@ namespace
 	constexpr int CHARGE_GRAPH_CUT_W = 32;
 	constexpr int CHARGE_GRAPH_CUT_H = 32;
 	constexpr float DRAW_SCALE = 2.0f;
+	constexpr float CHARGE_SHOT_DRAW_SCALE = 3.0f;
 
 	constexpr float NORMAL_COLLIDER_R = 15.0f;
 	constexpr float CHARGE_COLLIDER_R = 25.0f;
@@ -121,7 +122,7 @@ void Bullet::Draw(Vector2 offset)
 				CHARGE_GRAPH_CUT_W * 0,
 				CHARGE_GRAPH_CUT_H * 1,
 				CHARGE_GRAPH_CUT_W, CHARGE_GRAPH_CUT_H,
-				DRAW_SCALE, 0.0f, _chargeShotH, true, _isTurn);
+				CHARGE_SHOT_DRAW_SCALE, 0.0f, _chargeShotH, true, _isTurn);
 		}
 #ifdef _DEBUG
 		_collider->Draw(offset);

@@ -10,7 +10,7 @@ class Map;
 class Player : public GameObject
 {
 public:
-	Player(Vector2 firstPos,int playerH, int chargeParticleH);
+	Player(Vector2 firstPos,int playerH,int playerWhiteH, int chargeParticleH);
 	~Player();
 
 	void Init() override;
@@ -43,6 +43,7 @@ private:
 		Vector2 pos = { 0.0f,0.0f };
 		int frame = 0;
 		int handle = -1;
+		int whiteHandle = -1;
 		bool isTurn = false;
 		void Draw(Vector2 offset);
 	};
@@ -53,6 +54,7 @@ private:
 
 	// 画像ハンドル
 	int _playerH;
+	int _playerWhiteH;
 	int _chargeParticleH;	// チャージエフェクトの画像ハンドル
 
 	// アニメーション
@@ -86,5 +88,4 @@ private:
 
 	// チャージショット関連変数
 	int _chargeFrame;
-	bool _isCharging;
 };

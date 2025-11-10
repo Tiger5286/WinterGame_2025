@@ -25,12 +25,14 @@ public:
 private:
 	/*画像ハンドル*/
 	int _playerH;
+	int _playerWhiteH;
 	int _playerShotH;
 	int _chargeShotH;
 	int _chargeParticleH;
 	int _walkEnemyH;
 	int _flyEnemyH;
 	int _mapChipH;
+	int _lazerH;
 
 	int _frameCount;	// 経過フレーム数
 

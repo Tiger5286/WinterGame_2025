@@ -65,6 +65,14 @@ void Animation::Draw(Vector2 pos, bool isTurn)
 		_scale, _rotate, _drawHandle, true, isTurn);
 }
 
+void Animation::Draw(int drawHandle, Vector2 pos, bool isTurn)
+{
+	DrawRectRotaGraph(pos.x, pos.y,
+		_frameSize.x * _nowAnimNum, _animIndex * _frameSize.y,
+		_frameSize.x, _frameSize.y,
+		_scale, _rotate, drawHandle, true, isTurn);
+}
+
 bool Animation::operator!=(const Animation& other) const
 {
 	if (_drawHandle != other._drawHandle) return true;

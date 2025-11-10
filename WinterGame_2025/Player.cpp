@@ -64,7 +64,8 @@ namespace
 	constexpr int AFTERIMAGE_COLOR_B = 255;
 
 	// 射撃関連
-	constexpr int SHOT_CHARGE_TIME = 60;	// チャージショットのチャージ時間
+	constexpr int CHARGE_EFFECT_TIME = 30;		// チャージエフェクトが出始める時間
+	constexpr int CHARGE_TIME_MAX = 90;	// 最大チャージ時間
 }
 
 // アニメーション種類
@@ -82,9 +83,10 @@ enum class PlayerAnimType : int
 	Fall = 8
 };
 
-Player::Player(Vector2 firstPos,int playerH, int chargeParticleH):
+Player::Player(Vector2 firstPos,int playerH, int playerWhiteH, int chargeParticleH):
 	GameObject(firstPos),
 	_playerH(playerH),
+	_playerWhiteH(playerWhiteH),
 	_chargeParticleH(chargeParticleH),
 	_jumpFrame(0),
 	_isJumping(false),
@@ -96,8 +98,7 @@ Player::Player(Vector2 firstPos,int playerH, int chargeParticleH):
 	_dashFrame(0),
 	_isDashing(false),
 	_isTurnDashing(false),
-	_chargeFrame(0),
-	_isCharging(false)
+	_chargeFrame(0)
 {
 	_collider = std::make_shared<BoxCollider>(_pos,Vector2(COLLIDER_W, COLLIDER_H));
 	_playerAfterimage.resize(AFTERIMAGE_NUM);
@@ -105,6 +106,7 @@ Player::Player(Vector2 firstPos,int playerH, int chargeParticleH):
 	{
 		afterimage.frame = AFTERIMAGE_FRAME_MAX + 1;
 		afterimage.handle = _playerH;
+		afterimage.whiteHandle = _playerWhiteH;
 	}
 
 	_ChargeParticleAnim.Init(_chargeParticleH, 0, CHARGE_PARTICLE_FRAME_SIZE, CHARGE_PARTICLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
@@ -217,6 +219,7 @@ void Player::Draw(Vector2 offset)
 	}
 
 	// プレイヤー本体の描画
+	Vector2 drawPos = { _pos.x - offset.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y };
 	if (_dashCoolTime > 0 && _invincibleFrame == 0)	// ダッシュがクールタイム中なら
 	{	// 少し暗く青みがかった色で描画
 		SetDrawBright(0xaa, 0xaa, 0xdd);
@@ -225,22 +228,31 @@ void Player::Draw(Vector2 offset)
 	{	// 一定間隔で描画・非描画を切り替える
 		if (_invincibleFrame % FLICKER_INTERVAL * 2 < FLICKER_INTERVAL)
 		{
-			_nowAnim.Draw({ _pos.x - offset.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y }, _isTurn);
+			_nowAnim.Draw(drawPos, _isTurn);
 		}
 	}
 	else
 	{	// 通常描画
-		_nowAnim.Draw({ _pos.x - offset.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y }, _isTurn);
+		_nowAnim.Draw(drawPos, _isTurn);
 	}
 	
 	SetDrawBright(255, 255, 255);	// 元の色に戻す
 
-	// チャージ中にパーティクルを描画
-	if (_isCharging)
+	// チャージエフェクトを描画
+	if (_chargeFrame > CHARGE_EFFECT_TIME)
 	{
-		_ChargeParticleAnim.Draw({ _pos.x - offset.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y }, true);
+		_ChargeParticleAnim.Draw(drawPos, true);
 	}
-
+	// チャージが完了したら白フィルターを点滅させる
+	if (_chargeFrame >= CHARGE_TIME_MAX)
+	{
+		if (_chargeFrame % FLICKER_INTERVAL * 2 < FLICKER_INTERVAL)
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+			_nowAnim.Draw(_playerWhiteH, drawPos, _isTurn);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
+	}
 #ifdef _DEBUG
 	_collider->Draw(offset);
 #endif // _DEBUG
@@ -259,7 +271,6 @@ void Player::TakeDamage()
 		_invincibleFrame = INVINCIBLE_FRAME_MAX;	// 無敵時間をセット
 		_isCanControll = false;	// 操作不可にする
 		_vel.y = -KNOCKBACK_POWER_Y;	// 上方向に吹き飛ぶ
-		_isCharging = false;	// チャージ中なら解除する
 		_chargeFrame = 0;	// チャージフレームをリセット
 		if (_isTurn)	// ダメージを受けた方向と逆に吹き飛ぶ
 		{
@@ -361,16 +372,12 @@ void Player::Shot()
 void Player::ChargeShot()
 {	// チャージショット処理
 	if (_input.IsPressed("shot"))
-	{	// チャージ中
+	{	// チャージする
 		_chargeFrame++;
-		if (_chargeFrame > SHOT_CHARGE_TIME)
-		{
-			_isCharging = true;
-		}
 	}
 	else
 	{	
-		if (_chargeFrame > SHOT_CHARGE_TIME)
+		if (_chargeFrame > CHARGE_TIME_MAX)
 		{	// チャージが完了しているならチャージショットを発射
 			for (auto& bullet : _pBullets)
 			{
@@ -381,8 +388,18 @@ void Player::ChargeShot()
 				}
 			}
 		}
+		else if (_chargeFrame > CHARGE_EFFECT_TIME)
+		{	// チャージが未完了なら通常弾を発射
+			for (auto& bullet : _pBullets)
+			{
+				if (!bullet->GetAlive())
+				{
+					bullet->Shot(BulletType::NormalShot, _shotPos, _isTurn);
+					break;
+				}
+			}
+		}
 		_chargeFrame = 0;
-		_isCharging = false;
 	}
 }
 
@@ -479,16 +496,16 @@ void Player::PlayerAfterimage::Draw(Vector2 offset)
 	// 透明度を計算して描画
 	float alpha = static_cast<float>(frame) / (AFTERIMAGE_FRAME_MAX + 1);	// 透明度の割合
 	alpha = 1 - alpha;	// 逆転させる
-	alpha *= 255 / 2;	// 0~255の範囲に変換
+	alpha *= 255 / 2;	// 0~128の範囲に変換
 
 	SetDrawBright(AFTERIMAGE_COLOR_R, AFTERIMAGE_COLOR_G, AFTERIMAGE_COLOR_B);	// 残像の色を設定
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(alpha));	// 透明度を設定
 
-	DrawRectRotaGraph(pos.x - offset.x, pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y,	// 描画処理
+	DrawRectRotaGraph(pos.x - offset.x, pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y,	// 残像本体を描画
 		PLAYER_GRAPH_CUT_W * DASH_GRAPH_INDEX_X, PLAYER_GRAPH_CUT_H * DASH_GRAPH_INDEX_Y,
 		PLAYER_GRAPH_CUT_W, PLAYER_GRAPH_CUT_H,
 		DRAW_SCALE, 0.0f, handle, true, isTurn);
 
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);	// 元に戻す
-	SetDrawBright(255, 255, 255);
+	SetDrawBright(255, 255, 255);	// 色を元に戻す
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);	// 透明を元に戻す
 }
