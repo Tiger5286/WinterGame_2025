@@ -7,6 +7,13 @@ class Input;
 class Collider;
 class Map;
 
+enum class HitDirectionX
+{
+	None,
+	Left,
+	Right
+};
+
 class GameObject
 {
 public:
@@ -18,6 +25,7 @@ public:
 	virtual void Draw(Vector2 offset) = 0;
 
 	bool MapCollision(Map& map);
+	bool MapCollision(Map& map, HitDirectionX& hitDirX);
 
 	void ChangeAnim(Animation anim);
 

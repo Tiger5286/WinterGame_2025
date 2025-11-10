@@ -68,6 +68,57 @@ bool GameObject::MapCollision(Map& map)
 	return collided;
 }
 
+bool GameObject::MapCollision(Map& map, HitDirectionX& HitDirX)
+{
+	bool collided = false;
+	_pos.x += _vel.x;
+	_collider->SetPos(_pos);
+	HitDirX = HitDirectionX::None;
+	Vector2 hitChipPos;
+	if (map.IsCollision(_collider, hitChipPos))	// xだけ移動した後に当たった = 横から当たった
+	{
+		Vector2 dist = _collider->GetPos() - hitChipPos;
+		// 横から当たった場合
+		if (dist.x > 0)
+		{
+			//	プレイヤーは当たったマップチップの右側にいる(左から当たった)
+			_pos.x = hitChipPos.x + _collider->GetSize().x / 2 + (16 * DRAW_SCALE) / 2;
+			HitDirX = HitDirectionX::Left;
+		}
+		else
+		{
+			//	プレイヤーは当たったマップチップの左側にいる(右から当たった)
+			_pos.x = hitChipPos.x - _collider->GetSize().x / 2 - (16 * DRAW_SCALE) / 2;
+			HitDirX = HitDirectionX::Right;
+		}
+		_vel.x = 0.0f;
+		_collider->SetPos(_pos);
+		collided = true;
+	}
+	_pos.y += _vel.y;
+	_collider->SetPos(_pos);
+	if (map.IsCollision(_collider, hitChipPos))	// yだけ移動した後に当たった = 縦から当たった
+	{
+		Vector2 dist = _collider->GetPos() - hitChipPos;
+		// 縦から当たった場合
+		if (dist.y > 0)
+		{
+			//	プレイヤーは当たったマップチップの下側にいる(頭をぶつけた)
+			_pos.y = hitChipPos.y + _collider->GetSize().y + (16 * DRAW_SCALE) / 2;
+		}
+		else
+		{
+			//	プレイヤーは当たったマップチップの上側にいる(乗っている)
+			_pos.y = hitChipPos.y - (16 * DRAW_SCALE) / 2;
+			_isGround = true;
+		}
+		_vel.y = 0.0f;
+		_collider->SetPos(_pos);
+		collided = true;
+	}
+	return collided;
+}
+
 void GameObject::ChangeAnim(Animation anim)
 {
 	if (_nowAnim != anim)

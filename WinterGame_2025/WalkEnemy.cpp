@@ -92,7 +92,16 @@ void WalkEnemy::Update(Map& map)
 		}
 	}
 
-	MapCollision(map);
+	HitDirectionX hitDirX;
+	MapCollision(map,hitDirX);
+	if (hitDirX == HitDirectionX::Right)
+	{
+		_isTurn = true;
+	}
+	if (hitDirX == HitDirectionX::Left)
+	{
+		_isTurn = false;
+	}
 
 	// プレイヤーに当たったらダメージを与える
 	if (_collider->CheckCollision(_pPlayer->GetCollider()))

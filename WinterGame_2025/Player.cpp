@@ -35,7 +35,7 @@ namespace
 
 	// ダメージ関連
 	constexpr int INVINCIBLE_FRAME_MAX = 180;	// ダメージを受けてからの無敵時間
-	constexpr float KNOCKBACK_POWER_X = 12.0f;	// ダメージを受けたときのノックバックの力X
+	constexpr float KNOCKBACK_POWER_X = 13.0f;	// ダメージを受けたときのノックバックの力X
 	constexpr float KNOCKBACK_POWER_Y = 10.0f;	// ダメージを受けたときのノックバックの力Y
 	constexpr int DAMAGE_ANIMATION_END_FRAME = INVINCIBLE_FRAME_MAX - PLAYER_DAMAGE_ANIM_MAX_NUM * ONE_ANIM_FRAME;	// ダメージアニメーションが終わるフレーム
 	constexpr int FLICKER_INTERVAL = 5;	// 点滅の間隔
