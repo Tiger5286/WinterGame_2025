@@ -85,6 +85,7 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Uncategorized</Filter>
     </ClCompile>
+    <ClCompile Include="Laser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -150,5 +151,6 @@
     <ClInclude Include="Camera.h">
       <Filter>Uncategorized</Filter>
     </ClInclude>
+    <ClInclude Include="Laser.h" />
   </ItemGroup>
 </Project>

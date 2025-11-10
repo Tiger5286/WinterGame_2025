@@ -32,7 +32,7 @@ private:
 	int _walkEnemyH;
 	int _flyEnemyH;
 	int _mapChipH;
-	int _lazerH;
+	int _laserH;
 
 	int _frameCount;	// Œo‰ßƒtƒŒ[ƒ€”
 

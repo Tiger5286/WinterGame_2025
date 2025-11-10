@@ -39,8 +39,8 @@ SceneMain::SceneMain(SceneManager& manager) :
 	assert(_flyEnemyH != -1);
 	_mapChipH = LoadGraph("data/Map/MapChip.png");
 	assert(_mapChipH != -1);
-	_lazerH = LoadGraph("data/Enemy/Lazer.png");
-	assert(_lazerH != -1);
+	_laserH = LoadGraph("data/Laser.png");
+	assert(_laserH != -1);
 
 	/*オブジェクトの生成*/
 	// プレイヤー
@@ -172,7 +172,7 @@ void SceneMain::Draw()
 	{
 		DrawRotaGraph(139 * 48 - _pCamera->GetDrawOffset().x,
 			y + i - _pCamera->GetDrawOffset().y,
-			1.0, 0, _lazerH, true);
+			1.0, 0, _laserH, true);
 	}
 
 	//DrawBox(0, 0, GlobalConstants::SCREEN_WIDTH, GlobalConstants::SCREEN_HEIGHT, 0xffffff, true);
