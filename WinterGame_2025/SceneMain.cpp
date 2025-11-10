@@ -12,6 +12,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "Camera.h"
+#include "Laser.h"
 
 namespace
 {
@@ -74,6 +75,8 @@ SceneMain::SceneMain(SceneManager& manager) :
 
 	// カメラ
 	_pCamera = std::make_shared<Camera>(_pMap->GetStageWidth());
+
+	_pLaser = std::make_shared<Laser>(Vector2(139 * 48, 12 * 48), _laserH, 7, _pPlayer);
 }
 
 SceneMain::~SceneMain()
@@ -108,6 +111,7 @@ void SceneMain::Update(Input input)
 	_pPlayer->SetContext(input,_pBullets);
 	_pPlayer->Update(*_pMap);
 	_pCamera->Update(_pPlayer->GetPos().x);
+	_pLaser->Update(*_pMap);
 
 	// 敵制御
 	for (auto& enemy : _pEnemys)
@@ -156,6 +160,7 @@ void SceneMain::Draw()
 {
 	_pMap->Draw(_pCamera->GetDrawOffset());
 
+	// temp こんなかんじでステージに説明を入れたい
 	DrawString(9 * 48 - _pCamera->GetDrawOffset().x,
 		15 * 48 - _pCamera->GetDrawOffset().y,
 		"Xで射撃\nAでジャンプ", 0xffffff);
@@ -165,15 +170,11 @@ void SceneMain::Draw()
 	DrawString(116 * 48 - _pCamera->GetDrawOffset().x,
 		11 * 48 - _pCamera->GetDrawOffset().y,
 		"Bでダッシュ", 0xffffff);
+	DrawString(134 * 48 - _pCamera->GetDrawOffset().x,
+		16 * 48 - _pCamera->GetDrawOffset().y,
+		"ダッシュ中は無敵", 0xffffff);
 
-	// 【テスト】レーザーを描画
-	int y = 12 * 48;
-	for (int i = 0; i < 7 * 48; i++)
-	{
-		DrawRotaGraph(139 * 48 - _pCamera->GetDrawOffset().x,
-			y + i - _pCamera->GetDrawOffset().y,
-			1.0, 0, _laserH, true);
-	}
+	_pLaser->Draw(_pCamera->GetDrawOffset());
 
 	//DrawBox(0, 0, GlobalConstants::SCREEN_WIDTH, GlobalConstants::SCREEN_HEIGHT, 0xffffff, true);
 	for (auto& enemy : _pEnemys)
@@ -189,6 +190,8 @@ void SceneMain::Draw()
 		bullet->Draw(_pCamera->GetDrawOffset());
 	}
 
+#ifdef _DEBUG
 	DrawString(0,0,"SceneMain",0xffffff);
 	DrawFormatString(0, 16, 0xffffff, "FRAME:%d", _frameCount);
+#endif // _DEBUG
 }

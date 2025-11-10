@@ -24,13 +24,15 @@ public:
 	/// <param name="pBullets">Bulletの配列情報</param>
 	void SetContext(const Input& input,std::vector<std::shared_ptr<Bullet>>& pBullets);
 
-	void TakeDamage();
+	void TakeDamage();	// ダメージを受ける
 
 private:
 	void Jump();
 	void Move();
 	void MoveSpeedLimit();	// 移動速度制限
 	void MoveResistance();	// 移動抵抗
+	void MoveAreaLimit(Map& map);	// 移動範囲制限
+	void DamageUpdate();	// 被ダメージ時の無敵時間などの処理
 	void Shot();
 	void ChargeShot();
 	void Dash();
@@ -70,6 +72,7 @@ private:
 	// ジャンプ関連変数
 	int _jumpFrame;		// ジャンプ長押し時間
 	bool _isJumping;	// ジャンプ中フラグ
+	bool _isHitUp;		// 天井に当たったかどうかのフラグ
 
 	bool _isTurn;	// true:左向き/false:右向き
 	Vector2 _shotPos;	// 弾を召喚する位置

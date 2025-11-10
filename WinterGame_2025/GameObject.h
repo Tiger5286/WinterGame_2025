@@ -26,6 +26,7 @@ public:
 
 	bool MapCollision(Map& map);
 	bool MapCollision(Map& map, HitDirectionX& hitDirX);
+	bool MapCollision(Map& map, bool& isHitUp);
 
 	void ChangeAnim(Animation anim);
 

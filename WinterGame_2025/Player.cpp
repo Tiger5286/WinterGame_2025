@@ -173,35 +173,13 @@ void Player::Update(Map& map)
 	}
 
 	// マップとの当たり判定処理
-	MapCollision(map);
+	MapCollision(map, _isHitUp);
 
 	// ダメージを受けているときの処理
-	if (_invincibleFrame > 0)
-	{
-		_invincibleFrame--;
-		if (_invincibleFrame == DAMAGE_ANIMATION_END_FRAME)
-		{	// 被弾アニメーションが終わったら操作可能にする
-			_isCanControll = true;
-			_isFrickering = true;
-		}
-	}
-	else if (_invincibleFrame == 0)
-	{	// 無敵時間が終了したら点滅も終了
-		_isFrickering = false;
-	}
+	DamageUpdate();
 
 	// 画面外に出ないようにする
-	if (_pos.x < COLLIDER_W / 2)
-	{
-		_pos.x = COLLIDER_W / 2;
-		_vel.x = 0.0f;
-	}
-	if (_pos.x > map.GetStageWidth() - COLLIDER_W / 2)
-	{
-		_pos.x = map.GetStageWidth() - COLLIDER_W / 2;
-		_vel.x = 0.0f;
-	}
-	
+	MoveAreaLimit(map);
 
 	// 残像の更新
 	UpdateAfterimage();
@@ -270,6 +248,7 @@ void Player::TakeDamage()
 	{	// ダッシュ中でなく、無敵時間でなければダメージを受ける
 		_invincibleFrame = INVINCIBLE_FRAME_MAX;	// 無敵時間をセット
 		_isCanControll = false;	// 操作不可にする
+		_isFrickering = false;	// 点滅フラグをリセット
 		_vel.y = -KNOCKBACK_POWER_Y;	// 上方向に吹き飛ぶ
 		_chargeFrame = 0;	// チャージフレームをリセット
 		if (_isTurn)	// ダメージを受けた方向と逆に吹き飛ぶ
@@ -289,16 +268,20 @@ void Player::Jump()
 	{	// ジャンプが入力され、かつ接地しているならジャンプ中
 		_isJumping = true;
 	}
-	if (_input.IsPressed("jump"))
-	{	// ジャンプが入力され、かつジャンプ中なら長押し有効
-		if (_isJumping)
+
+	if (_input.IsPressed("jump") && _isJumping)
+	{	
+		if (_isHitUp)
 		{
-			_jumpFrame++;
-			_isGround = false;
-			if (_jumpFrame < MAX_JUMP_FRAME)
-			{
-				_vel.y = JUMP_POWER;
-			}
+			_jumpFrame = MAX_JUMP_FRAME;	// 天井に当たったらジャンプ力を加えないようにする
+		}
+		
+		// ジャンプが入力されており、かつジャンプ中ならジャンプ力を加える
+		_jumpFrame++;
+		_isGround = false;
+		if (_jumpFrame < MAX_JUMP_FRAME)
+		{
+			_vel.y = JUMP_POWER;
 		}
 	}
 	else
@@ -350,6 +333,37 @@ void Player::MoveResistance()
 	if (_vel.x < -STOP_SPEED)
 	{
 		_vel.x += FRICTION_POWER;
+	}
+}
+
+void Player::MoveAreaLimit(Map& map)
+{
+	if (_pos.x < COLLIDER_W / 2)
+	{
+		_pos.x = COLLIDER_W / 2;
+		_vel.x = 0.0f;
+	}
+	if (_pos.x > map.GetStageWidth() - COLLIDER_W / 2)
+	{
+		_pos.x = map.GetStageWidth() - COLLIDER_W / 2;
+		_vel.x = 0.0f;
+	}
+}
+
+void Player::DamageUpdate()
+{
+	if (_invincibleFrame > 0)
+	{
+		_invincibleFrame--;
+		if (_invincibleFrame == DAMAGE_ANIMATION_END_FRAME)
+		{	// 被弾アニメーションが終わったら操作可能にする
+			_isCanControll = true;
+			_isFrickering = true;
+		}
+	}
+	else if (_invincibleFrame <= 0)
+	{	// 無敵時間が終わったら点滅終了
+		_isFrickering = false;
 	}
 }
 
