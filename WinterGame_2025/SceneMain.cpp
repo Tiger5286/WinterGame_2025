@@ -47,7 +47,7 @@ SceneMain::SceneMain(SceneManager& manager) :
 	assert(_laserH != -1);
 
 	/*オブジェクトの生成*/
-	LoadStage(Stages::Temp);
+	LoadStage(Stages::Stage1);
 }
 
 SceneMain::~SceneMain()
@@ -223,6 +223,10 @@ void SceneMain::LoadStage(Stages stage)
 		_pLasers.push_back(std::make_shared<Laser>(Vector2(139 * 48, 12 * 48), _laserH, 7, _pPlayer));
 		break;
 	case Stages::Stage1 :
+
+		_pPlayer->SetPos({ 3 * 48,19 * 48 });
+
+		_pMap->LoadMapData("data/Map/Stage1Map.csv");
 
 		break;
 	}
