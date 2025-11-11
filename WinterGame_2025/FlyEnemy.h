@@ -4,7 +4,8 @@
 class FlyEnemy : public Enemy
 {
 public:
-	FlyEnemy(Vector2 firstPos,int handle,std::shared_ptr<Player> pPlayer);
+	FlyEnemy(int handle, std::shared_ptr<Player> pPlayer);
+	FlyEnemy(Vector2 firstPos,int handle, std::shared_ptr<Player> pPlayer);
 	~FlyEnemy();
 
 	void Init() override;

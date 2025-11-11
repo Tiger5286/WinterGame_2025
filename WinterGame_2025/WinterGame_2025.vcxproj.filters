@@ -85,7 +85,10 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Uncategorized</Filter>
     </ClCompile>
-    <ClCompile Include="Laser.cpp" />
+    <ClCompile Include="Laser.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -95,9 +98,6 @@
       <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="WalkEnemy.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="SceneTitle.h">
@@ -151,6 +151,12 @@
     <ClInclude Include="Camera.h">
       <Filter>Uncategorized</Filter>
     </ClInclude>
-    <ClInclude Include="Laser.h" />
+    <ClInclude Include="Laser.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpEnemy.h" />
+    <ClInclude Include="WalkEnemy.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

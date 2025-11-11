@@ -40,8 +40,19 @@ enum class WalkEnemyAnimType : int
 	Fall
 };
 
-WalkEnemy::WalkEnemy(Vector2 firstPos,WalkEnemyState state,bool isTurn,int handle, std::shared_ptr<Player>pPlayer):
-	Enemy(firstPos,MAX_HP,pPlayer),
+WalkEnemy::WalkEnemy(WalkEnemyState state,bool isTurn,int handle, std::shared_ptr<Player>pPlayer):
+	Enemy(MAX_HP,pPlayer),
+	_handle(-1),
+	_isHitChargeShot(false),
+	_isTurn(isTurn),
+	_state(state)
+{
+	_handle = handle;
+	_collider = std::make_shared<BoxCollider>(_pos, Vector2{ COLLIDER_W,COLLIDER_H });
+}
+
+WalkEnemy::WalkEnemy(Vector2 firstPos, WalkEnemyState state, bool isTurn, int handle, std::shared_ptr<Player> pPlayer) :
+	Enemy(firstPos,MAX_HP, pPlayer),
 	_handle(-1),
 	_isHitChargeShot(false),
 	_isTurn(isTurn),

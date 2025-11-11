@@ -20,13 +20,25 @@ namespace
 	constexpr int ONE_ANIM_FRAME = 6;
 }
 
-Laser::Laser(Vector2 firstPos, int handle,int laserLength, std::shared_ptr<Player> pPlayer):
-	GameObject({ firstPos.x + HALF_DRAW_SIZE,firstPos.y + HALF_DRAW_SIZE }),
+Laser::Laser(int handle,int laserLength, std::shared_ptr<Player> pPlayer):
 	_handle(handle),
 	_laserLength(laserLength),
 	_pPlayer(pPlayer)
 {
 	_collider = std::make_shared<BoxCollider>(Vector2(_pos.x,_pos.y + GRAPH_SIZE * DRAW_SCALE * _laserLength - HALF_DRAW_SIZE),
+		Vector2(COLLIDER_WIDTH, GRAPH_SIZE * DRAW_SCALE * laserLength));
+	_launcherAnim.Init(_handle, LAUNCHER_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	_laserAnim.Init(_handle, LASER_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	_impactAnim.Init(_handle, IMPACT_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+}
+
+Laser::Laser(Vector2 firstPos, int handle, int laserLength, std::shared_ptr<Player> pPlayer) :
+	_handle(handle),
+	_laserLength(laserLength),
+	_pPlayer(pPlayer)
+{
+	_pos = { firstPos.x + HALF_DRAW_SIZE,firstPos.y + HALF_DRAW_SIZE };
+	_collider = std::make_shared<BoxCollider>(Vector2(_pos.x, _pos.y + GRAPH_SIZE * DRAW_SCALE * _laserLength - HALF_DRAW_SIZE),
 		Vector2(COLLIDER_WIDTH, GRAPH_SIZE * DRAW_SCALE * laserLength));
 	_launcherAnim.Init(_handle, LAUNCHER_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	_laserAnim.Init(_handle, LASER_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);

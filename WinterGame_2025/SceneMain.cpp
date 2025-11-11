@@ -13,6 +13,7 @@
 #include "Map.h"
 #include "Camera.h"
 #include "Laser.h"
+#include "JumpEnemy.h"
 
 namespace
 {
@@ -38,45 +39,15 @@ SceneMain::SceneMain(SceneManager& manager) :
 	assert(_walkEnemyH != -1);
 	_flyEnemyH = LoadGraph("data/Enemy/FlyEnemy.png");
 	assert(_flyEnemyH != -1);
+	_jumpEnemyH = LoadGraph("data/Enemy/JumpEnemy.png");
+	assert(_jumpEnemyH != -1);
 	_mapChipH = LoadGraph("data/Map/MapChip.png");
 	assert(_mapChipH != -1);
 	_laserH = LoadGraph("data/Laser.png");
 	assert(_laserH != -1);
 
 	/*オブジェクトの生成*/
-	// プレイヤー
-	_pPlayer = std::make_shared<Player>(Vector2(3*48,19*48),_playerH, _playerWhiteH,_chargeParticleH);
-
-
-	// 弾
-	_pBullets.resize(BULLET_NUM);
-	for (auto& bullet : _pBullets)
-	{
-		bullet = std::make_shared<Bullet>(Vector2(),_playerShotH, _chargeShotH);
-	}
-
-	// 敵
-	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(24 * 48, 19 * 48),WalkEnemyState::Idle, false,_walkEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(51 * 48, 16 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(60 * 48, 15 * 48), _flyEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(57 * 48, 19 * 48), WalkEnemyState::Move, false, _walkEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(77 * 48, 19 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(94 * 48, 13 * 48), _flyEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(97 * 48, 13 * 48), _flyEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(100 * 48, 13 * 48), _flyEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(103 * 48, 13 * 48), _flyEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(106 * 48, 13 * 48), _flyEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(115* 48, 7 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
-	_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(142 * 48, 9 * 48), WalkEnemyState::Idle, false, _walkEnemyH, _pPlayer));
-
-	// マップ
-	_pMap = std::make_shared<Map>(_mapChipH);
-	_pMap->LoadMapData("data/Map/Map.csv");
-
-	// カメラ
-	_pCamera = std::make_shared<Camera>(_pMap->GetStageWidth());
-
-	_pLaser = std::make_shared<Laser>(Vector2(139 * 48, 12 * 48), _laserH, 7, _pPlayer);
+	LoadStage(Stages::Temp);
 }
 
 SceneMain::~SceneMain()
@@ -110,8 +81,8 @@ void SceneMain::Update(Input input)
 	// プレイヤー制御
 	_pPlayer->SetContext(input,_pBullets);
 	_pPlayer->Update(*_pMap);
+	// カメラ制御
 	_pCamera->Update(_pPlayer->GetPos().x);
-	_pLaser->Update(*_pMap);
 
 	// 敵制御
 	for (auto& enemy : _pEnemys)
@@ -140,6 +111,12 @@ void SceneMain::Update(Input input)
 		}
 	}
 
+	// レーザー
+	for (auto& laser : _pLasers)
+	{
+		laser->Update(*_pMap);
+	}
+
 	// 弾制御
 	for (auto& bullet : _pBullets)
 	{
@@ -150,33 +127,30 @@ void SceneMain::Update(Input input)
 		}
 	}
 
+	// 【デバッグ用】デバッグシーンに切り替え
+#ifdef _DEBUG
 	if (input.IsTriggered("select"))
 	{
 		_manager.ChangeScene(std::make_shared<DebugScene>(_manager));
 	}
+#endif
 }
 
 void SceneMain::Draw()
 {
+	// 背景色
+	//DrawBox(0, 0, GlobalConstants::SCREEN_WIDTH, GlobalConstants::SCREEN_HEIGHT, 0xffffff, true);
+
+	// マップの描画
 	_pMap->Draw(_pCamera->GetDrawOffset());
 
-	// temp こんなかんじでステージに説明を入れたい
-	DrawString(9 * 48 - _pCamera->GetDrawOffset().x,
-		15 * 48 - _pCamera->GetDrawOffset().y,
-		"Xで射撃\nAでジャンプ", 0xffffff);
-	DrawString(83 * 48 - _pCamera->GetDrawOffset().x,
-		13 * 48 - _pCamera->GetDrawOffset().y,
-		"X長押しでチャージショット", 0xffffff);
-	DrawString(116 * 48 - _pCamera->GetDrawOffset().x,
-		11 * 48 - _pCamera->GetDrawOffset().y,
-		"Bでダッシュ", 0xffffff);
-	DrawString(134 * 48 - _pCamera->GetDrawOffset().x,
-		16 * 48 - _pCamera->GetDrawOffset().y,
-		"ダッシュ中は無敵", 0xffffff);
-
-	_pLaser->Draw(_pCamera->GetDrawOffset());
-
-	//DrawBox(0, 0, GlobalConstants::SCREEN_WIDTH, GlobalConstants::SCREEN_HEIGHT, 0xffffff, true);
+	// レーザーの描画
+	for (auto& laser : _pLasers)
+	{
+		laser->Draw(_pCamera->GetDrawOffset());
+	}
+	
+	// 敵の描画
 	for (auto& enemy : _pEnemys)
 	{
 		if (enemy != nullptr)
@@ -184,7 +158,9 @@ void SceneMain::Draw()
 			enemy->Draw(_pCamera->GetDrawOffset());
 		}
 	}
+	// プレイヤーの描画
 	_pPlayer->Draw(_pCamera->GetDrawOffset());
+	// 弾の描画
 	for (auto& bullet : _pBullets)
 	{
 		bullet->Draw(_pCamera->GetDrawOffset());
@@ -194,4 +170,64 @@ void SceneMain::Draw()
 	DrawString(0,0,"SceneMain",0xffffff);
 	DrawFormatString(0, 16, 0xffffff, "FRAME:%d", _frameCount);
 #endif // _DEBUG
+}
+
+void SceneMain::LoadStage(Stages stage)
+{
+	// 先に必ず存在するオブジェクトの生成をする
+	// プレイヤー
+	_pPlayer = std::make_shared<Player>(_playerH, _playerWhiteH, _chargeParticleH);
+	// 弾
+	_pBullets.resize(BULLET_NUM);
+	for (auto& bullet : _pBullets)
+	{
+		bullet = std::make_shared<Bullet>(_playerShotH, _chargeShotH);
+	}
+	// マップ
+	_pMap = std::make_shared<Map>(_mapChipH);
+
+	switch (stage)
+	{
+	case Stages::Temp:
+
+		_pPlayer->SetPos({ 3 * 48,19 * 48 });
+
+		_pMap->LoadMapData("data/Map/TempMap.csv");
+
+		_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(30 * 48, 19 * 48), _pPlayer,_jumpEnemyH));
+		_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(17 * 48, 19 * 48), _pPlayer, _jumpEnemyH));
+
+		break;
+	case Stages::Tutorial:
+
+		// プレイヤーの位置を設定
+		_pPlayer->SetPos({ 3 * 48,19 * 48 });
+
+		// マップのデータをロード
+		_pMap->LoadMapData("data/Map/TutorialMap.csv");
+
+		// 敵を生成
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(24 * 48, 19 * 48), WalkEnemyState::Idle, false, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(51 * 48, 16 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(60 * 48, 15 * 48), _flyEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(57 * 48, 19 * 48), WalkEnemyState::Move, false, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(77 * 48, 19 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(94 * 48, 13 * 48), _flyEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(97 * 48, 13 * 48), _flyEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(100 * 48, 13 * 48), _flyEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(103 * 48, 13 * 48), _flyEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(106 * 48, 13 * 48), _flyEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(115 * 48, 7 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(142 * 48, 9 * 48), WalkEnemyState::Idle, false, _walkEnemyH, _pPlayer));
+
+		// レーザー
+		_pLasers.push_back(std::make_shared<Laser>(Vector2(139 * 48, 12 * 48), _laserH, 7, _pPlayer));
+		break;
+	case Stages::Stage1 :
+
+		break;
+	}
+
+	// カメラ(マップの幅を取得する必要があるためマップを含む諸々生成してから生成)
+	_pCamera = std::make_shared<Camera>(_pMap->GetStageWidth());
 }

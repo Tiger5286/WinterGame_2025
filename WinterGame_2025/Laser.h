@@ -6,7 +6,8 @@ class Player;
 class Laser : public GameObject
 {
 public:
-	Laser(Vector2 firstPos,int handle,int laserLength,std::shared_ptr<Player> pPlayer);
+	Laser(int handle,int laserLength,std::shared_ptr<Player> pPlayer);
+	Laser(Vector2 firstPos,int handle, int laserLength, std::shared_ptr<Player> pPlayer);
 	~Laser();
 
 	void Init() override;

@@ -83,13 +83,13 @@ enum class PlayerAnimType : int
 	Fall = 8
 };
 
-Player::Player(Vector2 firstPos,int playerH, int playerWhiteH, int chargeParticleH):
-	GameObject(firstPos),
+Player::Player(int playerH, int playerWhiteH, int chargeParticleH):
 	_playerH(playerH),
 	_playerWhiteH(playerWhiteH),
 	_chargeParticleH(chargeParticleH),
 	_jumpFrame(0),
 	_isJumping(false),
+	_isHitUp(false),
 	_isTurn(false),
 	_isCanControll(true),
 	_invincibleFrame(0),

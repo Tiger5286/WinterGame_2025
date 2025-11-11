@@ -17,7 +17,7 @@ enum class HitDirectionX
 class GameObject
 {
 public:
-	GameObject(Vector2 firstPos);
+	GameObject();
 	virtual ~GameObject();
 
 	virtual void Init() = 0;

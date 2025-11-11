@@ -23,8 +23,7 @@ namespace
 	constexpr int CHARGE_SHOT_DAMAGE = 5;
 }
 
-Bullet::Bullet(Vector2 firstPos,int shotH, int chargeShotH):
-	GameObject(firstPos),
+Bullet::Bullet(int shotH, int chargeShotH):
 	_shotH(shotH),
 	_chargeShotH(chargeShotH),
 	_type(BulletType::NormalShot),

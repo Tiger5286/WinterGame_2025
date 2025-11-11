@@ -16,6 +16,16 @@ class Camera;
 
 class Laser;
 
+// どのステージかを表す列挙体
+enum class Stages
+{
+	Temp,
+	Tutorial,
+	Stage1,
+	Stage2,
+	Boss
+};
+
 class SceneMain : public SceneBase
 {
 public:
@@ -26,6 +36,8 @@ public:
 	void Update(Input input) override;
 	void Draw() override;
 
+	void LoadStage(Stages stage);
+
 private:
 	/*画像ハンドル*/
 	int _playerH;
@@ -35,6 +47,7 @@ private:
 	int _chargeParticleH;
 	int _walkEnemyH;
 	int _flyEnemyH;
+	int _jumpEnemyH;
 	int _mapChipH;
 	int _laserH;
 
@@ -44,7 +57,7 @@ private:
 	std::shared_ptr<Player> _pPlayer;
 	std::vector<std::shared_ptr<Bullet>> _pBullets;
 	std::vector<std::shared_ptr<Enemy>> _pEnemys;
-	std::shared_ptr<Laser> _pLaser;
+	std::vector<std::shared_ptr<Laser>> _pLasers;
 	// その他オブジェクト？
 	std::shared_ptr<Map> _pMap;
 	std::shared_ptr<Camera> _pCamera;

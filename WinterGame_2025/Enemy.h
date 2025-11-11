@@ -7,7 +7,8 @@ class Player;
 class Enemy : public GameObject
 {
 public:
-	Enemy(Vector2 firstPos,int hp,std::shared_ptr<Player> pPlayer);
+	Enemy(int hp, std::shared_ptr<Player> pPlayer);
+	Enemy(Vector2 firstPos, int hp,std::shared_ptr<Player> pPlayer);
 	virtual ~Enemy();
 
 	virtual void Init() override = 0;
