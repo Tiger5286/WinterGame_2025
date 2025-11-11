@@ -194,8 +194,7 @@ void SceneMain::LoadStage(Stages stage)
 
 		_pMap->LoadMapData("data/Map/TempMap.csv");
 
-		_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(30 * 48, 19 * 48), _pPlayer,_jumpEnemyH));
-		_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(17 * 48, 19 * 48), _pPlayer, _jumpEnemyH));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(22 * 48, 15 * 48), _flyEnemyH, FlyEnemyState::Move, _pPlayer));
 
 		break;
 	case Stages::Tutorial:
@@ -209,14 +208,14 @@ void SceneMain::LoadStage(Stages stage)
 		// ìGÇê∂ê¨
 		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(24 * 48, 19 * 48), WalkEnemyState::Idle, false, _walkEnemyH, _pPlayer));
 		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(51 * 48, 16 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(60 * 48, 15 * 48), _flyEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(60 * 48, 15 * 48), _flyEnemyH, FlyEnemyState::Idle, _pPlayer));
 		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(57 * 48, 19 * 48), WalkEnemyState::Move, false, _walkEnemyH, _pPlayer));
 		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(77 * 48, 19 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(94 * 48, 13 * 48), _flyEnemyH, _pPlayer));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(97 * 48, 13 * 48), _flyEnemyH, _pPlayer));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(100 * 48, 13 * 48), _flyEnemyH, _pPlayer));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(103 * 48, 13 * 48), _flyEnemyH, _pPlayer));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(106 * 48, 13 * 48), _flyEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(94 * 48, 13 * 48), _flyEnemyH, FlyEnemyState::Idle,_pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(97 * 48, 13 * 48), _flyEnemyH, FlyEnemyState::Idle, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(100 * 48, 13 * 48), _flyEnemyH, FlyEnemyState::Idle, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(103 * 48, 13 * 48), _flyEnemyH, FlyEnemyState::Idle, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(106 * 48, 13 * 48), _flyEnemyH, FlyEnemyState::Idle, _pPlayer));
 		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(115 * 48, 7 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
 		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(142 * 48, 9 * 48), WalkEnemyState::Idle, false, _walkEnemyH, _pPlayer));
 

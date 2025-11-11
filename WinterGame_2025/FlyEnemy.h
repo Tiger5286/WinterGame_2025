@@ -1,11 +1,18 @@
 #pragma once
 #include "Enemy.h"
 #include "Animation.h"
+
+enum class FlyEnemyState
+{
+	Idle,
+	Move
+};
+
 class FlyEnemy : public Enemy
 {
 public:
-	FlyEnemy(int handle, std::shared_ptr<Player> pPlayer);
-	FlyEnemy(Vector2 firstPos,int handle, std::shared_ptr<Player> pPlayer);
+	FlyEnemy(int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer);
+	FlyEnemy(Vector2 firstPos,int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer);
 	~FlyEnemy();
 
 	void Init() override;
@@ -13,7 +20,7 @@ public:
 	void Draw(Vector2 offset) override;
 private:
 	int _handle;
-
 	float _angle;
+	FlyEnemyState _state;
 };
 

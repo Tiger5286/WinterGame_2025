@@ -17,20 +17,24 @@ namespace
 
 	// 動き関係
 	constexpr float WAVE_HEIGHT = 20.0f;
+	constexpr float ACCEL = 0.05;
+	constexpr float MAX_MOVE_SPEED = 2.5f;
 }
 
-FlyEnemy::FlyEnemy(int handle, std::shared_ptr<Player> pPlayer) :
+FlyEnemy::FlyEnemy(int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer) :
 	Enemy(5, pPlayer),
 	_handle(handle),
-	_angle(0.0f)
+	_angle(0.0f),
+	_state(state)
 {
 	_collider = std::make_shared<CircleCollider>(_pos, 35);
 }
 
-FlyEnemy::FlyEnemy(Vector2 firstPos, int handle, std::shared_ptr<Player> pPlayer) :
+FlyEnemy::FlyEnemy(Vector2 firstPos, int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer) :
 	Enemy(firstPos, 5, pPlayer),
 	_handle(handle),
-	_angle(0.0f)
+	_angle(0.0f),
+	_state(state)
 {
 	_collider = std::make_shared<CircleCollider>(_pos, 35);
 }
@@ -48,10 +52,26 @@ void FlyEnemy::Update(Map& map)
 {
 	_nowAnim.Update();
 
+	// ステートがMoveの時はプレイヤーを追う
+	if (_state == FlyEnemyState::Move)
+	{
+		// プレイヤーが左にいるとき
+		if (_pos.x < _pPlayer->GetPos().x)
+		{
+			_vel.x += ACCEL;
+		}
+		else	// プレイヤーが右にいるとき
+		{
+			_vel.x -= ACCEL;
+		}
+	}
+	// 移動速度の上限を設定
+	if (_vel.x > MAX_MOVE_SPEED) _vel.x = MAX_MOVE_SPEED;
+	if (_vel.x < -MAX_MOVE_SPEED) _vel.x = -MAX_MOVE_SPEED;
 
 	_pos += _vel;
-	_angle += 0.05f;
-	const Vector2 adjustPos = { _pos.x, _pos.y + sinf(_angle) * WAVE_HEIGHT };
+	_angle += 0.05f;	// sin用
+	const Vector2 adjustPos = { _pos.x, _pos.y + sinf(_angle) * WAVE_HEIGHT };	// 上下にsinの動きをつけた位置
 
 	_collider->SetPos(adjustPos);
 
