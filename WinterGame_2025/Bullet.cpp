@@ -69,7 +69,7 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 
 	Vector2 hitChipPos;	// 未使用
 	if (map.IsCollision(_collider,hitChipPos))
-	{	// マップチップに当たったら消える
+	{	// マップに当たったら消える
 		_isAlive = false;
 	}
 

@@ -9,6 +9,11 @@ Input::Input() : inputData_{}, lastInputData_{}, inputTable_{}
 	inputTable_["select"] = { { PeripheralType::keyboard,KEY_INPUT_RETURN},
 						  { PeripheralType::pad1,GlobalConstants::PAD_SELECT } };
 
+	inputTable_["decision"] = { { PeripheralType::keyboard,KEY_INPUT_Z},
+						  { PeripheralType::pad1,GlobalConstants::PAD_A } };
+	inputTable_["back"] = { { PeripheralType::keyboard,KEY_INPUT_X},
+						  { PeripheralType::pad1,GlobalConstants::PAD_B } };
+
 	inputTable_["jump"] = { { PeripheralType::keyboard,KEY_INPUT_SPACE},
 						  { PeripheralType::pad1,GlobalConstants::PAD_A } };
 	inputTable_["shot"] = { { PeripheralType::keyboard,KEY_INPUT_Z},

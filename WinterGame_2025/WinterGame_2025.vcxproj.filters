@@ -91,6 +91,9 @@
     <ClCompile Include="JumpEnemy.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="SceneStageSelect.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -156,9 +159,14 @@
     <ClInclude Include="Laser.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="JumpEnemy.h" />
     <ClInclude Include="WalkEnemy.h">
       <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpEnemy.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneStageSelect.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

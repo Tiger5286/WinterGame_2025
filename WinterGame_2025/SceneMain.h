@@ -29,11 +29,11 @@ enum class Stages
 class SceneMain : public SceneBase
 {
 public:
-	SceneMain(SceneManager& manager);
+	SceneMain(SceneManager& manager, Stages stage);
 	~SceneMain();
 
 	void Init() override;
-	void Update(Input input) override;
+	void Update(Input& input) override;
 	void Draw() override;
 
 	void LoadStage(Stages stage);

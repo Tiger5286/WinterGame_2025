@@ -67,6 +67,53 @@ bool GameObject::MapCollision(Map& map)
 	return collided;
 }
 
+bool GameObject::MapCollision(Map& map, HitDirection& hitDir)
+{
+	hitDir.SetAll(false);
+	bool collided = false;
+	Vector2 tempPos = _pos;
+	tempPos.x += _vel.x;
+	_collider->SetPos(tempPos);
+	Vector2 hitChipPos;
+	if (map.IsCollision(_collider, hitChipPos))	// xだけ移動した後に当たった = 横から当たった
+	{
+		Vector2 dist = _collider->GetPos() - hitChipPos;
+		// 横から当たった場合
+		if (dist.x > 0)
+		{
+			//	プレイヤーは当たったマップチップの右側にいる
+			hitDir.left = true;
+		}
+		else
+		{
+			//	プレイヤーは当たったマップチップの左側にいる
+			hitDir.right = true;
+		}
+		_collider->SetPos(tempPos);
+		collided = true;
+	}
+	tempPos.y += _vel.y;
+	_collider->SetPos(tempPos);
+	if (map.IsCollision(_collider, hitChipPos))	// yだけ移動した後に当たった = 縦から当たった
+	{
+		Vector2 dist = _collider->GetPos() - hitChipPos;
+		// 縦から当たった場合
+		if (dist.y > 0)
+		{
+			//	プレイヤーは当たったマップチップの下側にいる
+			hitDir.up = true;
+		}
+		else
+		{
+			//	プレイヤーは当たったマップチップの上側にいる
+			hitDir.down = true;
+		}
+		collided = true;
+	}
+	_collider->SetPos(_pos);
+	return collided;
+}
+
 bool GameObject::MapCollision(Map& map, HitDirectionX& HitDirX)
 {
 	bool collided = false;

@@ -20,7 +20,7 @@ namespace
 	constexpr int BULLET_NUM = 15;
 }
 
-SceneMain::SceneMain(SceneManager& manager) :
+SceneMain::SceneMain(SceneManager& manager, Stages stage) :
 	SceneBase(manager),
 	_frameCount(0)
 {
@@ -47,7 +47,7 @@ SceneMain::SceneMain(SceneManager& manager) :
 	assert(_laserH != -1);
 
 	/*オブジェクトの生成*/
-	LoadStage(Stages::Stage1);
+	LoadStage(stage);
 }
 
 SceneMain::~SceneMain()
@@ -74,7 +74,7 @@ void SceneMain::Init()
 	}
 }
 
-void SceneMain::Update(Input input)
+void SceneMain::Update(Input& input)
 {
 	_frameCount++;
 
@@ -189,6 +189,7 @@ void SceneMain::LoadStage(Stages stage)
 	switch (stage)
 	{
 	case Stages::Temp:
+		printfDx("Stages::Tempがロードされました\n");
 
 		_pPlayer->SetPos({ 3 * 48,19 * 48 });
 
@@ -198,6 +199,7 @@ void SceneMain::LoadStage(Stages stage)
 
 		break;
 	case Stages::Tutorial:
+		printfDx("Stages::Tutorialがロードされました\n");
 
 		// プレイヤーの位置を設定
 		_pPlayer->SetPos({ 3 * 48,19 * 48 });
@@ -221,12 +223,35 @@ void SceneMain::LoadStage(Stages stage)
 
 		// レーザー
 		_pLasers.push_back(std::make_shared<Laser>(Vector2(139 * 48, 12 * 48), _laserH, 7, _pPlayer));
+
 		break;
 	case Stages::Stage1 :
+		printfDx("Stages::Stage1がロードされました\n");
 
 		_pPlayer->SetPos({ 3 * 48,19 * 48 });
 
 		_pMap->LoadMapData("data/Map/Stage1Map.csv");
+
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(23 * 48, 19 * 48), WalkEnemyState::Idle, false, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(28 * 48, 15 * 48), WalkEnemyState::Idle, false, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(31 * 48, 19 * 48), WalkEnemyState::Move, false, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(46 * 48, 19 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(42 * 48, 14 * 48), _flyEnemyH, FlyEnemyState::Move, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(56 * 48, 9 * 48), _flyEnemyH, FlyEnemyState::Idle, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(69 * 48, 13 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(61 * 48, 19 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(64 * 48, 19 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(67 * 48, 19 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(88 * 48, 16 * 48), WalkEnemyState::Move, true, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(96 * 48, 19 * 48), _pPlayer, _jumpEnemyH));
+
+		break;
+	case Stages::Stage2:
+		printfDx("Stages::Stage2がロードされました\n");
+
+		break;
+	case Stages::Boss:
+		printfDx("Stages::Bossがロードされました\n");
 
 		break;
 	}

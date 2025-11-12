@@ -7,7 +7,7 @@ public:
 	~SceneTitle();
 
 	void Init() override;
-	void Update(Input input) override;
+	void Update(Input& input) override;
 	void Draw() override;
 };
 

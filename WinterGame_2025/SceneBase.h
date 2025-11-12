@@ -13,7 +13,7 @@ public:
 	virtual ~SceneBase();
 
 	virtual void Init() = 0;
-	virtual void Update(Input input) = 0;
+	virtual void Update(Input& input) = 0;
 	virtual void Draw() = 0;
 protected:
 	SceneManager& _manager;

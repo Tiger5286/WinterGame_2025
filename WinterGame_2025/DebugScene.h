@@ -13,7 +13,7 @@ public:
 	~DebugScene();
 
 	void Init() override;
-	void Update(Input input) override;
+	void Update(Input& input) override;
 	void Draw() override;
 private:
 	int _selectIndex;	// 現在選択中のインデックス

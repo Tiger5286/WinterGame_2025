@@ -173,7 +173,7 @@ void Player::Update(Map& map)
 	}
 
 	// マップとの当たり判定処理
-	MapCollision(map, _isHitUp);
+	MapCollision(map,_isHitUp);
 
 	// ダメージを受けているときの処理
 	DamageUpdate();

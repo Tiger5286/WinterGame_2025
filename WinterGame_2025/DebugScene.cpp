@@ -15,7 +15,7 @@ DebugScene::DebugScene(SceneManager& manager):
 		"SceneTitle"
 	};
 	_execTable["SceneMain"] = [this]() {
-		_manager.ChangeScene(std::make_shared<SceneMain>(_manager));
+		_manager.ChangeScene(std::make_shared<SceneMain>(_manager,Stages::Temp));
 		};
 	_execTable["SceneTitle"] = [this]() {
 		_manager.ChangeScene(std::make_shared<SceneTitle>(_manager));
@@ -30,7 +30,7 @@ void DebugScene::Init()
 {
 }
 
-void DebugScene::Update(Input input)
+void DebugScene::Update(Input& input)
 {
 	if (input.IsTriggered("up"))
 	{
@@ -40,7 +40,7 @@ void DebugScene::Update(Input input)
 	{
 		_selectIndex = (_selectIndex + 1) % _menuList.size();
 	}
-	if (input.IsTriggered("select"))
+	if (input.IsTriggered("decision"))
 	{
 		auto& menuName = _menuList[_selectIndex];
 		_execTable[menuName]();
