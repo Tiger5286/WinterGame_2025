@@ -18,7 +18,9 @@ namespace
 }
 
 Map::Map(int handle) :
-	_handle(handle)
+	_handle(handle),
+	_chipNumX(0),
+	_chipNumY(0)
 {
 }
 
