@@ -5,6 +5,7 @@
 
 #include "SceneMain.h"
 #include "SceneTitle.h"
+#include "SceneStageSelect.h"
 
 DebugScene::DebugScene(SceneManager& manager):
 	SceneBase(manager),
@@ -12,13 +13,17 @@ DebugScene::DebugScene(SceneManager& manager):
 {
 	_menuList = {
 		"SceneMain",
-		"SceneTitle"
+		"SceneTitle",
+		"SceneStageSelect"
 	};
 	_execTable["SceneMain"] = [this]() {
 		_manager.ChangeScene(std::make_shared<SceneMain>(_manager,Stages::Temp));
 		};
 	_execTable["SceneTitle"] = [this]() {
 		_manager.ChangeScene(std::make_shared<SceneTitle>(_manager));
+		};
+	_execTable["SceneStageSelect"] = [this]() {
+		_manager.ChangeScene(std::make_shared<SceneStageSelect>(_manager));
 		};
 }
 

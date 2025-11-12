@@ -20,18 +20,15 @@
     <Filter Include="Uncategorized">
       <UniqueIdentifier>{f9e83647-bc24-4ad2-802f-228e5b335d0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObjects\Enemy">
+      <UniqueIdentifier>{ee60d94a-90b1-4d43-8ada-ea9d12556e28}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="WalkEnemy.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="SceneTitle.cpp">
@@ -67,9 +64,6 @@
     <ClCompile Include="Collider.cpp">
       <Filter>GameObjects\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="FlyEnemy.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Uncategorized</Filter>
     </ClCompile>
@@ -88,18 +82,30 @@
     <ClCompile Include="Laser.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="JumpEnemy.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="SceneStageSelect.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Gimmick.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="FlyEnemy.cpp">
+      <Filter>GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpEnemy.cpp">
+      <Filter>GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="WalkEnemy.cpp">
+      <Filter>GameObjects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
@@ -138,9 +144,6 @@
     <ClInclude Include="Input.h">
       <Filter>General</Filter>
     </ClInclude>
-    <ClInclude Include="FlyEnemy.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Uncategorized</Filter>
     </ClInclude>
@@ -156,17 +159,29 @@
     <ClInclude Include="Camera.h">
       <Filter>Uncategorized</Filter>
     </ClInclude>
+    <ClInclude Include="SceneStageSelect.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
     <ClInclude Include="Laser.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="WalkEnemy.h">
+    <ClInclude Include="Gimmick.h">
       <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="FlyEnemy.h">
+      <Filter>GameObjects\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="JumpEnemy.h">
-      <Filter>GameObjects</Filter>
+      <Filter>GameObjects\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="SceneStageSelect.h">
-      <Filter>Scenes</Filter>
+    <ClInclude Include="WalkEnemy.h">
+      <Filter>GameObjects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

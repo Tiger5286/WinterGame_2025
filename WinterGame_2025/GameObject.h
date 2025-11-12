@@ -41,15 +41,32 @@ public:
 	virtual void Update(Map& map) = 0;
 	virtual void Draw(Vector2 offset) = 0;
 
+	/// <summary>
+	/// マップとの当たり判定をし、押し戻す
+	/// </summary>
+	/// <param name="map">マップ</param>
+	/// <returns>true:当たっている/false:当たっていない</returns>
 	bool MapCollision(Map& map);
-	bool MapCollision(Map& map, HitDirection& hitDir);
-	bool MapCollision(Map& map, HitDirectionX& hitDirX);
-	bool MapCollision(Map& map, bool& isHitUp);
+	bool MapCollision(Map& map, HitDirection& hitDir);	// 当たった方向を取得するバージョン
+	bool MapCollision(Map& map, HitDirectionX& hitDirX);	// 左右の当たった方向を取得するバージョン
+	bool MapCollision(Map& map, bool& isHitUp);	// 上に当たったかどうかを取得するバージョン
 
 	void ChangeAnim(Animation anim);
 
+	/// <summary>
+	/// マップチップ座標をゲーム座標に変換する
+	/// </summary>
+	/// <param name="mapChipPos">マップチップ座標</param>
+	/// <returns>ゲーム内座標</returns>
+	Vector2 MapChipPosToGamePos(Vector2 mapChipPos);
+
 	void SetPos(Vector2 pos) { _pos = pos; }
 	Vector2 GetPos() { return _pos; }
+
+	void SetPosFromMapChip(Vector2 mapChipPos)
+	{
+		_pos = MapChipPosToGamePos(mapChipPos);
+	}
 
 	std::shared_ptr<Collider> GetCollider() { return _collider; }
 

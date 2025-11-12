@@ -1,11 +1,13 @@
 #include "GameObject.h"
 #include "Collider.h"
 #include "Map.h"
+#include <cassert>
 
 namespace
 {
 	const Vector2 GRAVITY = { 0.0f,1.0f };
 	constexpr float MAX_FALL_SPEED = 15.0f;
+	constexpr int MAP_CHIP_SIZE = 16;
 	constexpr float DRAW_SCALE = 3.0f;
 }
 
@@ -221,6 +223,28 @@ void GameObject::ChangeAnim(Animation anim)
 	{
 		_nowAnim = anim;
 	}
+}
+
+Vector2 GameObject::MapChipPosToGamePos(Vector2 mapChipPos)
+{
+	Vector2 ans;
+	if (_collider->GetType() == Collider::Type::Circle)
+	{
+		// 円形コライダーの場合は中心を返す
+		ans.x = mapChipPos.x * MAP_CHIP_SIZE * DRAW_SCALE + (MAP_CHIP_SIZE * DRAW_SCALE) / 2;
+		ans.y = mapChipPos.y * MAP_CHIP_SIZE * DRAW_SCALE + (MAP_CHIP_SIZE * DRAW_SCALE) / 2;
+	}
+	else if (_collider->GetType() == Collider::Type::Box)
+	{
+		// 箱型コライダーの場合は下中央を返す
+		ans.x = mapChipPos.x * MAP_CHIP_SIZE * DRAW_SCALE + (MAP_CHIP_SIZE * DRAW_SCALE) / 2;
+		ans.y = mapChipPos.y * MAP_CHIP_SIZE * DRAW_SCALE + (MAP_CHIP_SIZE * DRAW_SCALE);
+	}
+	else
+	{
+		assert(false && "未知のコライダーです");
+	}
+	return ans;
 }
 
 

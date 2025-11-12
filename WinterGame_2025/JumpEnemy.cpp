@@ -31,7 +31,7 @@ namespace
 }
 
 JumpEnemy::JumpEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer, int handle) :
-	Enemy(firstPos,5, pPlayer),
+	Enemy(5, pPlayer),
 	_handle(handle),
 	_attackCooltime(0),
 	_attackFrame(0),
@@ -39,6 +39,7 @@ JumpEnemy::JumpEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer, int handl
 	_isTurn(false)
 {
 	_collider = std::make_shared<BoxCollider>(_pos, Vector2{ COLLIDER_W,COLLIDER_H });
+	_pos = MapChipPosToGamePos(firstPos);
 	_idleAnim.Init(_handle, 0, GRAPH_FRAME_SIZE, IDLE_ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	_attackAnim.Init(_handle, 1, GRAPH_FRAME_SIZE, ATTACK_ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	_nowAnim = _idleAnim;

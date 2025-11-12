@@ -31,12 +31,13 @@ FlyEnemy::FlyEnemy(int handle, FlyEnemyState state,std::shared_ptr<Player> pPlay
 }
 
 FlyEnemy::FlyEnemy(Vector2 firstPos, int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer) :
-	Enemy(firstPos, 5, pPlayer),
+	Enemy(5, pPlayer),
 	_handle(handle),
 	_angle(0.0f),
 	_state(state)
 {
 	_collider = std::make_shared<CircleCollider>(_pos, 35);
+	_pos = MapChipPosToGamePos(firstPos);
 }
 
 FlyEnemy::~FlyEnemy()

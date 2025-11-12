@@ -7,9 +7,10 @@ class Input;
 class Player;
 class Bullet;
 
+class Item;
+
 class Enemy;
-class WalkEnemy;
-class FlyEnemy;
+class Gimmick;
 
 class Map;
 class Camera;
@@ -39,27 +40,39 @@ public:
 	void LoadStage(Stages stage);
 
 private:
+	void LoadAllGraphs();
+	void DeleteAllGraphs();
+
+private:
 	/*画像ハンドル*/
+	// プレイヤー関連
 	int _playerH;
 	int _playerWhiteH;
 	int _playerShotH;
 	int _chargeShotH;
 	int _chargeParticleH;
+	// 敵関連
 	int _walkEnemyH;
 	int _flyEnemyH;
 	int _jumpEnemyH;
+	// マップ関連
 	int _mapChipH;
+	// ギミック関連
 	int _laserH;
+	// アイテム関連
+	int _coinH;
+	int _bigCoinH;
+	int _healthItemH;
 
 	int _frameCount;	// 経過フレーム数
 
 	/*オブジェクト*/
-	std::shared_ptr<Player> _pPlayer;
-	std::vector<std::shared_ptr<Bullet>> _pBullets;
-	std::vector<std::shared_ptr<Enemy>> _pEnemys;
-	std::vector<std::shared_ptr<Laser>> _pLasers;
-	// その他オブジェクト？
-	std::shared_ptr<Map> _pMap;
-	std::shared_ptr<Camera> _pCamera;
+	std::shared_ptr<Player> _pPlayer;	// プレイヤー
+	std::vector<std::shared_ptr<Bullet>> _pBullets;	// 弾
+	std::vector<std::shared_ptr<Enemy>> _pEnemys;	// 敵
+	std::vector<std::shared_ptr<Item>> _pItems;	// アイテム
+	std::vector<std::shared_ptr<Gimmick>> _pGimmicks;	// ギミック
+	std::shared_ptr<Map> _pMap;	// マップ
+	std::shared_ptr<Camera> _pCamera;	// カメラ
 };
 

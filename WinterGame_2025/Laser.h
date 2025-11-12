@@ -1,12 +1,12 @@
 #pragma once
-#include "GameObject.h"
+#include "Gimmick.h"
 
 class Player;
 
-class Laser : public GameObject
+class Laser : public Gimmick
 {
 public:
-	Laser(int handle,int laserLength,std::shared_ptr<Player> pPlayer);
+	//Laser(int handle,int laserLength,std::shared_ptr<Player> pPlayer);
 	Laser(Vector2 firstPos,int handle, int laserLength, std::shared_ptr<Player> pPlayer);
 	~Laser();
 

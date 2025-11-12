@@ -71,6 +71,24 @@ void SceneStageSelect::Update(Input& input)
 
 void SceneStageSelect::Draw()
 {
+	// 最初のステージと最後のステージ以外を選択中の時は選択中、左、右のステージ名を表示
+	if (_selectIndex > 0 && _selectIndex < _stageList.size() - 1)
+	{
+		DrawFormatString(1920 / 2 - 400, 1080 / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
+		DrawFormatString(1920 / 2, 1080 / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
+		DrawFormatString(1920 / 2 + 400, 1080 / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+	}
+	else if (_selectIndex == 0)	// 最初のステージを選択中のときは選択中と右のステージ名を表示
+	{
+		DrawFormatString(1920 / 2, 1080 / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
+		DrawFormatString(1920 / 2 + 400, 1080 / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+	}
+	else if (_selectIndex == _stageList.size() - 1)	// 最後のステージを選択中のときは選択中と左のステージ名を表示
+	{
+		DrawFormatString(1920 / 2 - 400, 1080 / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
+		DrawFormatString(1920 / 2, 1080 / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
+	}
+
 #ifdef _DEBUG
 	DrawString(0, 0, "SceneStageSelect",0xffffff);
 	DrawFormatString(0, 16, 0xffffff, "selectIndex:%d",_selectIndex);

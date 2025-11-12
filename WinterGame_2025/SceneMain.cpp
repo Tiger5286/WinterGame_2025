@@ -1,19 +1,28 @@
 #include "SceneMain.h"
+
 #include "DxLib.h"
 #include "Application.h"
 #include "input.h"
-#include "Player.h"
-#include "Bullet.h"
-#include "WalkEnemy.h"
-#include "FlyEnemy.h"
-#include "SceneManager.h"
-#include "DebugScene.h"
 #include <cassert>
 #include "Game.h"
+
+#include "SceneManager.h"
+#include "DebugScene.h"
+
+#include "Player.h"
+#include "Bullet.h"
+
+#include "WalkEnemy.h"
+#include "FlyEnemy.h"
+#include "JumpEnemy.h"
+
+#include "Item.h"
+
+#include "Laser.h"
+
 #include "Map.h"
 #include "Camera.h"
-#include "Laser.h"
-#include "JumpEnemy.h"
+
 
 namespace
 {
@@ -25,26 +34,7 @@ SceneMain::SceneMain(SceneManager& manager, Stages stage) :
 	_frameCount(0)
 {
 	/*画像の読み込み*/
-	_playerH = LoadGraph("data/Player/Player.png");
-	assert(_playerH != -1);
-	_playerWhiteH = LoadGraph("data/Player/PlayerWhite.png");
-	assert(_playerWhiteH != -1);
-	_playerShotH = LoadGraph("data/Player/Shot.png");
-	assert(_playerShotH != -1);
-	_chargeShotH = LoadGraph("data/Player/ChargeShot.png");
-	assert(_chargeShotH != -1);
-	_chargeParticleH = LoadGraph("data/Player/ChargeParticle.png");
-	assert(_chargeParticleH != -1);
-	_walkEnemyH = LoadGraph("data/Enemy/WalkEnemy.png");
-	assert(_walkEnemyH != -1);
-	_flyEnemyH = LoadGraph("data/Enemy/FlyEnemy.png");
-	assert(_flyEnemyH != -1);
-	_jumpEnemyH = LoadGraph("data/Enemy/JumpEnemy.png");
-	assert(_jumpEnemyH != -1);
-	_mapChipH = LoadGraph("data/Map/MapChip.png");
-	assert(_mapChipH != -1);
-	_laserH = LoadGraph("data/Laser.png");
-	assert(_laserH != -1);
+	LoadAllGraphs();
 
 	/*オブジェクトの生成*/
 	LoadStage(stage);
@@ -52,13 +42,7 @@ SceneMain::SceneMain(SceneManager& manager, Stages stage) :
 
 SceneMain::~SceneMain()
 {
-	DeleteGraph(_playerH);
-	DeleteGraph(_playerShotH);
-	DeleteGraph(_chargeShotH);
-	DeleteGraph(_chargeParticleH);
-	DeleteGraph(_walkEnemyH);
-	DeleteGraph(_flyEnemyH);
-	DeleteGraph(_mapChipH);
+	DeleteAllGraphs();
 }
 
 void SceneMain::Init()
@@ -111,10 +95,10 @@ void SceneMain::Update(Input& input)
 		}
 	}
 
-	// レーザー
-	for (auto& laser : _pLasers)
+	// ギミック
+	for (auto& gimmick : _pGimmicks)
 	{
-		laser->Update(*_pMap);
+		gimmick->Update(*_pMap);
 	}
 
 	// 弾制御
@@ -124,6 +108,25 @@ void SceneMain::Update(Input& input)
 		{
 			bullet->SetContext(_pEnemys);
 			bullet->Update(*_pMap,_pCamera->GetPos());
+		}
+	}
+
+	// アイテム制御
+	for (auto& item : _pItems)
+	{
+		if (item != nullptr)
+		{
+			item->Update(*_pMap);
+			if (!item->GetIsAlive())
+			{	// 取られたアイテムをvectorから削除する(あんま意味わからん)
+				_pItems.erase(
+					std::remove_if(_pItems.begin(), _pItems.end(),
+						[](const std::shared_ptr<Item>& item) {
+							return !item->GetIsAlive();
+						}),
+					_pItems.end()
+				);
+			}
 		}
 	}
 
@@ -144,10 +147,10 @@ void SceneMain::Draw()
 	// マップの描画
 	_pMap->Draw(_pCamera->GetDrawOffset());
 
-	// レーザーの描画
-	for (auto& laser : _pLasers)
+	// ギミックの描画
+	for (auto& gimmick : _pGimmicks)
 	{
-		laser->Draw(_pCamera->GetDrawOffset());
+		gimmick->Draw(_pCamera->GetDrawOffset());
 	}
 	
 	// 敵の描画
@@ -164,6 +167,11 @@ void SceneMain::Draw()
 	for (auto& bullet : _pBullets)
 	{
 		bullet->Draw(_pCamera->GetDrawOffset());
+	}
+
+	for (auto& item : _pItems)
+	{
+		item->Draw(_pCamera->GetDrawOffset());
 	}
 
 #ifdef _DEBUG
@@ -191,11 +199,19 @@ void SceneMain::LoadStage(Stages stage)
 	case Stages::Temp:
 		printfDx("Stages::Tempがロードされました\n");
 
-		_pPlayer->SetPos({ 3 * 48,19 * 48 });
+		_pPlayer->SetPosFromMapChip({ 3,19 });
 
 		_pMap->LoadMapData("data/Map/TempMap.csv");
 
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(22 * 48, 15 * 48), _flyEnemyH, FlyEnemyState::Move, _pPlayer));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(20,16), WalkEnemyState::Idle, false, _walkEnemyH, _pPlayer));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(20, 15), _flyEnemyH, FlyEnemyState::Idle, _pPlayer));
+		_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(24, 15), _pPlayer, _jumpEnemyH));
+
+		_pItems.push_back(std::make_shared<Item>(Vector2(17, 17), ItemType::Coin, _pPlayer, _coinH));
+		_pItems.push_back(std::make_shared<Item>(Vector2(19, 17), ItemType::BigCoin, _pPlayer, _bigCoinH));
+		_pItems.push_back(std::make_shared<Item>(Vector2(21, 17), ItemType::HealthItem, _pPlayer, _healthItemH));
+
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(10, 12), _laserH, 4, _pPlayer));
 
 		break;
 	case Stages::Tutorial:
@@ -222,7 +238,7 @@ void SceneMain::LoadStage(Stages stage)
 		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(142 * 48, 9 * 48), WalkEnemyState::Idle, false, _walkEnemyH, _pPlayer));
 
 		// レーザー
-		_pLasers.push_back(std::make_shared<Laser>(Vector2(139 * 48, 12 * 48), _laserH, 7, _pPlayer));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(139 * 48, 12 * 48), _laserH, 7, _pPlayer));
 
 		break;
 	case Stages::Stage1 :
@@ -249,13 +265,66 @@ void SceneMain::LoadStage(Stages stage)
 	case Stages::Stage2:
 		printfDx("Stages::Stage2がロードされました\n");
 
+		_pPlayer->SetPos({ 3 * 48,19 * 48 });
+
+		_pMap->LoadMapData("data/Map/TempMap.csv");
+
 		break;
 	case Stages::Boss:
 		printfDx("Stages::Bossがロードされました\n");
+
+		_pPlayer->SetPos({ 3 * 48,19 * 48 });
+
+		_pMap->LoadMapData("data/Map/TempMap.csv");
 
 		break;
 	}
 
 	// カメラ(マップの幅を取得する必要があるためマップを含む諸々生成してから生成)
 	_pCamera = std::make_shared<Camera>(_pMap->GetStageWidth());
+}
+
+void SceneMain::LoadAllGraphs()
+{
+	_playerH = LoadGraph("data/Player/Player.png");
+	assert(_playerH != -1);
+	_playerWhiteH = LoadGraph("data/Player/PlayerWhite.png");
+	assert(_playerWhiteH != -1);
+	_playerShotH = LoadGraph("data/Player/Shot.png");
+	assert(_playerShotH != -1);
+	_chargeShotH = LoadGraph("data/Player/ChargeShot.png");
+	assert(_chargeShotH != -1);
+	_chargeParticleH = LoadGraph("data/Player/ChargeParticle.png");
+	assert(_chargeParticleH != -1);
+	_walkEnemyH = LoadGraph("data/Enemys/WalkEnemy.png");
+	assert(_walkEnemyH != -1);
+	_flyEnemyH = LoadGraph("data/Enemys/FlyEnemy.png");
+	assert(_flyEnemyH != -1);
+	_jumpEnemyH = LoadGraph("data/Enemys/JumpEnemy.png");
+	assert(_jumpEnemyH != -1);
+	_mapChipH = LoadGraph("data/Map/MapChip.png");
+	assert(_mapChipH != -1);
+	_laserH = LoadGraph("data/Gimmicks/Laser.png");
+	assert(_laserH != -1);
+	_coinH = LoadGraph("data/Items/Coin.png");
+	assert(_coinH != -1);
+	_bigCoinH = LoadGraph("data/Items/BigCoin.png");
+	assert(_bigCoinH != -1);
+	_healthItemH = LoadGraph("data/Items/HealthItem.png");
+	assert(_healthItemH != -1);
+}
+
+void SceneMain::DeleteAllGraphs()
+{
+	DeleteGraph(_playerH);
+	DeleteGraph(_playerShotH);
+	DeleteGraph(_chargeShotH);
+	DeleteGraph(_chargeParticleH);
+	DeleteGraph(_walkEnemyH);
+	DeleteGraph(_flyEnemyH);
+	DeleteGraph(_mapChipH);
+	DeleteGraph(_laserH);
+	DeleteGraph(_coinH);
+	DeleteGraph(_bigCoinH);
+	DeleteGraph(_healthItemH);
 }
