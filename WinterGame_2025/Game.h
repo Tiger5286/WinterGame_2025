@@ -23,4 +23,10 @@ namespace GlobalConstants
 	constexpr int PAD_RT = 0x200;
 	constexpr int PAD_SELECT = 0x400;
 	constexpr int PAD_START = 0x800;
+
+	// マップチップ情報
+	constexpr int CHIP_SIZE = 16;
+	constexpr float DRAW_SCALE = 3.0f;
+	constexpr int DRAW_CHIP_SIZE = CHIP_SIZE * DRAW_SCALE;
+	constexpr int DRAW_CHIP_SIZE_HALF = CHIP_SIZE * DRAW_SCALE / 2;
 }

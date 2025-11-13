@@ -51,7 +51,7 @@ Item::Item(Vector2 mapChipFirstPos, ItemType type, std::shared_ptr<Player> pPlay
 	}
 
 	_pos = MapChipPosToGamePos(mapChipFirstPos);
-	_collider->SetPos(_pos);
+	_collider->SetPosToBox(_pos);
 }
 
 Item::~Item()

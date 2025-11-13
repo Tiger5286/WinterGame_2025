@@ -20,7 +20,10 @@
     <Filter Include="Uncategorized">
       <UniqueIdentifier>{f9e83647-bc24-4ad2-802f-228e5b335d0c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObjects\Enemy">
+    <Filter Include="GameObjects\Gimmicks">
+      <UniqueIdentifier>{8e200853-a79d-47bd-8a72-3499b4e28ee3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Enemys">
       <UniqueIdentifier>{ee60d94a-90b1-4d43-8ada-ea9d12556e28}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -79,29 +82,29 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Uncategorized</Filter>
     </ClCompile>
-    <ClCompile Include="Laser.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="SceneStageSelect.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Gimmick.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>GameObjects\Enemy</Filter>
+      <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
     <ClCompile Include="FlyEnemy.cpp">
-      <Filter>GameObjects\Enemy</Filter>
+      <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
     <ClCompile Include="JumpEnemy.cpp">
-      <Filter>GameObjects\Enemy</Filter>
+      <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
     <ClCompile Include="WalkEnemy.cpp">
-      <Filter>GameObjects\Enemy</Filter>
+      <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Gimmick.cpp">
+      <Filter>GameObjects\Gimmicks</Filter>
+    </ClCompile>
+    <ClCompile Include="Laser.cpp">
+      <Filter>GameObjects\Gimmicks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -162,26 +165,26 @@
     <ClInclude Include="SceneStageSelect.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Laser.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Gimmick.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>GameObjects\Enemy</Filter>
+      <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
     <ClInclude Include="FlyEnemy.h">
-      <Filter>GameObjects\Enemy</Filter>
+      <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
     <ClInclude Include="JumpEnemy.h">
-      <Filter>GameObjects\Enemy</Filter>
+      <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
     <ClInclude Include="WalkEnemy.h">
-      <Filter>GameObjects\Enemy</Filter>
+      <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Gimmick.h">
+      <Filter>GameObjects\Gimmicks</Filter>
+    </ClInclude>
+    <ClInclude Include="Laser.h">
+      <Filter>GameObjects\Gimmicks</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

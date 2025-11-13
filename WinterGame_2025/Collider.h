@@ -22,7 +22,12 @@ public:
 	};
 	virtual Type GetType() const = 0;
 
-	void SetPos(const Vector2 pos) { _pos = { pos.x,pos.y - _size.y / 2 }; }
+	/// <summary>
+	/// 指定した位置が中央下になるように当たり判定をセットする
+	/// </summary>
+	/// <param name="pos">位置ベクトル</param>
+	void SetPosToBox(const Vector2 pos) { _pos = { pos.x,pos.y - _size.y / 2 }; }
+	void SetPos(const Vector2 pos) { _pos = pos; }
 	Vector2 GetPos() const { return _pos; }
 
 	float GetRadius() const { return _radius; }

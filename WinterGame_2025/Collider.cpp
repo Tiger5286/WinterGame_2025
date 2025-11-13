@@ -12,7 +12,6 @@ Collider::Collider(Vector2 pos, Vector2 size):
 	_size(size),
 	_radius(0.0f)
 {
-	_pos.y -= _size.y / 2;
 }
 
 Collider::~Collider()

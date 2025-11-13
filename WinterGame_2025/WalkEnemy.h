@@ -14,8 +14,9 @@ class WalkEnemy : public Enemy
 {
 public:
 	//WalkEnemy();
-	WalkEnemy(WalkEnemyState state,bool isTurn,int handle, std::shared_ptr<Player>pPlayer);
-	WalkEnemy(Vector2 firstPos,WalkEnemyState state, bool isTurn, int handle, std::shared_ptr<Player>pPlayer);
+	//WalkEnemy(WalkEnemyState state,bool isTurn,int handle, std::shared_ptr<Player>pPlayer);
+	//WalkEnemy(Vector2 firstPos,WalkEnemyState state, bool isTurn, int handle, std::shared_ptr<Player>pPlayer);
+	WalkEnemy(Vector2 chipPos, std::shared_ptr<Player>pPlayer, int handle, WalkEnemyState state, bool isTurn);
 	~WalkEnemy();
 
 	void Init() override;
@@ -31,7 +32,7 @@ private:
 private:
 	int _handle;
 	bool _isTurn;
-	bool _isHitChargeShot;
+	//bool _isHitChargeShot;
 	WalkEnemyState _state;
 	Animation _idleAnim;
 	Animation _moveAnim;

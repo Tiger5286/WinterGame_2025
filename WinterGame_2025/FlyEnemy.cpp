@@ -21,23 +21,33 @@ namespace
 	constexpr float MAX_MOVE_SPEED = 2.5f;
 }
 
-FlyEnemy::FlyEnemy(int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer) :
-	Enemy(5, pPlayer),
-	_handle(handle),
-	_angle(0.0f),
-	_state(state)
-{
-	_collider = std::make_shared<CircleCollider>(_pos, 35);
-}
+//FlyEnemy::FlyEnemy(int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer) :
+//	Enemy(5, pPlayer),
+//	_handle(handle),
+//	_angle(0.0f),
+//	_state(state)
+//{
+//	_collider = std::make_shared<CircleCollider>(_pos, 35);
+//}
+//
+//FlyEnemy::FlyEnemy(Vector2 firstPos, int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer) :
+//	Enemy(5, pPlayer),
+//	_handle(handle),
+//	_angle(0.0f),
+//	_state(state)
+//{
+//	_collider = std::make_shared<CircleCollider>(_pos, 35);
+//	_pos = MapChipPosToGamePos(firstPos);
+//}
 
-FlyEnemy::FlyEnemy(Vector2 firstPos, int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer) :
-	Enemy(5, pPlayer),
+FlyEnemy::FlyEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, FlyEnemyState state):
+	Enemy(5,pPlayer),
 	_handle(handle),
-	_angle(0.0f),
-	_state(state)
+	_state(state),
+	_angle(0.0f)
 {
+	_pos = MapChipPosToGamePos(chipPos);
 	_collider = std::make_shared<CircleCollider>(_pos, 35);
-	_pos = MapChipPosToGamePos(firstPos);
 }
 
 FlyEnemy::~FlyEnemy()
@@ -74,7 +84,7 @@ void FlyEnemy::Update(Map& map)
 	_angle += 0.05f;	// sin用
 	const Vector2 adjustPos = { _pos.x, _pos.y + sinf(_angle) * WAVE_HEIGHT };	// 上下にsinの動きをつけた位置
 
-	_collider->SetPos(adjustPos);
+	_collider->SetPosToBox(adjustPos);
 
 	// プレイヤーに当たったらダメージを与える
 	if (_collider->CheckCollision(_pPlayer->GetCollider()))

@@ -65,7 +65,7 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 	{
 		_isAlive = false;
 	}
-	_collider->SetPos(_pos);
+	_collider->SetPosToBox(_pos);
 
 	Vector2 hitChipPos;	// –¢Žg—p
 	if (map.IsCollision(_collider,hitChipPos))

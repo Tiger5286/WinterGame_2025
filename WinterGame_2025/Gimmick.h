@@ -12,6 +12,6 @@ public:
 	virtual void Init() override = 0;
 	virtual void Update(Map& map) override = 0;
 	virtual void Draw(Vector2 cameraOffset) override = 0;
-private:
+protected:
 	std::shared_ptr<Player> _pPlayer;
 };

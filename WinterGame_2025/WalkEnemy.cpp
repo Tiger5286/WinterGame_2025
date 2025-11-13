@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "Player.h"
 #include "Map.h"
+#include "Game.h"
 
 namespace
 {
@@ -19,6 +20,7 @@ namespace
 	// “–‚½‚è”»’è
 	constexpr float COLLIDER_W = 80;
 	constexpr float COLLIDER_H = 80;
+	const Vector2 COLLIDER_SIZE = { COLLIDER_W,COLLIDER_H };
 
 	constexpr float GROUND_H = 800.0f;
 
@@ -40,25 +42,36 @@ enum class WalkEnemyAnimType : int
 	Fall
 };
 
-WalkEnemy::WalkEnemy(WalkEnemyState state,bool isTurn,int handle, std::shared_ptr<Player>pPlayer):
-	Enemy(MAX_HP,pPlayer),
-	_handle(handle),
-	_isHitChargeShot(false),
-	_isTurn(isTurn),
-	_state(state)
-{
-	_collider = std::make_shared<BoxCollider>(_pos, Vector2{ COLLIDER_W,COLLIDER_H });
-}
+//WalkEnemy::WalkEnemy(WalkEnemyState state,bool isTurn,int handle, std::shared_ptr<Player>pPlayer):
+//	Enemy(MAX_HP,pPlayer),
+//	_handle(handle),
+//	_isHitChargeShot(false),
+//	_isTurn(isTurn),
+//	_state(state)
+//{
+//	_collider = std::make_shared<BoxCollider>(_pos, Vector2{ COLLIDER_W,COLLIDER_H });
+//}
 
-WalkEnemy::WalkEnemy(Vector2 firstPos, WalkEnemyState state, bool isTurn, int handle, std::shared_ptr<Player> pPlayer) :
+//WalkEnemy::WalkEnemy(Vector2 firstPos, WalkEnemyState state, bool isTurn, int handle, std::shared_ptr<Player> pPlayer) :
+//	Enemy(MAX_HP, pPlayer),
+//	_handle(handle),
+//	_isHitChargeShot(false),
+//	_isTurn(isTurn),
+//	_state(state)
+//{
+//	_collider = std::make_shared<BoxCollider>(_pos, Vector2{ COLLIDER_W,COLLIDER_H });
+//	_pos = MapChipPosToGamePos(firstPos);
+//}
+
+WalkEnemy::WalkEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, WalkEnemyState state, bool isTurn) :
 	Enemy(MAX_HP, pPlayer),
 	_handle(handle),
-	_isHitChargeShot(false),
-	_isTurn(isTurn),
-	_state(state)
+	_state(state),
+	_isTurn(isTurn)
 {
-	_collider = std::make_shared<BoxCollider>(_pos, Vector2{ COLLIDER_W,COLLIDER_H });
-	_pos = MapChipPosToGamePos(firstPos);
+	_pos = MapChipPosToGamePos(chipPos);
+	_pos.y += GlobalConstants::DRAW_CHIP_SIZE_HALF;	// ƒ`ƒbƒv”¼•ª‰º‚É‚¸‚ç‚·
+	_collider = std::make_shared<BoxCollider>(_pos, COLLIDER_SIZE);
 }
 
 WalkEnemy::~WalkEnemy()

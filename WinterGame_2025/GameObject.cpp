@@ -25,7 +25,7 @@ bool GameObject::MapCollision(Map& map)
 {
 	bool collided = false;
 	_pos.x += _vel.x;
-	_collider->SetPos(_pos);
+	_collider->SetPosToBox(_pos);
 	Vector2 hitChipPos;
 	if (map.IsCollision(_collider, hitChipPos))	// xだけ移動した後に当たった = 横から当たった
 	{
@@ -42,11 +42,11 @@ bool GameObject::MapCollision(Map& map)
 			_pos.x = hitChipPos.x - _collider->GetSize().x / 2 - (16 * DRAW_SCALE) / 2;
 		}
 		_vel.x = 0.0f;
-		_collider->SetPos(_pos);
+		_collider->SetPosToBox(_pos);
 		collided = true;
 	}
 	_pos.y += _vel.y;
-	_collider->SetPos(_pos);
+	_collider->SetPosToBox(_pos);
 	if (map.IsCollision(_collider, hitChipPos))	// yだけ移動した後に当たった = 縦から当たった
 	{
 		Vector2 dist = _collider->GetPos() - hitChipPos;
@@ -63,7 +63,7 @@ bool GameObject::MapCollision(Map& map)
 			_isGround = true;
 		}
 		_vel.y = 0.0f;
-		_collider->SetPos(_pos);
+		_collider->SetPosToBox(_pos);
 		collided = true;
 	}
 	return collided;
@@ -75,7 +75,7 @@ bool GameObject::MapCollision(Map& map, HitDirection& hitDir)
 	bool collided = false;
 	Vector2 tempPos = _pos;
 	tempPos.x += _vel.x;
-	_collider->SetPos(tempPos);
+	_collider->SetPosToBox(tempPos);
 	Vector2 hitChipPos;
 	if (map.IsCollision(_collider, hitChipPos))	// xだけ移動した後に当たった = 横から当たった
 	{
@@ -91,11 +91,11 @@ bool GameObject::MapCollision(Map& map, HitDirection& hitDir)
 			//	プレイヤーは当たったマップチップの左側にいる
 			hitDir.right = true;
 		}
-		_collider->SetPos(tempPos);
+		_collider->SetPosToBox(tempPos);
 		collided = true;
 	}
 	tempPos.y += _vel.y;
-	_collider->SetPos(tempPos);
+	_collider->SetPosToBox(tempPos);
 	if (map.IsCollision(_collider, hitChipPos))	// yだけ移動した後に当たった = 縦から当たった
 	{
 		Vector2 dist = _collider->GetPos() - hitChipPos;
@@ -112,7 +112,7 @@ bool GameObject::MapCollision(Map& map, HitDirection& hitDir)
 		}
 		collided = true;
 	}
-	_collider->SetPos(_pos);
+	_collider->SetPosToBox(_pos);
 	return collided;
 }
 
@@ -120,7 +120,7 @@ bool GameObject::MapCollision(Map& map, HitDirectionX& HitDirX)
 {
 	bool collided = false;
 	_pos.x += _vel.x;
-	_collider->SetPos(_pos);
+	_collider->SetPosToBox(_pos);
 	HitDirX = HitDirectionX::None;
 	Vector2 hitChipPos;
 	if (map.IsCollision(_collider, hitChipPos))	// xだけ移動した後に当たった = 横から当たった
@@ -140,11 +140,11 @@ bool GameObject::MapCollision(Map& map, HitDirectionX& HitDirX)
 			HitDirX = HitDirectionX::Right;
 		}
 		_vel.x = 0.0f;
-		_collider->SetPos(_pos);
+		_collider->SetPosToBox(_pos);
 		collided = true;
 	}
 	_pos.y += _vel.y;
-	_collider->SetPos(_pos);
+	_collider->SetPosToBox(_pos);
 	if (map.IsCollision(_collider, hitChipPos))	// yだけ移動した後に当たった = 縦から当たった
 	{
 		Vector2 dist = _collider->GetPos() - hitChipPos;
@@ -161,7 +161,7 @@ bool GameObject::MapCollision(Map& map, HitDirectionX& HitDirX)
 			_isGround = true;
 		}
 		_vel.y = 0.0f;
-		_collider->SetPos(_pos);
+		_collider->SetPosToBox(_pos);
 		collided = true;
 	}
 	return collided;
@@ -171,7 +171,7 @@ bool GameObject::MapCollision(Map& map, bool& isHitUp)
 {
 	bool collided = false;
 	_pos.x += _vel.x;
-	_collider->SetPos(_pos);
+	_collider->SetPosToBox(_pos);
 	Vector2 hitChipPos;
 	isHitUp = false;
 	if (map.IsCollision(_collider, hitChipPos))	// xだけ移動した後に当たった = 横から当たった
@@ -189,11 +189,11 @@ bool GameObject::MapCollision(Map& map, bool& isHitUp)
 			_pos.x = hitChipPos.x - _collider->GetSize().x / 2 - (16 * DRAW_SCALE) / 2;
 		}
 		_vel.x = 0.0f;
-		_collider->SetPos(_pos);
+		_collider->SetPosToBox(_pos);
 		collided = true;
 	}
 	_pos.y += _vel.y;
-	_collider->SetPos(_pos);
+	_collider->SetPosToBox(_pos);
 	if (map.IsCollision(_collider, hitChipPos))	// yだけ移動した後に当たった = 縦から当たった
 	{
 		Vector2 dist = _collider->GetPos() - hitChipPos;
@@ -211,7 +211,7 @@ bool GameObject::MapCollision(Map& map, bool& isHitUp)
 			_isGround = true;
 		}
 		_vel.y = 0.0f;
-		_collider->SetPos(_pos);
+		_collider->SetPosToBox(_pos);
 		collided = true;
 	}
 	return collided;
@@ -228,22 +228,8 @@ void GameObject::ChangeAnim(Animation anim)
 Vector2 GameObject::MapChipPosToGamePos(Vector2 mapChipPos)
 {
 	Vector2 ans;
-	if (_collider->GetType() == Collider::Type::Circle)
-	{
-		// 円形コライダーの場合は中心を返す
-		ans.x = mapChipPos.x * MAP_CHIP_SIZE * DRAW_SCALE + (MAP_CHIP_SIZE * DRAW_SCALE) / 2;
-		ans.y = mapChipPos.y * MAP_CHIP_SIZE * DRAW_SCALE + (MAP_CHIP_SIZE * DRAW_SCALE) / 2;
-	}
-	else if (_collider->GetType() == Collider::Type::Box)
-	{
-		// 箱型コライダーの場合は下中央を返す
-		ans.x = mapChipPos.x * MAP_CHIP_SIZE * DRAW_SCALE + (MAP_CHIP_SIZE * DRAW_SCALE) / 2;
-		ans.y = mapChipPos.y * MAP_CHIP_SIZE * DRAW_SCALE + (MAP_CHIP_SIZE * DRAW_SCALE);
-	}
-	else
-	{
-		assert(false && "未知のコライダーです");
-	}
+	ans.x = mapChipPos.x * MAP_CHIP_SIZE * DRAW_SCALE + (MAP_CHIP_SIZE * DRAW_SCALE) / 2;
+	ans.y = mapChipPos.y * MAP_CHIP_SIZE * DRAW_SCALE + (MAP_CHIP_SIZE * DRAW_SCALE) / 2;
 	return ans;
 }
 

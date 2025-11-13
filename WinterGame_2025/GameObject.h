@@ -58,7 +58,7 @@ public:
 	/// </summary>
 	/// <param name="mapChipPos">マップチップ座標</param>
 	/// <returns>ゲーム内座標</returns>
-	Vector2 MapChipPosToGamePos(Vector2 mapChipPos);
+	static Vector2 MapChipPosToGamePos(Vector2 mapChipPos);
 
 	void SetPos(Vector2 pos) { _pos = pos; }
 	Vector2 GetPos() { return _pos; }

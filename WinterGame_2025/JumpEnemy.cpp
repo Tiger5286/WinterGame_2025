@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Dxlib.h"
 #include "BoxCollider.h"
+#include "Game.h"
 
 namespace
 {
@@ -40,6 +41,8 @@ JumpEnemy::JumpEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer, int handl
 {
 	_collider = std::make_shared<BoxCollider>(_pos, Vector2{ COLLIDER_W,COLLIDER_H });
 	_pos = MapChipPosToGamePos(firstPos);
+	_pos.y += GlobalConstants::DRAW_CHIP_SIZE_HALF;
+
 	_idleAnim.Init(_handle, 0, GRAPH_FRAME_SIZE, IDLE_ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	_attackAnim.Init(_handle, 1, GRAPH_FRAME_SIZE, ATTACK_ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	_nowAnim = _idleAnim;

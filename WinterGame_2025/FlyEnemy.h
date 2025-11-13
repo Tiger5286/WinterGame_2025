@@ -11,8 +11,9 @@ enum class FlyEnemyState
 class FlyEnemy : public Enemy
 {
 public:
-	FlyEnemy(int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer);
-	FlyEnemy(Vector2 firstPos,int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer);
+	//FlyEnemy(int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer);
+	//FlyEnemy(Vector2 firstPos,int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer);
+	FlyEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, FlyEnemyState state);
 	~FlyEnemy();
 
 	void Init() override;
