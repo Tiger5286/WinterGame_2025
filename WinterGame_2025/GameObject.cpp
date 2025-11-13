@@ -230,7 +230,7 @@ void GameObject::ChangeAnim(Animation anim)
 	}
 }
 
-Vector2 GameObject::MapChipPosToGamePos(Vector2 mapChipPos)
+Vector2 GameObject::ChipPosToGamePos(Vector2 mapChipPos)
 {
 	Vector2 ans;
 	ans.x = mapChipPos.x * MAP_CHIP_SIZE * DRAW_SCALE + (MAP_CHIP_SIZE * DRAW_SCALE) / 2;

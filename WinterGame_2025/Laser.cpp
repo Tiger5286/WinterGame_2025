@@ -54,7 +54,7 @@ Laser::Laser(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, int l
 	_handle(handle),
 	_laserLength(laserLength)
 {
-	_pos = MapChipPosToGamePos(chipPos);
+	_pos = ChipPosToGamePos(chipPos);
 	_collider = std::make_shared<BoxCollider>(_pos, Vector2(24, _laserLength * GlobalConstants::DRAW_CHIP_SIZE));
 	_collider->SetPos(Vector2(_pos.x, _pos.y + static_cast<float>(_laserLength) / 2 * GlobalConstants::DRAW_CHIP_SIZE - GlobalConstants::DRAW_CHIP_SIZE_HALF));
 

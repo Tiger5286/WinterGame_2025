@@ -3,7 +3,7 @@
 #include "Game.h"
 #include "input.h"
 #include "SceneManager.h"
-#include "SceneMain.h"
+#include "SceneTitle.h"
 #include "DebugScene.h"
 
 Application::Application()
@@ -44,7 +44,7 @@ void Application::Run()
 #ifdef _DEBUG
 	sceneManager.ChangeScene(std::make_shared<DebugScene>(sceneManager));
 #else
-	sceneManager.ChangeScene(std::make_shared<SceneMain>(sceneManager));
+	sceneManager.ChangeScene(std::make_shared<SceneTitle>(sceneManager));
 #endif
 
 	while (ProcessMessage() != -1)

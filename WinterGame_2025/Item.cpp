@@ -50,7 +50,7 @@ Item::Item(Vector2 mapChipFirstPos, ItemType type, std::shared_ptr<Player> pPlay
 		assert(false && "•s³‚ÈItemType‚ªŽw’è‚³‚ê‚Ü‚µ‚½");
 	}
 
-	_pos = MapChipPosToGamePos(mapChipFirstPos);
+	_pos = ChipPosToGamePos(mapChipFirstPos);
 	_collider->SetPosToBox(_pos);
 }
 

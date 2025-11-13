@@ -106,6 +106,8 @@
     <ClCompile Include="Laser.cpp">
       <Filter>GameObjects\Gimmicks</Filter>
     </ClCompile>
+    <ClCompile Include="SceneClear.cpp" />
+    <ClCompile Include="ClearFlag.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -186,5 +188,7 @@
     <ClInclude Include="Laser.h">
       <Filter>GameObjects\Gimmicks</Filter>
     </ClInclude>
+    <ClInclude Include="SceneClear.h" />
+    <ClInclude Include="ClearFlag.h" />
   </ItemGroup>
 </Project>

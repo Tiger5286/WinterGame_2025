@@ -12,6 +12,8 @@ class Item;
 class Enemy;
 class Gimmick;
 
+class ClearFlag;
+
 class Map;
 class Camera;
 
@@ -39,6 +41,8 @@ public:
 
 	void LoadStage(Stages stage);
 
+	void StageClear();
+
 private:
 	void LoadAllGraphs();
 	void DeleteAllGraphs();
@@ -58,6 +62,7 @@ private:
 	// マップ関連
 	int _mapChipH;
 	// ギミック関連
+	int _clearFlagH;
 	int _laserH;
 	// アイテム関連
 	int _coinH;
@@ -72,6 +77,7 @@ private:
 	std::vector<std::shared_ptr<Enemy>> _pEnemys;	// 敵
 	std::vector<std::shared_ptr<Item>> _pItems;	// アイテム
 	std::vector<std::shared_ptr<Gimmick>> _pGimmicks;	// ギミック
+	std::shared_ptr<ClearFlag> _pClearFlag;	// ゴール旗
 	std::shared_ptr<Map> _pMap;	// マップ
 	std::shared_ptr<Camera> _pCamera;	// カメラ
 };

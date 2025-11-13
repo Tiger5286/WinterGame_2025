@@ -69,7 +69,7 @@ WalkEnemy::WalkEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handl
 	_state(state),
 	_isTurn(isTurn)
 {
-	_pos = MapChipPosToGamePos(chipPos);
+	_pos = ChipPosToGamePos(chipPos);
 	_pos.y += GlobalConstants::DRAW_CHIP_SIZE_HALF;	// ƒ`ƒbƒv”¼•ª‰º‚É‚¸‚ç‚·
 	_collider = std::make_shared<BoxCollider>(_pos, COLLIDER_SIZE);
 }

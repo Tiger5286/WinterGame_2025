@@ -36,6 +36,10 @@ void SceneTitle::Update(Input& input)
 
 void SceneTitle::Draw()
 {
-	DrawString(0, 0, "SceneTitle", 0xffffff);
+	DrawString(1920 / 2, 1080 / 2, "Title", 0xffffff);
 	DrawString(1920 / 2, 1080 / 2 + 250, "Press A to Start", 0xffffff);
+
+#ifdef _DEBUG
+	DrawString(0, 0, "SceneTitle", 0xffffff);
+#endif
 }

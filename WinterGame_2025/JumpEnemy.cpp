@@ -40,7 +40,7 @@ JumpEnemy::JumpEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer, int handl
 	_isTurn(false)
 {
 	_collider = std::make_shared<BoxCollider>(_pos, Vector2{ COLLIDER_W,COLLIDER_H });
-	_pos = MapChipPosToGamePos(firstPos);
+	_pos = ChipPosToGamePos(firstPos);
 	_pos.y += GlobalConstants::DRAW_CHIP_SIZE_HALF;
 
 	_idleAnim.Init(_handle, 0, GRAPH_FRAME_SIZE, IDLE_ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
@@ -59,7 +59,11 @@ void JumpEnemy::Init()
 void JumpEnemy::Update(Map& map)
 {
 	// ƒvƒŒƒCƒ„[‚Æ‚Í‹t‚Ì•û‚ğŒü‚­
-	_pos.x < _pPlayer->GetPos().x ? _isTurn = true : _isTurn = false;
+	if (!_isAttacking)	// UŒ‚’†‚ÍŒü‚«‚ğ•Ï‚¦‚È‚¢
+	{
+		_pos.x < _pPlayer->GetPos().x ? _isTurn = true : _isTurn = false;
+	}
+	
 
 	if (_attackCooltime > 0)
 	{

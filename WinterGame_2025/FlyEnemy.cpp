@@ -46,7 +46,7 @@ FlyEnemy::FlyEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle,
 	_state(state),
 	_angle(0.0f)
 {
-	_pos = MapChipPosToGamePos(chipPos);
+	_pos = ChipPosToGamePos(chipPos);
 	_collider = std::make_shared<CircleCollider>(_pos, 35);
 }
 

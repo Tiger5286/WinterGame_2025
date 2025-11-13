@@ -59,14 +59,14 @@ public:
 	/// </summary>
 	/// <param name="mapChipPos">マップチップ座標</param>
 	/// <returns>ゲーム内座標</returns>
-	static Vector2 MapChipPosToGamePos(Vector2 mapChipPos);
+	static Vector2 ChipPosToGamePos(Vector2 mapChipPos);
 
 	void SetPos(Vector2 pos) { _pos = pos; }
 	Vector2 GetPos() { return _pos; }
 
 	void SetPosFromMapChip(Vector2 mapChipPos)
 	{
-		_pos = MapChipPosToGamePos(mapChipPos);
+		_pos = ChipPosToGamePos(mapChipPos);
 	}
 
 	std::shared_ptr<Collider> GetCollider() { return _collider; }

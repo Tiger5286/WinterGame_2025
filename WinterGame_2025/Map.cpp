@@ -60,16 +60,16 @@ void Map::Draw(Vector2 offset)
 				_handle, true
 			);
 
-			Vector2 chipPos = { x * CHIP_SIZE * DRAW_SCALE + (CHIP_SIZE * DRAW_SCALE / 2),y * CHIP_SIZE * DRAW_SCALE + (CHIP_SIZE * DRAW_SCALE / 2) };
-			// マップチップの枠表示
-			DrawBox(chipPos.x - drawChipSizeHalf - offset.x,
-				chipPos.y - drawChipSizeHalf - offset.y,
-				chipPos.x + drawChipSizeHalf - offset.x,
-				chipPos.y + drawChipSizeHalf - offset.y,
-				0x00ff00, false);
+			//Vector2 chipPos = { x * CHIP_SIZE * DRAW_SCALE + (CHIP_SIZE * DRAW_SCALE / 2),y * CHIP_SIZE * DRAW_SCALE + (CHIP_SIZE * DRAW_SCALE / 2) };
+			//// マップチップの枠表示
+			//DrawBox(chipPos.x - drawChipSizeHalf - offset.x,
+			//	chipPos.y - drawChipSizeHalf - offset.y,
+			//	chipPos.x + drawChipSizeHalf - offset.x,
+			//	chipPos.y + drawChipSizeHalf - offset.y,
+			//	0x00ff00, false);
 
-			// マップチップの中心点表示
-			DrawPixel(chipPos.x - offset.x, chipPos.y - offset.y, 0xffffff);
+			//// マップチップの中心点表示
+			//DrawPixel(chipPos.x - offset.x, chipPos.y - offset.y, 0xffffff);
 		}
 	}
 }

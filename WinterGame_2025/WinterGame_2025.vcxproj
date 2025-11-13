@@ -141,6 +141,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CircleCollider.cpp" />
+    <ClCompile Include="ClearFlag.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DebugScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneBase.cpp" />
+    <ClCompile Include="SceneClear.cpp" />
     <ClCompile Include="SceneMain.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneStageSelect.cpp" />
@@ -169,6 +171,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CircleCollider.h" />
+    <ClInclude Include="ClearFlag.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DebugScene.h" />
     <ClInclude Include="Enemy.h" />
@@ -184,6 +187,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneBase.h" />
+    <ClInclude Include="SceneClear.h" />
     <ClInclude Include="SceneMain.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneStageSelect.h" />

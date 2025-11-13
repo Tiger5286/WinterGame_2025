@@ -6,8 +6,11 @@
 #include <cassert>
 #include "Game.h"
 
+#include "Collider.h"
+
 #include "SceneManager.h"
 #include "DebugScene.h"
+#include "SceneClear.h"
 
 #include "Player.h"
 #include "Bullet.h"
@@ -18,6 +21,7 @@
 
 #include "Item.h"
 
+#include "ClearFlag.h"
 #include "Laser.h"
 
 #include "Map.h"
@@ -130,6 +134,15 @@ void SceneMain::Update(Input& input)
 		}
 	}
 
+	// ゴール判定
+	if (_pClearFlag != nullptr)
+	{
+		if (_pPlayer->GetCollider()->CheckCollision(_pClearFlag->GetCollider()))
+		{	// プレイヤーとゴール旗が接触したらステージクリアへ
+			StageClear();
+		}
+	}
+
 	// 【デバッグ用】デバッグシーンに切り替え
 #ifdef _DEBUG
 	if (input.IsTriggered("select"))
@@ -169,9 +182,16 @@ void SceneMain::Draw()
 		bullet->Draw(_pCamera->GetDrawOffset());
 	}
 
+	// アイテムの描画
 	for (auto& item : _pItems)
 	{
 		item->Draw(_pCamera->GetDrawOffset());
+	}
+
+	// ゴール旗の描画
+	if (_pClearFlag != nullptr)
+	{
+		_pClearFlag->Draw(_pCamera->GetDrawOffset());
 	}
 
 #ifdef _DEBUG
@@ -182,7 +202,7 @@ void SceneMain::Draw()
 
 void SceneMain::LoadStage(Stages stage)
 {
-	// 先に必ず存在するオブジェクトの生成をする
+	// 先に必ず存在するオブジェクトの生成をする(カメラは最後)
 	// プレイヤー
 	_pPlayer = std::make_shared<Player>(_playerH, _playerWhiteH, _chargeParticleH);
 	// 弾
@@ -203,6 +223,8 @@ void SceneMain::LoadStage(Stages stage)
 
 		_pMap->LoadMapData("data/Map/TempMap.csv");
 
+		_pClearFlag = std::make_shared<ClearFlag>(Vector2(68, 18), _pPlayer, _clearFlagH);
+
 		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(20,18), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
 		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(18, 18), _pPlayer, _walkEnemyH, WalkEnemyState::Move, false));
 		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(20, 15), _pPlayer, _flyEnemyH, FlyEnemyState::Idle));
@@ -219,13 +241,14 @@ void SceneMain::LoadStage(Stages stage)
 
 		break;
 	case Stages::Tutorial:
-		printfDx("Stages::Tutorialがロードされました\n");
-
 		// プレイヤーの位置を設定
 		_pPlayer->SetPos({ 3 * 48,19 * 48 });
 
 		// マップのデータをロード
 		_pMap->LoadMapData("data/Map/TutorialMap.csv");
+
+		// ゴール旗を生成
+		_pClearFlag = std::make_shared<ClearFlag>(Vector2(154, 17), _pPlayer, _clearFlagH);
 
 		// 敵を生成
 		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(24, 18), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
@@ -244,10 +267,11 @@ void SceneMain::LoadStage(Stages stage)
 		// レーザー
 		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(139, 12), _pPlayer, _laserH, 7));
 
+#ifdef _DEBUG
+		printfDx("Stages::Tutorialがロードされました\n");
+#endif
 		break;
 	case Stages::Stage1 :
-		printfDx("Stages::Stage1がロードされました\n");
-
 		_pPlayer->SetPos({ 3 * 48,19 * 48 });
 
 		_pMap->LoadMapData("data/Map/Stage1Map.csv");
@@ -265,27 +289,42 @@ void SceneMain::LoadStage(Stages stage)
 		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(88, 15), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
 		_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(96, 18), _pPlayer, _jumpEnemyH));
 
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(63, 15), _pPlayer, _laserH, 4));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(124, 14), _pPlayer, _laserH, 5));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(135, 14), _pPlayer, _laserH, 5));
+
+
+#ifdef _DEBUG
+		printfDx("Stages::Stage1がロードされました\n");
+#endif
 		break;
 	case Stages::Stage2:
-		printfDx("Stages::Stage2がロードされました\n");
-
 		_pPlayer->SetPos({ 3 * 48,19 * 48 });
 
 		_pMap->LoadMapData("data/Map/TempMap.csv");
 
+#ifdef _DEBUG
+		printfDx("Stages::Stage2がロードされました\n");
+#endif
 		break;
 	case Stages::Boss:
-		printfDx("Stages::Bossがロードされました\n");
-
 		_pPlayer->SetPos({ 3 * 48,19 * 48 });
 
 		_pMap->LoadMapData("data/Map/TempMap.csv");
 
+#ifdef _DEBUG
+		printfDx("Stages::Bossがロードされました\n");
+#endif
 		break;
 	}
 
 	// カメラ(マップの幅を取得する必要があるためマップを含む諸々生成してから生成)
 	_pCamera = std::make_shared<Camera>(_pMap->GetStageWidth());
+}
+
+void SceneMain::StageClear()
+{
+	_manager.ChangeScene(std::make_shared<SceneClear>(_manager));
 }
 
 void SceneMain::LoadAllGraphs()
@@ -316,6 +355,8 @@ void SceneMain::LoadAllGraphs()
 	assert(_bigCoinH != -1);
 	_healthItemH = LoadGraph("data/Items/HealthItem.png");
 	assert(_healthItemH != -1);
+	_clearFlagH = LoadGraph("data/ClearFlag.png");
+	assert(_clearFlagH != -1);
 }
 
 void SceneMain::DeleteAllGraphs()
