@@ -204,14 +204,18 @@ void SceneMain::LoadStage(Stages stage)
 		_pMap->LoadMapData("data/Map/TempMap.csv");
 
 		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(20,18), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(18, 18), _pPlayer, _walkEnemyH, WalkEnemyState::Move, false));
 		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(20, 15), _pPlayer, _flyEnemyH, FlyEnemyState::Idle));
+		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(23, 15), _pPlayer, _flyEnemyH, FlyEnemyState::Move));
 		_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(24, 18), _pPlayer, _jumpEnemyH));
+		_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(58, 18), _pPlayer, _jumpEnemyH));
 
 		_pItems.push_back(std::make_shared<Item>(Vector2(17, 17), ItemType::Coin, _pPlayer, _coinH));
 		_pItems.push_back(std::make_shared<Item>(Vector2(19, 17), ItemType::BigCoin, _pPlayer, _bigCoinH));
 		_pItems.push_back(std::make_shared<Item>(Vector2(21, 17), ItemType::HealthItem, _pPlayer, _healthItemH));
 
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(10, 12), _pPlayer, _laserH, 4));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(11, 12), _pPlayer, _laserH, 4));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(12, 12), _pPlayer, _laserH, 7));
 
 		break;
 	case Stages::Tutorial:

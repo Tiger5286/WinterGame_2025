@@ -10,26 +10,19 @@ class Map;
 // どっちから当たっているかを表す構造体
 struct HitDirection
 {
+	bool any = false;
 	bool up = false;
 	bool down = false;
 	bool left = false;
 	bool right = false;
-
-	void SetAll(bool isHit)
-	{
-		up = isHit;
-		down = isHit;
-		left = isHit;
-		right = isHit;
-	}
 };
 
-enum class HitDirectionX
-{
-	None,
-	Left,
-	Right
-};
+//enum class HitDirectionX
+//{
+//	None,
+//	Left,
+//	Right
+//};
 
 class GameObject
 {
@@ -46,10 +39,18 @@ public:
 	/// </summary>
 	/// <param name="map">マップ</param>
 	/// <returns>true:当たっている/false:当たっていない</returns>
-	bool MapCollision(Map& map);
-	bool MapCollision(Map& map, HitDirection& hitDir);	// 当たった方向を取得するバージョン
-	bool MapCollision(Map& map, HitDirectionX& hitDirX);	// 左右の当たった方向を取得するバージョン
-	bool MapCollision(Map& map, bool& isHitUp);	// 上に当たったかどうかを取得するバージョン
+	HitDirection MapCollision(Map& map);
+	//bool MapCollision(Map& map, HitDirection& hitDir);	// 当たった方向を取得するバージョン
+	//bool MapCollision(Map& map, HitDirectionX& hitDirX);	// 左右の当たった方向を取得するバージョン
+	//bool MapCollision(Map& map, bool& isHitUp);	// 上に当たったかどうかを取得するバージョン
+	static void SetAllHitDir(HitDirection& hitDir, bool isHit)	// 当たり判定構造体の全ての方向をまとめて設定する関数
+	{
+		hitDir.any = isHit;
+		hitDir.up = isHit;
+		hitDir.down = isHit;
+		hitDir.left = isHit;
+		hitDir.right = isHit;
+	}
 
 	void ChangeAnim(Animation anim);
 

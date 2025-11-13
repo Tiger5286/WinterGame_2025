@@ -24,6 +24,7 @@ public:
 
 	/// <summary>
 	/// 指定した位置が中央下になるように当たり判定をセットする
+	/// これはボックス型の当たり判定のみに有効で、サークル型に使うと普通に中心にセットされる
 	/// </summary>
 	/// <param name="pos">位置ベクトル</param>
 	void SetPosToBox(const Vector2 pos) { _pos = { pos.x,pos.y - _size.y / 2 }; }

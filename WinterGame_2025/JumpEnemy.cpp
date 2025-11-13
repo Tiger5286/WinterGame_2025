@@ -25,7 +25,7 @@ namespace
 
 	// 当たり判定
 	constexpr int COLLIDER_W = 35 * 3;
-	constexpr int COLLIDER_H = 40 * 3;
+	constexpr int COLLIDER_H = 32.5f * 3;
 
 	// プレイヤーに攻撃しようとする距離
 	constexpr float ATTACK_DIS = 600.0f;
@@ -103,8 +103,8 @@ void JumpEnemy::Update(Map& map)
 		}
 	}
 
-	// マップに触れたら止まる
-	if (MapCollision(map))
+	// 地面に触れたら横移動を止める
+	if (MapCollision(map).down)
 	{
 		_vel.x = 0.0f;
 	}
@@ -125,6 +125,7 @@ void JumpEnemy::Draw(Vector2 offset)
 	// プレイヤーを検知する範囲を表示
 	DrawLine(_pos.x - ATTACK_DIS - offset.x, 0, _pos.x - ATTACK_DIS - offset.x, 1080, 0x0000ff);
 	DrawLine(_pos.x + ATTACK_DIS - offset.x, 0, _pos.x + ATTACK_DIS - offset.x, 1080, 0x0000ff);
+	// 当たり判定を表示
 	_collider->Draw(offset);
 #endif
 }

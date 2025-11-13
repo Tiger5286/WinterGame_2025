@@ -115,13 +115,14 @@ void WalkEnemy::Update(Map& map)
 		}
 	}
 
-	HitDirectionX hitDirX;
-	MapCollision(map,hitDirX);
-	if (hitDirX == HitDirectionX::Right)
+	// マップとの当たり判定
+	HitDirection hitDir;
+	hitDir = MapCollision(map);
+	if (hitDir.right)	// 右に当たったら左向きにする
 	{
 		_isTurn = true;
 	}
-	if (hitDirX == HitDirectionX::Left)
+	if (hitDir.left)	// 左に当たったら右向きにする
 	{
 		_isTurn = false;
 	}
