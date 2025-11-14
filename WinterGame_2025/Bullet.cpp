@@ -32,7 +32,7 @@ Bullet::Bullet(int shotH, int chargeShotH):
 	_isTurn(false)
 {
 	_shotAnim.Init(shotH, 1, Vector2(16, 16), 4, 6, 3.0f);
-	_shotImpactAnim.Init(shotH, 2, Vector2(16, 16), 4, 6, 1.0f,false);
+	_shotImpactAnim.Init(shotH, 2, Vector2(16, 16), 4, 6, 3.0f,false);
 	_chargeShotAnim.Init(chargeShotH, 1, Vector2(32, 32), 4, 6, 3.0f);
 	_chargeShotImpactAnim.Init(chargeShotH, 2, Vector2(32, 32), 4, 6, 3.0f,false);
 
@@ -72,6 +72,7 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 	if (_pos.x < cameraPos.x - GlobalConstants::SCREEN_WIDTH / 2 ||
 		_pos.x > cameraPos.x + GlobalConstants::SCREEN_WIDTH / 2)
 	{
+		_collider->SetIsEnabled(false);
 		_isAlive = false;
 	}
 	_collider->SetPosToBox(_pos);
@@ -79,16 +80,7 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 	Vector2 hitChipPos;	// 未使用
 	if (map.IsCollision(_collider,hitChipPos))
 	{	// マップに当たったら
-		if (_type == BulletType::NormalShot)
-		{
-			ChangeAnim(_shotImpactAnim);
-		}
-		else if (_type == BulletType::ChargeShot)
-		{
-			ChangeAnim(_chargeShotImpactAnim);
-		}
-		_nowAnim.SetFirst();
-		_isImpact = true;
+		Hit();
 	}
 
 	// 弾と敵の当たり判定
@@ -99,7 +91,7 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 			if (_type == BulletType::NormalShot)
 			{	// 通常弾ならダメージ与えて弾消える
 				enemy->SetHp(enemy->GetHp() - NORMAL_SHOT_DAMAGE);
-				_isImpact = true;
+				Hit();
 			}
 			else if (_type == BulletType::ChargeShot)
 			{	// チャージ弾なら最初に当たったときだけダメージ与える
@@ -117,14 +109,18 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 		}
 	}
 
+	if (_isImpact && _nowAnim.GetIsEnd())
+	{	// インパクトアニメが終わったら消す
+		_isAlive = false;
+	}
+
 	_nowAnim.Update();
 }
 
 void Bullet::Draw(Vector2 offset)
 {
-
-	_nowAnim.Draw(_pos - offset, _isTurn);
-
+	// 弾の描画
+	if (_isAlive) _nowAnim.Draw(_pos - offset, _isTurn);
 
 #ifdef _DEBUG
 	_collider->Draw(offset);
@@ -133,6 +129,7 @@ void Bullet::Draw(Vector2 offset)
 
 void Bullet::Shot(BulletType type, Vector2 shotPos, bool isTurn)
 {
+	_collider->SetIsEnabled(true);
 	_isImpact = false;
 	_isAlive = true;
 	_type = type;
@@ -153,4 +150,22 @@ void Bullet::Shot(BulletType type, Vector2 shotPos, bool isTurn)
 void Bullet::SetContext(std::vector<std::shared_ptr<Enemy>> pEnemys)
 {
 	_pEnemys = pEnemys;
+}
+
+void Bullet::Hit()
+{
+	if (!_isImpact)
+	{
+		if (_type == BulletType::NormalShot)
+		{
+			ChangeAnim(_shotImpactAnim);
+		}
+		else if (_type == BulletType::ChargeShot)
+		{
+			ChangeAnim(_chargeShotImpactAnim);
+		}
+		_nowAnim.SetFirst();
+		_isImpact = true;
+	}
+	_collider->SetIsEnabled(false);	// 当たり判定無効化
 }

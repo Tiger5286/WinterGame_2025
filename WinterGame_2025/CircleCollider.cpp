@@ -13,6 +13,7 @@ CircleCollider::~CircleCollider()
 
 bool CircleCollider::CheckCollision(const std::shared_ptr<Collider> other) const
 {
+	if (!_isEnabled) return false;	// –³Œø‚È‚ç“–‚½‚è”»’è‚µ‚È‚¢
 	if (other->GetType() == Type::Circle)
 	{
 		// ‰~“¯Žm‚Ì“–‚½‚è”»’è
@@ -42,5 +43,6 @@ bool CircleCollider::CheckCollision(const std::shared_ptr<Collider> other) const
 
 void CircleCollider::Draw(Vector2 offset) const
 {
+	if (!_isEnabled) return;	// –³Œø‚È‚ç•`‰æ‚µ‚È‚¢
 	DrawCircle(_pos.x - offset.x, _pos.y - offset.y, _radius, 0xff0000, false);
 }

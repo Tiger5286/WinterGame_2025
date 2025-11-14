@@ -35,8 +35,11 @@ public:
 	void SetRadius(float radius) { _radius = radius; }
 
 	Vector2 GetSize() const { return _size; }
+
+	void SetIsEnabled(bool isEnabled) { _isEnabled = isEnabled; }
 	
 protected:
+	bool _isEnabled;
 	Vector2 _pos;
 	float _radius;
 	Vector2 _size;

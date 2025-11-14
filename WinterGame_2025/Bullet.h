@@ -34,6 +34,8 @@ public:
 	void SetType(BulletType type) { _type = type; }
 	BulletType GetType() const { return _type; }
 private:
+	void Hit();
+
 	int _shotH;
 	int _chargeShotH;
 

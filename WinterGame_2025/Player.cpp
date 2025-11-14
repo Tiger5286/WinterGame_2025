@@ -127,7 +127,9 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_dashAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Dash), 1, PLAYER_FRAME_SIZE, DRAW_SCALE);
 
 	_shotFlashAnim.Init(_shotH, 0, SHOT_FLASH_GRAPH_SIZE, SHOT_ANIM_NUM, FLASH_ONE_ANIM_FRAME, DRAW_SCALE,false);
+	_shotFlashAnim.SetEnd();
 	_chargeShotFlashAnim.Init(_chargeShotH, 0, CHARGE_SHOT_FLASH_GRAPH_SIZE, CHARGE_SHOT_ANIM_NUM, CHARGE_SHOT_FLASH_ONE_ANIM_FRAME, DRAW_SCALE,false);
+	_chargeShotFlashAnim.SetEnd();
 	_ChargeParticleAnim.Init(_chargeParticleH, 0, CHARGE_PARTICLE_FRAME_SIZE, CHARGE_PARTICLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 
 	_nowAnim = _idleAnim;

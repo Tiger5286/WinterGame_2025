@@ -13,6 +13,7 @@ BoxCollider::~BoxCollider()
 
 bool BoxCollider::CheckCollision(const std::shared_ptr<Collider> other) const
 {
+	if (!_isEnabled) return false;	// –³Œø‚È‚ç“–‚½‚è”»’è‚µ‚È‚¢
 	if (other->GetType() == Type::Circle)
 	{
 		// ‰~‚Æ‹éŒ`‚Ì“–‚½‚è”»’è
@@ -42,6 +43,7 @@ bool BoxCollider::CheckCollision(const std::shared_ptr<Collider> other) const
 
 void BoxCollider::Draw(Vector2 offset) const
 {
+	if (!_isEnabled) return;	// –³Œø‚È‚ç•`‰æ‚µ‚È‚¢
 	DrawBox(_pos.x - _size.x / 2 - offset.x,
 		_pos.y - _size.y / 2 - offset.y,
 		_pos.x + _size.x / 2 - offset.x,

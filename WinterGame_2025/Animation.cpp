@@ -2,6 +2,7 @@
 #include "Dxlib.h"
 
 Animation::Animation():
+	_isRepeat(true),
 	_drawHandle(-1),
 	_animIndex(0),
 	_frameSize({ 0.0f,0.0f }),
@@ -86,6 +87,17 @@ void Animation::Draw(int drawHandle, Vector2 pos, bool isTurn)
 			_frameSize.x, _frameSize.y,
 			_scale, _rotate, drawHandle, true, isTurn);
 	}
+}
+
+bool Animation::GetIsEnd()
+{
+	if (_isRepeat) return false;	// 繰り返し再生するなら終了しない
+
+	int totalFrames = _oneAnimFrame * _maxAnimNum;	// アニメーション全体のフレーム数
+	int currentFrame = _nowAnimNum * _oneAnimFrame + _frameCount;	// 現在のフレーム数
+	if (currentFrame >= totalFrames) return true;
+
+	return false;
 }
 
 bool Animation::operator!=(const Animation& other) const

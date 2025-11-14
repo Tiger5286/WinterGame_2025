@@ -14,6 +14,10 @@ public:
 
 	// アニメーションを最初から再生する
 	void SetFirst() { _nowAnimNum = 0; _frameCount = 0; }
+	// アニメーションを最後のコマにする
+	void SetEnd() { _nowAnimNum = _maxAnimNum; }
+
+	bool GetIsEnd();
 
 	bool operator!=(const Animation& other) const;
 private:
