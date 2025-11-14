@@ -10,19 +10,12 @@ class Map;
 // どっちから当たっているかを表す構造体
 struct HitDirection
 {
-	bool any = false;
-	bool up = false;
-	bool down = false;
-	bool left = false;
-	bool right = false;
+	bool any = false;	// どこかしら当たっている
+	bool up = false;	// 上に当たった
+	bool down = false;	// 下に当たった
+	bool left = false;	// 左に当たった
+	bool right = false;	// 右に当たった
 };
-
-//enum class HitDirectionX
-//{
-//	None,
-//	Left,
-//	Right
-//};
 
 class GameObject
 {
@@ -40,9 +33,6 @@ public:
 	/// <param name="map">マップ</param>
 	/// <returns>true:当たっている/false:当たっていない</returns>
 	HitDirection MapCollision(Map& map);
-	//bool MapCollision(Map& map, HitDirection& hitDir);	// 当たった方向を取得するバージョン
-	//bool MapCollision(Map& map, HitDirectionX& hitDirX);	// 左右の当たった方向を取得するバージョン
-	//bool MapCollision(Map& map, bool& isHitUp);	// 上に当たったかどうかを取得するバージョン
 	static void SetAllHitDir(HitDirection& hitDir, bool isHit)	// 当たり判定構造体の全ての方向をまとめて設定する関数
 	{
 		hitDir.any = isHit;

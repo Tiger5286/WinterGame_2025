@@ -204,7 +204,7 @@ void SceneMain::LoadStage(Stages stage)
 {
 	// 先に必ず存在するオブジェクトの生成をする(カメラは最後)
 	// プレイヤー
-	_pPlayer = std::make_shared<Player>(_playerH, _playerWhiteH, _chargeParticleH);
+	_pPlayer = std::make_shared<Player>(_playerH, _playerWhiteH, _chargeParticleH,_playerShotH,_chargeShotH);
 	// 弾
 	_pBullets.resize(BULLET_NUM);
 	for (auto& bullet : _pBullets)
@@ -242,7 +242,7 @@ void SceneMain::LoadStage(Stages stage)
 		break;
 	case Stages::Tutorial:
 		// プレイヤーの位置を設定
-		_pPlayer->SetPos({ 3 * 48,19 * 48 });
+		_pPlayer->SetPosFromMapChip({ 3 ,19});
 
 		// マップのデータをロード
 		_pMap->LoadMapData("data/Map/TutorialMap.csv");
@@ -272,7 +272,7 @@ void SceneMain::LoadStage(Stages stage)
 #endif
 		break;
 	case Stages::Stage1 :
-		_pPlayer->SetPos({ 3 * 48,19 * 48 });
+		_pPlayer->SetPosFromMapChip({ 3 ,19  });
 
 		_pMap->LoadMapData("data/Map/Stage1Map.csv");
 
@@ -299,7 +299,7 @@ void SceneMain::LoadStage(Stages stage)
 #endif
 		break;
 	case Stages::Stage2:
-		_pPlayer->SetPos({ 3 * 48,19 * 48 });
+		_pPlayer->SetPosFromMapChip({ 3,19 });
 
 		_pMap->LoadMapData("data/Map/TempMap.csv");
 
@@ -308,9 +308,9 @@ void SceneMain::LoadStage(Stages stage)
 #endif
 		break;
 	case Stages::Boss:
-		_pPlayer->SetPos({ 3 * 48,19 * 48 });
+		_pPlayer->SetPosFromMapChip({ 3,19 });
 
-		_pMap->LoadMapData("data/Map/TempMap.csv");
+		_pMap->LoadMapData("data/Map/BossStage.csv");
 
 #ifdef _DEBUG
 		printfDx("Stages::Bossがロードされました\n");

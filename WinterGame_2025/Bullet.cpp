@@ -11,7 +11,7 @@ namespace
 	constexpr int NORMAL_GRAPH_CUT_H = 16;
 	constexpr int CHARGE_GRAPH_CUT_W = 32;
 	constexpr int CHARGE_GRAPH_CUT_H = 32;
-	constexpr float DRAW_SCALE = 2.0f;
+	constexpr float DRAW_SCALE = 3.0f;
 	constexpr float CHARGE_SHOT_DRAW_SCALE = 3.0f;
 
 	constexpr float NORMAL_COLLIDER_R = 15.0f;
@@ -27,9 +27,15 @@ Bullet::Bullet(int shotH, int chargeShotH):
 	_shotH(shotH),
 	_chargeShotH(chargeShotH),
 	_type(BulletType::NormalShot),
+	_isImpact(false),
 	_isAlive(false),
 	_isTurn(false)
 {
+	_shotAnim.Init(shotH, 1, Vector2(16, 16), 4, 6, 3.0f);
+	_shotImpactAnim.Init(shotH, 2, Vector2(16, 16), 4, 6, 1.0f,false);
+	_chargeShotAnim.Init(chargeShotH, 1, Vector2(32, 32), 4, 6, 3.0f);
+	_chargeShotImpactAnim.Init(chargeShotH, 2, Vector2(32, 32), 4, 6, 3.0f,false);
+
 	_collider = std::make_shared<CircleCollider>(_pos, NORMAL_COLLIDER_R);
 }
 
@@ -57,7 +63,10 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 		_vel = { MOVE_SPEED,0.0f };
 	}
 
-	_pos += _vel;
+	if (!_isImpact)
+	{
+		_pos += _vel;
+	}
 
 	// 画面外に出たら消す
 	if (_pos.x < cameraPos.x - GlobalConstants::SCREEN_WIDTH / 2 ||
@@ -69,8 +78,17 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 
 	Vector2 hitChipPos;	// 未使用
 	if (map.IsCollision(_collider,hitChipPos))
-	{	// マップに当たったら消える
-		_isAlive = false;
+	{	// マップに当たったら
+		if (_type == BulletType::NormalShot)
+		{
+			ChangeAnim(_shotImpactAnim);
+		}
+		else if (_type == BulletType::ChargeShot)
+		{
+			ChangeAnim(_chargeShotImpactAnim);
+		}
+		_nowAnim.SetFirst();
+		_isImpact = true;
 	}
 
 	// 弾と敵の当たり判定
@@ -81,7 +99,7 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 			if (_type == BulletType::NormalShot)
 			{	// 通常弾ならダメージ与えて弾消える
 				enemy->SetHp(enemy->GetHp() - NORMAL_SHOT_DAMAGE);
-				_isAlive = false;
+				_isImpact = true;
 			}
 			else if (_type == BulletType::ChargeShot)
 			{	// チャージ弾なら最初に当たったときだけダメージ与える
@@ -98,39 +116,24 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 			enemy->SetIsHitChargeShot(false);
 		}
 	}
+
+	_nowAnim.Update();
 }
 
 void Bullet::Draw(Vector2 offset)
 {
-	if (_isAlive)
-	{
-		if (_type == BulletType::NormalShot)
-		{
-			DrawRectRotaGraph(_pos.x - offset.x,
-				_pos.y - offset.y,
-				NORMAL_GRAPH_CUT_W * 0,
-				NORMAL_GRAPH_CUT_H * 1,
-				NORMAL_GRAPH_CUT_W,
-				NORMAL_GRAPH_CUT_H,
-				DRAW_SCALE, 0.0f, _shotH, true, _isTurn);
-		}
-		else if (_type == BulletType::ChargeShot)
-		{
-			DrawRectRotaGraph(_pos.x - offset.x,
-				_pos.y - offset.y,
-				CHARGE_GRAPH_CUT_W * 0,
-				CHARGE_GRAPH_CUT_H * 1,
-				CHARGE_GRAPH_CUT_W, CHARGE_GRAPH_CUT_H,
-				CHARGE_SHOT_DRAW_SCALE, 0.0f, _chargeShotH, true, _isTurn);
-		}
+
+	_nowAnim.Draw(_pos - offset, _isTurn);
+
+
 #ifdef _DEBUG
-		_collider->Draw(offset);
+	_collider->Draw(offset);
 #endif
-	}
 }
 
 void Bullet::Shot(BulletType type, Vector2 shotPos, bool isTurn)
 {
+	_isImpact = false;
 	_isAlive = true;
 	_type = type;
 	_pos = shotPos;
@@ -138,10 +141,12 @@ void Bullet::Shot(BulletType type, Vector2 shotPos, bool isTurn)
 	if (_type == BulletType::NormalShot)
 	{
 		_collider->SetRadius(NORMAL_COLLIDER_R);
+		_nowAnim = _shotAnim;
 	}
 	else if (_type == BulletType::ChargeShot)
 	{
 		_collider->SetRadius(CHARGE_COLLIDER_R);
+		_nowAnim = _chargeShotAnim;
 	}
 }
 

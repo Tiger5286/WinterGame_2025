@@ -37,9 +37,15 @@ private:
 	int _shotH;
 	int _chargeShotH;
 
+	Animation _shotAnim;
+	Animation _shotImpactAnim;
+	Animation _chargeShotAnim;
+	Animation _chargeShotImpactAnim;
+
 	std::vector<std::shared_ptr<Enemy>> _pEnemys;
 
 	BulletType _type;
+	bool _isImpact;
 	bool _isAlive;
 	bool _isTurn;
 };

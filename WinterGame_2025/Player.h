@@ -10,7 +10,7 @@ class Map;
 class Player : public GameObject
 {
 public:
-	Player(int playerH,int playerWhiteH, int chargeParticleH);
+	Player(int playerH,int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH);
 	~Player();
 
 	void Init() override;
@@ -58,6 +58,8 @@ private:
 	int _playerH;
 	int _playerWhiteH;
 	int _chargeParticleH;	// チャージエフェクトの画像ハンドル
+	int _shotH;
+	int _chargeShotH;
 
 	// アニメーション
 	Animation _idleAnim;
@@ -67,6 +69,8 @@ private:
 	Animation _fallAnim;
 	Animation _dashAnim;
 
+	Animation _shotFlashAnim;
+	Animation _chargeShotFlashAnim;
 	Animation _ChargeParticleAnim;
 
 	// ジャンプ関連変数

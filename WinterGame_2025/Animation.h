@@ -6,14 +6,18 @@ public:
 	Animation();
 	~Animation();
 
-	void Init(int drawHandle,int animIndex, Vector2 frameSize,int maxAnimNum,int oneAnimFrame,float scale);	// 普通のアニメーション初期化
-	void Init(int drawHandle, int animIndexY, int animIndexX, Vector2 frameSize, float scale);	// 一枚絵アニメーション初期化(ほぼfall用)
+	void Init(int drawHandle,int animIndex, Vector2 frameSize,int maxAnimNum,int oneAnimFrame,float scale,bool isRepeat = true);	// 普通のアニメーション初期化
+	void Init(int drawHandle, int animIndexY, int animIndexX, Vector2 frameSize, float scale, bool isRepeat = true);	// 一枚絵アニメーション初期化(ほぼfall用)
 	void Update();
 	void Draw(Vector2 pos,bool isTurn);
 	void Draw(int drawHandle,Vector2 pos, bool isTurn);
 
+	// アニメーションを最初から再生する
+	void SetFirst() { _nowAnimNum = 0; _frameCount = 0; }
+
 	bool operator!=(const Animation& other) const;
 private:
+	bool _isRepeat;		// 繰り返し再生するかどうか
 	int _drawHandle;	// 画像ハンドル
 	int _animIndex;		// アニメーションの種類番号
 	Vector2 _frameSize;	// 画像の1コマサイズ

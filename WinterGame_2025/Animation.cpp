@@ -18,8 +18,9 @@ Animation::~Animation()
 {
 }
 
-void Animation::Init(int drawHandle, int animIndex, Vector2 frameSize, int maxAnimNum, int oneAnimFrame, float scale)
+void Animation::Init(int drawHandle, int animIndex, Vector2 frameSize, int maxAnimNum, int oneAnimFrame, float scale,bool isRepeat)
 {
+	_isRepeat = isRepeat;
 	_drawHandle = drawHandle;
 	_animIndex = animIndex;
 	_frameSize = frameSize;
@@ -30,12 +31,13 @@ void Animation::Init(int drawHandle, int animIndex, Vector2 frameSize, int maxAn
 	_frameCount = 0;
 }
 
-void Animation::Init(int drawHandle, int animIndexY, int animIndexX, Vector2 frameSize, float scale)
+void Animation::Init(int drawHandle, int animIndexY, int animIndexX, Vector2 frameSize, float scale, bool isRepeat)
 {
+	_isRepeat = isRepeat;
 	_drawHandle = drawHandle;
 	_animIndex = animIndexY;
 	_frameSize = frameSize;
-	_maxAnimNum = 1;
+	_maxAnimNum = animIndexX + 1;
 	_oneAnimFrame = 0;
 	_scale = scale;
 	_nowAnimNum = animIndexX;
@@ -44,33 +46,46 @@ void Animation::Init(int drawHandle, int animIndexY, int animIndexX, Vector2 fra
 
 void Animation::Update()
 {
-	_frameCount++;	// フレームカウントを進める
 	if (_oneAnimFrame == 0) return;	// 1コマあたりのフレーム数が0なら処理を抜ける
+
+	_frameCount++;	// フレームカウントを進める
+	
 	if (_frameCount >= _oneAnimFrame)	// 1コマ分のフレームが経過したら
 	{
 		_frameCount = 0;
 		_nowAnimNum++;	// アニメーション番号を進める
 		if (_nowAnimNum >= _maxAnimNum)
 		{	// 最大コマ数を超えたら最初に戻す
-			_nowAnimNum = 0;
+			if (_isRepeat)
+			{	// 繰り返し再生するなら最初のコマに戻す
+				_nowAnimNum = 0;
+			}
+			
 		}
 	}
 }
 
 void Animation::Draw(Vector2 pos, bool isTurn)
 {
-	DrawRectRotaGraph(pos.x, pos.y,
-		_frameSize.x * _nowAnimNum, _animIndex * _frameSize.y,
-		_frameSize.x, _frameSize.y, 
-		_scale, _rotate, _drawHandle, true, isTurn);
+	// 現在のコマ数が最大コマ数なら描画しない
+	if (_nowAnimNum != _maxAnimNum)
+	{
+		DrawRectRotaGraph(pos.x, pos.y,
+			_frameSize.x * _nowAnimNum, _animIndex * _frameSize.y,
+			_frameSize.x, _frameSize.y,
+			_scale, _rotate, _drawHandle, true, isTurn);
+	}
 }
 
 void Animation::Draw(int drawHandle, Vector2 pos, bool isTurn)
 {
-	DrawRectRotaGraph(pos.x, pos.y,
-		_frameSize.x * _nowAnimNum, _animIndex * _frameSize.y,
-		_frameSize.x, _frameSize.y,
-		_scale, _rotate, drawHandle, true, isTurn);
+	if (_nowAnimNum != _maxAnimNum)
+	{
+		DrawRectRotaGraph(pos.x, pos.y,
+			_frameSize.x * _nowAnimNum, _animIndex * _frameSize.y,
+			_frameSize.x, _frameSize.y,
+			_scale, _rotate, drawHandle, true, isTurn);
+	}
 }
 
 bool Animation::operator!=(const Animation& other) const

@@ -18,6 +18,9 @@ namespace
 	constexpr int CHARGE_PARTICLE_GRAPH_CUT_H = 64;
 	const Vector2 CHARGE_PARTICLE_FRAME_SIZE = { CHARGE_PARTICLE_GRAPH_CUT_W,CHARGE_PARTICLE_GRAPH_CUT_H };
 
+	const Vector2 SHOT_FLASH_GRAPH_SIZE = { 16,16 };	// 通常ショットのマズルフラッシュのサイズ
+	const Vector2 CHARGE_SHOT_FLASH_GRAPH_SIZE = { 32,32 };	// チャージショットのマズルフラッシュのサイズ
+
 	// アニメーション関連
 	constexpr int PLAYER_IDLE_ANIM_MAX_NUM = 5;	// アニメーションの枚数
 	constexpr int PLAYER_MOVE_ANIM_MAX_NUM = 8;
@@ -25,7 +28,12 @@ namespace
 
 	constexpr int CHARGE_PARTICLE_ANIM_MAX_NUM = 7;
 
+	constexpr int SHOT_ANIM_NUM = 3;
+	constexpr int CHARGE_SHOT_ANIM_NUM = 4;
+
 	constexpr int ONE_ANIM_FRAME = 6;	// 何フレームでアニメーションを切り替えるか
+	constexpr int FLASH_ONE_ANIM_FRAME = 4;	// 通常ショットのマズルフラッシュ
+	constexpr int CHARGE_SHOT_FLASH_ONE_ANIM_FRAME = 6;	// チャージショットのマズルフラッシュ
 
 	// 当たり判定
 	constexpr float COLLIDER_W = 60.0f;	// 当たり判定のサイズ
@@ -83,10 +91,12 @@ enum class PlayerAnimType : int
 	Fall = 8
 };
 
-Player::Player(int playerH, int playerWhiteH, int chargeParticleH):
+Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH):
 	_playerH(playerH),
 	_playerWhiteH(playerWhiteH),
 	_chargeParticleH(chargeParticleH),
+	_shotH(shotH),
+	_chargeShotH(chargeShotH),
 	_jumpFrame(0),
 	_isJumping(false),
 	_isHitUp(false),
@@ -109,14 +119,17 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH):
 		afterimage.whiteHandle = _playerWhiteH;
 	}
 
-	_ChargeParticleAnim.Init(_chargeParticleH, 0, CHARGE_PARTICLE_FRAME_SIZE, CHARGE_PARTICLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-
 	_idleAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Idle), PLAYER_FRAME_SIZE, PLAYER_IDLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	_moveAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Move), PLAYER_FRAME_SIZE, PLAYER_MOVE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	_damageAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Damage), PLAYER_FRAME_SIZE, PLAYER_DAMAGE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	_jumpAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Jump), PLAYER_FRAME_SIZE, 1, ONE_ANIM_FRAME, DRAW_SCALE);
 	_fallAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Fall), 2, PLAYER_FRAME_SIZE, DRAW_SCALE);
 	_dashAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Dash), 1, PLAYER_FRAME_SIZE, DRAW_SCALE);
+
+	_shotFlashAnim.Init(_shotH, 0, SHOT_FLASH_GRAPH_SIZE, SHOT_ANIM_NUM, FLASH_ONE_ANIM_FRAME, DRAW_SCALE,false);
+	_chargeShotFlashAnim.Init(_chargeShotH, 0, CHARGE_SHOT_FLASH_GRAPH_SIZE, CHARGE_SHOT_ANIM_NUM, CHARGE_SHOT_FLASH_ONE_ANIM_FRAME, DRAW_SCALE,false);
+	_ChargeParticleAnim.Init(_chargeParticleH, 0, CHARGE_PARTICLE_FRAME_SIZE, CHARGE_PARTICLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+
 	_nowAnim = _idleAnim;
 }
 
@@ -164,7 +177,6 @@ void Player::Update(Map& map)
 	}
 	// 移動抵抗処理
 	MoveResistance();
-	
 
 	// 落下中なら接地フラグをfalseにする
 	if (_vel.y > 0)
@@ -215,6 +227,24 @@ void Player::Draw(Vector2 offset)
 	}
 	
 	SetDrawBright(255, 255, 255);	// 元の色に戻す
+
+	// マズルフラッシュの描画
+	constexpr int shotFlashOffset = 30;
+	constexpr int chargeShotFlashOffset = 20;
+	Vector2 flashPos = _shotPos;
+	int temp = 0;
+	if (_isTurn)
+	{
+		temp = -1;
+	}
+	else
+	{
+		temp = 1;
+	}
+	flashPos.x += shotFlashOffset * temp;
+	_shotFlashAnim.Draw(flashPos - offset, _isTurn);
+	flashPos.x += chargeShotFlashOffset * temp;
+	_chargeShotFlashAnim.Draw(flashPos - offset, _isTurn);
 
 	// チャージエフェクトを描画
 	if (_chargeFrame > CHARGE_EFFECT_TIME)
@@ -377,6 +407,7 @@ void Player::Shot()
 			if (!bullet->GetAlive())
 			{
 				bullet->Shot(BulletType::NormalShot,_shotPos,_isTurn);
+				_shotFlashAnim.SetFirst();
 				break;
 			}
 		}
@@ -398,6 +429,7 @@ void Player::ChargeShot()
 				if (!bullet->GetAlive())
 				{
 					bullet->Shot(BulletType::ChargeShot, _shotPos, _isTurn);
+					_chargeShotFlashAnim.SetFirst();
 					break;
 				}
 			}
@@ -409,6 +441,7 @@ void Player::ChargeShot()
 				if (!bullet->GetAlive())
 				{
 					bullet->Shot(BulletType::NormalShot, _shotPos, _isTurn);
+					_shotFlashAnim.SetFirst();
 					break;
 				}
 			}
@@ -478,6 +511,8 @@ void Player::UpdateAnim()
 	}
 	_nowAnim.Update();	// アニメーション更新
 	_ChargeParticleAnim.Update(); // チャージパーティクルアニメーション更新
+	_shotFlashAnim.Update();
+	_chargeShotFlashAnim.Update();
 }
 
 void Player::UpdateAfterimage()

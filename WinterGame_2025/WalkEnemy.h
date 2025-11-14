@@ -13,9 +13,6 @@ enum class WalkEnemyState
 class WalkEnemy : public Enemy
 {
 public:
-	//WalkEnemy();
-	//WalkEnemy(WalkEnemyState state,bool isTurn,int handle, std::shared_ptr<Player>pPlayer);
-	//WalkEnemy(Vector2 firstPos,WalkEnemyState state, bool isTurn, int handle, std::shared_ptr<Player>pPlayer);
 	WalkEnemy(Vector2 chipPos, std::shared_ptr<Player>pPlayer, int handle, WalkEnemyState state, bool isTurn);
 	~WalkEnemy();
 

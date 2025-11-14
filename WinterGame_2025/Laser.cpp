@@ -21,34 +21,6 @@ namespace
 	constexpr int ONE_ANIM_FRAME = 6;
 }
 
-//Laser::Laser(int handle,int laserLength, std::shared_ptr<Player> pPlayer):
-//	_handle(handle),
-//	_laserLength(laserLength),
-//	_pPlayer(pPlayer)
-//{
-//	_collider = std::make_shared<BoxCollider>(Vector2(_pos.x,_pos.y + GRAPH_SIZE * DRAW_SCALE * _laserLength - HALF_DRAW_SIZE),
-//		Vector2(COLLIDER_WIDTH, GRAPH_SIZE * DRAW_SCALE * laserLength));
-//	_launcherAnim.Init(_handle, LAUNCHER_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-//	_laserAnim.Init(_handle, LASER_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-//	_impactAnim.Init(_handle, IMPACT_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-//}
-
-//Laser::Laser(Vector2 firstPos, int handle, int laserLength, std::shared_ptr<Player> pPlayer) :
-//	Gimmick(pPlayer),
-//	_handle(handle),
-//	_laserLength(laserLength),
-//	_pPlayer(pPlayer)
-//{
-//	_collider = std::make_shared<BoxCollider>(Vector2(_pos.x, _pos.y + GRAPH_SIZE * DRAW_SCALE * _laserLength - HALF_DRAW_SIZE),
-//		Vector2(COLLIDER_WIDTH, GRAPH_SIZE * DRAW_SCALE * laserLength));
-//	_pos = MapChipPosToGamePos(firstPos);
-//	_pos.y -= DRAW_SCALE * GRAPH_SIZE / 2;	// マップチップ中央に合わせる
-//	_collider->SetPos({ _pos.x,_pos.y + _collider->GetSize().y - 24 });
-//	_launcherAnim.Init(_handle, LAUNCHER_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-//	_laserAnim.Init(_handle, LASER_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-//	_impactAnim.Init(_handle, IMPACT_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-//}
-
 Laser::Laser(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, int laserLength):
 	Gimmick(pPlayer),
 	_handle(handle),
