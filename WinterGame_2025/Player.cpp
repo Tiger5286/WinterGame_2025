@@ -83,7 +83,7 @@ enum class PlayerAnimType : int
 	Move,
 	Shot,
 	Damage,
-	GrabWall,
+	Slide,
 	Dash,
 	FlameDash,
 	Death,
@@ -99,7 +99,6 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_chargeShotH(chargeShotH),
 	_jumpFrame(0),
 	_isJumping(false),
-	_isHitUp(false),
 	_isTurn(false),
 	_isCanControll(true),
 	_invincibleFrame(0),
@@ -125,6 +124,7 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_jumpAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Jump), PLAYER_FRAME_SIZE, 1, ONE_ANIM_FRAME, DRAW_SCALE);
 	_fallAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Fall), 2, PLAYER_FRAME_SIZE, DRAW_SCALE);
 	_dashAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Dash), 1, PLAYER_FRAME_SIZE, DRAW_SCALE);
+	_slideAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Slide), 0, PLAYER_FRAME_SIZE, DRAW_SCALE);
 
 	_shotFlashAnim.Init(_shotH, 0, SHOT_FLASH_GRAPH_SIZE, SHOT_ANIM_NUM, FLASH_ONE_ANIM_FRAME, DRAW_SCALE,false);
 	_shotFlashAnim.SetEnd();
@@ -157,6 +157,9 @@ void Player::Update(Map& map)
 		// 左右移動処理
 		Move();
 
+		// 壁ずり落ち
+		Slide();
+
 		// ダッシュ処理
 		Dash();
 
@@ -177,6 +180,9 @@ void Player::Update(Map& map)
 		// 移動速度制限処理
 		MoveSpeedLimit();
 	}
+
+	
+
 	// 移動抵抗処理
 	MoveResistance();
 
@@ -187,7 +193,7 @@ void Player::Update(Map& map)
 	}
 
 	// マップとの当たり判定処理
-	_isHitUp = MapCollision(map).up;
+	_hitDir = MapCollision(map);
 
 	// ダメージを受けているときの処理
 	DamageUpdate();
@@ -303,7 +309,7 @@ void Player::Jump()
 
 	if (_input.IsPressed("jump") && _isJumping)
 	{	
-		if (_isHitUp)
+		if (_hitDir.up)
 		{
 			_jumpFrame = MAX_JUMP_FRAME;	// 天井に当たったらジャンプ力を加えないようにする
 		}
@@ -335,6 +341,51 @@ void Player::Move()
 	{
 		_vel.x -= MOVE_SPEED;
 		if (!_isDashing) _isTurn = true;
+	}
+}
+
+void Player::Slide()
+{
+	if ((_hitDir.left || _hitDir.right) && !_hitDir.down && _vel.y > 0)
+	{
+		_isSlide = true;
+	}
+	else
+	{
+		_isSlide = false;
+	}
+
+	// 壁ずり落ち中の処理
+	if (_isSlide)
+	{
+		// 落下速度制限
+		if (_vel.y > 4.0f)
+		{
+			_vel.y = 4.0f;
+		}
+
+		if (_hitDir.left)
+		{
+			_isTurn = false;	// 右向きにする
+		}
+		else if (_hitDir.right)
+		{
+			_isTurn = true;	// 左向きにする
+		}
+
+		// 壁ジャンプ処理
+		if (_input.IsTriggered("jump") && _hitDir.left)
+		{	// 壁ジャンプ(左壁)
+			_vel.y = JUMP_POWER;
+			_vel.x = 15;
+			_isSlide = false;
+		}
+		else if (_input.IsTriggered("jump") && _hitDir.right)
+		{	// 壁ジャンプ(右壁)
+			_vel.y = JUMP_POWER;
+			_vel.x = -15;
+			_isSlide = false;
+		}
 	}
 }
 
@@ -498,6 +549,10 @@ void Player::UpdateAnim()
 	else if (_vel.y < 0)	// 上昇中ならジャンプアニメーションに切り替え
 	{
 		ChangeAnim(_jumpAnim);
+	}
+	else if (_isSlide)	// 壁ずり落ち中なら壁ずり落ちアニメーションに切り替え
+	{
+		ChangeAnim(_slideAnim);
 	}
 	else if (_vel.y > 0)	// 下降中なら落下アニメーションに切り替え
 	{

@@ -77,7 +77,7 @@ void SceneMain::Update(Input& input)
 	{
 		if (enemy != nullptr)
 		{
-			float toCameraDisX = enemy->GetPos().x - _pCamera->GetPos().x;
+			float toCameraDisX = enemy->GetPos().x - _pCamera->GetPos().x;	// 敵とカメラの距離
 			// カメラの画面内にいる敵だけ更新する
 			if (abs(toCameraDisX) < GlobalConstants::SCREEN_WIDTH / 2 + 100)
 			{
@@ -219,30 +219,30 @@ void SceneMain::LoadStage(Stages stage)
 	case Stages::Temp:
 		printfDx("Stages::Tempがロードされました\n");
 
-		_pPlayer->SetPosFromMapChip({ 3,19 });
+		_pPlayer->SetPosFromChipPos({ 3,19 });
 
 		_pMap->LoadMapData("data/Map/TempMap.csv");
 
 		_pClearFlag = std::make_shared<ClearFlag>(Vector2(68, 18), _pPlayer, _clearFlagH);
 
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(20,18), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(18, 18), _pPlayer, _walkEnemyH, WalkEnemyState::Move, false));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(20, 15), _pPlayer, _flyEnemyH, FlyEnemyState::Idle));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(23, 15), _pPlayer, _flyEnemyH, FlyEnemyState::Move));
-		_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(24, 18), _pPlayer, _jumpEnemyH));
-		_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(58, 18), _pPlayer, _jumpEnemyH));
+		//_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(20,18), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		//_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(18, 18), _pPlayer, _walkEnemyH, WalkEnemyState::Move, false));
+		//_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(20, 15), _pPlayer, _flyEnemyH, FlyEnemyState::Idle));
+		//_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(23, 15), _pPlayer, _flyEnemyH, FlyEnemyState::Move));
+		//_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(24, 18), _pPlayer, _jumpEnemyH));
+		//_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(58, 18), _pPlayer, _jumpEnemyH));
 
 		_pItems.push_back(std::make_shared<Item>(Vector2(17, 17), ItemType::Coin, _pPlayer, _coinH));
 		_pItems.push_back(std::make_shared<Item>(Vector2(19, 17), ItemType::BigCoin, _pPlayer, _bigCoinH));
 		_pItems.push_back(std::make_shared<Item>(Vector2(21, 17), ItemType::HealthItem, _pPlayer, _healthItemH));
 
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(11, 12), _pPlayer, _laserH, 4));
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(12, 12), _pPlayer, _laserH, 7));
+		//_pGimmicks.push_back(std::make_shared<Laser>(Vector2(11, 12), _pPlayer, _laserH, 4));
+		//_pGimmicks.push_back(std::make_shared<Laser>(Vector2(12, 12), _pPlayer, _laserH, 7));
 
 		break;
 	case Stages::Tutorial:
 		// プレイヤーの位置を設定
-		_pPlayer->SetPosFromMapChip({ 3 ,19});
+		_pPlayer->SetPosFromChipPos({ 3 ,19});
 
 		// マップのデータをロード
 		_pMap->LoadMapData("data/Map/TutorialMap.csv");
@@ -272,7 +272,7 @@ void SceneMain::LoadStage(Stages stage)
 #endif
 		break;
 	case Stages::Stage1 :
-		_pPlayer->SetPosFromMapChip({ 3 ,19  });
+		_pPlayer->SetPosFromChipPos({ 3 ,19  });
 
 		_pMap->LoadMapData("data/Map/Stage1Map.csv");
 
@@ -299,7 +299,7 @@ void SceneMain::LoadStage(Stages stage)
 #endif
 		break;
 	case Stages::Stage2:
-		_pPlayer->SetPosFromMapChip({ 3,19 });
+		_pPlayer->SetPosFromChipPos({ 3,19 });
 
 		_pMap->LoadMapData("data/Map/TempMap.csv");
 
@@ -308,7 +308,7 @@ void SceneMain::LoadStage(Stages stage)
 #endif
 		break;
 	case Stages::Boss:
-		_pPlayer->SetPosFromMapChip({ 3,19 });
+		_pPlayer->SetPosFromChipPos({ 3,19 });
 
 		_pMap->LoadMapData("data/Map/BossStage.csv");
 

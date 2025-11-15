@@ -54,7 +54,7 @@ public:
 	void SetPos(Vector2 pos) { _pos = pos; }
 	Vector2 GetPos() { return _pos; }
 
-	void SetPosFromMapChip(Vector2 mapChipPos)
+	void SetPosFromChipPos(Vector2 mapChipPos)
 	{
 		_pos = ChipPosToGamePos(mapChipPos);
 	}

@@ -29,6 +29,7 @@ public:
 private:
 	void Jump();
 	void Move();
+	void Slide();
 	void MoveSpeedLimit();	// 移動速度制限
 	void MoveResistance();	// 移動抵抗
 	void MoveAreaLimit(Map& map);	// 移動範囲制限
@@ -68,6 +69,7 @@ private:
 	Animation _jumpAnim;
 	Animation _fallAnim;
 	Animation _dashAnim;
+	Animation _slideAnim;
 
 	Animation _shotFlashAnim;
 	Animation _chargeShotFlashAnim;
@@ -76,10 +78,11 @@ private:
 	// ジャンプ関連変数
 	int _jumpFrame;		// ジャンプ長押し時間
 	bool _isJumping;	// ジャンプ中フラグ
-	bool _isHitUp;		// 天井に当たったかどうかのフラグ
 
 	bool _isTurn;	// true:左向き/false:右向き
 	Vector2 _shotPos;	// 弾を召喚する位置
+
+	bool _isSlide;
 
 	// ダメージ関連変数
 	bool _isCanControll; // プレイヤー操作可能フラグ
