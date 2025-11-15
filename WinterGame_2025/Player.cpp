@@ -100,6 +100,7 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_jumpFrame(0),
 	_isJumping(false),
 	_isTurn(false),
+	_isSlide(false),
 	_isCanControll(true),
 	_invincibleFrame(0),
 	_isFrickering(false),
