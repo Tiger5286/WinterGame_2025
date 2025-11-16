@@ -28,167 +28,167 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Bullet.cpp">
+    <ClCompile Include="Source\Bullet.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
+    <ClCompile Include="Source\GameObject.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="SceneTitle.cpp">
+    <ClCompile Include="Source\SceneTitle.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
+    <ClCompile Include="Source\SceneManager.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="SceneMain.cpp">
+    <ClCompile Include="Source\SceneMain.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="SceneBase.cpp">
+    <ClCompile Include="Source\SceneBase.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Geometry.cpp">
+    <ClCompile Include="Source\Geometry.cpp">
       <Filter>General</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
+    <ClCompile Include="Source\Input.cpp">
       <Filter>General</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
+    <ClCompile Include="Source\Animation.cpp">
       <Filter>General</Filter>
     </ClCompile>
-    <ClCompile Include="DebugScene.cpp">
+    <ClCompile Include="Source\DebugScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="BoxCollider.cpp">
+    <ClCompile Include="Source\BoxCollider.cpp">
       <Filter>GameObjects\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="CircleCollider.cpp">
+    <ClCompile Include="Source\CircleCollider.cpp">
       <Filter>GameObjects\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Collider.cpp">
+    <ClCompile Include="Source\Collider.cpp">
       <Filter>GameObjects\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Map.cpp">
+    <ClCompile Include="Source\Map.cpp">
       <Filter>Uncategorized</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Source\main.cpp">
       <Filter>Uncategorized</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
+    <ClCompile Include="Source\Application.cpp">
       <Filter>Uncategorized</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="Source\Player.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
+    <ClCompile Include="Source\Camera.cpp">
       <Filter>Uncategorized</Filter>
     </ClCompile>
-    <ClCompile Include="SceneStageSelect.cpp">
+    <ClCompile Include="Source\SceneStageSelect.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
+    <ClCompile Include="Source\Enemy.cpp">
       <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
-    <ClCompile Include="FlyEnemy.cpp">
+    <ClCompile Include="Source\FlyEnemy.cpp">
       <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
-    <ClCompile Include="JumpEnemy.cpp">
+    <ClCompile Include="Source\JumpEnemy.cpp">
       <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
-    <ClCompile Include="WalkEnemy.cpp">
+    <ClCompile Include="Source\WalkEnemy.cpp">
       <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
+    <ClCompile Include="Source\Item.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Gimmick.cpp">
+    <ClCompile Include="Source\Gimmick.cpp">
       <Filter>GameObjects\Gimmicks</Filter>
     </ClCompile>
-    <ClCompile Include="Laser.cpp">
+    <ClCompile Include="Source\Laser.cpp">
       <Filter>GameObjects\Gimmicks</Filter>
     </ClCompile>
-    <ClCompile Include="SceneClear.cpp" />
-    <ClCompile Include="ClearFlag.cpp" />
+    <ClCompile Include="Source\SceneClear.cpp" />
+    <ClCompile Include="Source\ClearFlag.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bullet.h">
+    <ClInclude Include="Source\Bullet.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
+    <ClInclude Include="Source\GameObject.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="SceneTitle.h">
+    <ClInclude Include="Source\SceneTitle.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
+    <ClInclude Include="Source\SceneManager.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="SceneMain.h">
+    <ClInclude Include="Source\SceneMain.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="SceneBase.h">
+    <ClInclude Include="Source\SceneBase.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
+    <ClInclude Include="Source\Geometry.h">
       <Filter>General</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
+    <ClInclude Include="Source\Animation.h">
       <Filter>General</Filter>
     </ClInclude>
-    <ClInclude Include="DebugScene.h">
+    <ClInclude Include="Source\DebugScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="BoxCollider.h">
+    <ClInclude Include="Source\BoxCollider.h">
       <Filter>GameObjects\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="CircleCollider.h">
+    <ClInclude Include="Source\CircleCollider.h">
       <Filter>GameObjects\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Collider.h">
+    <ClInclude Include="Source\Collider.h">
       <Filter>GameObjects\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Input.h">
+    <ClInclude Include="Source\Input.h">
       <Filter>General</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
+    <ClInclude Include="Source\Map.h">
       <Filter>Uncategorized</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="Source\Game.h">
       <Filter>Uncategorized</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h">
+    <ClInclude Include="Source\Application.h">
       <Filter>Uncategorized</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="Source\Player.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
+    <ClInclude Include="Source\Camera.h">
       <Filter>Uncategorized</Filter>
     </ClInclude>
-    <ClInclude Include="SceneStageSelect.h">
+    <ClInclude Include="Source\SceneStageSelect.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
+    <ClInclude Include="Source\Enemy.h">
       <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
-    <ClInclude Include="FlyEnemy.h">
+    <ClInclude Include="Source\FlyEnemy.h">
       <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
-    <ClInclude Include="JumpEnemy.h">
+    <ClInclude Include="Source\JumpEnemy.h">
       <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
-    <ClInclude Include="WalkEnemy.h">
+    <ClInclude Include="Source\WalkEnemy.h">
       <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
+    <ClInclude Include="Source\Item.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Gimmick.h">
+    <ClInclude Include="Source\Gimmick.h">
       <Filter>GameObjects\Gimmicks</Filter>
     </ClInclude>
-    <ClInclude Include="Laser.h">
+    <ClInclude Include="Source\Laser.h">
       <Filter>GameObjects\Gimmicks</Filter>
     </ClInclude>
-    <ClInclude Include="SceneClear.h" />
-    <ClInclude Include="ClearFlag.h" />
+    <ClInclude Include="Source\SceneClear.h" />
+    <ClInclude Include="Source\ClearFlag.h" />
   </ItemGroup>
 </Project>

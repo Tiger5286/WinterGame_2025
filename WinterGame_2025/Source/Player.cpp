@@ -347,6 +347,7 @@ void Player::Move()
 
 void Player::Slide()
 {
+	// •Ç‚¸‚è—Ž‚¿”»’è
 	if ((_hitDir.left || _hitDir.right) && !_hitDir.down && _vel.y > 0)
 	{
 		_isSlide = true;
