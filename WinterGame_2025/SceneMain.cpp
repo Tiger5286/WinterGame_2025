@@ -18,6 +18,7 @@
 #include "WalkEnemy.h"
 #include "FlyEnemy.h"
 #include "JumpEnemy.h"
+#include "Boss.h"
 
 #include "Item.h"
 
@@ -217,7 +218,7 @@ void SceneMain::LoadStage(Stages stage)
 	switch (stage)
 	{
 	case Stages::Temp:
-		printfDx("Stages::Tempがロードされました\n");
+		//printfDx("Stages::Tempがロードされました\n");
 
 		_pPlayer->SetPosFromChipPos({ 3,19 });
 
@@ -295,7 +296,7 @@ void SceneMain::LoadStage(Stages stage)
 
 
 #ifdef _DEBUG
-		printfDx("Stages::Stage1がロードされました\n");
+		//printfDx("Stages::Stage1がロードされました\n");
 #endif
 		break;
 	case Stages::Stage2:
@@ -304,16 +305,18 @@ void SceneMain::LoadStage(Stages stage)
 		_pMap->LoadMapData("data/Map/TempMap.csv");
 
 #ifdef _DEBUG
-		printfDx("Stages::Stage2がロードされました\n");
+		//printfDx("Stages::Stage2がロードされました\n");
 #endif
 		break;
 	case Stages::Boss:
 		_pPlayer->SetPosFromChipPos({ 3,19 });
 
+		_pEnemys.push_back(std::make_shared<Boss>(_pPlayer, _walkEnemyH));
+
 		_pMap->LoadMapData("data/Map/BossStage.csv");
 
 #ifdef _DEBUG
-		printfDx("Stages::Bossがロードされました\n");
+		//printfDx("Stages::Bossがロードされました\n");
 #endif
 		break;
 	}
