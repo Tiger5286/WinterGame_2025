@@ -115,6 +115,9 @@
     <ClCompile Include="Boss.cpp">
       <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
+    <ClCompile Include="SceneGameOver.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -203,6 +206,9 @@
     </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>GameObjects\Enemys</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGameOver.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

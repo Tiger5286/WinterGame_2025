@@ -25,6 +25,7 @@ public:
 	void SetContext(const Input& input,std::vector<std::shared_ptr<Bullet>>& pBullets);
 
 	void TakeDamage();	// ダメージを受ける
+	bool GetIsAlive() { return _isAlive; }
 
 private:
 	void Jump();
@@ -70,10 +71,14 @@ private:
 	Animation _fallAnim;
 	Animation _dashAnim;
 	Animation _slideAnim;
+	Animation _deathAnim;
 
 	Animation _shotFlashAnim;
 	Animation _chargeShotFlashAnim;
 	Animation _ChargeParticleAnim;
+
+	int _hp;
+	bool _isAlive;
 
 	// ジャンプ関連変数
 	int _jumpFrame;		// ジャンプ長押し時間
@@ -82,7 +87,7 @@ private:
 	bool _isTurn;	// true:左向き/false:右向き
 	Vector2 _shotPos;	// 弾を召喚する位置
 
-	bool _isSlide;
+	bool _isSlide;	// 壁スライド状態かどうか
 
 	// ダメージ関連変数
 	bool _isCanControll; // プレイヤー操作可能フラグ

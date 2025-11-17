@@ -25,6 +25,7 @@ namespace
 	constexpr int PLAYER_IDLE_ANIM_MAX_NUM = 5;	// アニメーションの枚数
 	constexpr int PLAYER_MOVE_ANIM_MAX_NUM = 8;
 	constexpr int PLAYER_DAMAGE_ANIM_MAX_NUM = 9;
+	constexpr int PLAYER_DEATH_ANIM_MAX_NUM = 21;
 
 	constexpr int CHARGE_PARTICLE_ANIM_MAX_NUM = 7;
 
@@ -32,6 +33,7 @@ namespace
 	constexpr int CHARGE_SHOT_ANIM_NUM = 4;
 
 	constexpr int ONE_ANIM_FRAME = 6;	// 何フレームでアニメーションを切り替えるか
+	constexpr int DEATH_ONE_ANIM_FRAME = 7;	// 死亡時のアニメーション用
 	constexpr int FLASH_ONE_ANIM_FRAME = 4;	// 通常ショットのマズルフラッシュ
 	constexpr int CHARGE_SHOT_FLASH_ONE_ANIM_FRAME = 6;	// チャージショットのマズルフラッシュ
 
@@ -74,6 +76,8 @@ namespace
 	// 射撃関連
 	constexpr int CHARGE_EFFECT_TIME = 30;		// チャージエフェクトが出始める時間
 	constexpr int CHARGE_TIME_MAX = 90;	// 最大チャージ時間
+
+	constexpr int MAX_HP = 1;
 }
 
 // アニメーション種類
@@ -97,6 +101,8 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_chargeParticleH(chargeParticleH),
 	_shotH(shotH),
 	_chargeShotH(chargeShotH),
+	_hp(MAX_HP),
+	_isAlive(true),
 	_jumpFrame(0),
 	_isJumping(false),
 	_isTurn(false),
@@ -126,6 +132,7 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_fallAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Fall), 2, PLAYER_FRAME_SIZE, DRAW_SCALE);
 	_dashAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Dash), 1, PLAYER_FRAME_SIZE, DRAW_SCALE);
 	_slideAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Slide), 0, PLAYER_FRAME_SIZE, DRAW_SCALE);
+	_deathAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Death), PLAYER_FRAME_SIZE, PLAYER_DEATH_ANIM_MAX_NUM, DEATH_ONE_ANIM_FRAME, DRAW_SCALE, false);
 
 	_shotFlashAnim.Init(_shotH, 0, SHOT_FLASH_GRAPH_SIZE, SHOT_ANIM_NUM, FLASH_ONE_ANIM_FRAME, DRAW_SCALE,false);
 	_shotFlashAnim.SetEnd();
@@ -182,8 +189,6 @@ void Player::Update(Map& map)
 		MoveSpeedLimit();
 	}
 
-	
-
 	// 移動抵抗処理
 	MoveResistance();
 
@@ -195,6 +200,17 @@ void Player::Update(Map& map)
 
 	// マップとの当たり判定処理
 	_hitDir = MapCollision(map);
+
+	// hpがなくなったときの処理
+	if (_hp <= 0)
+	{
+		_isCanControll = false;
+		if (_nowAnim.GetIsEnd())
+		{
+			// ここに死んだときの処理を書く
+			_isAlive = false;
+		}
+	}
 
 	// ダメージを受けているときの処理
 	DamageUpdate();
@@ -272,6 +288,8 @@ void Player::Draw(Vector2 offset)
 	}
 #ifdef _DEBUG
 	_collider->Draw(offset);
+
+	DrawFormatString(_pos.x - offset.x - 20, _pos.y - offset.y - 120, 0xffffff, "hp:%d", _hp);
 #endif // _DEBUG
 }
 
@@ -285,6 +303,7 @@ void Player::TakeDamage()
 {
 	if (!_isDashing && _invincibleFrame == 0)
 	{	// ダッシュ中でなく、無敵時間でなければダメージを受ける
+		_hp--;
 		_invincibleFrame = INVINCIBLE_FRAME_MAX;	// 無敵時間をセット
 		_isCanControll = false;	// 操作不可にする
 		_isFrickering = false;	// 点滅フラグをリセット
@@ -437,6 +456,7 @@ void Player::MoveAreaLimit(Map& map)
 
 void Player::DamageUpdate()
 {
+	if (_hp <= 0) return;	// 死んでいる場合は処理しない
 	if (_invincibleFrame > 0)
 	{
 		_invincibleFrame--;
@@ -540,7 +560,11 @@ void Player::Dash()
 
 void Player::UpdateAnim()
 {
-	if (_invincibleFrame > DAMAGE_ANIMATION_END_FRAME)	// 無敵時間中にダメージアニメーション一回分の時間ダメージアニメーションに切り替え
+	if (_hp <= 0)
+	{
+		ChangeAnim(_deathAnim);	// hpがなくなったら死亡アニメーションに切り替え
+	}
+	else if (_invincibleFrame > DAMAGE_ANIMATION_END_FRAME)	// 無敵時間中にダメージアニメーション一回分の時間ダメージアニメーションに切り替え
 	{
 		ChangeAnim(_damageAnim);
 	}

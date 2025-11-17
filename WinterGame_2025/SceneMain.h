@@ -71,6 +71,8 @@ private:
 
 	int _frameCount;	// 経過フレーム数
 
+	Stages _nowStage;
+
 	/*オブジェクト*/
 	std::shared_ptr<Player> _pPlayer;	// プレイヤー
 	std::vector<std::shared_ptr<Bullet>> _pBullets;	// 弾

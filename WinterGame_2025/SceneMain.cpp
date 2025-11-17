@@ -11,6 +11,7 @@
 #include "SceneManager.h"
 #include "DebugScene.h"
 #include "SceneClear.h"
+#include "SceneGameOver.h"
 
 #include "Player.h"
 #include "Bullet.h"
@@ -36,7 +37,8 @@ namespace
 
 SceneMain::SceneMain(SceneManager& manager, Stages stage) :
 	SceneBase(manager),
-	_frameCount(0)
+	_frameCount(0),
+	_nowStage(stage)
 {
 	/*画像の読み込み*/
 	LoadAllGraphs();
@@ -72,6 +74,13 @@ void SceneMain::Update(Input& input)
 	_pPlayer->Update(*_pMap);
 	// カメラ制御
 	_pCamera->Update(_pPlayer->GetPos());
+
+	// プレイヤーが死んだときの処理
+	if (!_pPlayer->GetIsAlive())
+	{
+		_manager.ChangeScene(std::make_shared<SceneGameOver>(_manager, _nowStage));
+		return;
+	}
 
 	// 敵制御
 	for (auto& enemy : _pEnemys)
