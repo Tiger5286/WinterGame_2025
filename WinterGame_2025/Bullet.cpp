@@ -32,7 +32,7 @@ Bullet::Bullet(int shotH, int chargeShotH):
 	_isTurn(false)
 {
 	_shotAnim.Init(shotH, 1, Vector2(16, 16), 4, 6, 3.0f);
-	_shotImpactAnim.Init(shotH, 2, Vector2(16, 16), 4, 6, 3.0f,false);
+	_shotImpactAnim.Init(shotH, 2, Vector2(16, 16), 4, 4, 3.0f,false);
 	_chargeShotAnim.Init(chargeShotH, 1, Vector2(32, 32), 4, 6, 3.0f);
 	_chargeShotImpactAnim.Init(chargeShotH, 2, Vector2(32, 32), 4, 6, 3.0f,false);
 

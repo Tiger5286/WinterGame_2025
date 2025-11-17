@@ -249,27 +249,21 @@ void SceneMain::LoadStage(Stages stage)
 		_pMap->LoadMapData("data/Map/TutorialMap.csv");
 
 		// ゴール旗を生成
-		_pClearFlag = std::make_shared<ClearFlag>(Vector2(154, 34), _pPlayer, _clearFlagH);
+		_pClearFlag = std::make_shared<ClearFlag>(Vector2(166,22), _pPlayer, _clearFlagH);
 
 		// 敵を生成
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(24, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(51, 32), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(60, 31), _pPlayer, _flyEnemyH, FlyEnemyState::Idle));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(57, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, false));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(77, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(94, 29), _pPlayer, _flyEnemyH, FlyEnemyState::Idle));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(97, 29), _pPlayer, _flyEnemyH, FlyEnemyState::Idle));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(100, 29), _pPlayer, _flyEnemyH, FlyEnemyState::Idle));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(103, 29), _pPlayer, _flyEnemyH, FlyEnemyState::Idle));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(106, 29), _pPlayer, _flyEnemyH, FlyEnemyState::Idle));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(115, 23), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(142, 25), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(39, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(61, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(64, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(67, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(70, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(73, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
 
-		// レーザー
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(139, 29), _pPlayer, _laserH, 7));
+		// ギミックの生成
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(116, 32), _pPlayer, _laserH, 4));
 
 #ifdef _DEBUG
-		printfDx("Stages::Tutorialがロードされました\n");
+		//printfDx("Stages::Tutorialがロードされました\n");
 #endif
 		break;
 	case Stages::Stage1 :
