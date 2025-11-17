@@ -17,6 +17,7 @@ public:
 	bool IsCollision(std::shared_ptr<Collider> pCollider, Vector2& hitChipPos);
 
 	int GetStageWidth() const;
+	Vector2 GetStageSize();
 
 	void LoadMapData(std::string fileName);
 

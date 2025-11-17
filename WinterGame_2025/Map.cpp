@@ -123,6 +123,11 @@ int Map::GetStageWidth() const
 	return _chipNumX * CHIP_SIZE * DRAW_SCALE;
 }
 
+Vector2 Map::GetStageSize()
+{
+	return Vector2(_chipNumX * CHIP_SIZE * DRAW_SCALE, _chipNumY * CHIP_SIZE * DRAW_SCALE);
+}
+
 void Map::LoadMapData(std::string fileName)
 {
 	std::ifstream file(fileName);

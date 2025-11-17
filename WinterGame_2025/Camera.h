@@ -3,16 +3,16 @@
 class Camera
 {
 public:
-	Camera(int stageWidth);
+	Camera(Vector2 stageSize);
 	~Camera();
 	void Init();
-	void Update(float PlayerPosX);
+	void Update(Vector2 playerPos);
 
 	Vector2 GetPos() const { return _pos; }
 	Vector2 GetDrawOffset() const;
 
 private:
 	Vector2 _pos;
-	const int STAGE_WIDTH;
+	Vector2 _stageSize;
 };
 
