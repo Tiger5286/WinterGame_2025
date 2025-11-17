@@ -77,7 +77,7 @@ namespace
 	constexpr int CHARGE_EFFECT_TIME = 30;		// チャージエフェクトが出始める時間
 	constexpr int CHARGE_TIME_MAX = 90;	// 最大チャージ時間
 
-	constexpr int MAX_HP = 1;
+	constexpr int MAX_HP = 5;
 }
 
 // アニメーション種類
