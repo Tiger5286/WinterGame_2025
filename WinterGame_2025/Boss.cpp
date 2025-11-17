@@ -1,6 +1,7 @@
 #include "Boss.h"
 #include "Game.h"
 #include "BoxCollider.h"
+#include "Player.h"
 
 namespace
 {
@@ -34,6 +35,12 @@ void Boss::Init()
 
 void Boss::Update(Map& map)
 {
+	// プレイヤーに当たったらダメージを与える
+	if (_collider->CheckCollision(_pPlayer->GetCollider()))
+	{
+		_pPlayer->TakeDamage();
+	}
+
 	_nowAnim.Update();
 }
 

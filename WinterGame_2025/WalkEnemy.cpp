@@ -70,7 +70,7 @@ void WalkEnemy::Update(Map& map)
 	Gravity();
 
 	if (_state == WalkEnemyState::Idle)
-	{
+	{	// 待機状態の時はプレイヤーの方を向く
 		_vel.x = 0.0f;
 		float toPlayerDis = _pPlayer->GetPos().x - _pos.x;
 		if (toPlayerDis < 0)
@@ -83,7 +83,7 @@ void WalkEnemy::Update(Map& map)
 		}
 	}
 	else if (_state == WalkEnemyState::Move)
-	{
+	{	// 行動状態の時は向いている方向に動く
 		if (_isTurn)
 		{
 			_vel.x = -MOVE_SPEED;
