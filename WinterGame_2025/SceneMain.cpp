@@ -64,6 +64,7 @@ void SceneMain::Init()
 	{
 		enemy->Init();
 	}
+	_pCamera->Shake(60 * 100, 10);
 }
 
 void SceneMain::Update(Input& input)

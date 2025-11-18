@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "Game.h"
 #include <cmath>
+#include "Dxlib.h"
 
 namespace
 {
@@ -11,7 +12,10 @@ namespace
 }
 
 Camera::Camera(Vector2 stageSize):
-	_stageSize(stageSize)
+	_stageSize(stageSize),
+	_shakeFrame(0),
+	_shaking(false),
+	_shakePower(0)
 {
 	// 初期位置を画面中央に設定(マップチップ0.5個分下にずらす)
 	_pos.x = GlobalConstants::SCREEN_WIDTH / 2;
@@ -63,6 +67,28 @@ void Camera::Update(Vector2 playerPos)
 	{
 		_pos.y = _stageSize.y - GlobalConstants::SCREEN_HEIGHT / 2;
 	}
+
+	if (_shaking)
+	{
+		_shakeFrame--;
+
+		_pos.x = _pos.x + GetRand(_shakePower);
+		_pos.y = _pos.y + GetRand(_shakePower);
+
+		if (_shakeFrame == 0)
+		{
+			_shaking = false;
+			SRand(0);
+		}
+	}
+}
+
+void Camera::Shake(int frame, int power)
+{
+	SRand(-power);
+	_shaking = true;
+	_shakeFrame = frame;
+	_shakePower = power;
 }
 
 Vector2 Camera::GetDrawOffset() const

@@ -7,10 +7,12 @@ public:
 	~Animation();
 
 	void Init(int drawHandle,int animIndex, Vector2 frameSize,int maxAnimNum,int oneAnimFrame,float scale,bool isRepeat = true);	// 普通のアニメーション初期化
-	void Init(int drawHandle, int animIndexY, int animIndexX, Vector2 frameSize, float scale, bool isRepeat = true);	// 一枚絵アニメーション初期化(ほぼfall用)
+	void Init(int drawHandle, int animIndexY, int animIndexX, Vector2 frameSize, float scale, bool isRepeat = true);	// 一枚絵アニメーション初期化
 	void Update();
 	void Draw(Vector2 pos,bool isTurn);
 	void Draw(int drawHandle,Vector2 pos, bool isTurn);
+
+	void SetRotate(float rotate) { _rotate = rotate; }
 
 	// アニメーションを最初から再生する
 	void SetFirst() { _nowAnimNum = 0; _frameCount = 0; }

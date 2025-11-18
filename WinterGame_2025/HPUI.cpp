@@ -38,28 +38,29 @@ void HPUI::Init()
 
 void HPUI::Update(int playerHP)
 {
+	// プレイヤーのhpからバーの長さを出す
 	_barLength = static_cast<float>(playerHP) / static_cast<float>(_playerMaxHp) * MAX_BAR_LENGTH;
+	// lerpでいい感じに減らす
 	_drawBarLength = std::lerp(_drawBarLength, _barLength, 0.05f);
-
-
 }
 
 void HPUI::Draw(Vector2 drawPlayerPos)
 {
-	//if (drawPlayerPos.y < FRAME_BOTTOM + LOW_ALPHA_DIS && drawPlayerPos.x < FRAME_RIGHT + LOW_ALPHA_DIS)
-	//{
-	//	_alpha = std::lerp(_alpha, 64, 0.2f);
-	//}
-	//else
-	//{
-	//	_alpha = std::lerp(_alpha, 255, 0.2f);
-	//}
-	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, _alpha);
-	//DrawBox(FRAME_LEFT, FRAME_TOP, FRAME_RIGHT, FRAME_BOTTOM, 0x888888, true);	// 枠
-	//DrawBox(BAR_LEFT + _drawBarLength, BAR_TOP, BAR_RIGHT, BAR_BOTTOM, 0x000000, true);	// HPないとこの黒
-	//DrawBox(BAR_LEFT + _barLength, BAR_TOP, BAR_LEFT + _drawBarLength, BAR_BOTTOM, 0xff0000, true);	// HP減る量の赤
-	//DrawBox(BAR_LEFT, BAR_TOP, BAR_LEFT + _barLength, BAR_BOTTOM, 0xffff00, true);	// HPあるとこの黄色
-	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	// プレイヤーがUIの近くにいるときは透明にする
+	if (drawPlayerPos.y < FRAME_BOTTOM + LOW_ALPHA_DIS && drawPlayerPos.x < FRAME_RIGHT + LOW_ALPHA_DIS)
+	{
+		_alpha = std::lerp(_alpha, 64, 0.2f);
+	}
+	else
+	{
+		_alpha = std::lerp(_alpha, 255, 0.2f);
+	}
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, _alpha);
+	DrawBox(FRAME_LEFT, FRAME_TOP, FRAME_RIGHT, FRAME_BOTTOM, 0x888888, true);	// 枠
+	DrawBox(BAR_LEFT + _drawBarLength, BAR_TOP, BAR_RIGHT, BAR_BOTTOM, 0x000000, true);	// HPないとこの黒
+	DrawBox(BAR_LEFT + _barLength, BAR_TOP, BAR_LEFT + _drawBarLength, BAR_BOTTOM, 0xff0000, true);	// HP減る量の赤
+	DrawBox(BAR_LEFT, BAR_TOP, BAR_LEFT + _barLength, BAR_BOTTOM, 0xffff00, true);	// HPあるとこの黄色
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	
-	DrawGraph(FRAME_LEFT, FRAME_TOP, _handle, true);
+	//DrawGraph(FRAME_LEFT, FRAME_TOP, _handle, true);
 }

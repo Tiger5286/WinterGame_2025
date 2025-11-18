@@ -26,6 +26,8 @@ public:
 	/// <returns>正規化されたベクトル</returns>
 	Vector2 Normalized() const;
 
+	static Vector2 Vlerp(Vector2 start, Vector2 end, float t);
+
 	// 演算子オーバーロード
 	// 足し算
 	Vector2 operator+(const Vector2 vec) const;

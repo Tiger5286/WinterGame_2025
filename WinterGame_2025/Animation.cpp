@@ -104,5 +104,7 @@ bool Animation::operator!=(const Animation& other) const
 {
 	if (_drawHandle != other._drawHandle) return true;
 	if (_animIndex != other._animIndex) return true;
+	if (_rotate != other._rotate) return true;
+	if (_oneAnimFrame != other._oneAnimFrame) return true;
 	return false;
 }

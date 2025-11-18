@@ -50,6 +50,14 @@ Vector2 Vector2::Normalized() const
 	}
 }
 
+Vector2 Vector2::Vlerp(Vector2 start, Vector2 end, float t)
+{
+	Vector2 ans;
+	ans.x = std::lerp(start.x, end.x, t);
+	ans.y = std::lerp(start.y, end.y, t);
+	return ans;
+}
+
 Vector2 Vector2::operator+(const Vector2 vec) const
 {
 	return { x + vec.x,y + vec.y };
