@@ -2,6 +2,8 @@
 #include "Dxlib.h"
 #include <cmath>
 
+#include "Enemy.h"
+
 namespace
 {
 	constexpr int FRAME_LEFT = 50;
@@ -44,10 +46,23 @@ void HPUI::Update(int playerHP)
 	_drawBarLength = std::lerp(_drawBarLength, _barLength, 0.05f);
 }
 
-void HPUI::Draw(Vector2 drawPlayerPos)
+void HPUI::Draw(Vector2 drawPlayerPos,const std::vector<std::shared_ptr<Enemy>>& pEnemys)
 {
 	// プレイヤーがUIの近くにいるときは透明にする
-	if (drawPlayerPos.y < FRAME_BOTTOM + LOW_ALPHA_DIS && drawPlayerPos.x < FRAME_RIGHT + LOW_ALPHA_DIS)
+	bool isPlayerNear = drawPlayerPos.y < FRAME_BOTTOM + LOW_ALPHA_DIS && drawPlayerPos.x < FRAME_RIGHT + LOW_ALPHA_DIS;
+	// 敵がUIの近くにいるときは透明にする
+	bool isEnemyNear = false;
+	for (const auto& enemy : pEnemys)
+	{
+		Vector2 enemyPos = enemy->GetPos();
+		if (enemyPos.y < FRAME_BOTTOM + LOW_ALPHA_DIS && enemyPos.x < FRAME_RIGHT + LOW_ALPHA_DIS)
+		{
+			isEnemyNear = true;
+			break;
+		}
+	}
+	// 透明度をlerpでいい感じに変える
+	if (isPlayerNear || isEnemyNear)
 	{
 		_alpha = std::lerp(_alpha, 64, 0.2f);
 	}

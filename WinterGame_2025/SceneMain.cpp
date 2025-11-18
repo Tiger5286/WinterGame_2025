@@ -207,7 +207,7 @@ void SceneMain::Draw()
 		_pClearFlag->Draw(_pCamera->GetDrawOffset());
 	}
 
-	_pHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset());
+	_pHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(),_pEnemys);
 
 #ifdef _DEBUG
 	DrawString(0,0,"SceneMain",0xffffff);
