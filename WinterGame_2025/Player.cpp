@@ -320,6 +320,11 @@ void Player::TakeDamage()
 	}
 }
 
+int Player::GetMaxHp()
+{
+	return MAX_HP;
+}
+
 void Player::Jump()
 {
 	if (_input.IsPressed("jump") && _isGround)

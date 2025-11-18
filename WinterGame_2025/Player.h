@@ -26,6 +26,8 @@ public:
 
 	void TakeDamage();	// ƒ_ƒ[ƒW‚ğó‚¯‚é
 	bool GetIsAlive() { return _isAlive; }
+	int GetHp() { return _hp; }
+	int GetMaxHp();
 
 private:
 	void Jump();

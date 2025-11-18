@@ -17,7 +17,7 @@ class ClearFlag;
 class Map;
 class Camera;
 
-class Laser;
+class HPUI;
 
 // どのステージかを表す列挙体
 enum class Stages
@@ -68,6 +68,8 @@ private:
 	int _coinH;
 	int _bigCoinH;
 	int _healthItemH;
+	// UI
+	int _HPUIH;
 
 	int _frameCount;	// 経過フレーム数
 
@@ -82,5 +84,7 @@ private:
 	std::shared_ptr<ClearFlag> _pClearFlag;	// ゴール旗
 	std::shared_ptr<Map> _pMap;	// マップ
 	std::shared_ptr<Camera> _pCamera;	// カメラ
+	/*UIオブジェクト*/
+	std::shared_ptr<HPUI> _pHPUI;
 };
 

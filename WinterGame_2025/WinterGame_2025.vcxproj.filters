@@ -118,6 +118,7 @@
     <ClCompile Include="SceneGameOver.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="HPUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -210,5 +211,6 @@
     <ClInclude Include="SceneGameOver.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="HPUI.h" />
   </ItemGroup>
 </Project>

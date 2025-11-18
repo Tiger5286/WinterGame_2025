@@ -1,12 +1,13 @@
 #include "Camera.h"
 #include "Game.h"
+#include <cmath>
 
 namespace
 {
 	constexpr int CHIP_SIZE = 16;
 	constexpr float DRAW_SCALE = 3.0f;
 
-	constexpr float MOVE_Y_INTERVAL = 250.0f;
+	constexpr float MOVE_Y_INTERVAL = 150.0f;
 }
 
 Camera::Camera(Vector2 stageSize):
@@ -28,7 +29,8 @@ void Camera::Init()
 void Camera::Update(Vector2 playerPos)
 {
 	// カメラのX座標をプレイヤーの位置に合わせる
-	_pos.x = playerPos.x;
+	//_pos.x = playerPos.x;
+	_pos.x = std::lerp(_pos.x, playerPos.x, 0.1f);
 	// カメラの位置がマップの端を超えないように補正
 	if (_pos.x < GlobalConstants::SCREEN_WIDTH / 2)
 	{
@@ -43,11 +45,13 @@ void Camera::Update(Vector2 playerPos)
 	float playerDisY = _pos.y - playerPos.y;
 	if (playerDisY < -MOVE_Y_INTERVAL) // プレイヤーよりカメラの方が高い
 	{
-		_pos.y = playerPos.y - MOVE_Y_INTERVAL;
+		//_pos.y = playerPos.y - MOVE_Y_INTERVAL;
+		_pos.y = std::lerp(_pos.y, playerPos.y - MOVE_Y_INTERVAL, 0.1f);
 	}
 	else if (playerDisY > MOVE_Y_INTERVAL)
 	{
-		_pos.y = playerPos.y + MOVE_Y_INTERVAL;
+		//_pos.y = playerPos.y + MOVE_Y_INTERVAL;
+		_pos.y = std::lerp(_pos.y, playerPos.y + MOVE_Y_INTERVAL, 0.1f);
 	}
 
 	// カメラのY位置がマップの上下の端を超えないように補正

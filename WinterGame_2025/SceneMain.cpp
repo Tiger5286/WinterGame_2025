@@ -29,6 +29,7 @@
 #include "Map.h"
 #include "Camera.h"
 
+#include "HPUI.h"
 
 namespace
 {
@@ -144,6 +145,8 @@ void SceneMain::Update(Input& input)
 		}
 	}
 
+	_pHPUI->Update(_pPlayer->GetHp());
+
 	// ゴール判定
 	if (_pClearFlag != nullptr)
 	{
@@ -204,6 +207,8 @@ void SceneMain::Draw()
 		_pClearFlag->Draw(_pCamera->GetDrawOffset());
 	}
 
+	_pHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset());
+
 #ifdef _DEBUG
 	DrawString(0,0,"SceneMain",0xffffff);
 	DrawFormatString(0, 16, 0xffffff, "FRAME:%d", _frameCount);
@@ -223,6 +228,9 @@ void SceneMain::LoadStage(Stages stage)
 	}
 	// マップ
 	_pMap = std::make_shared<Map>(_mapChipH);
+
+	// HPUI
+	_pHPUI = std::make_shared<HPUI>(_HPUIH,_pPlayer->GetMaxHp());
 
 	switch (stage)
 	{
@@ -325,11 +333,13 @@ void SceneMain::LoadStage(Stages stage)
 
 	// カメラ(マップの幅を取得する必要があるためマップを含む諸々生成してから生成)
 	_pCamera = std::make_shared<Camera>(_pMap->GetStageSize());
+	_pCamera->SetPos(Vector2(GlobalConstants::SCREEN_WIDTH / 2,_pMap->GetStageSize().y - GlobalConstants::SCREEN_HEIGHT / 2));
 }
 
 void SceneMain::StageClear()
 {
 	_manager.ChangeScene(std::make_shared<SceneClear>(_manager));
+	return;
 }
 
 void SceneMain::LoadAllGraphs()
@@ -362,6 +372,8 @@ void SceneMain::LoadAllGraphs()
 	assert(_healthItemH != -1);
 	_clearFlagH = LoadGraph("data/ClearFlag.png");
 	assert(_clearFlagH != -1);
+	_HPUIH = LoadGraph("data/HPUI.png");
+	assert(_HPUIH != -1);
 }
 
 void SceneMain::DeleteAllGraphs()
@@ -377,4 +389,6 @@ void SceneMain::DeleteAllGraphs()
 	DeleteGraph(_coinH);
 	DeleteGraph(_bigCoinH);
 	DeleteGraph(_healthItemH);
+	DeleteGraph(_clearFlagH);
+	DeleteGraph(_HPUIH);
 }
