@@ -1,17 +1,22 @@
 #pragma once
 #include "Enemy.h"
 
+class Camera;
+
 enum class BossState
 {
 	Idle,
 	Stun,	// ひるみ
-	Tackle	// 突進
+	Tackle,	// 突進
+	TackleAndWallRun,	// 突進＆壁走り
+	CeilingRun,	// 天井走り
+	FallAttack,	// 落下攻撃
 };
 
 class Boss : public Enemy
 {
 public:
-	Boss(std::shared_ptr<Player>pPlayer, int handle);
+	Boss(std::shared_ptr<Player>pPlayer, std::shared_ptr<Camera> pCamera,int handle);
 	~Boss();
 
 	void Init() override;
@@ -33,4 +38,7 @@ private:
 	Animation _idleAnim;
 	Animation _stunAnim;
 	Animation _tackleAnim;
+	Animation _fallAnim;
+
+	std::shared_ptr<Camera> _pCamera;
 };

@@ -71,7 +71,7 @@ void Animation::Draw(Vector2 pos, bool isTurn)
 	// 現在のコマ数が最大コマ数なら描画しない
 	if (_nowAnimNum != _maxAnimNum)
 	{
-		DrawRectRotaGraph(pos.x, pos.y,
+		DrawRectRotaGraph(pos.x + _drawOffset.x, pos.y + _drawOffset.y,
 			_frameSize.x * _nowAnimNum, _animIndex * _frameSize.y,
 			_frameSize.x, _frameSize.y,
 			_scale, _rotate, _drawHandle, true, isTurn);

@@ -11,8 +11,8 @@ namespace
 	constexpr float MOVE_Y_INTERVAL = 150.0f;
 }
 
-Camera::Camera(Vector2 stageSize):
-	_stageSize(stageSize),
+Camera::Camera() :
+	_stageSize(Vector2()),
 	_shakeFrame(0),
 	_shaking(false),
 	_shakePower(0)
@@ -68,24 +68,23 @@ void Camera::Update(Vector2 playerPos)
 		_pos.y = _stageSize.y - GlobalConstants::SCREEN_HEIGHT / 2;
 	}
 
+	// âÊñ óhÇÍèàóù
 	if (_shaking)
 	{
 		_shakeFrame--;
 
-		_pos.x = _pos.x + GetRand(_shakePower);
-		_pos.y = _pos.y + GetRand(_shakePower);
+		_pos.x = _pos.x + (GetRand(_shakePower * 2) - _shakePower);
+		_pos.y = _pos.y + (GetRand(_shakePower * 2) - _shakePower);
 
 		if (_shakeFrame == 0)
 		{
 			_shaking = false;
-			SRand(0);
 		}
 	}
 }
 
 void Camera::Shake(int frame, int power)
 {
-	SRand(-power);
 	_shaking = true;
 	_shakeFrame = frame;
 	_shakePower = power;

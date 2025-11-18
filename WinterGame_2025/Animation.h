@@ -13,6 +13,7 @@ public:
 	void Draw(int drawHandle,Vector2 pos, bool isTurn);
 
 	void SetRotate(float rotate) { _rotate = rotate; }
+	void SetOffset(Vector2 offset) { _drawOffset = offset; }
 
 	// アニメーションを最初から再生する
 	void SetFirst() { _nowAnimNum = 0; _frameCount = 0; }
@@ -33,4 +34,5 @@ private:
 	int _frameCount;	// アニメーション制御用
 	float _scale;		// 拡大率
 	float _rotate;		// 回転角
+	Vector2 _drawOffset; // 描画位置オフセット
 };

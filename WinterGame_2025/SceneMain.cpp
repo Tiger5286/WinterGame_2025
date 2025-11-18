@@ -64,7 +64,6 @@ void SceneMain::Init()
 	{
 		enemy->Init();
 	}
-	_pCamera->Shake(60 * 100, 10);
 }
 
 void SceneMain::Update(Input& input)
@@ -233,6 +232,9 @@ void SceneMain::LoadStage(Stages stage)
 	// HPUI
 	_pHPUI = std::make_shared<HPUI>(_HPUIH,_pPlayer->GetMaxHp());
 
+	// カメラ(最後にいろいろ設定する必要がある)
+	_pCamera = std::make_shared<Camera>();
+
 	switch (stage)
 	{
 	case Stages::Temp:
@@ -322,7 +324,7 @@ void SceneMain::LoadStage(Stages stage)
 	case Stages::Boss:
 		_pPlayer->SetPosFromChipPos({ 3,19 });
 
-		_pEnemys.push_back(std::make_shared<Boss>(_pPlayer, _walkEnemyH));
+		_pEnemys.push_back(std::make_shared<Boss>(_pPlayer, _pCamera,_walkEnemyH));
 
 		_pMap->LoadMapData("data/Map/BossStage.csv");
 
@@ -332,8 +334,8 @@ void SceneMain::LoadStage(Stages stage)
 		break;
 	}
 
-	// カメラ(マップの幅を取得する必要があるためマップを含む諸々生成してから生成)
-	_pCamera = std::make_shared<Camera>(_pMap->GetStageSize());
+	// カメラの初期設定(ステージサイズなどをセットする必要があるため、最後に行う)
+	_pCamera->SetStageSize(_pMap->GetStageSize());
 	_pCamera->SetPos(Vector2(GlobalConstants::SCREEN_WIDTH / 2,_pMap->GetStageSize().y - GlobalConstants::SCREEN_HEIGHT / 2));
 }
 
