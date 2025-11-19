@@ -218,7 +218,6 @@ void Boss::Update(Map& map)
 		}
 	}
 
-
 	_hitDir = MapCollision(map);
 
 	// プレイヤーに当たったらダメージを与える
