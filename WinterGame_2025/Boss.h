@@ -2,6 +2,7 @@
 #include "Enemy.h"
 
 class Camera;
+class Gimmick;
 
 enum class BossState
 {
@@ -16,7 +17,7 @@ enum class BossState
 class Boss : public Enemy
 {
 public:
-	Boss(std::shared_ptr<Player>pPlayer, std::shared_ptr<Camera> pCamera,int handle);
+	Boss(std::shared_ptr<Player>pPlayer, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser, int handle);
 	~Boss();
 
 	void Init() override;
@@ -41,4 +42,5 @@ private:
 	Animation _fallAnim;
 
 	std::shared_ptr<Camera> _pCamera;
+	std::shared_ptr<Gimmick> _pLaser;
 };

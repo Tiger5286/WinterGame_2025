@@ -324,8 +324,8 @@ void SceneMain::LoadStage(Stages stage)
 	case Stages::Boss: // ------------------------------------------------------------------------------------------ボスステージ
 		_pPlayer->SetPosFromChipPos({ 3,19 });
 
-		_pEnemys.push_back(std::make_shared<Boss>(_pPlayer, _pCamera,_walkEnemyH));
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(32, 15), _pPlayer, _laserH, 14, false));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(-1, -1), _pPlayer, _laserH, 14, false));
+		_pEnemys.push_back(std::make_shared<Boss>(_pPlayer, _pCamera, _pGimmicks[0], _walkEnemyH));
 		_pMap->LoadMapData("data/Map/BossStage.csv");
 
 #ifdef _DEBUG

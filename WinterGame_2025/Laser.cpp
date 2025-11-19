@@ -62,6 +62,9 @@ void Laser::Update(Map& map)
 		_pPlayer->TakeDamage();
 	}
 
+	float laserOffsetY = static_cast<float>(_laserLength) / 2 * GlobalConstants::DRAW_CHIP_SIZE - GlobalConstants::DRAW_CHIP_SIZE_HALF;
+	_isDownward ? _collider->SetPos(Vector2(_pos.x, _pos.y + laserOffsetY)) : _collider->SetPos(Vector2(_pos.x, _pos.y - laserOffsetY));
+
 	// アニメーション更新
 	_launcherAnim.Update();
 	_laserAnim.Update();

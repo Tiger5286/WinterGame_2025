@@ -4,6 +4,8 @@
 #include "Player.h"
 #include "Dxlib.h"
 #include "Camera.h"
+#include "Gimmick.h"
+
 
 namespace
 {
@@ -34,13 +36,14 @@ namespace
 	constexpr float WALL_RUN_SPEED = 7.5f;	// 壁走りの上昇速度
 }
 
-Boss::Boss(std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, int handle) :
+Boss::Boss(std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser, int handle) :
 	Enemy(MAX_HP, pPlayer),
 	_handle(handle),
 	_isTurn(true),
 	_frame(0),
 	_state(BossState::Idle),
-	_pCamera(pCamera)
+	_pCamera(pCamera),
+	_pLaser(pLaser)
 {
 	_pos = ChipPosToGamePos(firstChipPos);
 	_pos.y += GlobalConstants::DRAW_CHIP_SIZE_HALF;	// チップ半分下にずらす
@@ -113,8 +116,10 @@ void Boss::Update(Map& map)
 		// 最初は走るモーションだけ
 		if (_frame == 1)
 		{
+			_pLaser->SetPos(Vector2(_pos.x, 15 * 48 + 24));
 			ChangeAnim(_tackleAnim);
 		}
+		_pLaser->SetPos(Vector2(_pos.x, _pLaser->GetPos().y));	// レーザーの位置を合わせる
 
 		// 走り出す
 		if (_frame == RUN_READY_FRAME)
@@ -130,6 +135,7 @@ void Boss::Update(Map& map)
 			ChangeState(BossState::Stun);
 			_frame = 0;
 			_pCamera->Shake(15, 5);
+			_pLaser->SetPos(Vector2(-10,-10));	// レーザーの位置を消す(画面外に行くだけ)
 		}
 	}
 	// 壁走り突進の時の処理
@@ -139,6 +145,7 @@ void Boss::Update(Map& map)
 		// 最初は走るモーションだけ
 		if (_frame == 1)
 		{
+			_pLaser->SetPos(Vector2(_pos.x, 15 * 48 + 24));	// レーザーを出す
 			ChangeAnim(_tackleAnim);
 		}
 
@@ -151,6 +158,7 @@ void Boss::Update(Map& map)
 		// 左の壁にぶつかったら
 		if (_hitDir.left)
 		{
+			_pLaser->SetPos(Vector2(-10, -10));	// レーザーを消す(画面外に行くだけ)
 			// 上に向かって走る
 			_nowAnim.SetRotate(ANGLE_90);
 			_nowAnim.SetOffset(ANGLE_90_OFFSET);
@@ -163,9 +171,9 @@ void Boss::Update(Map& map)
 				ChangeState(BossState::CeilingRun);
 			}
 		}
-		// 右の壁にぶつかったら
-		if (_hitDir.right)
+		else if (_hitDir.right) // 右の壁にぶつかったら
 		{
+			_pLaser->SetPos(Vector2(-10, -10));	// レーザーを消す(画面外に行くだけ)
 			// 上に向かって走る
 			_nowAnim.SetRotate(ANGLE_270);
 			_nowAnim.SetOffset(ANGLE_270_OFFSET);
@@ -178,6 +186,12 @@ void Boss::Update(Map& map)
 				ChangeState(BossState::CeilingRun);
 			}
 		}
+		else
+		{
+			// どっちの壁にも当たっていない時レーザーを出す
+			_pLaser->SetPos(Vector2(_pos.x, _pLaser->GetPos().y));
+		}
+		
 	}
 	// 天井走りの時の処理
 	if (_state == BossState::CeilingRun)
@@ -203,6 +217,7 @@ void Boss::Update(Map& map)
 			ChangeState(BossState::Idle);
 		}
 	}
+
 
 	_hitDir = MapCollision(map);
 
