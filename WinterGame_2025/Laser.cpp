@@ -19,20 +19,31 @@ namespace
 	constexpr int IMPACT_ANIM_INDEX = 2;
 	constexpr int ANIM_NUM = 4;
 	constexpr int ONE_ANIM_FRAME = 6;
+
+	constexpr float ANGLE_180 = DX_PI_F;
 }
 
-Laser::Laser(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, int laserLength):
+Laser::Laser(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, int laserLength,bool isDownward):
 	Gimmick(pPlayer),
 	_handle(handle),
-	_laserLength(laserLength)
+	_laserLength(laserLength),
+	_isDownward(isDownward)
 {
 	_pos = ChipPosToGamePos(chipPos);
 	_collider = std::make_shared<BoxCollider>(_pos, Vector2(24, _laserLength * GlobalConstants::DRAW_CHIP_SIZE));
-	_collider->SetPos(Vector2(_pos.x, _pos.y + static_cast<float>(_laserLength) / 2 * GlobalConstants::DRAW_CHIP_SIZE - GlobalConstants::DRAW_CHIP_SIZE_HALF));
+	float laserOffsetY = static_cast<float>(_laserLength) / 2 * GlobalConstants::DRAW_CHIP_SIZE - GlobalConstants::DRAW_CHIP_SIZE_HALF;
+	_isDownward ? _collider->SetPos(Vector2(_pos.x, _pos.y + laserOffsetY)) : _collider->SetPos(Vector2(_pos.x, _pos.y - laserOffsetY));
+	
 
 	_launcherAnim.Init(_handle, LAUNCHER_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	_laserAnim.Init(_handle, LASER_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
 	_impactAnim.Init(_handle, IMPACT_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	if (!_isDownward)
+	{
+		_launcherAnim.SetRotate(ANGLE_180);
+		_laserAnim.SetRotate(ANGLE_180);
+		_impactAnim.SetRotate(ANGLE_180);
+	}
 }
 
 Laser::~Laser()
@@ -65,7 +76,7 @@ void Laser::Draw(Vector2 offset)
 	{
 		//drawPos.y = GRAPH_SIZE * DRAW_SCALE * i;
 		Vector2 tempDrawPos = drawPos;
-		tempDrawPos.y += GRAPH_SIZE * DRAW_SCALE * i;
+		_isDownward ? tempDrawPos.y += GRAPH_SIZE * DRAW_SCALE * i : tempDrawPos.y -= GRAPH_SIZE * DRAW_SCALE * i;
 		if (i == 0)	// ÉåÅ[ÉUÅ[ÇÃî≠éÀå˚ïîï™
 		{
 			_launcherAnim.Draw(tempDrawPos, false);

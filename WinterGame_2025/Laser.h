@@ -6,7 +6,7 @@ class Player;
 class Laser : public Gimmick
 {
 public:
-	Laser(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, int laserLength);
+	Laser(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, int laserLength,bool isDownward = true);
 	~Laser();
 
 	void Init() override;
@@ -15,6 +15,7 @@ public:
 private:
 	int _handle;
 	int _laserLength;
+	bool _isDownward;
 
 	Animation _launcherAnim;
 	Animation _laserAnim;

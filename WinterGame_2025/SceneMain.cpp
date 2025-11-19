@@ -257,11 +257,11 @@ void SceneMain::LoadStage(Stages stage)
 		_pItems.push_back(std::make_shared<Item>(Vector2(19, 17), ItemType::BigCoin, _pPlayer, _bigCoinH));
 		_pItems.push_back(std::make_shared<Item>(Vector2(21, 17), ItemType::HealthItem, _pPlayer, _healthItemH));
 
-		//_pGimmicks.push_back(std::make_shared<Laser>(Vector2(11, 12), _pPlayer, _laserH, 4));
-		//_pGimmicks.push_back(std::make_shared<Laser>(Vector2(12, 12), _pPlayer, _laserH, 7));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(11, 12), _pPlayer, _laserH, 4,false));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(12, 12), _pPlayer, _laserH, 7));
 
 		break;
-	case Stages::Tutorial:
+	case Stages::Tutorial: // ------------------------------------------------------------------------------------------チュートリアル
 		// プレイヤーの位置を設定
 		_pPlayer->SetPosFromChipPos({ 3 ,36});
 
@@ -286,7 +286,7 @@ void SceneMain::LoadStage(Stages stage)
 		//printfDx("Stages::Tutorialがロードされました\n");
 #endif
 		break;
-	case Stages::Stage1 :
+	case Stages::Stage1: // ------------------------------------------------------------------------------------------ステージ1
 		_pPlayer->SetPosFromChipPos({ 3 ,36  });
 
 		_pMap->LoadMapData("data/Map/Stage1Map.csv");
@@ -312,7 +312,7 @@ void SceneMain::LoadStage(Stages stage)
 		//printfDx("Stages::Stage1がロードされました\n");
 #endif
 		break;
-	case Stages::Stage2:
+	case Stages::Stage2: // ------------------------------------------------------------------------------------------ステージ2
 		_pPlayer->SetPosFromChipPos({ 3,19 });
 
 		_pMap->LoadMapData("data/Map/TempMap.csv");
@@ -321,11 +321,11 @@ void SceneMain::LoadStage(Stages stage)
 		//printfDx("Stages::Stage2がロードされました\n");
 #endif
 		break;
-	case Stages::Boss:
+	case Stages::Boss: // ------------------------------------------------------------------------------------------ボスステージ
 		_pPlayer->SetPosFromChipPos({ 3,19 });
 
 		_pEnemys.push_back(std::make_shared<Boss>(_pPlayer, _pCamera,_walkEnemyH));
-
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(32, 15), _pPlayer, _laserH, 14, false));
 		_pMap->LoadMapData("data/Map/BossStage.csv");
 
 #ifdef _DEBUG
