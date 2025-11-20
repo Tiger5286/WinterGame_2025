@@ -41,16 +41,16 @@ void Bg::Draw(Vector2 drawOffset)
 		(drawIndexX + 2) * GlobalConstants::SCREEN_WIDTH - x,
 		(drawIndexY + 1) * GlobalConstants::SCREEN_HEIGHT - y,
 		_handle, false);
-
-	//if (static_cast<int>(drawOffset.x) % GlobalConstants::SCREEN_WIDTH > 0)
-	//{
-	//	DrawExtendGraph(0 - drawOffset.x / SCROLL_DECAY + GlobalConstants::SCREEN_WIDTH,
-	//		0 - drawOffset.y / SCROLL_DECAY,
-	//		GlobalConstants::SCREEN_WIDTH - drawOffset.x / SCROLL_DECAY + GlobalConstants::SCREEN_WIDTH,
-	//		GlobalConstants::SCREEN_HEIGHT - drawOffset.y / SCROLL_DECAY,
-	//		_handle, false);
-	//}
-
+	DrawExtendGraph((drawIndexX + 0) * GlobalConstants::SCREEN_WIDTH - x,
+		(drawIndexY + 1) * GlobalConstants::SCREEN_HEIGHT - y,
+		(drawIndexX + 1) * GlobalConstants::SCREEN_WIDTH - x,
+		(drawIndexY + 2) * GlobalConstants::SCREEN_HEIGHT - y,
+		_handle, false);
+	DrawExtendGraph((drawIndexX + 1) * GlobalConstants::SCREEN_WIDTH - x,
+		(drawIndexY + 1) * GlobalConstants::SCREEN_HEIGHT - y,
+		(drawIndexX + 2) * GlobalConstants::SCREEN_WIDTH - x,
+		(drawIndexY + 2) * GlobalConstants::SCREEN_HEIGHT - y,
+		_handle, false);
 
 	DrawFormatString(100, 200, 0xffffff, "%.2f,%.2f", drawOffset.x / 3, drawOffset.y / 3);
 	DrawFormatString(100, 216, 0xffffff, "%d,%d", drawIndexX, drawIndexY);
