@@ -114,7 +114,8 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_dashFrame(0),
 	_isDashing(false),
 	_isTurnDashing(false),
-	_chargeFrame(0)
+	_chargeFrame(0),
+	_isCanFly(false)
 {
 	_collider = std::make_shared<BoxCollider>(_pos,Vector2(COLLIDER_W, COLLIDER_H));
 	_playerAfterimage.resize(AFTERIMAGE_NUM);
@@ -223,6 +224,37 @@ void Player::Update(Map& map)
 
 	// アニメーション処理
 	UpdateAnim();
+
+#ifdef _DEBUG
+	if (CheckHitKey(KEY_INPUT_M))
+	{
+		_isCanFly = true;
+	}
+	if (CheckHitKey(KEY_INPUT_N))
+	{
+		_isCanFly = false;
+	}
+	if (_isCanFly)
+	{
+		if (_input.IsPressed("up") || _input.IsPressed("jump"))
+		{
+			_vel.y = -10.0f;
+		}
+		if (_input.IsPressed("down"))
+		{
+			_vel.y = 10.0f;
+		}
+		if (_input.IsPressed("left"))
+		{
+			_vel.x = -10.0f;
+		}
+		if (_input.IsPressed("right"))
+		{
+			_vel.x = 10.0f;
+		}
+	}
+
+#endif
 }
 
 void Player::Draw(Vector2 offset)
@@ -289,7 +321,11 @@ void Player::Draw(Vector2 offset)
 #ifdef _DEBUG
 	_collider->Draw(offset);
 
-	DrawFormatString(_pos.x - offset.x - 20, _pos.y - offset.y - 120, 0xffffff, "hp:%d", _hp);
+	//DrawFormatString(_pos.x - offset.x - 20, _pos.y - offset.y - 120, 0xffffff, "hp:%d", _hp);
+	if (_isCanFly)
+	{
+		DrawFormatString(_pos.x - offset.x - 20, _pos.y - offset.y - 120, 0xffffff, "canFly");
+	}
 #endif // _DEBUG
 }
 
