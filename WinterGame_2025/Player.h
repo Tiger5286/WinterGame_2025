@@ -105,4 +105,8 @@ private:
 
 	// チャージショット関連変数
 	int _chargeFrame;
+
+#ifdef _DEBUG
+	//bool _isCanFly;
+#endif 
 };

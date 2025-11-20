@@ -19,6 +19,8 @@ class Camera;
 
 class HPUI;
 
+class Bg;
+
 // どのステージかを表す列挙体
 enum class Stages
 {
@@ -69,7 +71,9 @@ private:
 	int _bigCoinH;
 	int _healthItemH;
 	// UI
-	int _HPUIH;
+	int _hpUIH;
+	// 背景
+	int _bgH;
 
 	int _frameCount;	// 経過フレーム数
 
@@ -86,5 +90,7 @@ private:
 	std::shared_ptr<Camera> _pCamera;	// カメラ
 	/*UIオブジェクト*/
 	std::shared_ptr<HPUI> _pHPUI;
+
+	std::shared_ptr<Bg> _pBg;
 };
 

@@ -31,6 +31,8 @@
 
 #include "HPUI.h"
 
+#include "Bg.h"
+
 namespace
 {
 	constexpr int BULLET_NUM = 15;
@@ -46,6 +48,17 @@ SceneMain::SceneMain(SceneManager& manager, Stages stage) :
 
 	/*オブジェクトの生成*/
 	LoadStage(stage);
+
+#ifdef _DEBUG
+	if (_pClearFlag == nullptr)
+	{
+		printfDx("ゴール旗がnullptrです");
+	}
+	if (_pBg == nullptr)
+	{
+		printfDx("背景がnullptrです");
+	}
+#endif
 }
 
 SceneMain::~SceneMain()
@@ -148,6 +161,7 @@ void SceneMain::Update(Input& input)
 	_pHPUI->Update(_pPlayer->GetHp());
 
 	// ゴール判定
+#ifdef _DEBUG
 	if (_pClearFlag != nullptr)
 	{
 		if (_pPlayer->GetCollider()->CheckCollision(_pClearFlag->GetCollider()))
@@ -155,6 +169,19 @@ void SceneMain::Update(Input& input)
 			StageClear();
 		}
 	}
+#else
+	if (_pClearFlag != nullptr)
+	{
+		if (_pPlayer->GetCollider()->CheckCollision(_pClearFlag->GetCollider()))
+		{	// プレイヤーとゴール旗が接触したらステージクリアへ
+			StageClear();
+		}
+	}
+	else
+	{
+		assert(false, "ゴール旗が存在しません");
+	}
+#endif
 
 	// 【デバッグ用】デバッグシーンに切り替え
 #ifdef _DEBUG
@@ -169,6 +196,15 @@ void SceneMain::Draw()
 {
 	// 背景色
 	//DrawBox(0, 0, GlobalConstants::SCREEN_WIDTH, GlobalConstants::SCREEN_HEIGHT, 0xffffff, true);
+	//Vector2 drawOffset = _pCamera->GetDrawOffset();
+	//DrawExtendGraph(0 - drawOffset.x / 3,
+	//	0 - drawOffset.y / 3,
+	//	GlobalConstants::SCREEN_WIDTH - drawOffset.x / 3,
+	//	GlobalConstants::SCREEN_HEIGHT - drawOffset.y / 3,
+	//	_bgH, false);
+
+	// 背景の描画
+	_pBg->Draw(_pCamera->GetDrawOffset());
 
 	// マップの描画
 	_pMap->Draw(_pCamera->GetDrawOffset());
@@ -217,7 +253,7 @@ void SceneMain::Draw()
 
 void SceneMain::LoadStage(Stages stage)
 {
-	// 先に必ず存在するオブジェクトの生成をする(カメラは最後)
+	// 先に必ず存在するオブジェクトの生成をする
 	// プレイヤー
 	_pPlayer = std::make_shared<Player>(_playerH, _playerWhiteH, _chargeParticleH,_playerShotH,_chargeShotH);
 	// 弾
@@ -230,10 +266,13 @@ void SceneMain::LoadStage(Stages stage)
 	_pMap = std::make_shared<Map>(_mapChipH);
 
 	// HPUI
-	_pHPUI = std::make_shared<HPUI>(_HPUIH,_pPlayer->GetMaxHp());
+	_pHPUI = std::make_shared<HPUI>(_hpUIH,_pPlayer->GetMaxHp());
 
 	// カメラ(最後にいろいろ設定する必要がある)
 	_pCamera = std::make_shared<Camera>();
+
+	// 背景
+	_pBg = std::make_shared<Bg>(_bgH);
 
 	switch (stage)
 	{
@@ -375,8 +414,10 @@ void SceneMain::LoadAllGraphs()
 	assert(_healthItemH != -1);
 	_clearFlagH = LoadGraph("data/ClearFlag.png");
 	assert(_clearFlagH != -1);
-	_HPUIH = LoadGraph("data/HPUI.png");
-	assert(_HPUIH != -1);
+	_hpUIH = LoadGraph("data/HPUI.png");
+	assert(_hpUIH != -1);
+	_bgH = LoadGraph("data/Bg.png");
+	assert(_bgH != -1);
 }
 
 void SceneMain::DeleteAllGraphs()
@@ -393,5 +434,6 @@ void SceneMain::DeleteAllGraphs()
 	DeleteGraph(_bigCoinH);
 	DeleteGraph(_healthItemH);
 	DeleteGraph(_clearFlagH);
-	DeleteGraph(_HPUIH);
+	DeleteGraph(_hpUIH);
+	DeleteGraph(_bgH);
 }

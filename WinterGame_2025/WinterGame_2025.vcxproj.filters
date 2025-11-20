@@ -119,6 +119,7 @@
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="HPUI.cpp" />
+    <ClCompile Include="Bg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -212,5 +213,6 @@
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="HPUI.h" />
+    <ClInclude Include="Bg.h" />
   </ItemGroup>
 </Project>
