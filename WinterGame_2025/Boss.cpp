@@ -84,6 +84,7 @@ void Boss::Update(Map& map)
 #endif // _DEBUG
 
 	Gravity();
+	bool isEnableLaser = false;
 
 	// 待機状態の時の処理
 	if (_state == BossState::Idle)
@@ -119,7 +120,7 @@ void Boss::Update(Map& map)
 			_pLaser->SetPos(Vector2(_pos.x, 15 * 48 + 24));
 			ChangeAnim(_tackleAnim);
 		}
-		_pLaser->SetPos(Vector2(_pos.x, _pLaser->GetPos().y));	// レーザーの位置を合わせる
+		isEnableLaser = true;
 
 		// 走り出す
 		if (_frame == RUN_READY_FRAME)
@@ -135,7 +136,7 @@ void Boss::Update(Map& map)
 			ChangeState(BossState::Stun);
 			_frame = 0;
 			_pCamera->Shake(15, 5);
-			_pLaser->SetPos(Vector2(-10,-10));	// レーザーの位置を消す(画面外に行くだけ)
+			//_pLaser->SetPos(Vector2(-10,-10));	// レーザーの位置を消す(画面外に行くだけ)
 		}
 	}
 	// 壁走り突進の時の処理
@@ -173,7 +174,7 @@ void Boss::Update(Map& map)
 		}
 		else if (_hitDir.right) // 右の壁にぶつかったら
 		{
-			_pLaser->SetPos(Vector2(-10, -10));	// レーザーを消す(画面外に行くだけ)
+			//_pLaser->SetPos(Vector2(-10, -10));	// レーザーを消す(画面外に行くだけ)
 			// 上に向かって走る
 			_nowAnim.SetRotate(ANGLE_270);
 			_nowAnim.SetOffset(ANGLE_270_OFFSET);
@@ -189,7 +190,7 @@ void Boss::Update(Map& map)
 		else
 		{
 			// どっちの壁にも当たっていない時レーザーを出す
-			_pLaser->SetPos(Vector2(_pos.x, _pLaser->GetPos().y));
+			isEnableLaser = true;
 		}
 		
 	}
@@ -219,6 +220,15 @@ void Boss::Update(Map& map)
 	}
 
 	_hitDir = MapCollision(map);
+
+	if (isEnableLaser)
+	{
+		_pLaser->SetPos(Vector2(_pos.x, _pLaser->GetPos().y));	// レーザーの位置を合わせる
+	}
+	else
+	{
+		_pLaser->SetPos(Vector2(-10, -10));	// レーザーの位置を消す(画面外に行くだけ)
+	}
 
 	// プレイヤーに当たったらダメージを与える
 	if (_collider->CheckCollision(_pPlayer->GetCollider()))

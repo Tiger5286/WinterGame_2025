@@ -73,7 +73,7 @@ void SceneMain::Init()
 	{
 		bullet->Init();
 	}
-	for (auto& enemy : _pEnemys)
+	for (auto& enemy : _pEnemies)
 	{
 		enemy->Init();
 	}
@@ -97,7 +97,7 @@ void SceneMain::Update(Input& input)
 	}
 
 	// ìGêßå‰
-	for (auto& enemy : _pEnemys)
+	for (auto& enemy : _pEnemies)
 	{
 		if (enemy != nullptr)
 		{
@@ -112,12 +112,12 @@ void SceneMain::Update(Input& input)
 			{
 				enemy->Delete();
 				// éÄÇÒÇæìGÇvectorÇ©ÇÁçÌèúÇ∑ÇÈ(Ç†ÇÒÇ‹à”ñ°ÇÌÇ©ÇÁÇÒ)
-				_pEnemys.erase(
-					std::remove_if(_pEnemys.begin(), _pEnemys.end(),
+				_pEnemies.erase(
+					std::remove_if(_pEnemies.begin(), _pEnemies.end(),
 						[](const std::shared_ptr<Enemy>& enemy) {
 							return !enemy->GetIsAlive();
 						}),
-					_pEnemys.end()
+					_pEnemies.end()
 				);
 			}
 		}
@@ -134,7 +134,7 @@ void SceneMain::Update(Input& input)
 	{
 		if (bullet->GetAlive())
 		{
-			bullet->SetContext(_pEnemys);
+			bullet->SetContext(_pEnemies);
 			bullet->Update(*_pMap,_pCamera->GetPos());
 		}
 	}
@@ -194,14 +194,6 @@ void SceneMain::Update(Input& input)
 
 void SceneMain::Draw()
 {
-	// îwåiêF
-	//DrawBox(0, 0, GlobalConstants::SCREEN_WIDTH, GlobalConstants::SCREEN_HEIGHT, 0xffffff, true);
-	//Vector2 drawOffset = _pCamera->GetDrawOffset();
-	//DrawExtendGraph(0 - drawOffset.x / 3,
-	//	0 - drawOffset.y / 3,
-	//	GlobalConstants::SCREEN_WIDTH - drawOffset.x / 3,
-	//	GlobalConstants::SCREEN_HEIGHT - drawOffset.y / 3,
-	//	_bgH, false);
 
 	// îwåiÇÃï`âÊ
 	_pBg->Draw(_pCamera->GetDrawOffset());
@@ -216,7 +208,7 @@ void SceneMain::Draw()
 	}
 	
 	// ìGÇÃï`âÊ
-	for (auto& enemy : _pEnemys)
+	for (auto& enemy : _pEnemies)
 	{
 		if (enemy != nullptr)
 		{
@@ -243,7 +235,7 @@ void SceneMain::Draw()
 		_pClearFlag->Draw(_pCamera->GetDrawOffset());
 	}
 
-	_pHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(),_pEnemys);
+	_pHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(),_pEnemies);
 
 #ifdef _DEBUG
 	DrawString(0,0,"SceneMain",0xffffff);
@@ -272,7 +264,7 @@ void SceneMain::LoadStage(Stages stage)
 	_pCamera = std::make_shared<Camera>();
 
 	// îwåi
-	_pBg = std::make_shared<Bg>(_bgH);
+	_pBg = std::make_shared<Bg>(_bgH,_subBgH);
 
 	switch (stage)
 	{
@@ -311,12 +303,12 @@ void SceneMain::LoadStage(Stages stage)
 		_pClearFlag = std::make_shared<ClearFlag>(Vector2(166,22), _pPlayer, _clearFlagH);
 
 		// ìGÇê∂ê¨
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(39, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(61, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(64, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(67, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(70, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(73, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(39, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(61, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(64, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(67, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(70, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(73, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
 
 		// ÉMÉ~ÉbÉNÇÃê∂ê¨
 		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(116, 32), _pPlayer, _laserH, 4));
@@ -330,18 +322,18 @@ void SceneMain::LoadStage(Stages stage)
 
 		_pMap->LoadMapData("data/Map/Stage1Map.csv");
 
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(23, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(28, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(31, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, false));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(46, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(42, 30), _pPlayer, _flyEnemyH, FlyEnemyState::Move));
-		_pEnemys.push_back(std::make_shared<FlyEnemy>(Vector2(56, 25), _pPlayer, _flyEnemyH, FlyEnemyState::Idle));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(69, 29), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(61, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(64, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(67, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemys.push_back(std::make_shared<WalkEnemy>(Vector2(88, 32), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemys.push_back(std::make_shared<JumpEnemy>(Vector2(96, 35), _pPlayer, _jumpEnemyH));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(23, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(28, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(31, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(46, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
+		_pEnemies.push_back(std::make_shared<FlyEnemy>(Vector2(42, 30), _pPlayer, _flyEnemyH, FlyEnemyState::Move));
+		_pEnemies.push_back(std::make_shared<FlyEnemy>(Vector2(56, 25), _pPlayer, _flyEnemyH, FlyEnemyState::Idle));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(69, 29), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(61, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(64, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(67, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(88, 32), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
+		_pEnemies.push_back(std::make_shared<JumpEnemy>(Vector2(96, 35), _pPlayer, _jumpEnemyH));
 
 		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(63, 32), _pPlayer, _laserH, 4));
 		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(124, 31), _pPlayer, _laserH, 5));
@@ -364,7 +356,7 @@ void SceneMain::LoadStage(Stages stage)
 		_pPlayer->SetPosFromChipPos({ 3,19 });
 
 		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(-1, -1), _pPlayer, _laserH, 14, false));
-		_pEnemys.push_back(std::make_shared<Boss>(_pPlayer, _pCamera, _pGimmicks[0], _walkEnemyH));
+		_pEnemies.push_back(std::make_shared<Boss>(_pPlayer, _pCamera, _pGimmicks[0], _walkEnemyH));
 		_pMap->LoadMapData("data/Map/BossStage.csv");
 
 #ifdef _DEBUG
@@ -414,10 +406,12 @@ void SceneMain::LoadAllGraphs()
 	assert(_healthItemH != -1);
 	_clearFlagH = LoadGraph("data/ClearFlag.png");
 	assert(_clearFlagH != -1);
-	_hpUIH = LoadGraph("data/HPUI.png");
+	_hpUIH = LoadGraph("data/HpBar.png");
 	assert(_hpUIH != -1);
-	_bgH = LoadGraph("data/Bg.png");
+	_bgH = LoadGraph("data/Map/Bg.png");
 	assert(_bgH != -1);
+	_subBgH = LoadGraph("data/Map/subBg.png");
+	assert(_subBgH != -1);
 }
 
 void SceneMain::DeleteAllGraphs()

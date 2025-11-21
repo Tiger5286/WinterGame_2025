@@ -6,15 +6,18 @@
 
 namespace
 {
-	constexpr int FRAME_LEFT = 50;
-	constexpr int FRAME_TOP = 50;
-	constexpr int FRAME_RIGHT = 450;
-	constexpr int FRAME_BOTTOM = 150;
+	constexpr int FRAME_LEFT = 160;
+	constexpr int FRAME_TOP = 90;
+	constexpr int FRAME_RIGHT = 520;
+	constexpr int FRAME_BOTTOM = 170;
 
 	constexpr int BAR_LEFT = FRAME_LEFT + 10;
 	constexpr int BAR_TOP = FRAME_TOP + 10;
 	constexpr int BAR_RIGHT = FRAME_RIGHT - 10;
 	constexpr int BAR_BOTTOM = FRAME_BOTTOM - 10;
+
+	constexpr int POS_X = 300;
+	constexpr int POS_Y = 130;
 
 	constexpr int LOW_ALPHA_DIS = 150;
 
@@ -48,6 +51,8 @@ void HPUI::Update(int playerHP)
 
 void HPUI::Draw(Vector2 drawPlayerPos,const std::vector<std::shared_ptr<Enemy>>& pEnemys)
 {
+
+
 	// ÉvÉåÉCÉÑÅ[Ç™UIÇÃãﬂÇ≠Ç…Ç¢ÇÈÇ∆Ç´ÇÕìßñæÇ…Ç∑ÇÈ
 	bool isPlayerNear = drawPlayerPos.y < FRAME_BOTTOM + LOW_ALPHA_DIS && drawPlayerPos.x < FRAME_RIGHT + LOW_ALPHA_DIS;
 	// ìGÇ™UIÇÃãﬂÇ≠Ç…Ç¢ÇÈÇ∆Ç´ÇÕìßñæÇ…Ç∑ÇÈ
@@ -71,11 +76,10 @@ void HPUI::Draw(Vector2 drawPlayerPos,const std::vector<std::shared_ptr<Enemy>>&
 		_alpha = std::lerp(_alpha, 255, 0.2f);
 	}
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, _alpha);
-	DrawBox(FRAME_LEFT, FRAME_TOP, FRAME_RIGHT, FRAME_BOTTOM, 0x888888, true);	// òg
+	//DrawBox(FRAME_LEFT, FRAME_TOP, FRAME_RIGHT, FRAME_BOTTOM, 0x888888, true);	// òg
 	DrawBox(BAR_LEFT + _drawBarLength, BAR_TOP, BAR_RIGHT, BAR_BOTTOM, 0x000000, true);	// HPÇ»Ç¢Ç∆Ç±ÇÃçï
 	DrawBox(BAR_LEFT + _barLength, BAR_TOP, BAR_LEFT + _drawBarLength, BAR_BOTTOM, 0xff0000, true);	// HPå∏ÇÈó ÇÃê‘
 	DrawBox(BAR_LEFT, BAR_TOP, BAR_LEFT + _barLength, BAR_BOTTOM, 0xffff00, true);	// HPÇ†ÇÈÇ∆Ç±ÇÃâ©êF
+	DrawRotaGraph(POS_X, POS_Y, 0.4, 0.0, _handle, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	
-	//DrawGraph(FRAME_LEFT, FRAME_TOP, _handle, true);
 }

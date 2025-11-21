@@ -4,13 +4,20 @@
 class Bg
 {
 public:
-	Bg(int handle);
+	Bg(int bgH,int subBgH);
 	~Bg();
 
 	void Init();
 	void Update();
 	void Draw(Vector2 drawOffset);
+
 private:
-	int _handle;
+
+	void DrawBg(Vector2 drawOffset);
+	void DrawSubBg(Vector2 drawOffset);
+
+private:
+	int _bgH;
+	int _subBgH;
 };
 

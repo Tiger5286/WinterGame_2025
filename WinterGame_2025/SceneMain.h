@@ -74,6 +74,7 @@ private:
 	int _hpUIH;
 	// 背景
 	int _bgH;
+	int _subBgH;
 
 	int _frameCount;	// 経過フレーム数
 
@@ -82,7 +83,7 @@ private:
 	/*オブジェクト*/
 	std::shared_ptr<Player> _pPlayer;	// プレイヤー
 	std::vector<std::shared_ptr<Bullet>> _pBullets;	// 弾
-	std::vector<std::shared_ptr<Enemy>> _pEnemys;	// 敵
+	std::vector<std::shared_ptr<Enemy>> _pEnemies;	// 敵
 	std::vector<std::shared_ptr<Item>> _pItems;	// アイテム
 	std::vector<std::shared_ptr<Gimmick>> _pGimmicks;	// ギミック
 	std::shared_ptr<ClearFlag> _pClearFlag;	// ゴール旗
