@@ -30,6 +30,7 @@
 #include "Camera.h"
 
 #include "HPUI.h"
+#include "BossHPUI.h"
 
 #include "Bg.h"
 
@@ -159,6 +160,17 @@ void SceneMain::Update(Input& input)
 	}
 
 	_pHPUI->Update(_pPlayer->GetHp());
+	if (_pBossHPUI != nullptr)
+	{
+		if (_pEnemies.empty())
+		{
+			_pBossHPUI->Update(0);
+		}
+		else
+		{
+			_pBossHPUI->Update(_pEnemies.back()->GetHp());
+		}
+	}
 
 	// ƒS[ƒ‹”»’è
 #ifdef _DEBUG
@@ -236,6 +248,10 @@ void SceneMain::Draw()
 	}
 
 	_pHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(),_pEnemies);
+	if (_pBossHPUI != nullptr)
+	{
+		_pBossHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(), _pEnemies);
+	}
 
 #ifdef _DEBUG
 	DrawString(0,0,"SceneMain",0xffffff);
@@ -357,6 +373,9 @@ void SceneMain::LoadStage(Stages stage)
 
 		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(-1, -1), _pPlayer, _laserH, 14, false));
 		_pEnemies.push_back(std::make_shared<Boss>(_pPlayer, _pCamera, _pGimmicks[0], _walkEnemyH));
+
+		_pBossHPUI = std::make_shared<BossHPUI>(_bossHpUIH,_pEnemies.back()->GetHp());
+
 		_pMap->LoadMapData("data/Map/BossStage.csv");
 
 #ifdef _DEBUG
@@ -406,8 +425,10 @@ void SceneMain::LoadAllGraphs()
 	assert(_healthItemH != -1);
 	_clearFlagH = LoadGraph("data/ClearFlag.png");
 	assert(_clearFlagH != -1);
-	_hpUIH = LoadGraph("data/HpBar.png");
+	_hpUIH = LoadGraph("data/UI/HpBar.png");
 	assert(_hpUIH != -1);
+	_bossHpUIH = LoadGraph("data/UI/BossHpBar.png");
+	assert(_bossHpUIH != -1);
 	_bgH = LoadGraph("data/Map/Bg.png");
 	assert(_bgH != -1);
 	_subBgH = LoadGraph("data/Map/subBg.png");

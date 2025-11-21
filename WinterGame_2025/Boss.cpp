@@ -247,6 +247,12 @@ void Boss::Draw(Vector2 offset)
 #endif
 }
 
+void Boss::Delete()
+{
+	_isAlive = false;
+	_pLaser->SetPos(Vector2(-10, -10));	// レーザーの位置を消す(画面外に行くだけ)
+}
+
 void Boss::ChangeState(BossState state)
 {
 	_state = state;

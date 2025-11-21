@@ -18,6 +18,7 @@ class Map;
 class Camera;
 
 class HPUI;
+class BossHPUI;
 
 class Bg;
 
@@ -72,6 +73,7 @@ private:
 	int _healthItemH;
 	// UI
 	int _hpUIH;
+	int _bossHpUIH;
 	// 背景
 	int _bgH;
 	int _subBgH;
@@ -91,6 +93,7 @@ private:
 	std::shared_ptr<Camera> _pCamera;	// カメラ
 	/*UIオブジェクト*/
 	std::shared_ptr<HPUI> _pHPUI;
+	std::shared_ptr<BossHPUI> _pBossHPUI;
 
 	std::shared_ptr<Bg> _pBg;
 };

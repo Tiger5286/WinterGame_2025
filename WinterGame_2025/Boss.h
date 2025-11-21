@@ -23,6 +23,7 @@ public:
 	void Init() override;
 	void Update(Map& map) override;
 	void Draw(Vector2 offset) override;
+	void Delete() override;
 
 private:
 

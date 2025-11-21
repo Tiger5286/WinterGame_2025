@@ -16,7 +16,7 @@ public:
 
 	void SetHp(int hp) { _hp = hp; }
 	int GetHp() const { return _hp; }
-	void Delete() { _isAlive = false; }
+	virtual void Delete() { _isAlive = false; }
 	bool GetIsAlive()const { return _isAlive; }
 	void SetIsHitChargeShot(bool isHit) { _isHitChargeShot = isHit; }
 	bool GetIsHitChargeShot()const { return _isHitChargeShot; }

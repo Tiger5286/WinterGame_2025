@@ -120,6 +120,7 @@
     </ClCompile>
     <ClCompile Include="HPUI.cpp" />
     <ClCompile Include="Bg.cpp" />
+    <ClCompile Include="BossHPUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -214,5 +215,6 @@
     </ClInclude>
     <ClInclude Include="HPUI.h" />
     <ClInclude Include="Bg.h" />
+    <ClInclude Include="BossHPUI.h" />
   </ItemGroup>
 </Project>
