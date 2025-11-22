@@ -121,6 +121,7 @@
     <ClCompile Include="HPUI.cpp" />
     <ClCompile Include="Bg.cpp" />
     <ClCompile Include="BossHPUI.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -216,5 +217,6 @@
     <ClInclude Include="HPUI.h" />
     <ClInclude Include="Bg.h" />
     <ClInclude Include="BossHPUI.h" />
+    <ClInclude Include="EnemyManager.h" />
   </ItemGroup>
 </Project>

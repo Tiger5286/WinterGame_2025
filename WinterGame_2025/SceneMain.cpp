@@ -159,16 +159,17 @@ void SceneMain::Update(Input& input)
 		}
 	}
 
+	// HPUI更新
 	_pHPUI->Update(_pPlayer->GetHp());
-	if (_pBossHPUI != nullptr)
+	if (_pBossHPUI != nullptr)	// ボスがいるときだけ更新
 	{
 		if (_pEnemies.empty())
 		{
-			_pBossHPUI->Update(0);
+			_pBossHPUI->Update(0);	// 敵がいなくなったらHP0にする
 		}
 		else
 		{
-			_pBossHPUI->Update(_pEnemies.back()->GetHp());
+			_pBossHPUI->Update(_pEnemies.back()->GetHp());	// 最後にいる敵をボスとみなす
 		}
 	}
 
