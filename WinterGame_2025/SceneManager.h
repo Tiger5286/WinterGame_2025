@@ -12,11 +12,21 @@ class SceneManager
 {
 public:
 	SceneManager();
-	void ChangeScene(std::shared_ptr<SceneBase> scene);
+
 	void Init();
 	void Update(Input input);
 	void Draw();
+
+	/// <summary>
+	/// シーンを変更する
+	/// </summary>
+	/// <param name="scene">次に再生するシーン</param>
+	void ChangeScene(std::shared_ptr<SceneBase> scene);
+
+	void ChangeSceneWithFadeOut(std::shared_ptr<SceneBase> scene);
+
 private:
 	std::shared_ptr<SceneBase> _pScene;
 	std::shared_ptr<Fade> _pFade;
+	std::shared_ptr<SceneBase> _pNextScene;
 };

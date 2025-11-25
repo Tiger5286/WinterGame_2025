@@ -65,3 +65,12 @@ void Fade::StartFadeIn()
 	_state = FadeState::FadeIn;
 	_fadeFrame = kFadeTime;
 }
+
+bool Fade::GetIsFadeEnd()
+{
+	if (_state == FadeState::FadeOut && _fadeFrame == kFadeTime - 1)
+	{
+		return true;
+	}
+	return false;
+}

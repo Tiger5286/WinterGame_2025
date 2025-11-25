@@ -207,7 +207,6 @@ void SceneMain::Update(Input& input)
 
 void SceneMain::Draw()
 {
-
 	// ”wŒi‚Ì•`‰æ
 	_pBg->Draw(_pCamera->GetDrawOffset());
 
@@ -392,7 +391,7 @@ void SceneMain::LoadStage(Stages stage)
 
 void SceneMain::StageClear()
 {
-	_manager.ChangeScene(std::make_shared<SceneClear>(_manager));
+	_manager.ChangeSceneWithFadeOut(std::make_shared<SceneClear>(_manager));
 	return;
 }
 

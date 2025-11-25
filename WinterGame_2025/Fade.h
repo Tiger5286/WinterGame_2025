@@ -19,6 +19,8 @@ public:
 	void StartFadeOut();
 	void StartFadeIn();
 
+	bool GetIsFadeEnd();
+
 	const FadeState GetState() const { return _state; }
 
 private:
