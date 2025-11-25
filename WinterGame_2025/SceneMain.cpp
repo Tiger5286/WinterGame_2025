@@ -34,8 +34,6 @@
 
 #include "Bg.h"
 
-#include "Fade.h"
-
 namespace
 {
 	constexpr int kBulletNum = 15;
@@ -51,8 +49,6 @@ SceneMain::SceneMain(SceneManager& manager, Stages stage) :
 
 	/*オブジェクトの生成*/
 	LoadStage(stage);
-
-	_pFade = std::make_shared<Fade>();
 
 #ifdef _DEBUG
 	if (_pClearFlag == nullptr)
@@ -177,8 +173,6 @@ void SceneMain::Update(Input& input)
 		}
 	}
 
-	_pFade->Update();
-
 	// ゴール判定
 #ifdef _DEBUG
 	if (_pClearFlag != nullptr)
@@ -207,10 +201,6 @@ void SceneMain::Update(Input& input)
 	if (input.IsTriggered("select"))
 	{
 		_manager.ChangeScene(std::make_shared<DebugScene>(_manager));
-	}
-	if (input.IsTriggered("start"))
-	{
-		_pFade->StartFadeOut();
 	}
 #endif
 }
@@ -263,8 +253,6 @@ void SceneMain::Draw()
 	{
 		_pBossHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(), _pEnemies);
 	}
-
-	_pFade->Draw();
 
 #ifdef _DEBUG
 	DrawString(0,0,"SceneMain",0xffffff);

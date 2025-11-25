@@ -51,11 +51,17 @@ void Fade::Draw()
 	DrawBox(0, 0, GlobalConstants::kScreenWidth, GlobalConstants::kScreenHeight, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	DrawFormatString(100, 100, 0xffffff, "%.2f", alpha);
+	//DrawFormatString(100, 100, 0xffffff, "%.2f", alpha);
 }
 
 void Fade::StartFadeOut()
 {
 	_state = FadeState::FadeOut;
 	_fadeFrame = 0;
+}
+
+void Fade::StartFadeIn()
+{
+	_state = FadeState::FadeIn;
+	_fadeFrame = kFadeTime;
 }

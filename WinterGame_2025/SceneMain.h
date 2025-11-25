@@ -98,7 +98,5 @@ private:
 	std::shared_ptr<BossHPUI> _pBossHPUI;
 
 	std::shared_ptr<Bg> _pBg;
-
-	std::shared_ptr<Fade> _pFade;
 };
 

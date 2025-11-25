@@ -17,6 +17,9 @@ public:
 	void Draw();
 
 	void StartFadeOut();
+	void StartFadeIn();
+
+	const FadeState GetState() const { return _state; }
 
 private:
 	FadeState _state;
