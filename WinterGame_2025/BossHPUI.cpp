@@ -5,7 +5,7 @@
 
 namespace
 {
-	constexpr int kBarLeft = 950;
+	constexpr int kBarLeft = 975;
 	constexpr int kBarTop = 100;
 	constexpr int kBarRight = 1770;
 	constexpr int kBarBottom = 160;
