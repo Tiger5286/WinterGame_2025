@@ -22,6 +22,8 @@ class BossHPUI;
 
 class Bg;
 
+class Fade;
+
 // どのステージかを表す列挙体
 enum class Stages
 {
@@ -96,5 +98,7 @@ private:
 	std::shared_ptr<BossHPUI> _pBossHPUI;
 
 	std::shared_ptr<Bg> _pBg;
+
+	std::shared_ptr<Fade> _pFade;
 };
 

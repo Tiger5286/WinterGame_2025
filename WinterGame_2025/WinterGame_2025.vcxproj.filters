@@ -76,9 +76,6 @@
     <ClCompile Include="Application.cpp">
       <Filter>Uncategorized</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Uncategorized</Filter>
     </ClCompile>
@@ -122,6 +119,10 @@
     <ClCompile Include="Bg.cpp" />
     <ClCompile Include="BossHPUI.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
+    <ClCompile Include="Fade.cpp" />
+    <ClCompile Include="Player.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -172,9 +173,6 @@
     <ClInclude Include="Application.h">
       <Filter>Uncategorized</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Uncategorized</Filter>
     </ClInclude>
@@ -218,5 +216,9 @@
     <ClInclude Include="Bg.h" />
     <ClInclude Include="BossHPUI.h" />
     <ClInclude Include="EnemyManager.h" />
+    <ClInclude Include="Fade.h" />
+    <ClInclude Include="Player.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
