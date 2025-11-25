@@ -59,7 +59,7 @@ public:
 		_pos = ChipPosToGamePos(mapChipPos);
 	}
 
-	std::shared_ptr<Collider> GetCollider() { return _collider; }
+	std::shared_ptr<Collider> GetCollider() { return _pCollider; }
 
 protected:
 	void Gravity();
@@ -67,7 +67,7 @@ protected:
 protected:
 	Vector2 _pos;
 	Vector2 _vel;
-	std::shared_ptr<Collider> _collider;
+	std::shared_ptr<Collider> _pCollider;
 	Animation _nowAnim;
 	bool _isGround;		// Ú’nƒtƒ‰ƒO
 	HitDirection _hitDir;

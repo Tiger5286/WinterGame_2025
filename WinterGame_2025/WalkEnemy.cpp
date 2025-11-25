@@ -9,30 +9,30 @@
 namespace
 {
 	// 描画関係
-	constexpr int WALKENEMY_GRAPH_CUT_W = 32;
-	constexpr int WALKENEMY_GRAPH_CUT_H = 36;
-	const Vector2 WALKENEMY_FRAME_SIZE = { WALKENEMY_GRAPH_CUT_W,WALKENEMY_GRAPH_CUT_H };
-	constexpr float DRAW_SCALE = 3.0f;
+	constexpr int kGraphCutW = 32;
+	constexpr int kGraphCutH = 36;
+	const Vector2 kFrameSize = { kGraphCutW,kGraphCutH };
+	constexpr float kDrawScale = 3.0f;
 
 	// 動き関連
-	constexpr float MOVE_SPEED = 4.0f;
+	constexpr float kMoveSpeed = 4.0f;
 
 	// 当たり判定
-	constexpr float COLLIDER_W = 80;
-	constexpr float COLLIDER_H = 80;
-	const Vector2 COLLIDER_SIZE = { COLLIDER_W,COLLIDER_H };
+	constexpr float kColliderW = 80;
+	constexpr float kColliderH = 80;
+	const Vector2 kColliderSize = { kColliderW,kColliderH };
 
-	constexpr float GROUND_H = 800.0f;
+	constexpr float kGroundH = 800.0f;
 
 	// アニメーション
-	constexpr int WALKENEMY_IDLE_ANIM_MAX_NUM = 5;
-	constexpr int WALKENEMY_MOVE_ANIM_MAX_NUM = 8;
-	constexpr int WALKENEMY_FALL_ANIM_MAX_NUM = 1;
+	constexpr int kIdleAnimNum = 5;
+	constexpr int kMoveAnimNum = 8;
+	constexpr int kFallAnimNum = 1;
 
-	constexpr int WALKENEMY_ONE_ANIM_FRAME = 6;
+	constexpr int kOneAnimFrame = 6;
 
 	// HP
-	constexpr int MAX_HP = 5;
+	constexpr int kMaxHp = 5;
 }
 
 enum class WalkEnemyAnimType : int
@@ -43,14 +43,14 @@ enum class WalkEnemyAnimType : int
 };
 
 WalkEnemy::WalkEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, WalkEnemyState state, bool isTurn) :
-	Enemy(MAX_HP, pPlayer),
+	Enemy(kMaxHp, pPlayer),
 	_handle(handle),
 	_state(state),
 	_isTurn(isTurn)
 {
 	_pos = ChipPosToGamePos(chipPos);
-	_pos.y += GlobalConstants::DRAW_CHIP_SIZE_HALF;	// チップ半分下にずらす
-	_collider = std::make_shared<BoxCollider>(_pos, COLLIDER_SIZE);
+	_pos.y += GlobalConstants::kDrawChipSizeHalf;	// チップ半分下にずらす
+	_pCollider = std::make_shared<BoxCollider>(_pos, kColliderSize);
 }
 
 WalkEnemy::~WalkEnemy()
@@ -59,9 +59,9 @@ WalkEnemy::~WalkEnemy()
 
 void WalkEnemy::Init()
 {
-	_idleAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Idle), WALKENEMY_FRAME_SIZE, WALKENEMY_IDLE_ANIM_MAX_NUM, WALKENEMY_ONE_ANIM_FRAME, DRAW_SCALE);
-	_moveAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Move), WALKENEMY_FRAME_SIZE, WALKENEMY_MOVE_ANIM_MAX_NUM, WALKENEMY_ONE_ANIM_FRAME, DRAW_SCALE);
-	_fallAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Fall), WALKENEMY_FRAME_SIZE, WALKENEMY_FALL_ANIM_MAX_NUM, WALKENEMY_ONE_ANIM_FRAME, DRAW_SCALE);
+	_idleAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Idle), kFrameSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
+	_moveAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Move), kFrameSize, kMoveAnimNum, kOneAnimFrame, kDrawScale);
+	_fallAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Fall), kFrameSize, kFallAnimNum, kOneAnimFrame, kDrawScale);
 	_nowAnim = _idleAnim;
 }
 
@@ -86,11 +86,11 @@ void WalkEnemy::Update(Map& map)
 	{	// 行動状態の時は向いている方向に動く
 		if (_isTurn)
 		{
-			_vel.x = -MOVE_SPEED;
+			_vel.x = -kMoveSpeed;
 		}
 		else
 		{
-			_vel.x = MOVE_SPEED;
+			_vel.x = kMoveSpeed;
 		}
 	}
 
@@ -107,7 +107,7 @@ void WalkEnemy::Update(Map& map)
 	}
 
 	// プレイヤーに当たったらダメージを与える
-	if (_collider->CheckCollision(_pPlayer->GetCollider()))
+	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
 	{
 		_pPlayer->TakeDamage();
 	}
@@ -118,9 +118,9 @@ void WalkEnemy::Update(Map& map)
 void WalkEnemy::Draw(Vector2 offset)
 {
 	//DrawRectRotaGraph(_pos.x, _pos.y - WALKENEMY_GRAPH_CUT_H / 2 * DRAW_SCALE, WALKENEMY_GRAPH_CUT_W * 0, WALKENEMY_GRAPH_CUT_H * 0, WALKENEMY_GRAPH_CUT_W, WALKENEMY_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true);
-	_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - WALKENEMY_GRAPH_CUT_H / 2 * DRAW_SCALE }, _isTurn);
+	_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - kGraphCutH / 2 * kDrawScale }, _isTurn);
 #ifdef _DEBUG
-	_collider->Draw(offset);
+	_pCollider->Draw(offset);
 #endif
 }
 

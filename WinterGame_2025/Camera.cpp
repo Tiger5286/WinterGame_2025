@@ -5,10 +5,10 @@
 
 namespace
 {
-	constexpr int CHIP_SIZE = 16;
-	constexpr float DRAW_SCALE = 3.0f;
+	constexpr int kChipSize = 16;
+	constexpr float kDrawScale = 3.0f;
 
-	constexpr float MOVE_Y_INTERVAL = 150.0f;
+	constexpr float kMoveYInterval = 150.0f;
 }
 
 Camera::Camera() :
@@ -18,8 +18,8 @@ Camera::Camera() :
 	_shakePower(0)
 {
 	// 初期位置を画面中央に設定(マップチップ0.5個分下にずらす)
-	_pos.x = GlobalConstants::SCREEN_WIDTH / 2;
-	_pos.y = GlobalConstants::SCREEN_HEIGHT / 2 + CHIP_SIZE * DRAW_SCALE / 2;
+	_pos.x = GlobalConstants::kScreenWidth / 2;
+	_pos.y = GlobalConstants::kScreenHeight / 2 + kChipSize * kDrawScale / 2;
 }
 
 Camera::~Camera()
@@ -36,36 +36,36 @@ void Camera::Update(Vector2 playerPos)
 	//_pos.x = playerPos.x;
 	_pos.x = std::lerp(_pos.x, playerPos.x, 0.1f);
 	// カメラの位置がマップの端を超えないように補正
-	if (_pos.x < GlobalConstants::SCREEN_WIDTH / 2)
+	if (_pos.x < GlobalConstants::kScreenWidth / 2)
 	{
-		_pos.x = GlobalConstants::SCREEN_WIDTH / 2;
+		_pos.x = GlobalConstants::kScreenWidth / 2;
 	}
-	else if (_pos.x > _stageSize.x - GlobalConstants::SCREEN_WIDTH / 2)
+	else if (_pos.x > _stageSize.x - GlobalConstants::kScreenWidth / 2)
 	{
-		_pos.x = _stageSize.x - GlobalConstants::SCREEN_WIDTH / 2;
+		_pos.x = _stageSize.x - GlobalConstants::kScreenWidth / 2;
 	}
 
 	// 上下はプレイヤーよりちょっと遅れてついてくるようにする
 	float playerDisY = _pos.y - playerPos.y;
-	if (playerDisY < -MOVE_Y_INTERVAL) // プレイヤーよりカメラの方が高い
+	if (playerDisY < -kMoveYInterval) // プレイヤーよりカメラの方が高い
 	{
 		//_pos.y = playerPos.y - MOVE_Y_INTERVAL;
-		_pos.y = std::lerp(_pos.y, playerPos.y - MOVE_Y_INTERVAL, 0.1f);
+		_pos.y = std::lerp(_pos.y, playerPos.y - kMoveYInterval, 0.1f);
 	}
-	else if (playerDisY > MOVE_Y_INTERVAL)
+	else if (playerDisY > kMoveYInterval)
 	{
 		//_pos.y = playerPos.y + MOVE_Y_INTERVAL;
-		_pos.y = std::lerp(_pos.y, playerPos.y + MOVE_Y_INTERVAL, 0.1f);
+		_pos.y = std::lerp(_pos.y, playerPos.y + kMoveYInterval, 0.1f);
 	}
 
 	// カメラのY位置がマップの上下の端を超えないように補正
-	if (_pos.y < GlobalConstants::SCREEN_HEIGHT / 2)
+	if (_pos.y < GlobalConstants::kScreenHeight / 2)
 	{
-		_pos.y = GlobalConstants::SCREEN_HEIGHT / 2;
+		_pos.y = GlobalConstants::kScreenHeight / 2;
 	}
-	else if (_pos.y > _stageSize.y - GlobalConstants::SCREEN_HEIGHT / 2)
+	else if (_pos.y > _stageSize.y - GlobalConstants::kScreenHeight / 2)
 	{
-		_pos.y = _stageSize.y - GlobalConstants::SCREEN_HEIGHT / 2;
+		_pos.y = _stageSize.y - GlobalConstants::kScreenHeight / 2;
 	}
 
 	// 画面揺れ処理
@@ -92,5 +92,5 @@ void Camera::Shake(int frame, int power)
 
 Vector2 Camera::GetDrawOffset() const
 {
-	return { _pos.x - GlobalConstants::SCREEN_WIDTH / 2, _pos.y - GlobalConstants::SCREEN_HEIGHT / 2 };
+	return { _pos.x - GlobalConstants::kScreenWidth / 2, _pos.y - GlobalConstants::kScreenHeight / 2 };
 }

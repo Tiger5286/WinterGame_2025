@@ -9,75 +9,75 @@
 namespace
 {
 	// 描画関連
-	constexpr int PLAYER_GRAPH_CUT_W = 40;	// プレイヤー画像の切り取りサイズ
-	constexpr int PLAYER_GRAPH_CUT_H = 40;
-	const Vector2 PLAYER_FRAME_SIZE = { PLAYER_GRAPH_CUT_W,PLAYER_GRAPH_CUT_H };
-	constexpr float DRAW_SCALE = 3.0f;	// 描画倍率
+	constexpr int kGraphCutW = 40;	// プレイヤー画像の切り取りサイズ
+	constexpr int kGraphCutH = 40;
+	const Vector2 kFrameSize = { kGraphCutW,kGraphCutH };
+	constexpr float kDrawScale = 3.0f;	// 描画倍率
 
-	constexpr int CHARGE_PARTICLE_GRAPH_CUT_W = 64;	// チャージパーティクル画像の切り取りサイズ
-	constexpr int CHARGE_PARTICLE_GRAPH_CUT_H = 64;
-	const Vector2 CHARGE_PARTICLE_FRAME_SIZE = { CHARGE_PARTICLE_GRAPH_CUT_W,CHARGE_PARTICLE_GRAPH_CUT_H };
+	constexpr int kChargeParticleGraphCutW = 64;	// チャージパーティクル画像の切り取りサイズ
+	constexpr int kChargeParticleGraphCutH = 64;
+	const Vector2 kChargeParticleFrameSize = { kChargeParticleGraphCutW,kChargeParticleGraphCutH };
 
-	const Vector2 SHOT_FLASH_GRAPH_SIZE = { 16,16 };	// 通常ショットのマズルフラッシュのサイズ
-	const Vector2 CHARGE_SHOT_FLASH_GRAPH_SIZE = { 32,32 };	// チャージショットのマズルフラッシュのサイズ
+	const Vector2 kShotFlashGraphSize = { 16,16 };	// 通常ショットのマズルフラッシュのサイズ
+	const Vector2 kChargeShotFlashGraphSize = { 32,32 };	// チャージショットのマズルフラッシュのサイズ
 
 	// アニメーション関連
-	constexpr int PLAYER_IDLE_ANIM_MAX_NUM = 5;	// アニメーションの枚数
-	constexpr int PLAYER_MOVE_ANIM_MAX_NUM = 8;
-	constexpr int PLAYER_DAMAGE_ANIM_MAX_NUM = 9;
-	constexpr int PLAYER_DEATH_ANIM_MAX_NUM = 21;
+	constexpr int kIdleAnimNum = 5;	// アニメーションの枚数
+	constexpr int kMoveAnimNum = 8;
+	constexpr int kDamageAnimNum = 9;
+	constexpr int kDeathAnimNum = 21;
 
-	constexpr int CHARGE_PARTICLE_ANIM_MAX_NUM = 7;
+	constexpr int kChargeParticleAnimNum = 7;
 
-	constexpr int SHOT_ANIM_NUM = 3;
-	constexpr int CHARGE_SHOT_ANIM_NUM = 4;
+	constexpr int kShotAnimNum = 3;
+	constexpr int kChargeShotAnimNum = 4;
 
-	constexpr int ONE_ANIM_FRAME = 6;	// 何フレームでアニメーションを切り替えるか
-	constexpr int DEATH_ONE_ANIM_FRAME = 7;	// 死亡時のアニメーション用
-	constexpr int FLASH_ONE_ANIM_FRAME = 4;	// 通常ショットのマズルフラッシュ
-	constexpr int CHARGE_SHOT_FLASH_ONE_ANIM_FRAME = 6;	// チャージショットのマズルフラッシュ
+	constexpr int kOneAnimFrame = 6;	// 何フレームでアニメーションを切り替えるか
+	constexpr int kDeathOneAnimFrame = 7;	// 死亡時のアニメーション用
+	constexpr int kFlashOneAnimFrame = 4;	// 通常ショットのマズルフラッシュ
+	constexpr int kChargeShotFlashOneAnimFrame = 6;	// チャージショットのマズルフラッシュ
 
 	// 当たり判定
-	constexpr float COLLIDER_W = 60.0f;	// 当たり判定のサイズ
-	constexpr float COLLIDER_H = 80.0f;
+	constexpr float kColliderW = 60.0f;	// 当たり判定のサイズ
+	constexpr float kColliderH = 80.0f;
 
-	constexpr float GROUND_H = 800.0f;	// 地面の高さ(仮)
+	constexpr float kGroundH = 800.0f;	// 地面の高さ(仮)
 
 	// ダメージ関連
-	constexpr int INVINCIBLE_FRAME_MAX = 180;	// ダメージを受けてからの無敵時間
-	constexpr float KNOCKBACK_POWER_X = 13.0f;	// ダメージを受けたときのノックバックの力X
-	constexpr float KNOCKBACK_POWER_Y = 10.0f;	// ダメージを受けたときのノックバックの力Y
-	constexpr int DAMAGE_ANIMATION_END_FRAME = INVINCIBLE_FRAME_MAX - PLAYER_DAMAGE_ANIM_MAX_NUM * ONE_ANIM_FRAME;	// ダメージアニメーションが終わるフレーム
-	constexpr int FLICKER_INTERVAL = 5;	// 点滅の間隔
+	constexpr int kInvincibleMaxFrame = 180;	// ダメージを受けてからの無敵時間
+	constexpr float kKnockbackPowerX = 13.0f;	// ダメージを受けたときのノックバックの力X
+	constexpr float kKnockbackPowerY = 10.0f;	// ダメージを受けたときのノックバックの力Y
+	constexpr int kDamageAnimEndFrame = kInvincibleMaxFrame - kDamageAnimNum * kOneAnimFrame;	// ダメージアニメーションが終わるフレーム
+	constexpr int kFlickerInterval = 5;	// 点滅の間隔
 
 	// 動きの制御関連
-	constexpr float JUMP_POWER = -15.0f;	// ジャンプ力
-	constexpr int MAX_JUMP_FRAME = 15;	// ジャンプを長押しできる最大時間
+	constexpr float kJumpPower = -15.0f;	// ジャンプ力
+	constexpr int kMaxJumpFrame = 15;	// ジャンプを長押しできる最大時間
 
-	constexpr float MOVE_SPEED = 2.0f;	// 横移動速度
-	constexpr float MAX_MOVE_SPEED = 10.0f;	// 最高移動速度
-	constexpr float STOP_SPEED = 0.9f;	// 横移動速度がこれ以下になったら完全に停止する
-	constexpr float FRICTION_POWER = 0.7f;	// 自然に止まる力
+	constexpr float kMoveSpeed = 2.0f;	// 横移動速度
+	constexpr float kMaxMoveSpeed = 10.0f;	// 最高移動速度
+	constexpr float kStopSpeed = 0.9f;	// 横移動速度がこれ以下になったら完全に停止する
+	constexpr float kFrictionPower = 0.7f;	// 自然に止まる力
 
 	// ダッシュ関連
-	constexpr int DASH_COOL_TIME = 120;	// ダッシュのクールタイム
-	constexpr float DASH_SPEED = 20.0f;	// ダッシュの速度
-	constexpr int DASHING_TIME = 15;	// ダッシュの持続時間
-	constexpr int DASH_GRAPH_INDEX_X = 1;	// ダッシュ時の画像の切り取り位置X
-	constexpr int DASH_GRAPH_INDEX_Y = 5;	// ダッシュ時の画像の切り取り位置Y
+	constexpr int kDashCoolTime = 120;	// ダッシュのクールタイム
+	constexpr float kDashSpeed = 20.0f;	// ダッシュの速度
+	constexpr int kDashingTime = 15;	// ダッシュの持続時間
+	constexpr int kDashGraphIndexX = 1;	// ダッシュ時の画像の切り取り位置X
+	constexpr int kDashGraphIndexY = 5;	// ダッシュ時の画像の切り取り位置Y
 
-	constexpr int AFTERIMAGE_NUM = 4;	// 残像の数
-	constexpr int AFTERIMAGE_FRAME_MAX = 10;	// 残像が消えるまでのフレーム数
-	constexpr int AFTERIMAGE_FRAME_INTERVAL = 3;	// 残像が出る間隔
-	constexpr int AFTERIMAGE_COLOR_R = 64;	// 残像の色
-	constexpr int AFTERIMAGE_COLOR_G = 64;
-	constexpr int AFTERIMAGE_COLOR_B = 255;
+	constexpr int kAfterimageNum = 4;	// 残像の数
+	constexpr int kAfterimageFrameMax = 10;	// 残像が消えるまでのフレーム数
+	constexpr int kAfterimageFrameInterval = 3;	// 残像が出る間隔
+	constexpr int kAfterimageColorR = 64;	// 残像の色
+	constexpr int kAfterimageColorG = 64;
+	constexpr int kAfterimageColorB = 255;
 
 	// 射撃関連
-	constexpr int CHARGE_EFFECT_TIME = 30;		// チャージエフェクトが出始める時間
-	constexpr int CHARGE_TIME_MAX = 90;	// 最大チャージ時間
+	constexpr int kChargeEffectTime = 30;		// チャージエフェクトが出始める時間
+	constexpr int kChargeTimeMax = 90;	// 最大チャージ時間
 
-	constexpr int MAX_HP = 5;
+	constexpr int kMaxHp = 5;
 }
 
 // アニメーション種類
@@ -101,7 +101,7 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_chargeParticleH(chargeParticleH),
 	_shotH(shotH),
 	_chargeShotH(chargeShotH),
-	_hp(MAX_HP),
+	_hp(kMaxHp),
 	_isAlive(true),
 	_jumpFrame(0),
 	_isJumping(false),
@@ -117,29 +117,29 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_chargeFrame(0),
 	_isCanFly(false)
 {
-	_collider = std::make_shared<BoxCollider>(_pos,Vector2(COLLIDER_W, COLLIDER_H));
-	_playerAfterimage.resize(AFTERIMAGE_NUM);
+	_pCollider = std::make_shared<BoxCollider>(_pos,Vector2(kColliderW, kColliderH));
+	_playerAfterimage.resize(kAfterimageNum);
 	for (auto& afterimage : _playerAfterimage)
 	{
-		afterimage.frame = AFTERIMAGE_FRAME_MAX + 1;
+		afterimage.frame = kAfterimageFrameMax + 1;
 		afterimage.handle = _playerH;
 		afterimage.whiteHandle = _playerWhiteH;
 	}
 
-	_idleAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Idle), PLAYER_FRAME_SIZE, PLAYER_IDLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-	_moveAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Move), PLAYER_FRAME_SIZE, PLAYER_MOVE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-	_damageAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Damage), PLAYER_FRAME_SIZE, PLAYER_DAMAGE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-	_jumpAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Jump), PLAYER_FRAME_SIZE, 1, ONE_ANIM_FRAME, DRAW_SCALE);
-	_fallAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Fall), 2, PLAYER_FRAME_SIZE, DRAW_SCALE);
-	_dashAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Dash), 1, PLAYER_FRAME_SIZE, DRAW_SCALE);
-	_slideAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Slide), 0, PLAYER_FRAME_SIZE, DRAW_SCALE);
-	_deathAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Death), PLAYER_FRAME_SIZE, PLAYER_DEATH_ANIM_MAX_NUM, DEATH_ONE_ANIM_FRAME, DRAW_SCALE, false);
+	_idleAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Idle), kFrameSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
+	_moveAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Move), kFrameSize, kMoveAnimNum, kOneAnimFrame, kDrawScale);
+	_damageAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Damage), kFrameSize, kDamageAnimNum, kOneAnimFrame, kDrawScale);
+	_jumpAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Jump), kFrameSize, 1, kOneAnimFrame, kDrawScale);
+	_fallAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Fall), 2, kFrameSize, kDrawScale);
+	_dashAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Dash), 1, kFrameSize, kDrawScale);
+	_slideAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Slide), 0, kFrameSize, kDrawScale);
+	_deathAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Death), kFrameSize, kDeathAnimNum, kDeathOneAnimFrame, kDrawScale, false);
 
-	_shotFlashAnim.Init(_shotH, 0, SHOT_FLASH_GRAPH_SIZE, SHOT_ANIM_NUM, FLASH_ONE_ANIM_FRAME, DRAW_SCALE,false);
+	_shotFlashAnim.Init(_shotH, 0, kShotFlashGraphSize, kShotAnimNum, kFlashOneAnimFrame, kDrawScale,false);
 	_shotFlashAnim.SetEnd();
-	_chargeShotFlashAnim.Init(_chargeShotH, 0, CHARGE_SHOT_FLASH_GRAPH_SIZE, CHARGE_SHOT_ANIM_NUM, CHARGE_SHOT_FLASH_ONE_ANIM_FRAME, DRAW_SCALE,false);
+	_chargeShotFlashAnim.Init(_chargeShotH, 0, kChargeShotFlashGraphSize, kChargeShotAnimNum, kChargeShotFlashOneAnimFrame, kDrawScale,false);
 	_chargeShotFlashAnim.SetEnd();
-	_ChargeParticleAnim.Init(_chargeParticleH, 0, CHARGE_PARTICLE_FRAME_SIZE, CHARGE_PARTICLE_ANIM_MAX_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	_ChargeParticleAnim.Init(_chargeParticleH, 0, kChargeParticleFrameSize, kChargeParticleAnimNum, kOneAnimFrame, kDrawScale);
 
 	_nowAnim = _idleAnim;
 }
@@ -175,16 +175,16 @@ void Player::Update(Map& map)
 		// 射撃処理
 		if (_isTurn)	// 弾を召喚する位置を設定
 		{
-			_shotPos = { _pos.x - COLLIDER_W / 2, _pos.y - COLLIDER_H / 2 };
+			_shotPos = { _pos.x - kColliderW / 2, _pos.y - kColliderH / 2 };
 		}
 		else
 		{
-			_shotPos = { _pos.x + COLLIDER_W / 2, _pos.y - COLLIDER_H / 2 };
+			_shotPos = { _pos.x + kColliderW / 2, _pos.y - kColliderH / 2 };
 		}
 		Shot();
 		ChargeShot();
 	}
-	if (!_isDashing && _invincibleFrame < DAMAGE_ANIMATION_END_FRAME)	// ダッシュ中でなく、被弾アニメーション中でなければ
+	if (!_isDashing && _invincibleFrame < kDamageAnimEndFrame)	// ダッシュ中でなく、被弾アニメーション中でなければ
 	{
 		// 移動速度制限処理
 		MoveSpeedLimit();
@@ -266,14 +266,14 @@ void Player::Draw(Vector2 offset)
 	}
 
 	// プレイヤー本体の描画
-	Vector2 drawPos = { _pos.x - offset.x, _pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y };
+	Vector2 drawPos = { _pos.x - offset.x, _pos.y - kGraphCutH / 2 * kDrawScale - offset.y };
 	if (_dashCoolTime > 0 && _invincibleFrame == 0)	// ダッシュがクールタイム中なら
 	{	// 少し暗く青みがかった色で描画
 		SetDrawBright(0xaa, 0xaa, 0xdd);
 	}
 	if (_isFrickering)	// 点滅中なら
 	{	// 一定間隔で描画・非描画を切り替える
-		if (_invincibleFrame % FLICKER_INTERVAL * 2 < FLICKER_INTERVAL)
+		if (_invincibleFrame % kFlickerInterval * 2 < kFlickerInterval)
 		{
 			_nowAnim.Draw(drawPos, _isTurn);
 		}
@@ -304,14 +304,14 @@ void Player::Draw(Vector2 offset)
 	_chargeShotFlashAnim.Draw(flashPos - offset, _isTurn);
 
 	// チャージエフェクトを描画
-	if (_chargeFrame > CHARGE_EFFECT_TIME)
+	if (_chargeFrame > kChargeEffectTime)
 	{
 		_ChargeParticleAnim.Draw(drawPos, true);
 	}
 	// チャージが完了したら白フィルターを点滅させる
-	if (_chargeFrame >= CHARGE_TIME_MAX)
+	if (_chargeFrame >= kChargeTimeMax)
 	{
-		if (_chargeFrame % FLICKER_INTERVAL * 2 < FLICKER_INTERVAL)
+		if (_chargeFrame % kFlickerInterval * 2 < kFlickerInterval)
 		{
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 			_nowAnim.Draw(_playerWhiteH, drawPos, _isTurn);
@@ -319,7 +319,7 @@ void Player::Draw(Vector2 offset)
 		}
 	}
 #ifdef _DEBUG
-	_collider->Draw(offset);
+	_pCollider->Draw(offset);
 
 	//DrawFormatString(_pos.x - offset.x - 20, _pos.y - offset.y - 120, 0xffffff, "hp:%d", _hp);
 	if (_isCanFly)
@@ -340,25 +340,25 @@ void Player::TakeDamage()
 	if (!_isDashing && _invincibleFrame == 0)
 	{	// ダッシュ中でなく、無敵時間でなければダメージを受ける
 		_hp--;
-		_invincibleFrame = INVINCIBLE_FRAME_MAX;	// 無敵時間をセット
+		_invincibleFrame = kInvincibleMaxFrame;	// 無敵時間をセット
 		_isCanControll = false;	// 操作不可にする
 		_isFrickering = false;	// 点滅フラグをリセット
-		_vel.y = -KNOCKBACK_POWER_Y;	// 上方向に吹き飛ぶ
+		_vel.y = -kKnockbackPowerY;	// 上方向に吹き飛ぶ
 		_chargeFrame = 0;	// チャージフレームをリセット
 		if (_isTurn)	// ダメージを受けた方向と逆に吹き飛ぶ
 		{
-			_vel.x = KNOCKBACK_POWER_X;
+			_vel.x = kKnockbackPowerX;
 		}
 		else
 		{
-			_vel.x = -KNOCKBACK_POWER_X;
+			_vel.x = -kKnockbackPowerX;
 		}
 	}
 }
 
 int Player::GetMaxHp()
 {
-	return MAX_HP;
+	return kMaxHp;
 }
 
 void Player::Jump()
@@ -372,15 +372,15 @@ void Player::Jump()
 	{	
 		if (_hitDir.up)
 		{
-			_jumpFrame = MAX_JUMP_FRAME;	// 天井に当たったらジャンプ力を加えないようにする
+			_jumpFrame = kMaxJumpFrame;	// 天井に当たったらジャンプ力を加えないようにする
 		}
 		
 		// ジャンプが入力されており、かつジャンプ中ならジャンプ力を加える
 		_jumpFrame++;
 		_isGround = false;
-		if (_jumpFrame < MAX_JUMP_FRAME)
+		if (_jumpFrame < kMaxJumpFrame)
 		{
-			_vel.y = JUMP_POWER;
+			_vel.y = kJumpPower;
 		}
 	}
 	else
@@ -395,12 +395,12 @@ void Player::Move()
 	// 左右移動の入力処理
 	if (_input.IsPressed("right"))
 	{
-		_vel.x += MOVE_SPEED;
+		_vel.x += kMoveSpeed;
 		if (!_isDashing) _isTurn = false;
 	}
 	if (_input.IsPressed("left"))
 	{
-		_vel.x -= MOVE_SPEED;
+		_vel.x -= kMoveSpeed;
 		if (!_isDashing) _isTurn = true;
 	}
 }
@@ -438,13 +438,13 @@ void Player::Slide()
 		// 壁ジャンプ処理
 		if (_input.IsTriggered("jump") && _hitDir.left)
 		{	// 壁ジャンプ(左壁)
-			_vel.y = JUMP_POWER;
+			_vel.y = kJumpPower;
 			_vel.x = 15;
 			_isSlide = false;
 		}
 		else if (_input.IsTriggered("jump") && _hitDir.right)
 		{	// 壁ジャンプ(右壁)
-			_vel.y = JUMP_POWER;
+			_vel.y = kJumpPower;
 			_vel.x = -15;
 			_isSlide = false;
 		}
@@ -454,43 +454,43 @@ void Player::Slide()
 void Player::MoveSpeedLimit()
 {
 	// 最高速度以上は出ないようにする
-	if (_vel.x > MAX_MOVE_SPEED)
+	if (_vel.x > kMaxMoveSpeed)
 	{
-		_vel.x = MAX_MOVE_SPEED;
+		_vel.x = kMaxMoveSpeed;
 	}
-	if (_vel.x < -MAX_MOVE_SPEED)
+	if (_vel.x < -kMaxMoveSpeed)
 	{
-		_vel.x = -MAX_MOVE_SPEED;
+		_vel.x = -kMaxMoveSpeed;
 	}
 }
 
 void Player::MoveResistance()
 {
 	// 自然に止まる力
-	if (_vel.x >= -STOP_SPEED && _vel.x <= STOP_SPEED)
+	if (_vel.x >= -kStopSpeed && _vel.x <= kStopSpeed)
 	{
 		_vel.x = 0.0f;
 	}
-	if (_vel.x > STOP_SPEED)
+	if (_vel.x > kStopSpeed)
 	{
-		_vel.x -= FRICTION_POWER;
+		_vel.x -= kFrictionPower;
 	}
-	if (_vel.x < -STOP_SPEED)
+	if (_vel.x < -kStopSpeed)
 	{
-		_vel.x += FRICTION_POWER;
+		_vel.x += kFrictionPower;
 	}
 }
 
 void Player::MoveAreaLimit(Map& map)
 {
-	if (_pos.x < COLLIDER_W / 2)
+	if (_pos.x < kColliderW / 2)
 	{
-		_pos.x = COLLIDER_W / 2;
+		_pos.x = kColliderW / 2;
 		_vel.x = 0.0f;
 	}
-	if (_pos.x > map.GetStageWidth() - COLLIDER_W / 2)
+	if (_pos.x > map.GetStageWidth() - kColliderW / 2)
 	{
-		_pos.x = map.GetStageWidth() - COLLIDER_W / 2;
+		_pos.x = map.GetStageWidth() - kColliderW / 2;
 		_vel.x = 0.0f;
 	}
 }
@@ -501,7 +501,7 @@ void Player::DamageUpdate()
 	if (_invincibleFrame > 0)
 	{
 		_invincibleFrame--;
-		if (_invincibleFrame == DAMAGE_ANIMATION_END_FRAME)
+		if (_invincibleFrame == kDamageAnimEndFrame)
 		{	// 被弾アニメーションが終わったら操作可能にする
 			_isCanControll = true;
 			_isFrickering = true;
@@ -538,7 +538,7 @@ void Player::ChargeShot()
 	}
 	else
 	{	
-		if (_chargeFrame > CHARGE_TIME_MAX)
+		if (_chargeFrame > kChargeTimeMax)
 		{	// チャージが完了しているならチャージショットを発射
 			for (auto& bullet : _pBullets)
 			{
@@ -550,7 +550,7 @@ void Player::ChargeShot()
 				}
 			}
 		}
-		else if (_chargeFrame > CHARGE_EFFECT_TIME)
+		else if (_chargeFrame > kChargeEffectTime)
 		{	// チャージが未完了なら通常弾を発射
 			for (auto& bullet : _pBullets)
 			{
@@ -577,7 +577,7 @@ void Player::Dash()
 	{	// ダッシュが入力され、かつクールタイムが終わっているなら
 		_isTurnDashing = _isTurn;
 		_isDashing = true;
-		_dashCoolTime = DASH_COOL_TIME;
+		_dashCoolTime = kDashCoolTime;
 	}
 	if (_isDashing)
 	{	// ダッシュ本体の処理
@@ -585,13 +585,13 @@ void Player::Dash()
 		_vel.y = 0.0f;
 		if (_isTurnDashing)
 		{
-			_vel.x = -DASH_SPEED;
+			_vel.x = -kDashSpeed;
 		}
 		else
 		{
-			_vel.x = DASH_SPEED;
+			_vel.x = kDashSpeed;
 		}
-		if (_dashFrame > DASHING_TIME)
+		if (_dashFrame > kDashingTime)
 		{
 			_dashFrame = 0;
 			_isDashing = false;
@@ -605,7 +605,7 @@ void Player::UpdateAnim()
 	{
 		ChangeAnim(_deathAnim);	// hpがなくなったら死亡アニメーションに切り替え
 	}
-	else if (_invincibleFrame > DAMAGE_ANIMATION_END_FRAME)	// 無敵時間中にダメージアニメーション一回分の時間ダメージアニメーションに切り替え
+	else if (_invincibleFrame > kDamageAnimEndFrame)	// 無敵時間中にダメージアニメーション一回分の時間ダメージアニメーションに切り替え
 	{
 		ChangeAnim(_damageAnim);
 	}
@@ -641,11 +641,11 @@ void Player::UpdateAnim()
 
 void Player::UpdateAfterimage()
 {
-	if (_dashFrame % AFTERIMAGE_FRAME_INTERVAL == 0 && _isDashing)	// ダッシュ中、一定間隔で残像を出す
+	if (_dashFrame % kAfterimageFrameInterval == 0 && _isDashing)	// ダッシュ中、一定間隔で残像を出す
 	{	// 空いている残像データに情報をセット
 		for (auto& afterimage : _playerAfterimage)
 		{	// フレームが最大値を超えているものを探す
-			if (afterimage.frame > AFTERIMAGE_FRAME_MAX)
+			if (afterimage.frame > kAfterimageFrameMax)
 			{
 				afterimage.isTurn = _isTurn;
 				afterimage.frame = 0;
@@ -657,7 +657,7 @@ void Player::UpdateAfterimage()
 
 	for (auto& afterimage : _playerAfterimage)	// 残像のフレームを進める
 	{	// 最大値以下ならフレームを進める
-		if (afterimage.frame <= AFTERIMAGE_FRAME_MAX)
+		if (afterimage.frame <= kAfterimageFrameMax)
 		{
 			afterimage.frame++;
 		}
@@ -667,17 +667,17 @@ void Player::UpdateAfterimage()
 void Player::PlayerAfterimage::Draw(Vector2 offset)
 {
 	// 透明度を計算して描画
-	float alpha = static_cast<float>(frame) / (AFTERIMAGE_FRAME_MAX + 1);	// 透明度の割合
+	float alpha = static_cast<float>(frame) / (kAfterimageFrameMax + 1);	// 透明度の割合
 	alpha = 1 - alpha;	// 逆転させる
 	alpha *= 255 / 2;	// 0~128の範囲に変換
 
-	SetDrawBright(AFTERIMAGE_COLOR_R, AFTERIMAGE_COLOR_G, AFTERIMAGE_COLOR_B);	// 残像の色を設定
+	SetDrawBright(kAfterimageColorR, kAfterimageColorG, kAfterimageColorB);	// 残像の色を設定
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(alpha));	// 透明度を設定
 
-	DrawRectRotaGraph(pos.x - offset.x, pos.y - PLAYER_GRAPH_CUT_H / 2 * DRAW_SCALE - offset.y,	// 残像本体を描画
-		PLAYER_GRAPH_CUT_W * DASH_GRAPH_INDEX_X, PLAYER_GRAPH_CUT_H * DASH_GRAPH_INDEX_Y,
-		PLAYER_GRAPH_CUT_W, PLAYER_GRAPH_CUT_H,
-		DRAW_SCALE, 0.0f, handle, true, isTurn);
+	DrawRectRotaGraph(pos.x - offset.x, pos.y - kGraphCutH / 2 * kDrawScale - offset.y,	// 残像本体を描画
+		kGraphCutW * kDashGraphIndexX, kGraphCutH * kDashGraphIndexY,
+		kGraphCutW, kGraphCutH,
+		kDrawScale, 0.0f, handle, true, isTurn);
 
 	SetDrawBright(255, 255, 255);	// 色を元に戻す
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);	// 透明を元に戻す

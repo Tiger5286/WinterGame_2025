@@ -9,12 +9,12 @@
 namespace
 {
 	// マップチップのサイズと描画倍率
-	constexpr int CHIP_SIZE = 16;
-	constexpr float DRAW_SCALE = 3.0f;
+	constexpr int kChipSize = 16;
+	constexpr float kDrawScale = 3.0f;
 
 	// 画像のマップチップ数
-	constexpr int GRAPH_CHIP_NUM_X = 528 / 16;
-	constexpr int GRAPH_CHIP_NUM_Y = 624 / 16;
+	constexpr int kGraphChipNumX = 528 / kChipSize;
+	constexpr int kGraphChipNumY = 624 / kChipSize;
 }
 
 Map::Map(int handle) :
@@ -30,7 +30,7 @@ Map::~Map()
 
 void Map::Draw(Vector2 offset)
 {
-	constexpr int drawChipSize = CHIP_SIZE * DRAW_SCALE;
+	constexpr int drawChipSize = kChipSize * kDrawScale;
 	constexpr int drawChipSizeHalf = drawChipSize / 2;
 
 	// マップチップの描画
@@ -45,8 +45,8 @@ void Map::Draw(Vector2 offset)
 			// 設置するチップ
 			int chipNo = _chipData[x][y];
 
-			int srcX = CHIP_SIZE * (chipNo % GRAPH_CHIP_NUM_X);
-			int srcY = CHIP_SIZE * (chipNo / GRAPH_CHIP_NUM_X);
+			int srcX = kChipSize * (chipNo % kGraphChipNumX);
+			int srcY = kChipSize * (chipNo / kGraphChipNumX);
 
 			int scrollPosX = posX - offset.x;
 			int scrollPosY = posY - offset.y;
@@ -55,8 +55,8 @@ void Map::Draw(Vector2 offset)
 			DrawRectRotaGraph(
 				scrollPosX, scrollPosY,
 				srcX, srcY,
-				CHIP_SIZE, CHIP_SIZE,
-				DRAW_SCALE, 0.0f,
+				kChipSize, kChipSize,
+				kDrawScale, 0.0f,
 				_handle, true
 			);
 
@@ -84,8 +84,8 @@ bool Map::IsCollision(std::shared_ptr<Collider> pCollider, Vector2& hitChipPos)
 			if (_chipData[x][y] == 0) continue;
 
 			// マップチップの位置とサイズを計算
-			Vector2 chipPos = { x * CHIP_SIZE * DRAW_SCALE + (CHIP_SIZE * DRAW_SCALE / 2),y * CHIP_SIZE * DRAW_SCALE + (CHIP_SIZE * DRAW_SCALE / 2) };
-			Vector2 chipSize = { CHIP_SIZE * DRAW_SCALE,CHIP_SIZE * DRAW_SCALE };
+			Vector2 chipPos = { x * kChipSize * kDrawScale + (kChipSize * kDrawScale / 2),y * kChipSize * kDrawScale + (kChipSize * kDrawScale / 2) };
+			Vector2 chipSize = { kChipSize * kDrawScale,kChipSize * kDrawScale };
 
 			if (pCollider->GetType() == Collider::Type::Circle)
 			{
@@ -120,12 +120,12 @@ bool Map::IsCollision(std::shared_ptr<Collider> pCollider, Vector2& hitChipPos)
 
 int Map::GetStageWidth() const
 {
-	return _chipNumX * CHIP_SIZE * DRAW_SCALE;
+	return _chipNumX * kChipSize * kDrawScale;
 }
 
 Vector2 Map::GetStageSize()
 {
-	return Vector2(_chipNumX * CHIP_SIZE * DRAW_SCALE, _chipNumY * CHIP_SIZE * DRAW_SCALE);
+	return Vector2(_chipNumX * kChipSize * kDrawScale, _chipNumY * kChipSize * kDrawScale);
 }
 
 void Map::LoadMapData(std::string fileName)

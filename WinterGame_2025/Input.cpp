@@ -5,31 +5,31 @@
 Input::Input() : inputData_{}, lastInputData_{}, inputTable_{}
 {
 	inputTable_["start"] = { { PeripheralType::keyboard,KEY_INPUT_P},
-						  { PeripheralType::pad1,GlobalConstants::PAD_START } };
+						  { PeripheralType::pad1,GlobalConstants::kPadInputStart } };
 	inputTable_["select"] = { { PeripheralType::keyboard,KEY_INPUT_RETURN},
-						  { PeripheralType::pad1,GlobalConstants::PAD_SELECT } };
+						  { PeripheralType::pad1,GlobalConstants::kPadInputSelect } };
 
 	inputTable_["decision"] = { { PeripheralType::keyboard,KEY_INPUT_Z},
-						  { PeripheralType::pad1,GlobalConstants::PAD_A } };
+						  { PeripheralType::pad1,GlobalConstants::kPadInputA } };
 	inputTable_["back"] = { { PeripheralType::keyboard,KEY_INPUT_X},
-						  { PeripheralType::pad1,GlobalConstants::PAD_B } };
+						  { PeripheralType::pad1,GlobalConstants::kPadInputB } };
 
 	inputTable_["jump"] = { { PeripheralType::keyboard,KEY_INPUT_SPACE},
-						  { PeripheralType::pad1,GlobalConstants::PAD_A } };
+						  { PeripheralType::pad1,GlobalConstants::kPadInputA } };
 	inputTable_["shot"] = { { PeripheralType::keyboard,KEY_INPUT_Z},
-						  { PeripheralType::pad1,GlobalConstants::PAD_X } };
+						  { PeripheralType::pad1,GlobalConstants::kPadInputX } };
 	inputTable_["dash"] = { { PeripheralType::keyboard,KEY_INPUT_X},
-						  { PeripheralType::pad1,GlobalConstants::PAD_B } };
+						  { PeripheralType::pad1,GlobalConstants::kPadInputB } };
 
 
 	inputTable_["up"] = { { PeripheralType::keyboard,KEY_INPUT_UP},
-						{ PeripheralType::pad1,GlobalConstants::PAD_UP } };
+						{ PeripheralType::pad1,GlobalConstants::kPadInputUp } };
 	inputTable_["down"] = { { PeripheralType::keyboard,KEY_INPUT_DOWN},
-						  { PeripheralType::pad1,GlobalConstants::PAD_DOWN } };
+						  { PeripheralType::pad1,GlobalConstants::kPadInputDown } };
 	inputTable_["left"] = { { PeripheralType::keyboard,KEY_INPUT_LEFT},
-						  { PeripheralType::pad1,GlobalConstants::PAD_LEFT } };
+						  { PeripheralType::pad1,GlobalConstants::kPadInputLeft } };
 	inputTable_["right"] = { { PeripheralType::keyboard,KEY_INPUT_RIGHT},
-						  { PeripheralType::pad1,GlobalConstants::PAD_RIGHT } };
+						  { PeripheralType::pad1,GlobalConstants::kPadInputRight } };
 	// ‚ ‚ç‚©‚¶‚ß˜g‚ðŠJ‚¯‚Ä‚¨‚­
 	for (const auto& inputInfo : inputTable_)
 	{

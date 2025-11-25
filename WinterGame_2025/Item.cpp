@@ -8,20 +8,20 @@
 namespace
 {
 	// 画像サイズ
-	constexpr int GRAPH_SIZE = 16;
-	const Vector2 FRAME_SIZE = { GRAPH_SIZE,GRAPH_SIZE };
+	constexpr int kGraphSize = 16;
+	const Vector2 kFrameSize = { kGraphSize,kGraphSize };
 
 	// アニメーション関連
-	constexpr int COIN_ANIM_NUM = 4;
-	constexpr int HEALTH_ANIM_NUM = 7;
-	constexpr int ONE_ANIM_FRAME = 6;
-	constexpr float DRAW_SCALE = 3.0f;
-	constexpr float BIGCOIN_DRAW_SCALE = 5.0f;
+	constexpr int kCoinAnimNum = 4;
+	constexpr int kHealthAnimNum = 7;
+	constexpr int kOneAnimFrame = 6;
+	constexpr float kDrawScale = 3.0f;
+	constexpr float kBigCoinDrawScale = 5.0f;
 
 	// 当たり判定
-	constexpr float COIN_COLLIDER_RADIUS = 16.0f;
-	constexpr float BIGCOIN_COLLIDER_RADIUS = 40.0f;
-	constexpr float HEALTHITEM_COLLIDER_RADIUS = 24.0f;
+	constexpr float kCoinColliderR = 16.0f;
+	constexpr float kBigCoinColliderR = 40.0f;
+	constexpr float kHealthItemColliderR = 24.0f;
 }
 
 Item::Item(Vector2 mapChipFirstPos, ItemType type, std::shared_ptr<Player> pPlayer,int handle):
@@ -32,18 +32,18 @@ Item::Item(Vector2 mapChipFirstPos, ItemType type, std::shared_ptr<Player> pPlay
 {
 	if (_type == ItemType::Coin)
 	{
-		_nowAnim.Init(_handle, 0, FRAME_SIZE, COIN_ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-		_collider = std::make_shared<CircleCollider>(Vector2{ 0.0f,0.0f }, COIN_COLLIDER_RADIUS);
+		_nowAnim.Init(_handle, 0, kFrameSize, kCoinAnimNum, kOneAnimFrame, kDrawScale);
+		_pCollider = std::make_shared<CircleCollider>(Vector2{ 0.0f,0.0f }, kCoinColliderR);
 	}
 	else if (_type == ItemType::BigCoin)
 	{
-		_nowAnim.Init(_handle, 0, FRAME_SIZE, COIN_ANIM_NUM, ONE_ANIM_FRAME, BIGCOIN_DRAW_SCALE);
-		_collider = std::make_shared<CircleCollider>(Vector2{ 0.0f,0.0f }, BIGCOIN_COLLIDER_RADIUS);
+		_nowAnim.Init(_handle, 0, kFrameSize, kCoinAnimNum, kOneAnimFrame, kBigCoinDrawScale);
+		_pCollider = std::make_shared<CircleCollider>(Vector2{ 0.0f,0.0f }, kBigCoinColliderR);
 	}
 	else if (_type == ItemType::HealthItem)
 	{
-		_nowAnim.Init(_handle, 0, FRAME_SIZE, HEALTH_ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-		_collider = std::make_shared<CircleCollider>(Vector2{ 0.0f,0.0f }, HEALTHITEM_COLLIDER_RADIUS);
+		_nowAnim.Init(_handle, 0, kFrameSize, kHealthAnimNum, kOneAnimFrame, kDrawScale);
+		_pCollider = std::make_shared<CircleCollider>(Vector2{ 0.0f,0.0f }, kHealthItemColliderR);
 	}
 	else
 	{
@@ -51,7 +51,7 @@ Item::Item(Vector2 mapChipFirstPos, ItemType type, std::shared_ptr<Player> pPlay
 	}
 
 	_pos = ChipPosToGamePos(mapChipFirstPos);
-	_collider->SetPosToBox(_pos);
+	_pCollider->SetPosToBox(_pos);
 }
 
 Item::~Item()
@@ -64,7 +64,7 @@ void Item::Init()
 
 void Item::Update(Map& map)
 {
-	if (_collider->CheckCollision(_pPlayer->GetCollider()))
+	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
 	{
 		GetItem();
 	}
@@ -75,7 +75,7 @@ void Item::Draw(Vector2 offset)
 {
 	_nowAnim.Draw(_pos - offset, false);
 #ifdef _DEBUG
-	_collider->Draw(offset);
+	_pCollider->Draw(offset);
 #endif // _DEBUG
 }
 

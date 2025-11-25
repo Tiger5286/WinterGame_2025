@@ -6,29 +6,29 @@
 
 namespace
 {
-	constexpr int FRAME_LEFT = 160;
-	constexpr int FRAME_TOP = 90;
-	constexpr int FRAME_RIGHT = 520;
-	constexpr int FRAME_BOTTOM = 170;
+	constexpr int kFrameLeft = 160;
+	constexpr int kFrameTop = 90;
+	constexpr int kFrameRight = 520;
+	constexpr int kFrameBottom = 170;
 
-	constexpr int BAR_LEFT = FRAME_LEFT + 10;
-	constexpr int BAR_TOP = FRAME_TOP + 10;
-	constexpr int BAR_RIGHT = FRAME_RIGHT - 10;
-	constexpr int BAR_BOTTOM = FRAME_BOTTOM - 10;
+	constexpr int kBarLeft = kFrameLeft + 10;
+	constexpr int kBarTop = kFrameTop + 10;
+	constexpr int kBarRight = kFrameRight - 10;
+	constexpr int kBarBottom = kFrameBottom - 10;
 
-	constexpr int POS_X = 300;
-	constexpr int POS_Y = 130;
+	constexpr int kPosX = 300;
+	constexpr int kPosY = 130;
 
-	constexpr int LOW_ALPHA_DIS = 150;
+	constexpr int kLowAlphaDis = 150;
 
-	constexpr int MAX_BAR_LENGTH = BAR_RIGHT - BAR_LEFT;
+	constexpr int kMaxBarLength = kBarRight - kBarLeft;
 }
 
 HPUI::HPUI(int handle,int playerMaxHp) :
 	_handle(handle),
 	_playerMaxHp(playerMaxHp),
-	_barLength(MAX_BAR_LENGTH),
-	_drawBarLength(MAX_BAR_LENGTH),
+	_barLength(kMaxBarLength),
+	_drawBarLength(kMaxBarLength),
 	_alpha(255)
 {
 }
@@ -44,7 +44,7 @@ void HPUI::Init()
 void HPUI::Update(int playerHP)
 {
 	// プレイヤーのhpからバーの長さを出す
-	_barLength = static_cast<float>(playerHP) / static_cast<float>(_playerMaxHp) * MAX_BAR_LENGTH;
+	_barLength = static_cast<float>(playerHP) / static_cast<float>(_playerMaxHp) * kMaxBarLength;
 	// lerpでいい感じに減らす
 	_drawBarLength = std::lerp(_drawBarLength, _barLength, 0.05f);
 }
@@ -54,13 +54,13 @@ void HPUI::Draw(Vector2 drawPlayerPos,const std::vector<std::shared_ptr<Enemy>>&
 
 
 	// プレイヤーがUIの近くにいるときは透明にする
-	bool isPlayerNear = drawPlayerPos.y < FRAME_BOTTOM + LOW_ALPHA_DIS && drawPlayerPos.x < FRAME_RIGHT + LOW_ALPHA_DIS;
+	bool isPlayerNear = drawPlayerPos.y < kFrameBottom + kLowAlphaDis && drawPlayerPos.x < kFrameRight + kLowAlphaDis;
 	// 敵がUIの近くにいるときは透明にする
 	bool isEnemyNear = false;
 	for (const auto& enemy : pEnemys)
 	{
 		Vector2 enemyPos = enemy->GetPos();
-		if (enemyPos.y < FRAME_BOTTOM + LOW_ALPHA_DIS && enemyPos.x < FRAME_RIGHT + LOW_ALPHA_DIS)
+		if (enemyPos.y < kFrameBottom + kLowAlphaDis && enemyPos.x < kFrameRight + kLowAlphaDis)
 		{
 			isEnemyNear = true;
 			break;
@@ -77,9 +77,9 @@ void HPUI::Draw(Vector2 drawPlayerPos,const std::vector<std::shared_ptr<Enemy>>&
 	}
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, _alpha);
 	//DrawBox(FRAME_LEFT, FRAME_TOP, FRAME_RIGHT, FRAME_BOTTOM, 0x888888, true);	// 枠
-	DrawBox(BAR_LEFT + _drawBarLength, BAR_TOP, BAR_RIGHT, BAR_BOTTOM, 0x000000, true);	// HPないとこの黒
-	DrawBox(BAR_LEFT + _barLength, BAR_TOP, BAR_LEFT + _drawBarLength, BAR_BOTTOM, 0xff0000, true);	// HP減る量の赤
-	DrawBox(BAR_LEFT, BAR_TOP, BAR_LEFT + _barLength, BAR_BOTTOM, 0xffff00, true);	// HPあるとこの黄色
-	DrawRotaGraph(POS_X, POS_Y, 0.4, 0.0, _handle, true);
+	DrawBox(kBarLeft + _drawBarLength, kBarTop, kBarRight, kBarBottom, 0x000000, true);	// HPないとこの黒
+	DrawBox(kBarLeft + _barLength, kBarTop, kBarLeft + _drawBarLength, kBarBottom, 0xff0000, true);	// HP減る量の赤
+	DrawBox(kBarLeft, kBarTop, kBarLeft + _barLength, kBarBottom, 0xffff00, true);	// HPあるとこの黄色
+	DrawRotaGraph(kPosX, kPosY, 0.4, 0.0, _handle, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

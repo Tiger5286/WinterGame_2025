@@ -6,21 +6,21 @@
 
 namespace
 {
-	constexpr int GRAPH_SIZE = 16;
-	constexpr float DRAW_SCALE = 3.0f;
+	constexpr int kGraphSize = 16;
+	constexpr float kDrawScale = 3.0f;
 
-	Vector2 FRAME_SIZE = { GRAPH_SIZE,GRAPH_SIZE };
+	Vector2 kFrameSize = { kGraphSize,kGraphSize };
 
-	constexpr int HALF_DRAW_SIZE = (GRAPH_SIZE * DRAW_SCALE) / 2;
-	constexpr int COLLIDER_WIDTH = 24;
+	constexpr int kHalfDrawSize = (kGraphSize * kDrawScale) / 2;
+	constexpr int kColliderW = 24;
 
-	constexpr int LAUNCHER_ANIM_INDEX = 0;
-	constexpr int LASER_ANIM_INDEX = 1;
-	constexpr int IMPACT_ANIM_INDEX = 2;
-	constexpr int ANIM_NUM = 4;
-	constexpr int ONE_ANIM_FRAME = 6;
+	constexpr int kLauncherAnimIndex = 0;
+	constexpr int kLaserAnimIndex = 1;
+	constexpr int kImpactAnimIndex = 2;
+	constexpr int kAnimNum = 4;
+	constexpr int kOneAnimFrame = 6;
 
-	constexpr float ANGLE_180 = DX_PI_F;
+	constexpr float kAngle180 = DX_PI_F;
 }
 
 Laser::Laser(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, int laserLength,bool isDownward):
@@ -30,19 +30,19 @@ Laser::Laser(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, int l
 	_isDownward(isDownward)
 {
 	_pos = ChipPosToGamePos(chipPos);
-	_collider = std::make_shared<BoxCollider>(_pos, Vector2(24, _laserLength * GlobalConstants::DRAW_CHIP_SIZE));
-	float laserOffsetY = static_cast<float>(_laserLength) / 2 * GlobalConstants::DRAW_CHIP_SIZE - GlobalConstants::DRAW_CHIP_SIZE_HALF;
-	_isDownward ? _collider->SetPos(Vector2(_pos.x, _pos.y + laserOffsetY)) : _collider->SetPos(Vector2(_pos.x, _pos.y - laserOffsetY));
+	_pCollider = std::make_shared<BoxCollider>(_pos, Vector2(24, _laserLength * GlobalConstants::kDrawChipSize));
+	float laserOffsetY = static_cast<float>(_laserLength) / 2 * GlobalConstants::kDrawChipSize - GlobalConstants::kDrawChipSizeHalf;
+	_isDownward ? _pCollider->SetPos(Vector2(_pos.x, _pos.y + laserOffsetY)) : _pCollider->SetPos(Vector2(_pos.x, _pos.y - laserOffsetY));
 	
 
-	_launcherAnim.Init(_handle, LAUNCHER_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-	_laserAnim.Init(_handle, LASER_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
-	_impactAnim.Init(_handle, IMPACT_ANIM_INDEX, FRAME_SIZE, ANIM_NUM, ONE_ANIM_FRAME, DRAW_SCALE);
+	_launcherAnim.Init(_handle, kLauncherAnimIndex, kFrameSize, kAnimNum, kOneAnimFrame, kDrawScale);
+	_laserAnim.Init(_handle, kLaserAnimIndex, kFrameSize, kAnimNum, kOneAnimFrame, kDrawScale);
+	_impactAnim.Init(_handle, kImpactAnimIndex, kFrameSize, kAnimNum, kOneAnimFrame, kDrawScale);
 	if (!_isDownward)
 	{
-		_launcherAnim.SetRotate(ANGLE_180);
-		_laserAnim.SetRotate(ANGLE_180);
-		_impactAnim.SetRotate(ANGLE_180);
+		_launcherAnim.SetRotate(kAngle180);
+		_laserAnim.SetRotate(kAngle180);
+		_impactAnim.SetRotate(kAngle180);
 	}
 }
 
@@ -57,13 +57,13 @@ void Laser::Init()
 void Laser::Update(Map& map)
 {
 	// プレイヤーに当たったらダメージを与える
-	if (_collider->CheckCollision(_pPlayer->GetCollider()))
+	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
 	{
 		_pPlayer->TakeDamage();
 	}
 
-	float laserOffsetY = static_cast<float>(_laserLength) / 2 * GlobalConstants::DRAW_CHIP_SIZE - GlobalConstants::DRAW_CHIP_SIZE_HALF;
-	_isDownward ? _collider->SetPos(Vector2(_pos.x, _pos.y + laserOffsetY)) : _collider->SetPos(Vector2(_pos.x, _pos.y - laserOffsetY));
+	float laserOffsetY = static_cast<float>(_laserLength) / 2 * GlobalConstants::kDrawChipSize - GlobalConstants::kDrawChipSizeHalf;
+	_isDownward ? _pCollider->SetPos(Vector2(_pos.x, _pos.y + laserOffsetY)) : _pCollider->SetPos(Vector2(_pos.x, _pos.y - laserOffsetY));
 
 	// アニメーション更新
 	_launcherAnim.Update();
@@ -79,7 +79,7 @@ void Laser::Draw(Vector2 offset)
 	{
 		//drawPos.y = GRAPH_SIZE * DRAW_SCALE * i;
 		Vector2 tempDrawPos = drawPos;
-		_isDownward ? tempDrawPos.y += GRAPH_SIZE * DRAW_SCALE * i : tempDrawPos.y -= GRAPH_SIZE * DRAW_SCALE * i;
+		_isDownward ? tempDrawPos.y += kGraphSize * kDrawScale * i : tempDrawPos.y -= kGraphSize * kDrawScale * i;
 		if (i == 0)	// レーザーの発射口部分
 		{
 			_launcherAnim.Draw(tempDrawPos, false);
@@ -94,6 +94,6 @@ void Laser::Draw(Vector2 offset)
 		}
 	}
 #ifdef _DEBUG
-	_collider->Draw(offset);
+	_pCollider->Draw(offset);
 #endif // _DEBUG
 }

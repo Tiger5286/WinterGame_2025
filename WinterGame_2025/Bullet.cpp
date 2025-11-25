@@ -7,20 +7,20 @@
 
 namespace
 {
-	constexpr int NORMAL_GRAPH_CUT_W = 16;
-	constexpr int NORMAL_GRAPH_CUT_H = 16;
-	constexpr int CHARGE_GRAPH_CUT_W = 32;
-	constexpr int CHARGE_GRAPH_CUT_H = 32;
-	constexpr float DRAW_SCALE = 3.0f;
-	constexpr float CHARGE_SHOT_DRAW_SCALE = 3.0f;
+	constexpr int kNormalGraphCutW = 16;
+	constexpr int kNormalGraphCutH = 16;
+	constexpr int kChargeGraphCutW = 32;
+	constexpr int kChargeGraphCutH = 32;
+	constexpr float kDrawScale = 3.0f;
+	constexpr float kChargeShotDrawScale = 3.0f;
 
-	constexpr float NORMAL_COLLIDER_R = 15.0f;
-	constexpr float CHARGE_COLLIDER_R = 25.0f;
+	constexpr float kNormalColliderR = 15.0f;
+	constexpr float kChargeColliderR = 25.0f;
 
-	constexpr float MOVE_SPEED = 20.0f;
+	constexpr float kMoveSpeed = 20.0f;
 
-	constexpr int NORMAL_SHOT_DAMAGE = 1;
-	constexpr int CHARGE_SHOT_DAMAGE = 5;
+	constexpr int kNormalShotDamage = 1;
+	constexpr int kChargeShotDamage = 5;
 }
 
 Bullet::Bullet(int shotH, int chargeShotH):
@@ -36,7 +36,7 @@ Bullet::Bullet(int shotH, int chargeShotH):
 	_chargeShotAnim.Init(chargeShotH, 1, Vector2(32, 32), 4, 6, 3.0f);
 	_chargeShotImpactAnim.Init(chargeShotH, 2, Vector2(32, 32), 4, 6, 3.0f,false);
 
-	_collider = std::make_shared<CircleCollider>(_pos, NORMAL_COLLIDER_R);
+	_pCollider = std::make_shared<CircleCollider>(_pos, kNormalColliderR);
 }
 
 Bullet::~Bullet()
@@ -56,11 +56,11 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 {
 	if (_isTurn)
 	{
-		_vel = { -MOVE_SPEED,0.0f };
+		_vel = { -kMoveSpeed,0.0f };
 	}
 	else
 	{
-		_vel = { MOVE_SPEED,0.0f };
+		_vel = { kMoveSpeed,0.0f };
 	}
 
 	if (!_isImpact)
@@ -69,16 +69,16 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 	}
 
 	// 画面外に出たら消す
-	if (_pos.x < cameraPos.x - GlobalConstants::SCREEN_WIDTH / 2 ||
-		_pos.x > cameraPos.x + GlobalConstants::SCREEN_WIDTH / 2)
+	if (_pos.x < cameraPos.x - GlobalConstants::kScreenWidth / 2 ||
+		_pos.x > cameraPos.x + GlobalConstants::kScreenWidth / 2)
 	{
-		_collider->SetIsEnabled(false);
+		_pCollider->SetIsEnabled(false);
 		_isAlive = false;
 	}
-	_collider->SetPosToBox(_pos);
+	_pCollider->SetPosToBox(_pos);
 
 	Vector2 hitChipPos;	// 未使用
-	if (map.IsCollision(_collider,hitChipPos))
+	if (map.IsCollision(_pCollider,hitChipPos))
 	{	// マップに当たったら
 		Hit();
 	}
@@ -86,11 +86,11 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 	// 弾と敵の当たり判定
 	for (auto& enemy : _pEnemys)
 	{
-		if (_collider->CheckCollision(enemy->GetCollider()))	// 敵と当たっているかチェック
+		if (_pCollider->CheckCollision(enemy->GetCollider()))	// 敵と当たっているかチェック
 		{
 			if (_type == BulletType::NormalShot)
 			{	// 通常弾ならダメージ与えて弾消える
-				enemy->SetHp(enemy->GetHp() - NORMAL_SHOT_DAMAGE);
+				enemy->SetHp(enemy->GetHp() - kNormalShotDamage);
 				Hit();
 			}
 			else if (_type == BulletType::ChargeShot)
@@ -99,7 +99,7 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 				enemy->SetIsHitChargeShot(true);	// 敵が持っている弾に当たったフラグをつける
 				if (enemy->GetIsHitChargeShot() && !isPrevHit)	// 今のフレームで当たっている、かつ前のフレームで当たっていない
 				{	// ダメージを与える
-					enemy->SetHp(enemy->GetHp() - CHARGE_SHOT_DAMAGE);
+					enemy->SetHp(enemy->GetHp() - kChargeShotDamage);
 				}
 			}
 		}
@@ -123,13 +123,13 @@ void Bullet::Draw(Vector2 offset)
 	if (_isAlive) _nowAnim.Draw(_pos - offset, _isTurn);
 
 #ifdef _DEBUG
-	_collider->Draw(offset);
+	_pCollider->Draw(offset);
 #endif
 }
 
 void Bullet::Shot(BulletType type, Vector2 shotPos, bool isTurn)
 {
-	_collider->SetIsEnabled(true);
+	_pCollider->SetIsEnabled(true);
 	_isImpact = false;
 	_isAlive = true;
 	_type = type;
@@ -137,12 +137,12 @@ void Bullet::Shot(BulletType type, Vector2 shotPos, bool isTurn)
 	_isTurn = isTurn;
 	if (_type == BulletType::NormalShot)
 	{
-		_collider->SetRadius(NORMAL_COLLIDER_R);
+		_pCollider->SetRadius(kNormalColliderR);
 		_nowAnim = _shotAnim;
 	}
 	else if (_type == BulletType::ChargeShot)
 	{
-		_collider->SetRadius(CHARGE_COLLIDER_R);
+		_pCollider->SetRadius(kChargeColliderR);
 		_nowAnim = _chargeShotAnim;
 	}
 }
@@ -167,5 +167,5 @@ void Bullet::Hit()
 		_nowAnim.SetFirst();
 		_isImpact = true;
 	}
-	_collider->SetIsEnabled(false);	// 当たり判定無効化
+	_pCollider->SetIsEnabled(false);	// 当たり判定無効化
 }

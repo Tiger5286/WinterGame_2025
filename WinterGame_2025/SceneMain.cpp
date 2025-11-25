@@ -36,7 +36,7 @@
 
 namespace
 {
-	constexpr int BULLET_NUM = 15;
+	constexpr int kBulletNum = 15;
 }
 
 SceneMain::SceneMain(SceneManager& manager, Stages stage) :
@@ -104,7 +104,7 @@ void SceneMain::Update(Input& input)
 		{
 			float toCameraDisX = enemy->GetPos().x - _pCamera->GetPos().x;	// 敵とカメラの距離
 			// カメラの画面内にいる敵だけ更新する
-			if (abs(toCameraDisX) < GlobalConstants::SCREEN_WIDTH / 2 + 100)
+			if (abs(toCameraDisX) < GlobalConstants::kScreenWidth / 2 + 100)
 			{
 				enemy->Update(*_pMap);
 			}
@@ -266,7 +266,7 @@ void SceneMain::LoadStage(Stages stage)
 	// プレイヤー
 	_pPlayer = std::make_shared<Player>(_playerH, _playerWhiteH, _chargeParticleH,_playerShotH,_chargeShotH);
 	// 弾
-	_pBullets.resize(BULLET_NUM);
+	_pBullets.resize(kBulletNum);
 	for (auto& bullet : _pBullets)
 	{
 		bullet = std::make_shared<Bullet>(_playerShotH, _chargeShotH);
@@ -387,7 +387,7 @@ void SceneMain::LoadStage(Stages stage)
 
 	// カメラの初期設定(ステージサイズなどをセットする必要があるため、最後に行う)
 	_pCamera->SetStageSize(_pMap->GetStageSize());
-	_pCamera->SetPos(Vector2(GlobalConstants::SCREEN_WIDTH / 2,_pMap->GetStageSize().y - GlobalConstants::SCREEN_HEIGHT / 2));
+	_pCamera->SetPos(Vector2(GlobalConstants::kScreenWidth / 2,_pMap->GetStageSize().y - GlobalConstants::kScreenHeight / 2));
 }
 
 void SceneMain::StageClear()

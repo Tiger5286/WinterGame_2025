@@ -10,34 +10,34 @@
 namespace
 {
 	// 描画関係
-	const Vector2 GRAPH_SIZE = { 32,36 };
-	constexpr float DRAW_SCALE = 6.0f;
+	const Vector2 kGraphSize = { 32,36 };
+	constexpr float kDrawScale = 6.0f;
 	// 当たり判定
-	const Vector2 COLLIDER_SIZE = { 130,150 };
+	const Vector2 kColliderSize = { 130,150 };
 	// 初期位置
-	const Vector2 firstChipPos = { 32,18 };
+	const Vector2 kFirstChipPos = { 32,18 };
 	// 体力
-	constexpr int MAX_HP = 100;
+	constexpr int kMaxHp = 100;
 
 	// 壁走り、天井は知り時の描画角度
-	constexpr float ANGLE_90 = DX_PI_F / 2;	// 90度
-	constexpr float ANGLE_180 = DX_PI_F;	// 180度
-	constexpr float ANGLE_270 = DX_PI_F / 2 * 3;	// 270度
+	constexpr float kAngle90 = DX_PI_F / 2;	// 90度
+	constexpr float kAngle180 = DX_PI_F;	// 180度
+	constexpr float kAngle270 = DX_PI_F / 2 * 3;	// 270度
 
 	// 角度が変わったときの描画オフセット
-	const Vector2 ANGLE_90_OFFSET = { 45,35 };
-	const Vector2 ANGLE_180_OFFSET = { 0,65 };
-	const Vector2 ANGLE_270_OFFSET = { -45,35 };
+	const Vector2 kAngle90Offset = { 45,35 };
+	const Vector2 kAngle180Offset = { 0,65 };
+	const Vector2 kAngle270Offset = { -45,35 };
 
 	// 行動関係
-	constexpr int RUN_READY_FRAME = 60;	// 突進準備のフレーム数
-	constexpr int STUN_FRAME = 120;	// スタン時間
-	constexpr float RUN_SPEED = 10.0f;	// 突進速度
-	constexpr float WALL_RUN_SPEED = 7.5f;	// 壁走りの上昇速度
+	constexpr int kRunReadyFrame = 60;	// 突進準備のフレーム数
+	constexpr int kStunFrame = 120;	// スタン時間
+	constexpr float kRunSpeed = 10.0f;	// 突進速度
+	constexpr float kWallRunSpeed = 7.5f;	// 壁走りの上昇速度
 }
 
 Boss::Boss(std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser, int handle) :
-	Enemy(MAX_HP, pPlayer),
+	Enemy(kMaxHp, pPlayer),
 	_handle(handle),
 	_isTurn(true),
 	_frame(0),
@@ -45,15 +45,15 @@ Boss::Boss(std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, std
 	_pCamera(pCamera),
 	_pLaser(pLaser)
 {
-	_pos = ChipPosToGamePos(firstChipPos);
-	_pos.y += GlobalConstants::DRAW_CHIP_SIZE_HALF;	// チップ半分下にずらす
-	_collider = std::make_shared<BoxCollider>(_pos, COLLIDER_SIZE);
-	_collider->SetPosToBox(_pos);
+	_pos = ChipPosToGamePos(kFirstChipPos);
+	_pos.y += GlobalConstants::kDrawChipSizeHalf;	// チップ半分下にずらす
+	_pCollider = std::make_shared<BoxCollider>(_pos, kColliderSize);
+	_pCollider->SetPosToBox(_pos);
 
-	_idleAnim.Init(_handle, 0, GRAPH_SIZE, 5, 6, DRAW_SCALE);
-	_stunAnim.Init(_handle, 1, GRAPH_SIZE, 8, 10, DRAW_SCALE);
-	_tackleAnim.Init(_handle, 1, GRAPH_SIZE, 8, 3, DRAW_SCALE);
-	_fallAnim.Init(_handle, 2, GRAPH_SIZE, 1, 6, DRAW_SCALE);
+	_idleAnim.Init(_handle, 0, kGraphSize, 5, 6, kDrawScale);
+	_stunAnim.Init(_handle, 1, kGraphSize, 8, 10, kDrawScale);
+	_tackleAnim.Init(_handle, 1, kGraphSize, 8, 3, kDrawScale);
+	_fallAnim.Init(_handle, 2, kGraphSize, 1, 6, kDrawScale);
 	_nowAnim = _idleAnim;
 }
 
@@ -105,7 +105,7 @@ void Boss::Update(Map& map)
 		_frame++;
 		ChangeAnim(_stunAnim);
 		_vel = Vector2::Vlerp(_vel, Vector2(), 0.1f);
-		if (_frame == STUN_FRAME)
+		if (_frame == kStunFrame)
 		{
 			ChangeState(BossState::Idle);
 		}
@@ -123,9 +123,9 @@ void Boss::Update(Map& map)
 		isEnableLaser = true;
 
 		// 走り出す
-		if (_frame == RUN_READY_FRAME)
+		if (_frame == kRunReadyFrame)
 		{
-			_isTurn ? _vel.x = -RUN_SPEED : _vel.x = RUN_SPEED;
+			_isTurn ? _vel.x = -kRunSpeed : _vel.x = kRunSpeed;
 		}
 		// どっちかの壁にぶつかったら
 		if (_hitDir.right || _hitDir.left)
@@ -151,9 +151,9 @@ void Boss::Update(Map& map)
 		}
 
 		// 走り出す
-		if (_frame == RUN_READY_FRAME)
+		if (_frame == kRunReadyFrame)
 		{
-			_isTurn ? _vel.x = -RUN_SPEED : _vel.x = RUN_SPEED;
+			_isTurn ? _vel.x = -kRunSpeed : _vel.x = kRunSpeed;
 		}
 
 		// 左の壁にぶつかったら
@@ -161,14 +161,14 @@ void Boss::Update(Map& map)
 		{
 			_pLaser->SetPos(Vector2(-10, -10));	// レーザーを消す(画面外に行くだけ)
 			// 上に向かって走る
-			_nowAnim.SetRotate(ANGLE_90);
-			_nowAnim.SetOffset(ANGLE_90_OFFSET);
+			_nowAnim.SetRotate(kAngle90);
+			_nowAnim.SetOffset(kAngle90Offset);
 			_vel.x = -1.0f;
-			_vel.y = -WALL_RUN_SPEED;
+			_vel.y = -kWallRunSpeed;
 			if (_hitDir.up)
 			{
 				_nowAnim.SetRotate(DX_PI_F);
-				_nowAnim.SetOffset(ANGLE_180_OFFSET);
+				_nowAnim.SetOffset(kAngle180Offset);
 				ChangeState(BossState::CeilingRun);
 			}
 		}
@@ -176,14 +176,14 @@ void Boss::Update(Map& map)
 		{
 			//_pLaser->SetPos(Vector2(-10, -10));	// レーザーを消す(画面外に行くだけ)
 			// 上に向かって走る
-			_nowAnim.SetRotate(ANGLE_270);
-			_nowAnim.SetOffset(ANGLE_270_OFFSET);
+			_nowAnim.SetRotate(kAngle270);
+			_nowAnim.SetOffset(kAngle270Offset);
 			_vel.x = 1.0f;
-			_vel.y = -WALL_RUN_SPEED;
+			_vel.y = -kWallRunSpeed;
 			if (_hitDir.up)
 			{
 				_nowAnim.SetRotate(DX_PI_F);
-				_nowAnim.SetOffset(ANGLE_180_OFFSET);
+				_nowAnim.SetOffset(kAngle180Offset);
 				ChangeState(BossState::CeilingRun);
 			}
 		}
@@ -198,7 +198,7 @@ void Boss::Update(Map& map)
 	if (_state == BossState::CeilingRun)
 	{
 		_vel.y = -1.0f;
-		_isTurn ? _vel.x = RUN_SPEED : _vel.x = -RUN_SPEED;
+		_isTurn ? _vel.x = kRunSpeed : _vel.x = -kRunSpeed;
 		float toPlayerDis = _pPlayer->GetPos().x - _pos.x;
 		if (abs(toPlayerDis) < 75.0f)
 		{
@@ -231,7 +231,7 @@ void Boss::Update(Map& map)
 	}
 
 	// プレイヤーに当たったらダメージを与える
-	if (_collider->CheckCollision(_pPlayer->GetCollider()))
+	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
 	{
 		_pPlayer->TakeDamage();
 	}
@@ -241,9 +241,9 @@ void Boss::Update(Map& map)
 
 void Boss::Draw(Vector2 offset)
 {
-	_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - GRAPH_SIZE.y / 2 * DRAW_SCALE }, _isTurn);
+	_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - kGraphSize.y / 2 * kDrawScale }, _isTurn);
 #ifdef _DEBUG
-	_collider->Draw(offset);
+	_pCollider->Draw(offset);
 #endif
 }
 

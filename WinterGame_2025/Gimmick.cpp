@@ -2,7 +2,7 @@
 
 namespace
 {
-	constexpr int DRAW_MAPCHIP_HALF_SIZE = 24;
+	constexpr int kDrawChipSizeHalf = 24;
 }
 
 Gimmick::Gimmick(std::shared_ptr<Player> pPlayer) :
