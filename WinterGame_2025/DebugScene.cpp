@@ -17,7 +17,7 @@ DebugScene::DebugScene(SceneManager& manager):
 		"SceneStageSelect"
 	};
 	_execTable["SceneMain"] = [this]() {
-		_manager.ChangeScene(std::make_shared<SceneMain>(_manager,Stages::Temp));
+		_manager.ChangeScene(std::make_shared<SceneMain>(_manager,Stages::Temp),FadeState::CircleFadeIn);
 		};
 	_execTable["SceneTitle"] = [this]() {
 		_manager.ChangeScene(std::make_shared<SceneTitle>(_manager));
@@ -55,6 +55,8 @@ void DebugScene::Update(Input& input)
 
 void DebugScene::Draw()
 {
+	DrawBox(0, 0, 1920, 1080, 0x444444, true);
+
 	DrawString(0, 0, "DebugScene", 0xffffff);
 	for (int i = 0; i < _menuList.size(); i++)
 	{

@@ -17,16 +17,16 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager):
 		"Boss Stage"
 	};
 	_execTable["Tutorial Stage"] = [this]() {
-		_manager.ChangeScene(std::make_shared<SceneMain>(_manager,Stages::Tutorial));
+		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager,Stages::Tutorial),FadeState::CircleFadeIn);
 		};
 	_execTable["Stage 1"] = [this]() {
-		_manager.ChangeScene(std::make_shared<SceneMain>(_manager, Stages::Stage1));
+		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Stage1), FadeState::CircleFadeIn);
 		};
 	_execTable["Stage 2"] = [this]() {
-		_manager.ChangeScene(std::make_shared<SceneMain>(_manager, Stages::Stage2));
+		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Stage2), FadeState::CircleFadeIn);
 		};
 	_execTable["Boss Stage"] = [this]() {
-		_manager.ChangeScene(std::make_shared<SceneMain>(_manager, Stages::Boss));
+		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Boss), FadeState::CircleFadeIn);
 		};
 }
 
@@ -71,6 +71,8 @@ void SceneStageSelect::Update(Input& input)
 
 void SceneStageSelect::Draw()
 {
+	DrawBox(0, 0, 1920, 1080, 0x444444, true);
+
 	// 最初のステージと最後のステージ以外を選択中の時は選択中、左、右のステージ名を表示
 	if (_selectIndex > 0 && _selectIndex < _stageList.size() - 1)
 	{

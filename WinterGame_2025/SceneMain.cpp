@@ -50,6 +50,9 @@ SceneMain::SceneMain(SceneManager& manager, Stages stage) :
 	/*オブジェクトの生成*/
 	LoadStage(stage);
 
+	// フェードサークルの位置更新
+	_manager.SetFadeCirclePos(_pPlayer->GetPos() - _pCamera->GetDrawOffset());
+
 #ifdef _DEBUG
 	if (_pClearFlag == nullptr)
 	{
@@ -93,9 +96,12 @@ void SceneMain::Update(Input& input)
 	// プレイヤーが死んだときの処理
 	if (!_pPlayer->GetIsAlive())
 	{
-		_manager.ChangeScene(std::make_shared<SceneGameOver>(_manager, _nowStage));
+		_manager.ChangeSceneWithFade(std::make_shared<SceneGameOver>(_manager, _nowStage),FadeState::NormalFadeIn,FadeState::CircleFadeOut);
 		return;
 	}
+
+	// フェードサークルの位置更新
+	_manager.SetFadeCirclePos(_pPlayer->GetPos() - _pCamera->GetDrawOffset());
 
 	// 敵制御
 	for (auto& enemy : _pEnemies)
@@ -391,7 +397,7 @@ void SceneMain::LoadStage(Stages stage)
 
 void SceneMain::StageClear()
 {
-	_manager.ChangeSceneWithFadeOut(std::make_shared<SceneClear>(_manager));
+	_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
 	return;
 }
 

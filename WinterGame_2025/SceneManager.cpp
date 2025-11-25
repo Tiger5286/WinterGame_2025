@@ -3,10 +3,12 @@
 #include "Input.h"
 #include "Fade.h"
 
-SceneManager::SceneManager()
+SceneManager::SceneManager():
+	_pScene(nullptr),
+	_pFade(std::make_shared<Fade>()),
+	_pNextScene(nullptr),
+	_nextFadeType(FadeState::NormalFadeIn)
 {
-	_pScene = nullptr;
-	_pFade = std::make_shared<Fade>();
 }
 
 void SceneManager::Init()
@@ -28,7 +30,7 @@ void SceneManager::Update(Input input)
 	{
 		if (_pFade->GetIsFadeEnd())
 		{
-			ChangeScene(_pNextScene);
+			ChangeScene(_pNextScene,_nextFadeType);
 			_pNextScene = nullptr;
 		}
 	}
@@ -40,16 +42,31 @@ void SceneManager::Draw()
 	_pFade->Draw();
 }
 
-void SceneManager::ChangeScene(std::shared_ptr<SceneBase> scene)
+void SceneManager::ChangeScene(std::shared_ptr<SceneBase> scene,FadeState fadeType)
 {
 	_pScene = scene;
 	_pScene->Init();
 	// シーン変更時にフェードインを開始する
-	_pFade->StartFadeIn();
+	if (fadeType == FadeState::NormalFadeIn)
+	{
+		_pFade->StartFadeIn();
+	}
+	else if (fadeType == FadeState::CircleFadeIn)
+	{
+		_pFade->StartCircleFadeIn();
+	}
 }
 
-void SceneManager::ChangeSceneWithFadeOut(std::shared_ptr<SceneBase> scene)
+void SceneManager::ChangeSceneWithFade(std::shared_ptr<SceneBase> scene, FadeState nextFadeType, FadeState fadeType)
 {
-	_pFade->StartFadeOut();
+	if (fadeType == FadeState::NormalFadeOut)
+	{
+		_pFade->StartFadeOut();
+	}
+	else if (fadeType == FadeState::CircleFadeOut)
+	{
+		_pFade->StartCircleFadeOut();
+	}
+	_nextFadeType = nextFadeType;
 	_pNextScene = scene;
 }

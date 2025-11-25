@@ -31,17 +31,19 @@ void SceneGameOver::Update(Input& input)
 	{
 		if (_isSelectRestart)
 		{
-			_manager.ChangeScene(std::make_shared<SceneMain>(_manager, _playedStage));
+			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _playedStage),FadeState::CircleFadeIn);
 		}
 		else
 		{
-			_manager.ChangeScene(std::make_shared<SceneStageSelect>(_manager));
+			_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager));
 		}
 	}
 }
 
 void SceneGameOver::Draw()
 {
+	DrawBox(0, 0, 1920, 1080, 0x444444, true);
+
 	DrawString(1920 / 2, 1080 / 2, "GameOver", 0xffffff);
 	if (_isSelectRestart)
 	{

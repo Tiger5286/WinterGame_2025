@@ -22,7 +22,7 @@ void SceneTitle::Update(Input& input)
 {
 	if (input.IsTriggered("decision"))
 	{
-		_manager.ChangeScene(std::make_shared<SceneStageSelect>(_manager));
+		_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager));
 	}
 
 
@@ -36,6 +36,8 @@ void SceneTitle::Update(Input& input)
 
 void SceneTitle::Draw()
 {
+	DrawBox(0, 0, 1920, 1080, 0x444444, true);
+
 	DrawString(1920 / 2, 1080 / 2, "Title", 0xffffff);
 	DrawString(1920 / 2, 1080 / 2 + 250, "Press A to Start", 0xffffff);
 

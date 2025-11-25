@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "Fade.h"
 
 class Input;
 class SceneBase;
@@ -21,12 +22,22 @@ public:
 	/// シーンを変更する
 	/// </summary>
 	/// <param name="scene">次に再生するシーン</param>
-	void ChangeScene(std::shared_ptr<SceneBase> scene);
+	/// <param name="fadeType">次に再生するシーン開始時に行うフェードの種類</param>
+	void ChangeScene(std::shared_ptr<SceneBase> scene,FadeState fadeType = FadeState::NormalFadeIn);
 
-	void ChangeSceneWithFadeOut(std::shared_ptr<SceneBase> scene);
+	/// <summary>
+	/// フェードアウトを行い、シーンを変更する
+	/// </summary>
+	/// <param name="scene">次に再生するシーン</param>
+	/// <param name="nextFadeType">次に再生するシーン開始時に行うフェードインの種類</param>
+	/// <param name="fadeType">シーン終了時に行うフェードアウトの種類</param>
+	void ChangeSceneWithFade(std::shared_ptr<SceneBase> scene, FadeState nextFadeType = FadeState::NormalFadeIn, FadeState fadeType = FadeState::NormalFadeOut);
+	
+	void SetFadeCirclePos(const Vector2& pos) { _pFade->SetCirclePos(pos); }
 
 private:
 	std::shared_ptr<SceneBase> _pScene;
 	std::shared_ptr<Fade> _pFade;
 	std::shared_ptr<SceneBase> _pNextScene;
+	FadeState _nextFadeType;
 };
