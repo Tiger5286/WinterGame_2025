@@ -2,6 +2,7 @@
 #include "SceneBase.h"
 #include <memory>
 #include <vector>
+#include <string>
 
 class Input;
 class Player;
@@ -34,6 +35,30 @@ enum class Stages
 	Boss
 };
 
+// 画像リスト
+enum class Graphs
+{
+	Player,
+	PlayerWhite,
+	PlayerShot,
+	ChargeShot,
+	ChargeParticle,
+	WalkEnemy,
+	FlyEnemy,
+	JumpEnemy,
+	MapChip,
+	ClearFlag,
+	Laser,
+	Coin,
+	BigCoin,
+	HealthItem,
+	HpUI,
+	BossHpUI,
+	Bg,
+	SubBg,
+	Num
+};
+
 class SceneMain : public SceneBase
 {
 public:
@@ -50,35 +75,10 @@ public:
 
 private:
 	void LoadAllGraphs();
-	void DeleteAllGraphs();
 
 private:
 	/*画像ハンドル*/
-	// プレイヤー関連
-	int _playerH;
-	int _playerWhiteH;
-	int _playerShotH;
-	int _chargeShotH;
-	int _chargeParticleH;
-	// 敵関連
-	int _walkEnemyH;
-	int _flyEnemyH;
-	int _jumpEnemyH;
-	// マップ関連
-	int _mapChipH;
-	// ギミック関連
-	int _clearFlagH;
-	int _laserH;
-	// アイテム関連
-	int _coinH;
-	int _bigCoinH;
-	int _healthItemH;
-	// UI
-	int _hpUIH;
-	int _bossHpUIH;
-	// 背景
-	int _bgH;
-	int _subBgH;
+	std::vector<int> _handles;
 
 	int _frameCount;	// 経過フレーム数
 

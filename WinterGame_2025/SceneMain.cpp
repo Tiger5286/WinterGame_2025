@@ -67,7 +67,11 @@ SceneMain::SceneMain(SceneManager& manager, Stages stage) :
 
 SceneMain::~SceneMain()
 {
-	DeleteAllGraphs();
+	// 画像をメモリから解放
+	for (auto& handle : _handles)
+	{
+		DeleteGraph(handle);
+	}
 }
 
 void SceneMain::Init()
@@ -269,24 +273,29 @@ void SceneMain::LoadStage(Stages stage)
 {
 	// 先に必ず存在するオブジェクトの生成をする
 	// プレイヤー
-	_pPlayer = std::make_shared<Player>(_playerH, _playerWhiteH, _chargeParticleH,_playerShotH,_chargeShotH);
+	//_pPlayer = std::make_shared<Player>(_playerH, _playerWhiteH, _chargeParticleH,_playerShotH,_chargeShotH);
+	_pPlayer = std::make_shared<Player>(_handles[static_cast<int>(Graphs::Player)], _handles[static_cast<int>(Graphs::PlayerWhite)], _handles[static_cast<int>(Graphs::ChargeParticle)], _handles[static_cast<int>(Graphs::PlayerShot)], _handles[static_cast<int>(Graphs::ChargeShot)]);
 	// 弾
 	_pBullets.resize(kBulletNum);
 	for (auto& bullet : _pBullets)
 	{
-		bullet = std::make_shared<Bullet>(_playerShotH, _chargeShotH);
+		//bullet = std::make_shared<Bullet>(_playerShotH, _chargeShotH);
+		bullet = std::make_shared<Bullet>(_handles[static_cast<int>(Graphs::PlayerShot)], _handles[static_cast<int>(Graphs::ChargeShot)]);
 	}
 	// マップ
-	_pMap = std::make_shared<Map>(_mapChipH);
+	//_pMap = std::make_shared<Map>(_mapChipH);
+	_pMap = std::make_shared<Map>(_handles[static_cast<int>(Graphs::MapChip)]);
 
 	// HPUI
-	_pHPUI = std::make_shared<HPUI>(_hpUIH,_pPlayer->GetMaxHp());
+	//_pHPUI = std::make_shared<HPUI>(_hpUIH,_pPlayer->GetMaxHp());
+	_pHPUI = std::make_shared<HPUI>(_handles[static_cast<int>(Graphs::HpUI)], _pPlayer->GetMaxHp());
 
 	// カメラ(最後にいろいろ設定する必要がある)
 	_pCamera = std::make_shared<Camera>();
 
 	// 背景
-	_pBg = std::make_shared<Bg>(_bgH,_subBgH);
+	//_pBg = std::make_shared<Bg>(_bgH,_subBgH);
+	_pBg = std::make_shared<Bg>(_handles[static_cast<int>(Graphs::Bg)], _handles[static_cast<int>(Graphs::SubBg)]);
 
 	switch (stage)
 	{
@@ -297,14 +306,19 @@ void SceneMain::LoadStage(Stages stage)
 
 		_pMap->LoadMapData("data/Map/TempMap.csv");
 
-		_pClearFlag = std::make_shared<ClearFlag>(Vector2(68, 18), _pPlayer, _clearFlagH);
+		//_pClearFlag = std::make_shared<ClearFlag>(Vector2(68, 18), _pPlayer, _handles[static_cast<int>(Graphs::ClearFlag)]);
+		_pClearFlag = std::make_shared<ClearFlag>(Vector2(68, 18), _pPlayer, _handles[static_cast<int>(Graphs::ClearFlag)]);
 
-		_pItems.push_back(std::make_shared<Item>(Vector2(17, 17), ItemType::Coin, _pPlayer, _coinH));
-		_pItems.push_back(std::make_shared<Item>(Vector2(19, 17), ItemType::BigCoin, _pPlayer, _bigCoinH));
-		_pItems.push_back(std::make_shared<Item>(Vector2(21, 17), ItemType::HealthItem, _pPlayer, _healthItemH));
+		//_pItems.push_back(std::make_shared<Item>(Vector2(17, 17), ItemType::Coin, _pPlayer, _coinH));
+		_pItems.push_back(std::make_shared<Item>(Vector2(17, 17), ItemType::Coin, _pPlayer, _handles[static_cast<int>(Graphs::Coin)]));
+		//_pItems.push_back(std::make_shared<Item>(Vector2(19, 17), ItemType::BigCoin, _pPlayer, _bigCoinH));
+		_pItems.push_back(std::make_shared<Item>(Vector2(19, 17), ItemType::BigCoin, _pPlayer, _handles[static_cast<int>(Graphs::BigCoin)]));
+		//_pItems.push_back(std::make_shared<Item>(Vector2(21, 17), ItemType::HealthItem, _pPlayer, _healthItemH));
+		_pItems.push_back(std::make_shared<Item>(Vector2(21, 17), ItemType::HealthItem, _pPlayer, _handles[static_cast<int>(Graphs::HealthItem)]));
 
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(11, 12), _pPlayer, _laserH, 4,false));
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(12, 12), _pPlayer, _laserH, 7));
+		//_pGimmicks.push_back(std::make_shared<Laser>(Vector2(11, 12), _pPlayer, _handles[static_cast<int>(Graphs::Laser)], 4,false));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(11, 12), _pPlayer, _handles[static_cast<int>(Graphs::Laser)], 4, false));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(12, 12), _pPlayer, _handles[static_cast<int>(Graphs::Laser)], 7));
 
 		break;
 	case Stages::Tutorial: // ------------------------------------------------------------------------------------------チュートリアル
@@ -315,18 +329,18 @@ void SceneMain::LoadStage(Stages stage)
 		_pMap->LoadMapData("data/Map/TutorialMap.csv");
 
 		// ゴール旗を生成
-		_pClearFlag = std::make_shared<ClearFlag>(Vector2(166,22), _pPlayer, _clearFlagH);
+		_pClearFlag = std::make_shared<ClearFlag>(Vector2(166,22), _pPlayer, _handles[static_cast<int>(Graphs::ClearFlag)]);
 
 		// 敵を生成
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(39, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(61, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(64, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(67, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(70, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(73, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(39, 35), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(61, 31), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(64, 31), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(67, 31), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(70, 31), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(73, 31), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
 
 		// ギミックの生成
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(116, 32), _pPlayer, _laserH, 4));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(116, 32), _pPlayer, _handles[static_cast<int>(Graphs::Laser)], 4));
 
 #ifdef _DEBUG
 		//printfDx("Stages::Tutorialがロードされました\n");
@@ -337,22 +351,22 @@ void SceneMain::LoadStage(Stages stage)
 
 		_pMap->LoadMapData("data/Map/Stage1Map.csv");
 
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(23, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(28, 31), _pPlayer, _walkEnemyH, WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(31, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(46, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemies.push_back(std::make_shared<FlyEnemy>(Vector2(42, 30), _pPlayer, _flyEnemyH, FlyEnemyState::Move));
-		_pEnemies.push_back(std::make_shared<FlyEnemy>(Vector2(56, 25), _pPlayer, _flyEnemyH, FlyEnemyState::Idle));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(69, 29), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(61, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(64, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(67, 35), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(88, 32), _pPlayer, _walkEnemyH, WalkEnemyState::Move, true));
-		_pEnemies.push_back(std::make_shared<JumpEnemy>(Vector2(96, 35), _pPlayer, _jumpEnemyH));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(23, 35), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(28, 31), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(31, 35), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, false));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(46, 35), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, true));
+		_pEnemies.push_back(std::make_shared<FlyEnemy>(Vector2(42, 30), _pPlayer, _handles[static_cast<int>(Graphs::FlyEnemy)], FlyEnemyState::Move));
+		_pEnemies.push_back(std::make_shared<FlyEnemy>(Vector2(56, 25), _pPlayer, _handles[static_cast<int>(Graphs::FlyEnemy)], FlyEnemyState::Idle));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(69, 29), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, true));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(61, 35), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, true));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(64, 35), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, true));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(67, 35), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, true));
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(88, 32), _pPlayer, _handles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, true));
+		_pEnemies.push_back(std::make_shared<JumpEnemy>(Vector2(96, 35), _pPlayer, _handles[static_cast<int>(Graphs::JumpEnemy)]));
 
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(63, 32), _pPlayer, _laserH, 4));
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(124, 31), _pPlayer, _laserH, 5));
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(135, 31), _pPlayer, _laserH, 5));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(63, 32), _pPlayer, _handles[static_cast<int>(Graphs::Laser)], 4));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(124, 31), _pPlayer, _handles[static_cast<int>(Graphs::Laser)], 5));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(135, 31), _pPlayer, _handles[static_cast<int>(Graphs::Laser)], 5));
 
 #ifdef _DEBUG
 		//printfDx("Stages::Stage1がロードされました\n");
@@ -370,10 +384,10 @@ void SceneMain::LoadStage(Stages stage)
 	case Stages::Boss: // ------------------------------------------------------------------------------------------ボスステージ
 		_pPlayer->SetPosFromChipPos({ 3,19 });
 
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(-1, -1), _pPlayer, _laserH, 14, false));
-		_pEnemies.push_back(std::make_shared<Boss>(_pPlayer, _pCamera, _pGimmicks[0], _walkEnemyH));
+		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(-1, -1), _pPlayer, _handles[static_cast<int>(Graphs::Laser)], 14, false));
+		_pEnemies.push_back(std::make_shared<Boss>(_pPlayer, _pCamera, _pGimmicks[0], _handles[static_cast<int>(Graphs::WalkEnemy)]));
 
-		_pBossHPUI = std::make_shared<BossHPUI>(_bossHpUIH,_pEnemies.back()->GetHp());
+		_pBossHPUI = std::make_shared<BossHPUI>(_handles[static_cast<int>(Graphs::BossHpUI)],_pEnemies.back()->GetHp());
 
 		_pMap->LoadMapData("data/Map/BossStage.csv");
 
@@ -396,58 +410,47 @@ void SceneMain::StageClear()
 
 void SceneMain::LoadAllGraphs()
 {
-	_playerH = LoadGraph("data/Player/Player.png");
-	assert(_playerH != -1);
-	_playerWhiteH = LoadGraph("data/Player/PlayerWhite.png");
-	assert(_playerWhiteH != -1);
-	_playerShotH = LoadGraph("data/Player/Shot.png");
-	assert(_playerShotH != -1);
-	_chargeShotH = LoadGraph("data/Player/ChargeShot.png");
-	assert(_chargeShotH != -1);
-	_chargeParticleH = LoadGraph("data/Player/ChargeParticle.png");
-	assert(_chargeParticleH != -1);
-	_walkEnemyH = LoadGraph("data/Enemys/WalkEnemy.png");
-	assert(_walkEnemyH != -1);
-	_flyEnemyH = LoadGraph("data/Enemys/FlyEnemy.png");
-	assert(_flyEnemyH != -1);
-	_jumpEnemyH = LoadGraph("data/Enemys/JumpEnemy.png");
-	assert(_jumpEnemyH != -1);
-	_mapChipH = LoadGraph("data/Map/MapChip.png");
-	assert(_mapChipH != -1);
-	_laserH = LoadGraph("data/Gimmicks/Laser.png");
-	assert(_laserH != -1);
-	_coinH = LoadGraph("data/Items/Coin.png");
-	assert(_coinH != -1);
-	_bigCoinH = LoadGraph("data/Items/BigCoin.png");
-	assert(_bigCoinH != -1);
-	_healthItemH = LoadGraph("data/Items/HealthItem.png");
-	assert(_healthItemH != -1);
-	_clearFlagH = LoadGraph("data/ClearFlag.png");
-	assert(_clearFlagH != -1);
-	_hpUIH = LoadGraph("data/UI/HpBar.png");
-	assert(_hpUIH != -1);
-	_bossHpUIH = LoadGraph("data/UI/BossHpBar.png");
-	assert(_bossHpUIH != -1);
-	_bgH = LoadGraph("data/Map/Bg.png");
-	assert(_bgH != -1);
-	_subBgH = LoadGraph("data/Map/subBg.png");
-	assert(_subBgH != -1);
-}
+	// 画像をロード
+	_handles.push_back(LoadGraph("data/Player/Player.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Player/PlayerWhite.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Player/Shot.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Player/ChargeShot.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Player/ChargeParticle.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Enemys/WalkEnemy.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Enemys/FlyEnemy.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Enemys/JumpEnemy.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Map/MapChip.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/ClearFlag.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Gimmicks/Laser.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Items/Coin.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Items/BigCoin.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Items/HealthItem.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/UI/HpBar.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/UI/BossHpBar.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Map/Bg.png"));
+	assert(_handles.back() != -1);
+	_handles.push_back(LoadGraph("data/Map/subBg.png"));
+	assert(_handles.back() != -1);
 
-void SceneMain::DeleteAllGraphs()
-{
-	DeleteGraph(_playerH);
-	DeleteGraph(_playerShotH);
-	DeleteGraph(_chargeShotH);
-	DeleteGraph(_chargeParticleH);
-	DeleteGraph(_walkEnemyH);
-	DeleteGraph(_flyEnemyH);
-	DeleteGraph(_mapChipH);
-	DeleteGraph(_laserH);
-	DeleteGraph(_coinH);
-	DeleteGraph(_bigCoinH);
-	DeleteGraph(_healthItemH);
-	DeleteGraph(_clearFlagH);
-	DeleteGraph(_hpUIH);
-	DeleteGraph(_bgH);
+	// Graphsで定義した画像数と一致していなかったらクラッシュさせる
+	if (_handles.size() != static_cast<int>(Graphs::Num))
+	{
+		assert(false, "画像数が一致していません");
+	}
 }
