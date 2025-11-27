@@ -78,7 +78,7 @@ private:
 
 private:
 	/*画像ハンドル*/
-	std::vector<int> _handles;
+	std::vector<int> _graphHandles;
 
 	int _frameCount;	// 経過フレーム数
 
