@@ -1,6 +1,6 @@
 #include "SceneGameOver.h"
 #include "Dxlib.h"
-#include "Input.h"
+#include "../Input.h"
 
 #include "SceneManager.h"
 #include "DebugScene.h"

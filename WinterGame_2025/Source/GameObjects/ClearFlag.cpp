@@ -1,8 +1,7 @@
 #include "ClearFlag.h"
-#include "BoxCollider.h"
-#include "Game.h"
+#include "../BoxCollider.h"
+#include "../Game.h"
 #include "Player.h"
-#include "SceneMain.h"
 #include "DxLib.h"
 
 ClearFlag::ClearFlag(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle) :

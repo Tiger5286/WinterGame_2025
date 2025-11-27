@@ -1,8 +1,8 @@
 #include "Laser.h"
 #include "Dxlib.h"
-#include "BoxCollider.h"
+#include "../BoxCollider.h"
 #include "Player.h"
-#include "Game.h"
+#include "../Game.h"
 
 namespace
 {

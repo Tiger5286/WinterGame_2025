@@ -2,7 +2,6 @@
 #include "Enemy.h"
 #include <vector>
 #include <memory>
-#include "Animation.h"
 
 enum class WalkEnemyState
 {

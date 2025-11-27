@@ -1,6 +1,6 @@
 #include "Item.h"
-#include "CircleCollider.h"
-#include "Animation.h"
+#include "../CircleCollider.h"
+#include "../Animation.h"
 #include "Player.h"
 #include "Dxlib.h"
 #include <cassert>

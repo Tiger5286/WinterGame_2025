@@ -2,9 +2,9 @@
 #include "DxLib.h"
 #include "Game.h"
 #include "input.h"
-#include "SceneManager.h"
-#include "SceneTitle.h"
-#include "DebugScene.h"
+#include "Scenes/SceneManager.h"
+#include "Scenes/SceneTitle.h"
+#include "Scenes/DebugScene.h"
 
 Application::Application()
 {

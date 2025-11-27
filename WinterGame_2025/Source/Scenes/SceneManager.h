@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "Fade.h"
+#include "../Fade.h"
 
 class Input;
 class SceneBase;

@@ -1,9 +1,9 @@
 #include "Bullet.h"
-#include "CircleCollider.h"
+#include "../CircleCollider.h"
 #include "Dxlib.h"
-#include "Game.h"
+#include "../Game.h"
 #include "Enemy.h"
-#include "Map.h"
+#include "../Map.h"
 
 namespace
 {

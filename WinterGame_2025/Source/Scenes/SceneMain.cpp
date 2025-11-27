@@ -1,38 +1,38 @@
 #include "SceneMain.h"
 
 #include "DxLib.h"
-#include "Application.h"
-#include "input.h"
+#include "../Application.h"
+#include "../input.h"
 #include <cassert>
-#include "Game.h"
+#include "../Game.h"
 
-#include "Collider.h"
+#include "../Collider.h"
 
 #include "SceneManager.h"
 #include "DebugScene.h"
 #include "SceneClear.h"
 #include "SceneGameOver.h"
 
-#include "Player.h"
-#include "Bullet.h"
+#include "../GameObjects/Player.h"
+#include "../GameObjects/Bullet.h"
 
-#include "WalkEnemy.h"
-#include "FlyEnemy.h"
-#include "JumpEnemy.h"
-#include "Boss.h"
+#include "../GameObjects/WalkEnemy.h"
+#include "../GameObjects/FlyEnemy.h"
+#include "../GameObjects/JumpEnemy.h"
+#include "../GameObjects/Boss.h"
 
-#include "Item.h"
+#include "../GameObjects/Item.h"
 
-#include "ClearFlag.h"
-#include "Laser.h"
+#include "../GameObjects/ClearFlag.h"
+#include "../GameObjects/Laser.h"
 
-#include "Map.h"
-#include "Camera.h"
+#include "../Map.h"
+#include "../Camera.h"
 
-#include "HPUI.h"
-#include "BossHPUI.h"
+#include "../HPUI.h"
+#include "../BossHPUI.h"
 
-#include "Bg.h"
+#include "../Bg.h"
 
 namespace
 {

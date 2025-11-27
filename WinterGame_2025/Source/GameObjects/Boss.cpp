@@ -1,9 +1,9 @@
 #include "Boss.h"
-#include "Game.h"
-#include "BoxCollider.h"
+#include "../Game.h"
+#include "../BoxCollider.h"
 #include "Player.h"
 #include "Dxlib.h"
-#include "Camera.h"
+#include "../Camera.h"
 #include "Gimmick.h"
 
 

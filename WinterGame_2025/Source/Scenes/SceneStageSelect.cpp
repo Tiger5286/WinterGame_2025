@@ -1,5 +1,5 @@
 #include "SceneStageSelect.h"
-#include "Input.h"
+#include "../Input.h"
 #include "SceneManager.h"
 #include "SceneMain.h"
 #include "Dxlib.h"

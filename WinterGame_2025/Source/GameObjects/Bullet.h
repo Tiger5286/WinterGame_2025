@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
-#include "Geometry.h"
-#include "vector"
+#include "../Geometry.h"
+#include <vector>
 
 class Enemy;
 

@@ -1,6 +1,6 @@
 #pragma once
-#include "Geometry.h"
-#include "Animation.h"
+#include "../Geometry.h"
+#include "../Animation.h"
 #include <memory>
 
 class Input;

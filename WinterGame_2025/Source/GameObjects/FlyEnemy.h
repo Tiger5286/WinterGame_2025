@@ -1,6 +1,5 @@
 #pragma once
 #include "Enemy.h"
-#include "Animation.h"
 
 enum class FlyEnemyState
 {
