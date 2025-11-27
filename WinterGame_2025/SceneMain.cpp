@@ -273,13 +273,11 @@ void SceneMain::LoadStage(Stages stage)
 {
 	// 先に必ず存在するオブジェクトの生成をする
 	// プレイヤー
-	//_pPlayer = std::make_shared<Player>(_playerH, _playerWhiteH, _chargeParticleH,_playerShotH,_chargeShotH);
 	_pPlayer = std::make_shared<Player>(_handles[static_cast<int>(Graphs::Player)], _handles[static_cast<int>(Graphs::PlayerWhite)], _handles[static_cast<int>(Graphs::ChargeParticle)], _handles[static_cast<int>(Graphs::PlayerShot)], _handles[static_cast<int>(Graphs::ChargeShot)]);
 	// 弾
 	_pBullets.resize(kBulletNum);
 	for (auto& bullet : _pBullets)
 	{
-		//bullet = std::make_shared<Bullet>(_playerShotH, _chargeShotH);
 		bullet = std::make_shared<Bullet>(_handles[static_cast<int>(Graphs::PlayerShot)], _handles[static_cast<int>(Graphs::ChargeShot)]);
 	}
 	// マップ
@@ -287,14 +285,12 @@ void SceneMain::LoadStage(Stages stage)
 	_pMap = std::make_shared<Map>(_handles[static_cast<int>(Graphs::MapChip)]);
 
 	// HPUI
-	//_pHPUI = std::make_shared<HPUI>(_hpUIH,_pPlayer->GetMaxHp());
 	_pHPUI = std::make_shared<HPUI>(_handles[static_cast<int>(Graphs::HpUI)], _pPlayer->GetMaxHp());
 
 	// カメラ(最後にいろいろ設定する必要がある)
 	_pCamera = std::make_shared<Camera>();
 
 	// 背景
-	//_pBg = std::make_shared<Bg>(_bgH,_subBgH);
 	_pBg = std::make_shared<Bg>(_handles[static_cast<int>(Graphs::Bg)], _handles[static_cast<int>(Graphs::SubBg)]);
 
 	switch (stage)
@@ -306,17 +302,12 @@ void SceneMain::LoadStage(Stages stage)
 
 		_pMap->LoadMapData("data/Map/TempMap.csv");
 
-		//_pClearFlag = std::make_shared<ClearFlag>(Vector2(68, 18), _pPlayer, _handles[static_cast<int>(Graphs::ClearFlag)]);
 		_pClearFlag = std::make_shared<ClearFlag>(Vector2(68, 18), _pPlayer, _handles[static_cast<int>(Graphs::ClearFlag)]);
 
-		//_pItems.push_back(std::make_shared<Item>(Vector2(17, 17), ItemType::Coin, _pPlayer, _coinH));
 		_pItems.push_back(std::make_shared<Item>(Vector2(17, 17), ItemType::Coin, _pPlayer, _handles[static_cast<int>(Graphs::Coin)]));
-		//_pItems.push_back(std::make_shared<Item>(Vector2(19, 17), ItemType::BigCoin, _pPlayer, _bigCoinH));
 		_pItems.push_back(std::make_shared<Item>(Vector2(19, 17), ItemType::BigCoin, _pPlayer, _handles[static_cast<int>(Graphs::BigCoin)]));
-		//_pItems.push_back(std::make_shared<Item>(Vector2(21, 17), ItemType::HealthItem, _pPlayer, _healthItemH));
 		_pItems.push_back(std::make_shared<Item>(Vector2(21, 17), ItemType::HealthItem, _pPlayer, _handles[static_cast<int>(Graphs::HealthItem)]));
 
-		//_pGimmicks.push_back(std::make_shared<Laser>(Vector2(11, 12), _pPlayer, _handles[static_cast<int>(Graphs::Laser)], 4,false));
 		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(11, 12), _pPlayer, _handles[static_cast<int>(Graphs::Laser)], 4, false));
 		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(12, 12), _pPlayer, _handles[static_cast<int>(Graphs::Laser)], 7));
 
