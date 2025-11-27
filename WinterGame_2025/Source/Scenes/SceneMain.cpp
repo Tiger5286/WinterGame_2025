@@ -26,17 +26,68 @@
 #include "../GameObjects/ClearFlag.h"
 #include "../GameObjects/Laser.h"
 
-#include "../Systems/Map.h"
-#include "../Systems/Camera.h"
-
 #include "../UI/HPUI.h"
 #include "../UI/BossHPUI.h"
 
+#include "../Systems/Map.h"
+#include "../Systems/Camera.h"
 #include "../Systems/Bg.h"
 
 namespace
 {
 	constexpr int kBulletNum = 15;
+
+	// 画像リスト
+	enum class Graphs
+	{
+		Player,
+		PlayerWhite,
+		PlayerShot,
+		ChargeShot,
+		ChargeParticle,
+		WalkEnemy,
+		FlyEnemy,
+		JumpEnemy,
+		MapChip,
+		ClearFlag,
+		Laser,
+		Coin,
+		BigCoin,
+		HealthItem,
+		HpUI,
+		BossHpUI,
+		Bg,
+		SubBg,
+
+		Num
+	};
+
+	// ロードする画像のファイル名
+	const std::string kGraphFileNames[] =
+	{
+		"data/Player/Player.png",
+		"data/Player/PlayerWhite.png",
+		"data/Player/Shot.png",
+		"data/Player/ChargeShot.png",
+		"data/Player/ChargeParticle.png",
+		"data/Enemys/WalkEnemy.png",
+		"data/Enemys/FlyEnemy.png",
+		"data/Enemys/JumpEnemy.png",
+		"data/Map/MapChip.png",
+		"data/ClearFlag.png",
+		"data/Gimmicks/Laser.png",
+		"data/Items/Coin.png",
+		"data/Items/BigCoin.png",
+		"data/Items/HealthItem.png",
+		"data/UI/HpBar.png",
+		"data/UI/BossHpBar.png",
+		"data/Map/Bg.png",
+		"data/Map/subBg.png",
+	};
+
+	// Graphsで定義した画像数とkGraphFileNamesで定義したファイル名の要素数が一致していなかったらエラー
+	constexpr int size = sizeof(kGraphFileNames) / sizeof(kGraphFileNames[0]);	// 配列全体のサイズ / 配列の要素一つのサイズ = 配列の要素数
+	static_assert(static_cast<int>(Graphs::Num) == size);
 }
 
 SceneMain::SceneMain(SceneManager& manager, Stages stage) :
@@ -45,22 +96,27 @@ SceneMain::SceneMain(SceneManager& manager, Stages stage) :
 	_nowStage(stage)
 {
 	/*画像の読み込み*/
-	LoadAllGraphs();
+	_graphHandles.resize(static_cast<int>(Graphs::Num));
+	for (int i = 0; i < static_cast<int>(Graphs::Num); i++)
+	{
+		_graphHandles[i] = LoadGraph(kGraphFileNames[i].c_str());
+		assert(_graphHandles.back() != -1);
+	}
 
-	/*オブジェクトの生成*/
+	/*ステージのロードと生成*/
 	LoadStage(stage);
 
-	// フェードサークルの位置更新
+	// フェードサークルの位置更新(プレイヤーの位置から始まる)
 	_manager.SetFadeCirclePos(_pPlayer->GetPos() - _pCamera->GetDrawOffset());
 
 #ifdef _DEBUG
 	if (_pClearFlag == nullptr)
 	{
-		printfDx("ゴール旗がnullptrです");
+		printfDx("ゴール旗がnullptrです\n");
 	}
 	if (_pBg == nullptr)
 	{
-		printfDx("背景がnullptrです");
+		printfDx("背景がnullptrです\n");
 	}
 #endif
 }
@@ -402,6 +458,7 @@ void SceneMain::StageClear()
 void SceneMain::LoadAllGraphs()
 {
 	// 画像をロード
+#if false
 	_graphHandles.push_back(LoadGraph("data/Player/Player.png"));
 	assert(_graphHandles.back() != -1);
 	_graphHandles.push_back(LoadGraph("data/Player/PlayerWhite.png"));
@@ -438,10 +495,7 @@ void SceneMain::LoadAllGraphs()
 	assert(_graphHandles.back() != -1);
 	_graphHandles.push_back(LoadGraph("data/Map/subBg.png"));
 	assert(_graphHandles.back() != -1);
+#else
 
-	// Graphsで定義した画像数と一致していなかったらクラッシュさせる
-	if (_graphHandles.size() != static_cast<int>(Graphs::Num))
-	{
-		assert(false, "画像数が一致していません");
-	}
+#endif
 }

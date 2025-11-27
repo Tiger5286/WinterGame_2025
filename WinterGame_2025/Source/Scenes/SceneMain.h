@@ -35,30 +35,6 @@ enum class Stages
 	Boss
 };
 
-// ‰æ‘œƒŠƒXƒg
-enum class Graphs
-{
-	Player,
-	PlayerWhite,
-	PlayerShot,
-	ChargeShot,
-	ChargeParticle,
-	WalkEnemy,
-	FlyEnemy,
-	JumpEnemy,
-	MapChip,
-	ClearFlag,
-	Laser,
-	Coin,
-	BigCoin,
-	HealthItem,
-	HpUI,
-	BossHpUI,
-	Bg,
-	SubBg,
-	Num
-};
-
 class SceneMain : public SceneBase
 {
 public:

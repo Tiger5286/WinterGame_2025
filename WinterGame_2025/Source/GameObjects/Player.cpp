@@ -114,9 +114,11 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_dashFrame(0),
 	_isDashing(false),
 	_isTurnDashing(false),
-	_chargeFrame(0),
-	_isCanFly(false)
+	_chargeFrame(0)
 {
+#ifdef _DEBUG
+	_isCanFly = false;
+#endif
 	_pCollider = std::make_shared<BoxCollider>(_pos,Vector2(kColliderW, kColliderH));
 	_playerAfterimage.resize(kAfterimageNum);
 	for (auto& afterimage : _playerAfterimage)
@@ -226,6 +228,7 @@ void Player::Update(Map& map)
 	UpdateAnim();
 
 #ifdef _DEBUG
+	// 飛行モードの切り替え【デバッグ用】
 	if (CheckHitKey(KEY_INPUT_M))
 	{
 		_isCanFly = true;
@@ -254,6 +257,13 @@ void Player::Update(Map& map)
 		}
 	}
 
+	// hpを0にする
+	if (CheckHitKey(KEY_INPUT_B))
+	{
+		_hp = 0;
+		// 点滅中に強制的にhpを0にすると非表示のまま死ぬ場合があるので点滅を解除
+		_isFrickering = false;
+	}
 #endif
 }
 
