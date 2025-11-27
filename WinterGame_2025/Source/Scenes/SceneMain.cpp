@@ -2,7 +2,7 @@
 
 #include "DxLib.h"
 #include "../Application.h"
-#include "../input.h"
+#include "../Systems/input.h"
 #include <cassert>
 #include "../Game.h"
 
@@ -16,23 +16,23 @@
 #include "../GameObjects/Player.h"
 #include "../GameObjects/Bullet.h"
 
-#include "../GameObjects/WalkEnemy.h"
-#include "../GameObjects/FlyEnemy.h"
-#include "../GameObjects/JumpEnemy.h"
-#include "../GameObjects/Boss.h"
+#include "../GameObjects/Enemies/WalkEnemy.h"
+#include "../GameObjects/Enemies/FlyEnemy.h"
+#include "../GameObjects/Enemies/JumpEnemy.h"
+#include "../GameObjects/Enemies/Boss.h"
 
 #include "../GameObjects/Item.h"
 
 #include "../GameObjects/ClearFlag.h"
 #include "../GameObjects/Laser.h"
 
-#include "../Map.h"
-#include "../Camera.h"
+#include "../Systems/Map.h"
+#include "../Systems/Camera.h"
 
-#include "../HPUI.h"
-#include "../BossHPUI.h"
+#include "../UI/HPUI.h"
+#include "../UI/BossHPUI.h"
 
-#include "../Bg.h"
+#include "../Systems/Bg.h"
 
 namespace
 {

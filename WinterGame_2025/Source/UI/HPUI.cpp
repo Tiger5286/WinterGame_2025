@@ -1,16 +1,22 @@
-#include "BossHPUI.h"
+#include "HPUI.h"
+#include "Dxlib.h"
 #include <cmath>
-#include "DxLib.h"
-#include "GameObjects/Enemies/Enemy.h"
+
+#include "../GameObjects/Enemies/Enemy.h"
 
 namespace
 {
-	constexpr int kBarLeft = 975;
-	constexpr int kBarTop = 100;
-	constexpr int kBarRight = 1770;
-	constexpr int kBarBottom = 160;
+	constexpr int kFrameLeft = 160;
+	constexpr int kFrameTop = 90;
+	constexpr int kFrameRight = 520;
+	constexpr int kFrameBottom = 170;
 
-	constexpr int kPosX = 1400;
+	constexpr int kBarLeft = kFrameLeft + 10;
+	constexpr int kBarTop = kFrameTop + 10;
+	constexpr int kBarRight = kFrameRight - 10;
+	constexpr int kBarBottom = kFrameBottom - 10;
+
+	constexpr int kPosX = 300;
 	constexpr int kPosY = 130;
 
 	constexpr int kLowAlphaDis = 150;
@@ -18,41 +24,43 @@ namespace
 	constexpr int kMaxBarLength = kBarRight - kBarLeft;
 }
 
-BossHPUI::BossHPUI(int handle, int bossMaxHp) :
+HPUI::HPUI(int handle,int playerMaxHp) :
 	_handle(handle),
-	_bossMaxHp(bossMaxHp),
-	_barLength(0),
-	_drawBarLength(0),
+	_playerMaxHp(playerMaxHp),
+	_barLength(kMaxBarLength),
+	_drawBarLength(kMaxBarLength),
 	_alpha(255)
 {
 }
 
-BossHPUI::~BossHPUI()
+HPUI::~HPUI()
 {
 }
 
-void BossHPUI::Init()
+void HPUI::Init()
 {
 }
 
-void BossHPUI::Update(int bossHp)
+void HPUI::Update(int playerHP)
 {
-	// ボスのhpからバーの長さを出す
-	_barLength = static_cast<float>(bossHp) / static_cast<float>(_bossMaxHp) * (kBarRight - kBarLeft);
+	// プレイヤーのhpからバーの長さを出す
+	_barLength = static_cast<float>(playerHP) / static_cast<float>(_playerMaxHp) * kMaxBarLength;
 	// lerpでいい感じに減らす
 	_drawBarLength = std::lerp(_drawBarLength, _barLength, 0.05f);
 }
 
-void BossHPUI::Draw(Vector2 drawPlayerPos, const std::vector<std::shared_ptr<Enemy>>& pEnemys)
+void HPUI::Draw(Vector2 drawPlayerPos,const std::vector<std::shared_ptr<Enemy>>& pEnemys)
 {
+
+
 	// プレイヤーがUIの近くにいるときは透明にする
-	bool isPlayerNear = drawPlayerPos.y < kBarBottom + kLowAlphaDis && drawPlayerPos.x < kBarRight + kLowAlphaDis;
+	bool isPlayerNear = drawPlayerPos.y < kFrameBottom + kLowAlphaDis && drawPlayerPos.x < kFrameRight + kLowAlphaDis;
 	// 敵がUIの近くにいるときは透明にする
 	bool isEnemyNear = false;
 	for (const auto& enemy : pEnemys)
 	{
 		Vector2 enemyPos = enemy->GetPos();
-		if (enemyPos.y < kBarBottom + kLowAlphaDis && enemyPos.x < kBarRight + kLowAlphaDis)
+		if (enemyPos.y < kFrameBottom + kLowAlphaDis && enemyPos.x < kFrameRight + kLowAlphaDis)
 		{
 			isEnemyNear = true;
 			break;

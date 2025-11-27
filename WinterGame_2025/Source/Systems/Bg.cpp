@@ -1,5 +1,5 @@
 #include "Bg.h"
-#include "Game.h"
+#include "../Game.h"
 #include "Dxlib.h"
 
 namespace

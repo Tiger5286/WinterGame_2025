@@ -49,10 +49,10 @@
     <ClCompile Include="Source\Utility\Geometry.cpp">
       <Filter>General</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input.cpp">
+    <ClCompile Include="Source\Systems\Input.cpp">
       <Filter>General</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Animation.cpp">
+    <ClCompile Include="Source\Systems\Animation.cpp">
       <Filter>General</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\DebugScene.cpp">
@@ -67,7 +67,7 @@
     <ClCompile Include="Source\Utility\Collider.cpp">
       <Filter>GameObjects\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Map.cpp">
+    <ClCompile Include="Source\Systems\Map.cpp">
       <Filter>Uncategorized</Filter>
     </ClCompile>
     <ClCompile Include="Source\main.cpp">
@@ -76,7 +76,7 @@
     <ClCompile Include="Source\Application.cpp">
       <Filter>Uncategorized</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Camera.cpp">
+    <ClCompile Include="Source\Systems\Camera.cpp">
       <Filter>Uncategorized</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\SceneStageSelect.cpp">
@@ -115,11 +115,11 @@
     <ClCompile Include="Source\Scenes\SceneGameOver.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\HPUI.cpp" />
-    <ClCompile Include="Source\Bg.cpp" />
-    <ClCompile Include="Source\BossHPUI.cpp" />
+    <ClCompile Include="Source\UI\HPUI.cpp" />
+    <ClCompile Include="Source\Systems\Bg.cpp" />
+    <ClCompile Include="Source\UI\BossHPUI.cpp" />
     <ClCompile Include="Source\EnemyManager.cpp" />
-    <ClCompile Include="Source\Fade.cpp" />
+    <ClCompile Include="Source\Systems\Fade.cpp" />
     <ClCompile Include="Source\GameObjects\Player.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
@@ -146,7 +146,7 @@
     <ClInclude Include="Source\Utility\Geometry.h">
       <Filter>General</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Animation.h">
+    <ClInclude Include="Source\Systems\Animation.h">
       <Filter>General</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\DebugScene.h">
@@ -161,10 +161,10 @@
     <ClInclude Include="Source\Utility\Collider.h">
       <Filter>GameObjects\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input.h">
+    <ClInclude Include="Source\Systems\Input.h">
       <Filter>General</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Map.h">
+    <ClInclude Include="Source\Systems\Map.h">
       <Filter>Uncategorized</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game.h">
@@ -173,7 +173,7 @@
     <ClInclude Include="Source\Application.h">
       <Filter>Uncategorized</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Camera.h">
+    <ClInclude Include="Source\Systems\Camera.h">
       <Filter>Uncategorized</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\SceneStageSelect.h">
@@ -212,11 +212,11 @@
     <ClInclude Include="Source\Scenes\SceneGameOver.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\HPUI.h" />
-    <ClInclude Include="Source\Bg.h" />
-    <ClInclude Include="Source\BossHPUI.h" />
+    <ClInclude Include="Source\UI\HPUI.h" />
+    <ClInclude Include="Source\Systems\Bg.h" />
+    <ClInclude Include="Source\UI\BossHPUI.h" />
     <ClInclude Include="Source\EnemyManager.h" />
-    <ClInclude Include="Source\Fade.h" />
+    <ClInclude Include="Source\Systems\Fade.h" />
     <ClInclude Include="Source\GameObjects\Player.h">
       <Filter>GameObjects</Filter>
     </ClInclude>

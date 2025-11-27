@@ -1,10 +1,10 @@
 #include "Player.h"
 #include "Dxlib.h"
 #include <cassert>
-#include "../input.h"
+#include "../Systems/input.h"
 #include "../Utility/BoxCollider.h"
 #include "Bullet.h"
-#include "../Map.h"
+#include "../Systems/Map.h"
 
 namespace
 {

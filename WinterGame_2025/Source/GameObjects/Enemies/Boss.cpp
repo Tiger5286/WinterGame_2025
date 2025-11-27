@@ -3,7 +3,7 @@
 #include "../../Utility/BoxCollider.h"
 #include "../Player.h"
 #include "Dxlib.h"
-#include "../../Camera.h"
+#include "../../Systems/Camera.h"
 #include "../Gimmick.h"
 
 

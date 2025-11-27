@@ -3,7 +3,7 @@
 #include "Dxlib.h"
 #include "../Game.h"
 #include "Enemies/Enemy.h"
-#include "../Map.h"
+#include "../Systems/Map.h"
 
 namespace
 {

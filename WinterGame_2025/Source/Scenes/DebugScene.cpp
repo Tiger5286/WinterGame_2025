@@ -1,5 +1,5 @@
 #include "DebugScene.h"
-#include "../Input.h"
+#include "../Systems/Input.h"
 #include "Dxlib.h"
 #include "SceneManager.h"
 

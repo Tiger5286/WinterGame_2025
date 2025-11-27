@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "../Input.h"
+#include "../Systems/Input.h"
 #include <memory>
 #include <vector>
 

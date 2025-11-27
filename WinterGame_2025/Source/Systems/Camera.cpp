@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "Game.h"
+#include "../Game.h"
 #include <cmath>
 #include "Dxlib.h"
 

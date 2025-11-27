@@ -1,6 +1,6 @@
 #include "Fade.h"
 #include "Dxlib.h"
-#include "Game.h"
+#include "../Game.h"
 
 namespace
 {

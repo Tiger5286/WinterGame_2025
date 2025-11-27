@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "DxLib.h"
 #include "Game.h"
-#include "input.h"
+#include "Systems/input.h"
 #include "Scenes/SceneManager.h"
 #include "Scenes/SceneTitle.h"
 #include "Scenes/DebugScene.h"

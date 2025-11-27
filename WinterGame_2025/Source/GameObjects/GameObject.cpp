@@ -1,6 +1,6 @@
 #include "GameObject.h"
 #include "../Utility/Collider.h"
-#include "../Map.h"
+#include "../Systems/Map.h"
 #include <cassert>
 
 namespace

@@ -1,6 +1,6 @@
 #include "SceneTitle.h"
 #include "Dxlib.h"
-#include "../Input.h"
+#include "../Systems/Input.h"
 #include "SceneManager.h"
 #include "DebugScene.h"
 #include "SceneStageSelect.h"

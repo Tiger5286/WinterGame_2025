@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 #include "SceneBase.h"
-#include "../Input.h"
-#include "../Fade.h"
+#include "../Systems/Input.h"
+#include "../Systems/Fade.h"
 
 SceneManager::SceneManager():
 	_pScene(nullptr),

@@ -1,6 +1,6 @@
 #include "Input.h"
 #include "DxLib.h"
-#include "Game.h"
+#include "../Game.h"
 
 Input::Input() : _inputData{}, _lastInputData{}, _inputTable{}
 {
