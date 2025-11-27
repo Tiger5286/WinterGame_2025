@@ -1,10 +1,10 @@
 #include "WalkEnemy.h"
-#include "../Utility/BoxCollider.h"
+#include "../../Utility/BoxCollider.h"
 #include "Dxlib.h"
-#include "Bullet.h"
-#include "Player.h"
-#include "../Map.h"
-#include "../Game.h"
+#include "../Bullet.h"
+#include "../Player.h"
+#include "../../Map.h"
+#include "../../Game.h"
 
 namespace
 {

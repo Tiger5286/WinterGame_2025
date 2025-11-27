@@ -82,16 +82,16 @@
     <ClCompile Include="Source\Scenes\SceneStageSelect.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObjects\Enemy.cpp">
+    <ClCompile Include="Source\GameObjects\Enemies\Enemy.cpp">
       <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObjects\FlyEnemy.cpp">
+    <ClCompile Include="Source\GameObjects\Enemies\FlyEnemy.cpp">
       <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObjects\JumpEnemy.cpp">
+    <ClCompile Include="Source\GameObjects\Enemies\JumpEnemy.cpp">
       <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObjects\WalkEnemy.cpp">
+    <ClCompile Include="Source\GameObjects\Enemies\WalkEnemy.cpp">
       <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameObjects\Item.cpp">
@@ -109,7 +109,7 @@
     <ClCompile Include="Source\GameObjects\ClearFlag.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObjects\Boss.cpp">
+    <ClCompile Include="Source\GameObjects\Enemies\Boss.cpp">
       <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\SceneGameOver.cpp">
@@ -179,16 +179,16 @@
     <ClInclude Include="Source\Scenes\SceneStageSelect.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObjects\Enemy.h">
+    <ClInclude Include="Source\GameObjects\Enemies\Enemy.h">
       <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObjects\FlyEnemy.h">
+    <ClInclude Include="Source\GameObjects\Enemies\FlyEnemy.h">
       <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObjects\JumpEnemy.h">
+    <ClInclude Include="Source\GameObjects\Enemies\JumpEnemy.h">
       <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObjects\WalkEnemy.h">
+    <ClInclude Include="Source\GameObjects\Enemies\WalkEnemy.h">
       <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameObjects\Item.h">
@@ -206,7 +206,7 @@
     <ClInclude Include="Source\GameObjects\ClearFlag.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObjects\Boss.h">
+    <ClInclude Include="Source\GameObjects\Enemies\Boss.h">
       <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\SceneGameOver.h">

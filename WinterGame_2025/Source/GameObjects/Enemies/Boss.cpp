@@ -1,10 +1,10 @@
 #include "Boss.h"
-#include "../Game.h"
-#include "../Utility/BoxCollider.h"
-#include "Player.h"
+#include "../../Game.h"
+#include "../../Utility/BoxCollider.h"
+#include "../Player.h"
 #include "Dxlib.h"
-#include "../Camera.h"
-#include "Gimmick.h"
+#include "../../Camera.h"
+#include "../Gimmick.h"
 
 
 namespace

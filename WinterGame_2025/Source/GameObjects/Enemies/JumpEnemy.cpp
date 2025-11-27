@@ -1,8 +1,8 @@
 #include "JumpEnemy.h"
-#include "Player.h"
+#include "../Player.h"
 #include "Dxlib.h"
-#include "../Utility/BoxCollider.h"
-#include "../Game.h"
+#include "../../Utility/BoxCollider.h"
+#include "../../Game.h"
 
 namespace
 {

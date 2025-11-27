@@ -1,7 +1,7 @@
 #include "BossHPUI.h"
 #include <cmath>
 #include "DxLib.h"
-#include "GameObjects/Enemy.h"
+#include "GameObjects/Enemies/Enemy.h"
 
 namespace
 {

@@ -2,7 +2,7 @@
 #include "../Utility/CircleCollider.h"
 #include "Dxlib.h"
 #include "../Game.h"
-#include "Enemy.h"
+#include "Enemies/Enemy.h"
 #include "../Map.h"
 
 namespace

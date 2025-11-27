@@ -2,7 +2,7 @@
 #include "Dxlib.h"
 #include <cmath>
 
-#include "GameObjects/Enemy.h"
+#include "GameObjects/Enemies/Enemy.h"
 
 namespace
 {

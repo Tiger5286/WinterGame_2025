@@ -1,7 +1,7 @@
 #include "FlyEnemy.h"
-#include "../Utility/CircleCollider.h"
+#include "../../Utility/CircleCollider.h"
 #include <cmath>
-#include "Player.h"
+#include "../Player.h"
 
 namespace
 {
