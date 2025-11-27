@@ -25,9 +25,9 @@ struct InputState
 class Input
 {
 private:
-	std::map<std::string, std::vector<InputState>>inputTable_; // イベント名と実際の入力の対応表
-	std::map<std::string, bool> inputData_;	// 実際に入力されたかどうかのデータ
-	std::map<std::string, bool> lastInputData_;	// 実際に入力されたかどうかのデータ
+	std::map<std::string, std::vector<InputState>>_inputTable; // イベント名と実際の入力の対応表
+	std::map<std::string, bool> _inputData;	// 実際に入力されたかどうかのデータ
+	std::map<std::string, bool> _lastInputData;	// 実際に入力されたかどうかのデータ
 public:
 	Input();
 

@@ -2,39 +2,39 @@
 #include "DxLib.h"
 #include "Game.h"
 
-Input::Input() : inputData_{}, lastInputData_{}, inputTable_{}
+Input::Input() : _inputData{}, _lastInputData{}, _inputTable{}
 {
-	inputTable_["start"] = { { PeripheralType::keyboard,KEY_INPUT_P},
+	_inputTable["start"] = { { PeripheralType::keyboard,KEY_INPUT_P},
 						  { PeripheralType::pad1,GlobalConstants::kPadInputStart } };
-	inputTable_["select"] = { { PeripheralType::keyboard,KEY_INPUT_RETURN},
+	_inputTable["select"] = { { PeripheralType::keyboard,KEY_INPUT_RETURN},
 						  { PeripheralType::pad1,GlobalConstants::kPadInputSelect } };
 
-	inputTable_["decision"] = { { PeripheralType::keyboard,KEY_INPUT_Z},
+	_inputTable["decision"] = { { PeripheralType::keyboard,KEY_INPUT_Z},
 						  { PeripheralType::pad1,GlobalConstants::kPadInputA } };
-	inputTable_["back"] = { { PeripheralType::keyboard,KEY_INPUT_X},
+	_inputTable["back"] = { { PeripheralType::keyboard,KEY_INPUT_X},
 						  { PeripheralType::pad1,GlobalConstants::kPadInputB } };
 
-	inputTable_["jump"] = { { PeripheralType::keyboard,KEY_INPUT_SPACE},
+	_inputTable["jump"] = { { PeripheralType::keyboard,KEY_INPUT_SPACE},
 						  { PeripheralType::pad1,GlobalConstants::kPadInputA } };
-	inputTable_["shot"] = { { PeripheralType::keyboard,KEY_INPUT_Z},
+	_inputTable["shot"] = { { PeripheralType::keyboard,KEY_INPUT_Z},
 						  { PeripheralType::pad1,GlobalConstants::kPadInputX } };
-	inputTable_["dash"] = { { PeripheralType::keyboard,KEY_INPUT_X},
+	_inputTable["dash"] = { { PeripheralType::keyboard,KEY_INPUT_X},
 						  { PeripheralType::pad1,GlobalConstants::kPadInputB } };
 
 
-	inputTable_["up"] = { { PeripheralType::keyboard,KEY_INPUT_UP},
+	_inputTable["up"] = { { PeripheralType::keyboard,KEY_INPUT_UP},
 						{ PeripheralType::pad1,GlobalConstants::kPadInputUp } };
-	inputTable_["down"] = { { PeripheralType::keyboard,KEY_INPUT_DOWN},
+	_inputTable["down"] = { { PeripheralType::keyboard,KEY_INPUT_DOWN},
 						  { PeripheralType::pad1,GlobalConstants::kPadInputDown } };
-	inputTable_["left"] = { { PeripheralType::keyboard,KEY_INPUT_LEFT},
+	_inputTable["left"] = { { PeripheralType::keyboard,KEY_INPUT_LEFT},
 						  { PeripheralType::pad1,GlobalConstants::kPadInputLeft } };
-	inputTable_["right"] = { { PeripheralType::keyboard,KEY_INPUT_RIGHT},
+	_inputTable["right"] = { { PeripheralType::keyboard,KEY_INPUT_RIGHT},
 						  { PeripheralType::pad1,GlobalConstants::kPadInputRight } };
 	// あらかじめ枠を開けておく
-	for (const auto& inputInfo : inputTable_)
+	for (const auto& inputInfo : _inputTable)
 	{
-		inputData_[inputInfo.first] = false;
-		lastInputData_[inputInfo.first] = false;
+		_inputData[inputInfo.first] = false;
+		_lastInputData[inputInfo.first] = false;
 	}
 }
 
@@ -44,11 +44,11 @@ void Input::Update()
 	char keyState[256];
 	GetHitKeyStateAll(keyState);
 	int padState = GetJoypadInputState(DX_INPUT_PAD1);
-	lastInputData_ = inputData_;
+	_lastInputData = _inputData;
 	// すべての入力イベントをチェックします
-	for (const auto& inputInfo : inputTable_)
+	for (const auto& inputInfo : _inputTable)
 	{
-		auto& input = inputData_[inputInfo.first];
+		auto& input = _inputData[inputInfo.first];
 		for (const auto& state : inputInfo.second)
 		{
 			switch (state.type)
@@ -70,15 +70,15 @@ void Input::Update()
 
 bool Input::IsPressed(const char* name) const
 {
-	return inputData_.at(name);
+	return _inputData.at(name);
 }
 
 bool Input::IsTriggered(const char* name) const
 {
-	return inputData_.at(name) && !lastInputData_.at(name);
+	return _inputData.at(name) && !_lastInputData.at(name);
 }
 
 bool Input::IsReleased(const char* name) const
 {
-	return !inputData_.at(name) && lastInputData_.at(name);
+	return !_inputData.at(name) && _lastInputData.at(name);
 }
