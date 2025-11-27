@@ -1,5 +1,5 @@
 #include "GameObject.h"
-#include "../Collider.h"
+#include "../Utility/Collider.h"
 #include "../Map.h"
 #include <cassert>
 

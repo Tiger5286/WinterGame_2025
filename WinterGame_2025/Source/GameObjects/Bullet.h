@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "../Geometry.h"
+#include "../Utility/Geometry.h"
 #include <vector>
 
 class Enemy;

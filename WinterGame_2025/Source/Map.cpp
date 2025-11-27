@@ -3,8 +3,8 @@
 #include <fstream>
 #include <sstream>
 
-#include "BoxCollider.h"
-#include "CircleCollider.h"
+#include "Utility/BoxCollider.h"
+#include "Utility/CircleCollider.h"
 
 namespace
 {

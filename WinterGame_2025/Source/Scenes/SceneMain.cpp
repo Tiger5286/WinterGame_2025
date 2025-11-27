@@ -6,7 +6,7 @@
 #include <cassert>
 #include "../Game.h"
 
-#include "../Collider.h"
+#include "../Utility/Collider.h"
 
 #include "SceneManager.h"
 #include "DebugScene.h"

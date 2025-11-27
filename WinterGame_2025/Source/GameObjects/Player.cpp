@@ -2,7 +2,7 @@
 #include "Dxlib.h"
 #include <cassert>
 #include "../input.h"
-#include "../BoxCollider.h"
+#include "../Utility/BoxCollider.h"
 #include "Bullet.h"
 #include "../Map.h"
 

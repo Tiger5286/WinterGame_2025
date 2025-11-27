@@ -1,5 +1,5 @@
 #include "WalkEnemy.h"
-#include "../BoxCollider.h"
+#include "../Utility/BoxCollider.h"
 #include "Dxlib.h"
 #include "Bullet.h"
 #include "Player.h"

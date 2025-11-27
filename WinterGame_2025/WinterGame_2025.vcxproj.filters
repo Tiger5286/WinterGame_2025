@@ -46,7 +46,7 @@
     <ClCompile Include="Source\Scenes\SceneBase.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Geometry.cpp">
+    <ClCompile Include="Source\Utility\Geometry.cpp">
       <Filter>General</Filter>
     </ClCompile>
     <ClCompile Include="Source\Input.cpp">
@@ -58,13 +58,13 @@
     <ClCompile Include="Source\Scenes\DebugScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\BoxCollider.cpp">
+    <ClCompile Include="Source\Utility\BoxCollider.cpp">
       <Filter>GameObjects\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Source\CircleCollider.cpp">
+    <ClCompile Include="Source\Utility\CircleCollider.cpp">
       <Filter>GameObjects\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Collider.cpp">
+    <ClCompile Include="Source\Utility\Collider.cpp">
       <Filter>GameObjects\Collider</Filter>
     </ClCompile>
     <ClCompile Include="Source\Map.cpp">
@@ -143,7 +143,7 @@
     <ClInclude Include="Source\Scenes\SceneBase.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Geometry.h">
+    <ClInclude Include="Source\Utility\Geometry.h">
       <Filter>General</Filter>
     </ClInclude>
     <ClInclude Include="Source\Animation.h">
@@ -152,13 +152,13 @@
     <ClInclude Include="Source\Scenes\DebugScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\BoxCollider.h">
+    <ClInclude Include="Source\Utility\BoxCollider.h">
       <Filter>GameObjects\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Source\CircleCollider.h">
+    <ClInclude Include="Source\Utility\CircleCollider.h">
       <Filter>GameObjects\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Collider.h">
+    <ClInclude Include="Source\Utility\Collider.h">
       <Filter>GameObjects\Collider</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input.h">

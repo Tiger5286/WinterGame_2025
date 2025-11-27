@@ -1,5 +1,5 @@
 #include "ClearFlag.h"
-#include "../BoxCollider.h"
+#include "../Utility/BoxCollider.h"
 #include "../Game.h"
 #include "Player.h"
 #include "DxLib.h"
