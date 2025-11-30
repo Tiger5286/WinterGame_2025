@@ -21,6 +21,9 @@ struct DataHeader
 	DataSetting setting;	// データ配置に必要な情報
 };
 
+/// <summary>
+/// ステージデータをロードし、保持するクラス
+/// </summary>
 class Stage
 {
 public:
