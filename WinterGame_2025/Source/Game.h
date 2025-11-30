@@ -41,6 +41,7 @@ enum class ObjectData : int
 	HealthItem,
 	Blank0,
 	Blank1,
+	ClearFlag,
 	DownLaser2,
 	DownLaser3,
 	DownLaser4,
