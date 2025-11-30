@@ -5,6 +5,7 @@
 #include "../Utility/BoxCollider.h"
 #include "Bullet.h"
 #include "../Systems/Map.h"
+#include "../Game.h"
 
 namespace
 {
@@ -345,9 +346,21 @@ void Player::SetContext(const Input& input, std::vector<std::shared_ptr<Bullet>>
 	_pBullets = pBullets;
 }
 
-void Player::Spawn(const std::vector<uint16_t>& objectData)
+void Player::Spawn(const std::vector<uint16_t>& objectData, const Size mapSize)
 {
-
+	for (int w = 0; w < mapSize.w; w++)
+	{
+		for (int h = 0; h < mapSize.h; h++)
+		{
+			int index = w + h * mapSize.w;
+			if (objectData[index] == static_cast<int>(ObjectData::PlayerSpawn))
+			{
+				_pos.x = w * GlobalConstants::kDrawChipSize + GlobalConstants::kDrawChipSizeHalf;
+				_pos.y = h * GlobalConstants::kDrawChipSize + GlobalConstants::kDrawChipSize;
+				return;
+			}
+		}
+	}
 }
 
 void Player::TakeDamage()

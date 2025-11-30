@@ -24,7 +24,7 @@ public:
 	/// <param name="pBullets">Bulletの配列情報</param>
 	void SetContext(const Input& input,std::vector<std::shared_ptr<Bullet>>& pBullets);
 
-	void Spawn(const std::vector<uint16_t>& objectData);
+	void Spawn(const std::vector<uint16_t>& objectData,const Size mapSize);
 
 	void TakeDamage();	// ダメージを受ける
 	bool GetIsAlive() { return _isAlive; }
