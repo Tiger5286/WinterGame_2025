@@ -13,7 +13,6 @@ public:
 	~Map();
 
 	void Draw(Vector2 offset);
-	void Draw2(Vector2 offset);
 
 	bool IsCollision(std::shared_ptr<Collider> pCollider, Vector2& hitChipPos);
 

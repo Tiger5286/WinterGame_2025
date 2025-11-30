@@ -36,52 +36,6 @@ void Map::Draw(Vector2 offset)
 	constexpr int drawChipSizeHalf = drawChipSize / 2;
 
 	// マップチップの描画
-	for (int y = 0; y < _chipNumY; y++)
-	{
-		for (int x = 0; x < _chipNumX; x++)
-		{
-
-			int posX = x * drawChipSize + drawChipSizeHalf;
-			int posY = y * drawChipSize + drawChipSizeHalf;
-
-			// 設置するチップ
-			int chipNo = _chipData[x][y];
-
-			int srcX = kChipSize * (chipNo % kGraphChipNumX);
-			int srcY = kChipSize * (chipNo / kGraphChipNumX);
-
-			int scrollPosX = posX - offset.x;
-			int scrollPosY = posY - offset.y;
-
-			// マップチップの描画
-			DrawRectRotaGraph(
-				scrollPosX, scrollPosY,
-				srcX, srcY,
-				kChipSize, kChipSize,
-				kDrawScale, 0.0f,
-				_handle, true
-			);
-
-			//Vector2 chipPos = { x * CHIP_SIZE * DRAW_SCALE + (CHIP_SIZE * DRAW_SCALE / 2),y * CHIP_SIZE * DRAW_SCALE + (CHIP_SIZE * DRAW_SCALE / 2) };
-			//// マップチップの枠表示
-			//DrawBox(chipPos.x - drawChipSizeHalf - offset.x,
-			//	chipPos.y - drawChipSizeHalf - offset.y,
-			//	chipPos.x + drawChipSizeHalf - offset.x,
-			//	chipPos.y + drawChipSizeHalf - offset.y,
-			//	0x00ff00, false);
-
-			//// マップチップの中心点表示
-			//DrawPixel(chipPos.x - offset.x, chipPos.y - offset.y, 0xffffff);
-		}
-	}
-}
-
-void Map::Draw2(Vector2 offset)
-{
-	constexpr int drawChipSize = kChipSize * kDrawScale;
-	constexpr int drawChipSizeHalf = drawChipSize / 2;
-
-	// マップチップの描画
 	for (int h = 0; h < _mapSize.h; h++)
 	{
 		for (int w = 0; w < _mapSize.w; w++)
@@ -113,44 +67,6 @@ void Map::Draw2(Vector2 offset)
 
 bool Map::IsCollision(std::shared_ptr<Collider> pCollider, Vector2& hitChipPos)
 {
-	//for (int x = 0; x < _chipNumX; x++)
-	//{
-	//	for (int y = 0; y < _chipNumY; y++)
-	//	{
-	//		// 0番のチップには当たり判定がないので無視
-	//		if (_chipData[x][y] == 0) continue;
-
-	//		// マップチップの位置とサイズを計算
-	//		Vector2 chipPos = { x * kChipSize * kDrawScale + (kChipSize * kDrawScale / 2),y * kChipSize * kDrawScale + (kChipSize * kDrawScale / 2) };
-	//		Vector2 chipSize = { kChipSize * kDrawScale,kChipSize * kDrawScale };
-
-	//		if (pCollider->GetType() == Collider::Type::Circle)
-	//		{
-	//			float hitDisX = pCollider->GetRadius() + chipSize.x / 2;
-	//			float hitDisY = pCollider->GetRadius() + chipSize.y / 2;
-	//			float disX = abs(pCollider->GetPos().x - chipPos.x);
-	//			float disY = abs(pCollider->GetPos().y - chipPos.y);
-	//			if (disX < hitDisX && disY < hitDisY)
-	//			{
-	//				hitChipPos = chipPos;
-	//				return true;
-	//			}
-	//		}
-	//		else if (pCollider->GetType() == Collider::Type::Box)
-	//		{
-	//			float hitDisX = pCollider->GetSize().x / 2 + chipSize.x / 2;
-	//			float hitDisY = pCollider->GetSize().y / 2 + chipSize.y / 2;
-	//			float disX = abs(pCollider->GetPos().x - chipPos.x);
-	//			float disY = abs(pCollider->GetPos().y - chipPos.y);
-	//			if (disX < hitDisX && disY < hitDisY)
-	//			{
-	//				hitChipPos = chipPos;
-	//				return true;
-	//			}
-	//		}
-	//	}
-	//}
-
 	for (int w = 0; w < _mapSize.w; w++)
 	{
 		for (int h = 0; h < _mapSize.h; h++)

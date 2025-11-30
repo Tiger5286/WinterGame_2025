@@ -278,8 +278,7 @@ void SceneMain::Draw()
 	_pBg->Draw(_pCamera->GetDrawOffset());
 
 	// マップの描画
-	//_pMap->Draw(_pCamera->GetDrawOffset());
-	_pMap->Draw2(_pCamera->GetDrawOffset());
+	_pMap->Draw(_pCamera->GetDrawOffset());
 
 	// ギミックの描画
 	for (auto& gimmick : _pGimmicks)
