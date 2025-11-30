@@ -106,3 +106,19 @@ Vector2 Vector2::operator-() const
 {
 	return { -x,-y };
 }
+
+Size::Size():
+	w(0),
+	h(0)
+{
+}
+
+Size::Size(int width, int height):
+	w(width),
+	h(height)
+{
+}
+
+Size::~Size()
+{
+}

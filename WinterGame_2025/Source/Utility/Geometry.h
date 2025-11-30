@@ -45,3 +45,12 @@ public:
 	Vector2 operator-() const;
 };
 
+class Size
+{
+public:
+	int w;
+	int h;
+	Size();
+	Size(int width, int height);
+	~Size();
+};
