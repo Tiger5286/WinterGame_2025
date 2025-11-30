@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Systems\GimmickManager.cpp" />
     <ClCompile Include="Source\Systems\Bg.cpp" />
     <ClCompile Include="Source\GameObjects\Enemies\Boss.cpp" />
     <ClCompile Include="Source\Systems\Animation.cpp" />
@@ -177,6 +178,7 @@
     <ClCompile Include="Source\Systems\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Systems\GimmickManager.h" />
     <ClInclude Include="Source\Systems\Bg.h" />
     <ClInclude Include="Source\GameObjects\Enemies\Boss.h" />
     <ClInclude Include="Source\Systems\Animation.h" />

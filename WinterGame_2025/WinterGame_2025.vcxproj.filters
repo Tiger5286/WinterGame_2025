@@ -124,6 +124,7 @@
       <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Source\Systems\Stage.cpp" />
+    <ClCompile Include="Source\Systems\GimmickManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GameObjects\Bullet.h">
@@ -222,5 +223,6 @@
       <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Source\Systems\Stage.h" />
+    <ClInclude Include="Source\Systems\GimmickManager.h" />
   </ItemGroup>
 </Project>
