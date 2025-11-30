@@ -29,4 +29,38 @@ namespace GlobalConstants
 	constexpr float kDrawScale = 3.0f;
 	constexpr int kDrawChipSize = kChipSize * kDrawScale;
 	constexpr int kDrawChipSizeHalf = kChipSize * kDrawScale / 2;
+
+	// オブジェクトデータ定義
+	enum class ObjectData : uint16_t
+	{
+		None,
+		PlayerSpawn,
+		Coin,
+		BigCoin,
+		HealthItem,
+		Blank0,
+		Blank1,
+		DownLaser2,
+		DownLaser3,
+		DownLaser4,
+		DownLaser5,
+		DownLaser6,
+		DownLaser7,
+		DownLaser8,
+		DownLaser9,
+		UpLaser2,
+		UpLaser3,
+		UpLaser4,
+		UpLaser5,
+		UpLaser6,
+		UpLaser7,
+		UpLaser8,
+		UpLaser9,
+		WalkEnemyIdle,
+		WalkEnemyMoveLeft,
+		WalkEnemyMoveRight,
+		FlyEnemyIdle,
+		FlyEnemyMove,
+		JumpEnemy,
+	};
 }
