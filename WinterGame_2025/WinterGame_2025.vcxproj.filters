@@ -118,11 +118,12 @@
     <ClCompile Include="Source\UI\HPUI.cpp" />
     <ClCompile Include="Source\Systems\Bg.cpp" />
     <ClCompile Include="Source\UI\BossHPUI.cpp" />
-    <ClCompile Include="Source\EnemyManager.cpp" />
+    <ClCompile Include="Source\Systems\EnemyManager.cpp" />
     <ClCompile Include="Source\Systems\Fade.cpp" />
     <ClCompile Include="Source\GameObjects\Player.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Systems\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GameObjects\Bullet.h">
@@ -215,10 +216,11 @@
     <ClInclude Include="Source\UI\HPUI.h" />
     <ClInclude Include="Source\Systems\Bg.h" />
     <ClInclude Include="Source\UI\BossHPUI.h" />
-    <ClInclude Include="Source\EnemyManager.h" />
+    <ClInclude Include="Source\Systems\EnemyManager.h" />
     <ClInclude Include="Source\Systems\Fade.h" />
     <ClInclude Include="Source\GameObjects\Player.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Systems\Stage.h" />
   </ItemGroup>
 </Project>

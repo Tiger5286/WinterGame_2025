@@ -4,7 +4,10 @@
 #include <vector>
 #include <string>
 
+class Stage;
+
 class Input;
+
 class Player;
 class Bullet;
 
@@ -59,6 +62,8 @@ private:
 	int _frameCount;	// 経過フレーム数
 
 	Stages _nowStage;
+
+	std::shared_ptr<Stage> _pStage;
 
 	/*オブジェクト*/
 	std::shared_ptr<Player> _pPlayer;	// プレイヤー

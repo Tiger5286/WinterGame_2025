@@ -7,6 +7,7 @@
 #include "../Game.h"
 
 #include "../Utility/Collider.h"
+#include "../Systems/Stage.h"
 
 #include "SceneManager.h"
 #include "DebugScene.h"
@@ -277,7 +278,8 @@ void SceneMain::Draw()
 	_pBg->Draw(_pCamera->GetDrawOffset());
 
 	// マップの描画
-	_pMap->Draw(_pCamera->GetDrawOffset());
+	//_pMap->Draw(_pCamera->GetDrawOffset());
+	_pMap->Draw2(_pCamera->GetDrawOffset());
 
 	// ギミックの描画
 	for (auto& gimmick : _pGimmicks)
@@ -327,6 +329,7 @@ void SceneMain::Draw()
 
 void SceneMain::LoadStage(Stages stage)
 {
+
 	// 先に必ず存在するオブジェクトの生成をする
 	// プレイヤー
 	_pPlayer = std::make_shared<Player>(_graphHandles[static_cast<int>(Graphs::Player)], _graphHandles[static_cast<int>(Graphs::PlayerWhite)], _graphHandles[static_cast<int>(Graphs::ChargeParticle)], _graphHandles[static_cast<int>(Graphs::PlayerShot)], _graphHandles[static_cast<int>(Graphs::ChargeShot)]);
@@ -348,6 +351,18 @@ void SceneMain::LoadStage(Stages stage)
 
 	// 背景
 	_pBg = std::make_shared<Bg>(_graphHandles[static_cast<int>(Graphs::Bg)], _graphHandles[static_cast<int>(Graphs::SubBg)]);
+
+	/*ステージデータのロード*/
+	_pStage = std::make_shared<Stage>();
+	switch (stage)
+	{
+	case Stages::Tutorial:
+		_pStage->LoadData("data/Stages/TutorialStage.fmf");
+		_pMap->SetMapData(_pStage->GetMapData(), _pStage->GetMapSize());
+		break;
+	default:
+		break;
+	}
 
 	switch (stage)
 	{
@@ -373,7 +388,7 @@ void SceneMain::LoadStage(Stages stage)
 		_pPlayer->SetPosFromChipPos({ 3 ,36});
 
 		// マップのデータをロード
-		_pMap->LoadMapData("data/Map/TutorialMap.csv");
+		//_pMap->LoadMapData("data/Map/TutorialMap.csv");
 
 		// ゴール旗を生成
 		_pClearFlag = std::make_shared<ClearFlag>(Vector2(166,22), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
