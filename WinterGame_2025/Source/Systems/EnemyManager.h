@@ -22,4 +22,3 @@ public:
 private:
 	std::vector<std::shared_ptr<Enemy>> _enemies;
 };
-
