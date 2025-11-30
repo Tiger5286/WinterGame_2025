@@ -29,6 +29,7 @@ FlyEnemy::FlyEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle,
 {
 	_pos = ChipPosToGamePos(chipPos);
 	_pCollider = std::make_shared<CircleCollider>(_pos, 35);
+	_nowAnim.Init(_handle, 0, kFrameSize, kAnimFrameNum, kOneAnimFrame, kDrawScale);
 }
 
 FlyEnemy::~FlyEnemy()
@@ -37,7 +38,6 @@ FlyEnemy::~FlyEnemy()
 
 void FlyEnemy::Init()
 {
-	_nowAnim.Init(_handle, 0, kFrameSize, kAnimFrameNum, kOneAnimFrame, kDrawScale);
 }
 
 void FlyEnemy::Update(Map& map)

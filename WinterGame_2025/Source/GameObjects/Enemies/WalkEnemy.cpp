@@ -51,6 +51,11 @@ WalkEnemy::WalkEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handl
 	_pos = ChipPosToGamePos(chipPos);
 	_pos.y += GlobalConstants::kDrawChipSizeHalf;	// ƒ`ƒbƒv”¼•ª‰º‚É‚¸‚ç‚·
 	_pCollider = std::make_shared<BoxCollider>(_pos, kColliderSize);
+
+	_idleAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Idle), kFrameSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
+	_moveAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Move), kFrameSize, kMoveAnimNum, kOneAnimFrame, kDrawScale);
+	_fallAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Fall), kFrameSize, kFallAnimNum, kOneAnimFrame, kDrawScale);
+	_nowAnim = _idleAnim;
 }
 
 WalkEnemy::~WalkEnemy()
@@ -59,10 +64,7 @@ WalkEnemy::~WalkEnemy()
 
 void WalkEnemy::Init()
 {
-	_idleAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Idle), kFrameSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
-	_moveAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Move), kFrameSize, kMoveAnimNum, kOneAnimFrame, kDrawScale);
-	_fallAnim.Init(_handle, static_cast<int>(WalkEnemyAnimType::Fall), kFrameSize, kFallAnimNum, kOneAnimFrame, kDrawScale);
-	_nowAnim = _idleAnim;
+
 }
 
 void WalkEnemy::Update(Map& map)
