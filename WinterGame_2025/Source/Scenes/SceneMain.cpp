@@ -34,6 +34,8 @@
 #include "../Systems/Camera.h"
 #include "../Systems/Bg.h"
 
+#include "../Systems/EnemyManager.h"
+
 namespace
 {
 	constexpr int kBulletNum = 15;
@@ -138,10 +140,6 @@ void SceneMain::Init()
 	{
 		bullet->Init();
 	}
-	for (auto& enemy : _pEnemies)
-	{
-		enemy->Init();
-	}
 }
 
 void SceneMain::Update(Input& input)
@@ -165,31 +163,7 @@ void SceneMain::Update(Input& input)
 	_manager.SetFadeCirclePos(_pPlayer->GetPos() - _pCamera->GetDrawOffset());
 
 	// 敵制御
-	for (auto& enemy : _pEnemies)
-	{
-		if (enemy != nullptr)
-		{
-			float toCameraDisX = enemy->GetPos().x - _pCamera->GetPos().x;	// 敵とカメラの距離
-			// カメラの画面内にいる敵だけ更新する
-			if (abs(toCameraDisX) < GlobalConstants::kScreenWidth / 2 + 100)
-			{
-				enemy->Update(*_pMap);
-			}
-			// 体力が0以下になったら消す
-			if (enemy->GetHp() <= 0)
-			{
-				enemy->Delete();
-				// 死んだ敵をvectorから削除する(あんま意味わからん)
-				_pEnemies.erase(
-					std::remove_if(_pEnemies.begin(), _pEnemies.end(),
-						[](const std::shared_ptr<Enemy>& enemy) {
-							return !enemy->GetIsAlive();
-						}),
-					_pEnemies.end()
-				);
-			}
-		}
-	}
+	_pEnemyManager->Update();
 
 	// ギミック
 	for (auto& gimmick : _pGimmicks)
@@ -202,7 +176,7 @@ void SceneMain::Update(Input& input)
 	{
 		if (bullet->GetAlive())
 		{
-			bullet->SetContext(_pEnemies);
+			bullet->SetContext(_pEnemyManager->GetEnemies());
 			bullet->Update(*_pMap,_pCamera->GetPos());
 		}
 	}
@@ -228,15 +202,15 @@ void SceneMain::Update(Input& input)
 
 	// HPUI更新
 	_pHPUI->Update(_pPlayer->GetHp());
-	if (_pBossHPUI != nullptr)	// ボスがいるときだけ更新
+	if (_pBossHPUI != nullptr)
 	{
-		if (_pEnemies.empty())
+		if (_pEnemyManager->GetEnemies().empty())
 		{
 			_pBossHPUI->Update(0);	// 敵がいなくなったらHP0にする
 		}
 		else
 		{
-			_pBossHPUI->Update(_pEnemies.back()->GetHp());	// 最後にいる敵をボスとみなす
+			_pBossHPUI->Update(_pEnemyManager->GetEnemies().back()->GetHp());	// 最後にいる敵をボスとみなす
 		}
 	}
 
@@ -287,13 +261,8 @@ void SceneMain::Draw()
 	}
 	
 	// 敵の描画
-	for (auto& enemy : _pEnemies)
-	{
-		if (enemy != nullptr)
-		{
-			enemy->Draw(_pCamera->GetDrawOffset());
-		}
-	}
+	_pEnemyManager->Draw();
+
 	// プレイヤーの描画
 	_pPlayer->Draw(_pCamera->GetDrawOffset());
 	// 弾の描画
@@ -314,10 +283,10 @@ void SceneMain::Draw()
 		_pClearFlag->Draw(_pCamera->GetDrawOffset());
 	}
 
-	_pHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(),_pEnemies);
+	_pHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(), _pEnemyManager->GetEnemies());
 	if (_pBossHPUI != nullptr)
 	{
-		_pBossHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(), _pEnemies);
+		_pBossHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(), _pEnemyManager->GetEnemies());
 	}
 
 #ifdef _DEBUG
@@ -350,6 +319,8 @@ void SceneMain::LoadStage(Stages stage)
 
 	// 背景
 	_pBg = std::make_shared<Bg>(_graphHandles[static_cast<int>(Graphs::Bg)], _graphHandles[static_cast<int>(Graphs::SubBg)]);
+
+	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera);
 
 	/*ステージデータのロード*/
 	_pStage = std::make_shared<Stage>();
@@ -386,17 +357,12 @@ void SceneMain::LoadStage(Stages stage)
 		// プレイヤーの位置を設定
 		//_pPlayer->SetPosFromChipPos({ 3 ,36});
 		_pPlayer->Spawn(_pStage->GetObjectData(), _pStage->GetMapSize());
+		
+		// 敵の生成
+		_pEnemyManager->Spawn(_pStage->GetObjectData(), _pStage->GetMapSize());
 
 		// ゴール旗を生成
 		_pClearFlag = std::make_shared<ClearFlag>(Vector2(166,22), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
-
-		// 敵を生成
-		//_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(39, 35), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
-		//_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(61, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
-		//_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(64, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
-		//_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(67, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
-		//_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(70, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
-		//_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(73, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
 
 		// ギミックの生成
 		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(116, 32), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 4));
@@ -409,19 +375,6 @@ void SceneMain::LoadStage(Stages stage)
 		_pPlayer->SetPosFromChipPos({ 3 ,36  });
 
 		_pMap->LoadMapData("data/Map/Stage1Map.csv");
-
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(23, 35), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(28, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(31, 35), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(46, 35), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, true));
-		_pEnemies.push_back(std::make_shared<FlyEnemy>(Vector2(42, 30), _pPlayer, _graphHandles[static_cast<int>(Graphs::FlyEnemy)], FlyEnemyState::Move));
-		_pEnemies.push_back(std::make_shared<FlyEnemy>(Vector2(56, 25), _pPlayer, _graphHandles[static_cast<int>(Graphs::FlyEnemy)], FlyEnemyState::Idle));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(69, 29), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, true));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(61, 35), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, true));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(64, 35), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, true));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(67, 35), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, true));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(88, 32), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Move, true));
-		_pEnemies.push_back(std::make_shared<JumpEnemy>(Vector2(96, 35), _pPlayer, _graphHandles[static_cast<int>(Graphs::JumpEnemy)]));
 
 		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(63, 32), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 4));
 		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(124, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 5));
@@ -444,9 +397,9 @@ void SceneMain::LoadStage(Stages stage)
 		_pPlayer->SetPosFromChipPos({ 3,19 });
 
 		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(-1, -1), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 14, false));
-		_pEnemies.push_back(std::make_shared<Boss>(_pPlayer, _pCamera, _pGimmicks[0], _graphHandles[static_cast<int>(Graphs::WalkEnemy)]));
+		//_pEnemies.push_back(std::make_shared<Boss>(_pPlayer, _pCamera, _pGimmicks[0], _graphHandles[static_cast<int>(Graphs::WalkEnemy)]));
 
-		_pBossHPUI = std::make_shared<BossHPUI>(_graphHandles[static_cast<int>(Graphs::BossHpUI)],_pEnemies.back()->GetHp());
+		_pBossHPUI = std::make_shared<BossHPUI>(_graphHandles[static_cast<int>(Graphs::BossHpUI)], _pEnemyManager->GetEnemies().back()->GetHp());
 
 		_pMap->LoadMapData("data/Map/BossStage.csv");
 

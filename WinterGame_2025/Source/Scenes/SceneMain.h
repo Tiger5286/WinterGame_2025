@@ -28,6 +28,8 @@ class Bg;
 
 class Fade;
 
+class EnemyManager;
+
 // どのステージかを表す列挙体
 enum class Stages
 {
@@ -68,7 +70,6 @@ private:
 	/*オブジェクト*/
 	std::shared_ptr<Player> _pPlayer;	// プレイヤー
 	std::vector<std::shared_ptr<Bullet>> _pBullets;	// 弾
-	std::vector<std::shared_ptr<Enemy>> _pEnemies;	// 敵
 	std::vector<std::shared_ptr<Item>> _pItems;	// アイテム
 	std::vector<std::shared_ptr<Gimmick>> _pGimmicks;	// ギミック
 	std::shared_ptr<ClearFlag> _pClearFlag;	// ゴール旗
@@ -79,5 +80,7 @@ private:
 	std::shared_ptr<BossHPUI> _pBossHPUI;
 
 	std::shared_ptr<Bg> _pBg;
+
+	std::shared_ptr<EnemyManager> _pEnemyManager;
 };
 
