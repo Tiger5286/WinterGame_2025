@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "../Utility/Geometry.h"
 
 // 配置に必要な情報
 struct DataSetting
@@ -22,13 +23,18 @@ struct DataHeader
 
 class Stage
 {
+public:
 	Stage();
 	~Stage();
 
 	void LoadData(const std::string& filePath);
 
+	std::vector<uint16_t>& GetMapData() { return _mapData; }
+	std::vector<uint16_t>& GetObjectData() { return _objectData; }
+	Size GetMapSize() const { return Size(static_cast<int>(_header.width), static_cast<int>(_header.height)); }
+
 private:
+	DataHeader _header;	// データヘッダ
 	std::vector<uint16_t> _mapData;	// マップデータ
 	std::vector<uint16_t> _objectData;	// オブジェクトデータ
 };
-
