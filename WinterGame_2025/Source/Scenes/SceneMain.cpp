@@ -35,6 +35,7 @@
 #include "../Systems/Bg.h"
 
 #include "../Systems/EnemyManager.h"
+#include "../Systems/GimmickManager.h"
 
 namespace
 {
@@ -166,10 +167,7 @@ void SceneMain::Update(Input& input)
 	_pEnemyManager->Update();
 
 	// ギミック
-	for (auto& gimmick : _pGimmicks)
-	{
-		gimmick->Update(*_pMap);
-	}
+	_pGimmickManager->Update();
 
 	// 弾制御
 	for (auto& bullet : _pBullets)
@@ -255,10 +253,7 @@ void SceneMain::Draw()
 	_pMap->Draw(_pCamera->GetDrawOffset());
 
 	// ギミックの描画
-	for (auto& gimmick : _pGimmicks)
-	{
-		gimmick->Draw(_pCamera->GetDrawOffset());
-	}
+	_pGimmickManager->Draw(_pCamera->GetDrawOffset());
 	
 	// 敵の描画
 	_pEnemyManager->Draw();
@@ -321,6 +316,7 @@ void SceneMain::LoadStage(Stages stage)
 	_pBg = std::make_shared<Bg>(_graphHandles[static_cast<int>(Graphs::Bg)], _graphHandles[static_cast<int>(Graphs::SubBg)]);
 
 	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera);
+	_pGimmickManager = std::make_shared<GimmickManager>(_pPlayer);
 
 	/*ステージデータのロード*/
 	_pStage = std::make_shared<Stage>();
@@ -359,13 +355,13 @@ void SceneMain::LoadStage(Stages stage)
 		_pPlayer->Spawn(_pStage->GetObjectData(), _pStage->GetMapSize());
 		
 		// 敵の生成
-		_pEnemyManager->Spawn(_pStage->GetObjectData(), _pStage->GetMapSize());
+		_pEnemyManager->LoadEnemies(_pStage->GetObjectData(), _pStage->GetMapSize());
 
 		// ゴール旗を生成
 		_pClearFlag = std::make_shared<ClearFlag>(Vector2(166,22), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
 
 		// ギミックの生成
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(116, 32), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 4));
+		_pGimmickManager->LoadGimmicks(_pStage->GetObjectData(), _pStage->GetMapSize());
 
 #ifdef _DEBUG
 		//printfDx("Stages::Tutorialがロードされました\n");

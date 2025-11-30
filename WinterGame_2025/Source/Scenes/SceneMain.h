@@ -29,6 +29,7 @@ class Bg;
 class Fade;
 
 class EnemyManager;
+class GimmickManager;
 
 // どのステージかを表す列挙体
 enum class Stages
@@ -82,5 +83,6 @@ private:
 	std::shared_ptr<Bg> _pBg;
 
 	std::shared_ptr<EnemyManager> _pEnemyManager;
+	std::shared_ptr<GimmickManager> _pGimmickManager;
 };
 
