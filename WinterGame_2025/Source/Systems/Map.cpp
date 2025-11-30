@@ -12,6 +12,8 @@ namespace
 	constexpr int kChipSize = 16;
 	constexpr float kDrawScale = 3.0f;
 
+	constexpr float kDrawChipSize = kChipSize * kDrawScale;
+
 	// 画像のマップチップ数
 	constexpr int kGraphChipNumX = 528 / kChipSize;
 	constexpr int kGraphChipNumY = 624 / kChipSize;
@@ -111,16 +113,54 @@ void Map::Draw2(Vector2 offset)
 
 bool Map::IsCollision(std::shared_ptr<Collider> pCollider, Vector2& hitChipPos)
 {
-	for (int x = 0; x < _chipNumX; x++)
+	//for (int x = 0; x < _chipNumX; x++)
+	//{
+	//	for (int y = 0; y < _chipNumY; y++)
+	//	{
+	//		// 0番のチップには当たり判定がないので無視
+	//		if (_chipData[x][y] == 0) continue;
+
+	//		// マップチップの位置とサイズを計算
+	//		Vector2 chipPos = { x * kChipSize * kDrawScale + (kChipSize * kDrawScale / 2),y * kChipSize * kDrawScale + (kChipSize * kDrawScale / 2) };
+	//		Vector2 chipSize = { kChipSize * kDrawScale,kChipSize * kDrawScale };
+
+	//		if (pCollider->GetType() == Collider::Type::Circle)
+	//		{
+	//			float hitDisX = pCollider->GetRadius() + chipSize.x / 2;
+	//			float hitDisY = pCollider->GetRadius() + chipSize.y / 2;
+	//			float disX = abs(pCollider->GetPos().x - chipPos.x);
+	//			float disY = abs(pCollider->GetPos().y - chipPos.y);
+	//			if (disX < hitDisX && disY < hitDisY)
+	//			{
+	//				hitChipPos = chipPos;
+	//				return true;
+	//			}
+	//		}
+	//		else if (pCollider->GetType() == Collider::Type::Box)
+	//		{
+	//			float hitDisX = pCollider->GetSize().x / 2 + chipSize.x / 2;
+	//			float hitDisY = pCollider->GetSize().y / 2 + chipSize.y / 2;
+	//			float disX = abs(pCollider->GetPos().x - chipPos.x);
+	//			float disY = abs(pCollider->GetPos().y - chipPos.y);
+	//			if (disX < hitDisX && disY < hitDisY)
+	//			{
+	//				hitChipPos = chipPos;
+	//				return true;
+	//			}
+	//		}
+	//	}
+	//}
+
+	for (int w = 0; w < _mapSize.w; w++)
 	{
-		for (int y = 0; y < _chipNumY; y++)
+		for (int h = 0; h < _mapSize.h; h++)
 		{
 			// 0番のチップには当たり判定がないので無視
-			if (_chipData[x][y] == 0) continue;
+			if (_mapData[w + h * _mapSize.w] == 0) continue;
 
 			// マップチップの位置とサイズを計算
-			Vector2 chipPos = { x * kChipSize * kDrawScale + (kChipSize * kDrawScale / 2),y * kChipSize * kDrawScale + (kChipSize * kDrawScale / 2) };
-			Vector2 chipSize = { kChipSize * kDrawScale,kChipSize * kDrawScale };
+			Vector2 chipPos = { w * kDrawChipSize + (kDrawChipSize / 2),h * kDrawChipSize + (kDrawChipSize / 2) };
+			Vector2 chipSize = { kDrawChipSize,kDrawChipSize };
 
 			if (pCollider->GetType() == Collider::Type::Circle)
 			{
@@ -148,19 +188,20 @@ bool Map::IsCollision(std::shared_ptr<Collider> pCollider, Vector2& hitChipPos)
 			}
 		}
 	}
-	//DrawFormatString(100, 100, 0xffffff, "%.2f,%.2f", pCollider->GetPos().x, pCollider->GetPos().y);
 
 	return false;
 }
 
 int Map::GetStageWidth() const
 {
-	return _chipNumX * kChipSize * kDrawScale;
+	//return _chipNumX * kChipSize * kDrawScale;
+	return _mapSize.w * kDrawChipSize;
 }
 
 Vector2 Map::GetStageSize()
 {
-	return Vector2(_chipNumX * kChipSize * kDrawScale, _chipNumY * kChipSize * kDrawScale);
+	//return Vector2(_chipNumX * kChipSize * kDrawScale, _chipNumY * kChipSize * kDrawScale);
+	return Vector2(_mapSize.w * kDrawChipSize, _mapSize.h * kDrawChipSize);
 }
 
 void Map::LoadMapData(std::string fileName)
