@@ -345,6 +345,11 @@ void Player::SetContext(const Input& input, std::vector<std::shared_ptr<Bullet>>
 	_pBullets = pBullets;
 }
 
+void Player::Spawn(const std::vector<uint16_t>& objectData)
+{
+
+}
+
 void Player::TakeDamage()
 {
 	if (!_isDashing && _invincibleFrame == 0)
