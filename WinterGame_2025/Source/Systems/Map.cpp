@@ -74,6 +74,41 @@ void Map::Draw(Vector2 offset)
 	}
 }
 
+void Map::Draw2(Vector2 offset)
+{
+	constexpr int drawChipSize = kChipSize * kDrawScale;
+	constexpr int drawChipSizeHalf = drawChipSize / 2;
+
+	// マップチップの描画
+	for (int h = 0; h < _mapSize.h; h++)
+	{
+		for (int w = 0; w < _mapSize.w; w++)
+		{
+			// チップ番号を取得
+			int chipNo = _mapData[w + h * _mapSize.w];
+			// 0番のチップは描画しない
+			if (chipNo == 0) continue;
+
+			// 描画位置を計算
+			int DrawPosX = w * drawChipSize + drawChipSizeHalf - offset.x;
+			int DrawPosY = h * drawChipSize + drawChipSizeHalf - offset.y;
+
+			// 描画するチップの画像内位置を計算
+			int srcX = kChipSize * (chipNo % kGraphChipNumX);
+			int srcY = kChipSize * (chipNo / kGraphChipNumX);
+
+			// マップチップの描画
+			DrawRectRotaGraph(
+				DrawPosX, DrawPosY,
+				srcX, srcY,
+				kChipSize, kChipSize,
+				kDrawScale, 0.0f,
+				_handle, true
+			);
+		}
+	}
+}
+
 bool Map::IsCollision(std::shared_ptr<Collider> pCollider, Vector2& hitChipPos)
 {
 	for (int x = 0; x < _chipNumX; x++)
@@ -166,4 +201,10 @@ void Map::LoadMapData(std::string fileName)
 			_chipData[x][y] = tempData[y][x];
 		}
 	}
+}
+
+void Map::SetMapData(const std::vector<uint16_t>& mapData, const Size& mapSize)
+{
+	_mapSize = mapSize;
+	_mapData = mapData;
 }
