@@ -61,6 +61,10 @@ void Map::Draw(Vector2 offset)
 				kDrawScale, 0.0f,
 				_handle, true
 			);
+
+			//DrawBox(DrawPosX - drawChipSizeHalf, DrawPosY - drawChipSizeHalf,
+			//	DrawPosX + drawChipSizeHalf, DrawPosY + drawChipSizeHalf,
+			//	0xffff00, false); // デバッグ用
 		}
 	}
 }
