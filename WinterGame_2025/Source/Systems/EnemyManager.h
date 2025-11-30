@@ -4,6 +4,8 @@
 #include "../Utility/Geometry.h"
 
 class Player;
+class Map;
+class Camera;
 class Enemy;
 
 /// <summary>
@@ -12,7 +14,7 @@ class Enemy;
 class EnemyManager
 {
 public:
-	EnemyManager(std::shared_ptr<Player> pPlayer);
+	EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map> pMap, std::shared_ptr<Camera> pCamera);
 	~EnemyManager();
 
 	void Update();
@@ -25,11 +27,15 @@ public:
 	/// <param name="size">マップサイズ</param>
 	void Spawn(const std::vector<uint16_t>& objectData, Size size);
 
+	const std::vector<std::shared_ptr<Enemy>>& GetEnemies() const { return _pEnemies; }
+
 private:
 	int _walkEnemyH = -1;
 	int _flyEnemyH = -1;
 	int _jumpEnemyH = -1;
 
 	std::shared_ptr<Player> _pPlayer;
-	std::vector<std::shared_ptr<Enemy>> _enemies;
+	std::shared_ptr<Map> _pMap;
+	std::shared_ptr<Camera> _pCamera;
+	std::vector<std::shared_ptr<Enemy>> _pEnemies;
 };
