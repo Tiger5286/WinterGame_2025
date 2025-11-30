@@ -56,6 +56,11 @@ void Laser::Init()
 
 void Laser::Update(Map& map)
 {
+	printfDx("Laser::Update(Map& map) is called. Please use Laser::Update() instead.\n");
+}
+
+void Laser::Update()
+{
 	// プレイヤーに当たったらダメージを与える
 	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
 	{
