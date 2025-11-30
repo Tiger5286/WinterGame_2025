@@ -353,8 +353,10 @@ void Player::Spawn(const std::vector<uint16_t>& objectData, const Size mapSize)
 		for (int h = 0; h < mapSize.h; h++)
 		{
 			int index = w + h * mapSize.w;
+			// プレイヤースポーン地点を探す
 			if (objectData[index] == static_cast<int>(ObjectData::PlayerSpawn))
 			{
+				// スポーン地点に移動する
 				_pos.x = w * GlobalConstants::kDrawChipSize + GlobalConstants::kDrawChipSizeHalf;
 				_pos.y = h * GlobalConstants::kDrawChipSize + GlobalConstants::kDrawChipSize;
 				return;

@@ -391,12 +391,12 @@ void SceneMain::LoadStage(Stages stage)
 		_pClearFlag = std::make_shared<ClearFlag>(Vector2(166,22), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
 
 		// ìGÇê∂ê¨
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(39, 35), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(61, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(64, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(67, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(70, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
-		_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(73, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
+		//_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(39, 35), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
+		//_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(61, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
+		//_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(64, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
+		//_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(67, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
+		//_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(70, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
+		//_pEnemies.push_back(std::make_shared<WalkEnemy>(Vector2(73, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::WalkEnemy)], WalkEnemyState::Idle, false));
 
 		// ÉMÉ~ÉbÉNÇÃê∂ê¨
 		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(116, 32), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 4));
