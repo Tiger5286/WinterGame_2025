@@ -7,7 +7,8 @@ namespace
 
 }
 
-Stage::Stage()
+Stage::Stage():
+	_header()
 {
 }
 
