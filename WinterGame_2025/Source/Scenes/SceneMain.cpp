@@ -384,10 +384,8 @@ void SceneMain::LoadStage(Stages stage)
 		break;
 	case Stages::Tutorial: // ------------------------------------------------------------------------------------------チュートリアル
 		// プレイヤーの位置を設定
-		_pPlayer->SetPosFromChipPos({ 3 ,36});
-
-		// マップのデータをロード
-		//_pMap->LoadMapData("data/Map/TutorialMap.csv");
+		//_pPlayer->SetPosFromChipPos({ 3 ,36});
+		_pPlayer->Spawn(_pStage->GetObjectData(), _pStage->GetMapSize());
 
 		// ゴール旗を生成
 		_pClearFlag = std::make_shared<ClearFlag>(Vector2(166,22), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
