@@ -25,7 +25,7 @@ public:
 	/// </summary>
 	/// <param name="objectData">オブジェクトデータの配列</param>
 	/// <param name="size">マップサイズ</param>
-	void Spawn(const std::vector<uint16_t>& objectData, Size size);
+	void LoadEnemies(const std::vector<uint16_t>& objectData, Size size);
 
 	const std::vector<std::shared_ptr<Enemy>>& GetEnemies() const { return _pEnemies; }
 

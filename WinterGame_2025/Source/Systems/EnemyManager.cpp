@@ -66,7 +66,7 @@ void EnemyManager::Draw()
 	}
 }
 
-void EnemyManager::Spawn(const std::vector<uint16_t>& objectData, Size size)
+void EnemyManager::LoadEnemies(const std::vector<uint16_t>& objectData, Size size)
 { 
 	for (int w = 0; w < size.w; w++)
 	{
@@ -94,6 +94,8 @@ void EnemyManager::Spawn(const std::vector<uint16_t>& objectData, Size size)
 				break;
 			case ObjectData::JumpEnemy:
 				_pEnemies.push_back(std::make_shared<JumpEnemy>(pos, _pPlayer, _jumpEnemyH));
+				break;
+			default:
 				break;
 			}
 		}
