@@ -125,6 +125,7 @@
     </ClCompile>
     <ClCompile Include="Source\Systems\Stage.cpp" />
     <ClCompile Include="Source\Systems\GimmickManager.cpp" />
+    <ClCompile Include="Source\Systems\ItemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GameObjects\Bullet.h">
@@ -224,5 +225,6 @@
     </ClInclude>
     <ClInclude Include="Source\Systems\Stage.h" />
     <ClInclude Include="Source\Systems\GimmickManager.h" />
+    <ClInclude Include="Source\Systems\ItemManager.h" />
   </ItemGroup>
 </Project>

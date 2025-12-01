@@ -36,6 +36,7 @@
 
 #include "../Systems/EnemyManager.h"
 #include "../Systems/GimmickManager.h"
+#include "../Systems/ItemManager.h"
 
 namespace
 {
@@ -180,23 +181,24 @@ void SceneMain::Update(Input& input)
 	}
 
 	// アイテム制御
-	for (auto& item : _pItems)
-	{
-		if (item != nullptr)
-		{
-			item->Update(*_pMap);
-			if (!item->GetIsAlive())
-			{	// 取られたアイテムをvectorから削除する(あんま意味わからん)
-				_pItems.erase(
-					std::remove_if(_pItems.begin(), _pItems.end(),
-						[](const std::shared_ptr<Item>& item) {
-							return !item->GetIsAlive();
-						}),
-					_pItems.end()
-				);
-			}
-		}
-	}
+	//for (auto& item : _pItems)
+	//{
+	//	if (item != nullptr)
+	//	{
+	//		item->Update(*_pMap);
+	//		if (!item->GetIsAlive())
+	//		{	// 取られたアイテムをvectorから削除する(あんま意味わからん)
+	//			_pItems.erase(
+	//				std::remove_if(_pItems.begin(), _pItems.end(),
+	//					[](const std::shared_ptr<Item>& item) {
+	//						return !item->GetIsAlive();
+	//					}),
+	//				_pItems.end()
+	//			);
+	//		}
+	//	}
+	//}
+	_pItemManager->Update();
 
 	// HPUI更新
 	_pHPUI->Update(_pPlayer->GetHp());
@@ -267,10 +269,11 @@ void SceneMain::Draw()
 	}
 
 	// アイテムの描画
-	for (auto& item : _pItems)
-	{
-		item->Draw(_pCamera->GetDrawOffset());
-	}
+	//for (auto& item : _pItems)
+	//{
+	//	item->Draw(_pCamera->GetDrawOffset());
+	//}
+	_pItemManager->Draw(_pCamera->GetDrawOffset());
 
 	// ゴール旗の描画
 	if (_pClearFlag != nullptr)
@@ -317,6 +320,7 @@ void SceneMain::LoadStage(Stages stage)
 
 	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera);
 	_pGimmickManager = std::make_shared<GimmickManager>(_pPlayer);
+	_pItemManager = std::make_shared<ItemManager>(_pPlayer);
 
 	/*ステージデータのロード*/
 	_pStage = std::make_shared<Stage>();
@@ -362,6 +366,9 @@ void SceneMain::LoadStage(Stages stage)
 
 		// ギミックの生成
 		_pGimmickManager->LoadGimmicks(_pStage->GetObjectData(), _pStage->GetMapSize());
+
+		// アイテムの生成
+		_pItemManager->LoadItems(_pStage->GetObjectData(), _pStage->GetMapSize());
 
 #ifdef _DEBUG
 		//printfDx("Stages::Tutorialがロードされました\n");

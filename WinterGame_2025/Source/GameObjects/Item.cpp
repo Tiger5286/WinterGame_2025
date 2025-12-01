@@ -64,6 +64,11 @@ void Item::Init()
 
 void Item::Update(Map& map)
 {
+	printfDx("Item::Update(Map& map)‚ªŒÄ‚Î‚ê‚Ü‚µ‚½\n");
+}
+
+void Item::Update()
+{
 	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
 	{
 		GetItem();

@@ -10,6 +10,9 @@ enum ItemType
 	HealthItem	// 体力回復アイテム
 };
 
+/// <summary>
+/// ゲーム内のアイテムを表すクラス
+/// </summary>
 class Item :
     public GameObject
 {
@@ -18,6 +21,7 @@ public:
 	~Item();
 	void Init() override;
 	void Update(Map& map) override;
+	void Update();
 	void Draw(Vector2 offset) override;
 
 	bool GetIsAlive() const { return _isAlive; }
