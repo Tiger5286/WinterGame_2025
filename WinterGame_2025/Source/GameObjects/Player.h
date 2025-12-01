@@ -6,11 +6,12 @@
 
 class Bullet;
 class Map;
+class BulletManager;
 
 class Player : public GameObject
 {
 public:
-	Player(int playerH,int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH);
+	Player(int playerH,int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH, std::shared_ptr<BulletManager>& pBulletManager);
 	~Player();
 
 	void Init() override;
@@ -21,8 +22,7 @@ public:
 	/// 必要な情報を受け取る関数
 	/// </summary>
 	/// <param name="input">Inputクラスのインスタンス</param>
-	/// <param name="pBullets">Bulletの配列情報</param>
-	void SetContext(const Input& input,std::vector<std::shared_ptr<Bullet>>& pBullets);
+	void SetContext(const Input& input);
 
 	void InitPosFromStage(const std::vector<uint16_t>& objectData,const Size mapSize);
 
@@ -58,7 +58,8 @@ private:
 
 private:
 	Input _input;
-	std::vector<std::shared_ptr<Bullet>> _pBullets;
+	//std::vector<std::shared_ptr<Bullet>> _pBullets;
+	std::shared_ptr<BulletManager> _pBulletManager;
 
 	// 画像ハンドル
 	int _playerH;

@@ -6,6 +6,7 @@
 #include "Bullet.h"
 #include "../Systems/Map.h"
 #include "../Game.h"
+#include "../Systems/BulletManager.h"
 
 namespace
 {
@@ -96,7 +97,7 @@ enum class PlayerAnimType : int
 	Fall = 8
 };
 
-Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH):
+Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH, std::shared_ptr<BulletManager>& pBulletManager):
 	_playerH(playerH),
 	_playerWhiteH(playerWhiteH),
 	_chargeParticleH(chargeParticleH),
@@ -115,7 +116,8 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_dashFrame(0),
 	_isDashing(false),
 	_isTurnDashing(false),
-	_chargeFrame(0)
+	_chargeFrame(0),
+	_pBulletManager(pBulletManager)
 {
 #ifdef _DEBUG
 	_isCanFly = false;
@@ -340,10 +342,15 @@ void Player::Draw(Vector2 offset)
 #endif // _DEBUG
 }
 
-void Player::SetContext(const Input& input, std::vector<std::shared_ptr<Bullet>>& pBullets)
+//void Player::SetContext(const Input& input, std::vector<std::shared_ptr<Bullet>>& pBullets)
+//{
+//	_input = input;
+//	_pBullets = pBullets;
+//}
+
+void Player::SetContext(const Input& input)
 {
 	_input = input;
-	_pBullets = pBullets;
 }
 
 void Player::InitPosFromStage(const std::vector<uint16_t>& objectData, const Size mapSize)
@@ -548,15 +555,8 @@ void Player::Shot()
 	// 通常射撃処理
 	if (_input.IsTriggered("shot"))
 	{	
-		for (auto& bullet : _pBullets)
-		{	// 空いている弾を探して発射
-			if (!bullet->GetAlive())
-			{
-				bullet->Shot(BulletType::NormalShot,_shotPos,_isTurn);
-				_shotFlashAnim.SetFirst();
-				break;
-			}
-		}
+		_pBulletManager->Shot(BulletType::NormalShot, _shotPos, _isTurn);
+		_shotFlashAnim.SetFirst();
 	}
 }
 
@@ -570,27 +570,13 @@ void Player::ChargeShot()
 	{	
 		if (_chargeFrame > kChargeTimeMax)
 		{	// チャージが完了しているならチャージショットを発射
-			for (auto& bullet : _pBullets)
-			{
-				if (!bullet->GetAlive())
-				{
-					bullet->Shot(BulletType::ChargeShot, _shotPos, _isTurn);
-					_chargeShotFlashAnim.SetFirst();
-					break;
-				}
-			}
+			_pBulletManager->Shot(BulletType::ChargeShot, _shotPos, _isTurn);
+			_chargeShotFlashAnim.SetFirst();
 		}
 		else if (_chargeFrame > kChargeEffectTime)
 		{	// チャージが未完了なら通常弾を発射
-			for (auto& bullet : _pBullets)
-			{
-				if (!bullet->GetAlive())
-				{
-					bullet->Shot(BulletType::NormalShot, _shotPos, _isTurn);
-					_shotFlashAnim.SetFirst();
-					break;
-				}
-			}
+			_pBulletManager->Shot(BulletType::NormalShot, _shotPos, _isTurn);
+			_shotFlashAnim.SetFirst();
 		}
 		_chargeFrame = 0;
 	}

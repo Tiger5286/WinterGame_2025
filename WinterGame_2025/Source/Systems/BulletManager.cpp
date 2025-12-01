@@ -51,3 +51,15 @@ void BulletManager::Draw(Vector2 offset)
 		}
 	}
 }
+
+void BulletManager::Shot(BulletType type, Vector2 shotPos, bool isTurn)
+{
+	for (auto& bullet : _pBullets)
+	{	// ‹ó‚¢‚Ä‚¢‚é’e‚ð’T‚µ‚Ä”­ŽË
+		if (!bullet->GetAlive())
+		{
+			bullet->Shot(type, shotPos, isTurn);
+			break;
+		}
+	}
+}

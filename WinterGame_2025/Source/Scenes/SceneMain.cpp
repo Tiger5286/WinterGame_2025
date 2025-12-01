@@ -41,7 +41,7 @@
 
 namespace
 {
-	constexpr int kBulletNum = 0;
+	//constexpr int kBulletNum = 0;
 
 	// 画像リスト
 	enum class Graphs
@@ -125,10 +125,6 @@ SceneMain::~SceneMain()
 void SceneMain::Init()
 {
 	_pPlayer->Init();
-	for (auto& bullet : _pBullets)
-	{
-		bullet->Init();
-	}
 }
 
 void SceneMain::Update(Input& input)
@@ -136,7 +132,7 @@ void SceneMain::Update(Input& input)
 	_frameCount++;
 
 	// プレイヤー制御
-	_pPlayer->SetContext(input,_pBullets);
+	_pPlayer->SetContext(input);
 	_pPlayer->Update(*_pMap);
 	// カメラ制御
 	_pCamera->Update(_pPlayer->GetPos());
@@ -158,14 +154,6 @@ void SceneMain::Update(Input& input)
 	_pGimmickManager->Update();
 
 	// 弾制御
-	for (auto& bullet : _pBullets)
-	{
-		if (bullet->GetAlive())
-		{
-			//bullet->SetContext(_pEnemyManager->GetEnemies());
-			bullet->Update(*_pMap,_pCamera->GetPos(), _pEnemyManager->GetEnemies());
-		}
-	}
 	_pBulletManager->Update(*_pMap, _pCamera->GetPos(), _pEnemyManager->GetEnemies());
 
 	// アイテム制御
@@ -235,10 +223,6 @@ void SceneMain::Draw()
 	_pPlayer->Draw(_pCamera->GetDrawOffset());
 
 	// 弾の描画
-	for (auto& bullet : _pBullets)
-	{
-		bullet->Draw(_pCamera->GetDrawOffset());
-	}
 	_pBulletManager->Draw(_pCamera->GetDrawOffset());
 
 	// アイテムの描画
@@ -289,17 +273,13 @@ void SceneMain::LoadStage(Stages stage)
 	}
 
 	// オブジェクトの生成、初期化
-	// プレイヤー
-	_pPlayer = std::make_shared<Player>(_graphHandles[static_cast<int>(Graphs::Player)], _graphHandles[static_cast<int>(Graphs::PlayerWhite)], _graphHandles[static_cast<int>(Graphs::ChargeParticle)], _graphHandles[static_cast<int>(Graphs::PlayerShot)], _graphHandles[static_cast<int>(Graphs::ChargeShot)]);
-	_pPlayer->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());		// プレイヤーの位置を設定
-
+	
 	// 弾
-	_pBullets.resize(kBulletNum);
-	for (auto& bullet : _pBullets)
-	{
-		bullet = std::make_shared<Bullet>(_graphHandles[static_cast<int>(Graphs::PlayerShot)], _graphHandles[static_cast<int>(Graphs::ChargeShot)]);
-	}
 	_pBulletManager = std::make_shared<BulletManager>();
+
+	// プレイヤー
+	_pPlayer = std::make_shared<Player>(_graphHandles[static_cast<int>(Graphs::Player)], _graphHandles[static_cast<int>(Graphs::PlayerWhite)], _graphHandles[static_cast<int>(Graphs::ChargeParticle)], _graphHandles[static_cast<int>(Graphs::PlayerShot)], _graphHandles[static_cast<int>(Graphs::ChargeShot)], _pBulletManager);
+	_pPlayer->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());		// プレイヤーの位置を設定
 
 	// マップ
 	_pMap = std::make_shared<Map>(_graphHandles[static_cast<int>(Graphs::MapChip)]);
