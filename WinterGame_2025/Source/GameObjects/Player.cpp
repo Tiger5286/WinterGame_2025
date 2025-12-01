@@ -346,7 +346,7 @@ void Player::SetContext(const Input& input, std::vector<std::shared_ptr<Bullet>>
 	_pBullets = pBullets;
 }
 
-void Player::Spawn(const std::vector<uint16_t>& objectData, const Size mapSize)
+void Player::InitPosFromStage(const std::vector<uint16_t>& objectData, const Size mapSize)
 {
 	for (int w = 0; w < mapSize.w; w++)
 	{
