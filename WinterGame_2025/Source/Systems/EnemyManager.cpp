@@ -9,6 +9,8 @@
 #include "../GameObjects/Enemies/WalkEnemy.h"
 #include "../GameObjects/Enemies/FlyEnemy.h"
 #include "../GameObjects/Enemies/JumpEnemy.h"
+#include "../GameObjects/Enemies/DroneEnemy.h"
+
 #include "../GameObjects/Enemies/Boss.h"
 
 EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map> pMap, std::shared_ptr<Camera> pCamera, std::shared_ptr<GimmickManager> pGimmickManager):
@@ -23,6 +25,8 @@ EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map>
 	assert(_flyEnemyH != -1);
 	_jumpEnemyH = LoadGraph("data/Enemys/JumpEnemy.png");
 	assert(_jumpEnemyH != -1);
+	_droneEnemyH = LoadGraph("data/Enemys/DroneEnemy.png");
+	assert(_droneEnemyH != -1);
 }
 
 EnemyManager::~EnemyManager()
@@ -30,6 +34,7 @@ EnemyManager::~EnemyManager()
 	DeleteGraph(_walkEnemyH);
 	DeleteGraph(_flyEnemyH);
 	DeleteGraph(_jumpEnemyH);
+	DeleteGraph(_droneEnemyH);
 }
 
 void EnemyManager::Update()
@@ -101,8 +106,12 @@ void EnemyManager::LoadEnemies(const std::vector<uint16_t>& objectData, Size siz
 			case ObjectData::JumpEnemy:
 				_pEnemies.push_back(std::make_shared<JumpEnemy>(pos, _pPlayer, _jumpEnemyH));
 				break;
+			case ObjectData::DroneEnemy:
+				_pEnemies.push_back(std::make_shared<DroneEnemy>(pos, _pPlayer, _droneEnemyH));
+				break;
 			case ObjectData::BossEnemy1:
 				_pEnemies.push_back(std::make_shared<Boss>(_pPlayer, _pCamera, _pGimmickManager->AddBossLaser(), _walkEnemyH));
+				break;
 			default:
 				break;
 			}

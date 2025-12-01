@@ -1,5 +1,13 @@
 #pragma once
 #include "Enemy.h"
+
+enum class DroneEnemyState
+{
+    Search,
+    Attack,
+    Return
+};
+
 class DroneEnemy :
     public Enemy
 {
@@ -12,4 +20,7 @@ public:
     void Draw(Vector2 offset) override;
 private:
     int _handle = -1;
+    int _frame = 0;
+    float _firstPosY;
+    DroneEnemyState _state = DroneEnemyState::Search;
 };

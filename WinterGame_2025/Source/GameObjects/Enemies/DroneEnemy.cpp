@@ -1,9 +1,43 @@
 #include "DroneEnemy.h"
+#include "../../Utility/BoxCollider.h"
+#include "../Player.h"
+#include "Dxlib.h"
+
+namespace
+{
+	constexpr int kGraphWidth = 32;
+	constexpr int kGraphHeight = 16;
+	const Vector2 kGraphSize = Vector2(kGraphWidth, kGraphHeight);
+	constexpr int kAnimNum = 4;
+	constexpr int kOneAnimFrame = 6;
+	constexpr float kDrawScale = 3.0f;
+
+	constexpr int kColliderWidth = 25 * 3;
+	constexpr int kColliderHeight = 13 * 3;
+
+	constexpr float kMoveSpeed = 1.5f;
+
+	constexpr float kAttackLength = 500.0f;
+
+	constexpr int kAttackCoolTime = 180;
+	constexpr float kAttackMoveSpeed = 7.0f;
+	constexpr int kAttackTime = 60;
+	constexpr float kReturnAccelY = 0.3f;
+	constexpr float kReturnAccelX = 0.5f;
+	constexpr float kMinReturnSpeedX = 5.0f;
+	constexpr float kReturnRange = 20.0f;
+}
 
 DroneEnemy::DroneEnemy(Vector2 firstPos, std::shared_ptr<Player> pPlayer, int handle):
 	Enemy(2,pPlayer),
-	_handle(handle)
+	_handle(handle),
+	_frame(kAttackCoolTime)
 {
+	_nowAnim.Init(_handle, 0, kGraphSize, kAnimNum, kOneAnimFrame, kDrawScale);
+	_pos = ChipPosToGamePos(firstPos);
+	_firstPosY = _pos.y;
+
+	_pCollider = std::make_shared<BoxCollider>(_pos, Vector2(kColliderWidth, kColliderHeight));
 }
 
 DroneEnemy::~DroneEnemy()
@@ -16,8 +50,71 @@ void DroneEnemy::Init()
 
 void DroneEnemy::Update(Map& map)
 {
+	auto dist = _pPlayer->GetPos() - _pos;
+
+	if (_frame < kAttackCoolTime)
+	{
+		_frame++;
+	}
+	if (_state == DroneEnemyState::Search)
+	{
+		// プレイヤーの方へ進む
+		dist.x < 0 ? _vel.x = -kMoveSpeed : _vel.x = kMoveSpeed;
+		_vel.y = 0.0f;
+		// プレイヤーが一定範囲内に入る、かつクールタイムが経過していたら攻撃する
+		if (dist.Length() < kAttackLength && _frame >= kAttackCoolTime)
+		{
+			_state = DroneEnemyState::Attack;
+			_vel = dist.Normalized() * kAttackMoveSpeed;	// プレイヤーに向かって突進
+			_frame = 0;	// カウンターをリセット
+		}
+	}
+	else if (_state == DroneEnemyState::Attack)
+	{
+		// kAttackTime経過したら既定の位置に戻る
+		if (_frame > kAttackTime)
+		{
+			_state = DroneEnemyState::Return;
+		}
+	}
+	else if (_state == DroneEnemyState::Return)
+	{
+		_frame = kAttackTime;	// カウンターを固定
+		_pos.y - _firstPosY < 0 ? _vel.y += kReturnAccelY : _vel.y -= kReturnAccelY;	// 既定の高さに近づくように加速する
+		if (_vel.x < -kMinReturnSpeedX)	// 最低速度を下回らないように減速
+		{
+			_vel.x += kReturnAccelX;
+		}
+		if (_vel.x > kMinReturnSpeedX)
+		{
+			_vel.x -= kReturnAccelX;
+		}
+		// 既定の高さの範囲に入ったら捜索状態に戻る
+		if (abs(_pos.y - _firstPosY) < kReturnRange)
+		{
+			_state = DroneEnemyState::Search;
+			_vel.y = 0.0f;
+		}
+	}
+
+	_pos += _vel;
+	_pCollider->SetPos(_pos);
+
+	// プレイヤーに当たったらダメージを与える
+	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
+	{
+		_pPlayer->TakeDamage();
+	}
+
+	_nowAnim.Update();
 }
 
 void DroneEnemy::Draw(Vector2 offset)
 {
+	_nowAnim.Draw(_pos - offset, false);
+#ifdef _DEBUG
+	_pCollider->Draw(offset);
+	DrawFormatString(_pos.x - offset.x, _pos.y - offset.y - 50, 0xffffff, "%d", _frame);
+	DrawCircle(_pos.x - offset.x, _pos.y - offset.y, kAttackLength, 0x0000ff, false);
+#endif
 }

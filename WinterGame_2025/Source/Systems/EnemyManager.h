@@ -9,14 +9,6 @@ class Camera;
 class GimmickManager;
 class Enemy;
 
-enum class EnemyType
-{
-	Walk,
-	Fly,
-	Jump,
-	Boss,
-};
-
 /// <summary>
 /// 敵の出現、削除などを管理するクラス
 /// </summary>
@@ -42,6 +34,7 @@ private:
 	int _walkEnemyH = -1;
 	int _flyEnemyH = -1;
 	int _jumpEnemyH = -1;
+	int _droneEnemyH = -1;
 
 	std::shared_ptr<Player> _pPlayer;
 	std::shared_ptr<Map> _pMap;
