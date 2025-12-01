@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\GameObjects\Enemies\DroneEnemy.cpp" />
     <ClCompile Include="Source\Systems\ItemManager.cpp" />
     <ClCompile Include="Source\Systems\GimmickManager.cpp" />
     <ClCompile Include="Source\Systems\Bg.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="Source\Systems\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\GameObjects\Enemies\DroneEnemy.h" />
     <ClInclude Include="Source\Systems\ItemManager.h" />
     <ClInclude Include="Source\Systems\GimmickManager.h" />
     <ClInclude Include="Source\Systems\Bg.h" />

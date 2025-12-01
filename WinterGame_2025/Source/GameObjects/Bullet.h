@@ -26,12 +26,8 @@ public:
 
 	void SetContext(std::vector<std::shared_ptr<Enemy>> pEnemys);
 
-	void SetIsTurn(bool isTurn) { _isTurn = isTurn; }
-
-	void SetAlive(bool isAlive) { _isAlive = isAlive; }
 	bool GetAlive() const { return _isAlive; }
 
-	void SetType(BulletType type) { _type = type; }
 	BulletType GetType() const { return _type; }
 private:
 	void Hit();
