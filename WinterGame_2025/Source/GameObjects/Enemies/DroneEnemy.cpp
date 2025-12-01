@@ -5,6 +5,7 @@
 
 namespace
 {
+	// 描画関連
 	constexpr int kGraphWidth = 32;
 	constexpr int kGraphHeight = 16;
 	const Vector2 kGraphSize = Vector2(kGraphWidth, kGraphHeight);
@@ -12,20 +13,23 @@ namespace
 	constexpr int kOneAnimFrame = 6;
 	constexpr float kDrawScale = 3.0f;
 
+	// 当たり判定
 	constexpr int kColliderWidth = 25 * 3;
 	constexpr int kColliderHeight = 13 * 3;
 
+	// 捜索状態時の移動速度
 	constexpr float kMoveSpeed = 1.5f;
+	constexpr float kAttackLength = 500.0f;	// プレイヤーを見つける距離
 
-	constexpr float kAttackLength = 500.0f;
+	// 攻撃のクールタイム(60から数え始めるので実質120)
+	constexpr int kAttackCoolTime = 60 + 120;
+	constexpr float kAttackMoveSpeed = 7.0f;	// 攻撃状態の突進の速度
+	constexpr int kAttackTime = 60;		// 突進を続ける時間
 
-	constexpr int kAttackCoolTime = 180;
-	constexpr float kAttackMoveSpeed = 7.0f;
-	constexpr int kAttackTime = 60;
-	constexpr float kReturnAccelY = 0.3f;
-	constexpr float kReturnAccelX = 0.5f;
-	constexpr float kMinReturnSpeedX = 5.0f;
-	constexpr float kReturnRange = 20.0f;
+	constexpr float kReturnAccelY = 0.3f;	// 元の位置に戻るときの加速度
+	constexpr float kReturnAccelX = 0.5f;	// 元の位置に戻るときの加速度
+	constexpr float kMinReturnSpeedX = 5.0f;	// 元の位置に戻るときのX最低速度
+	constexpr float kReturnRange = 20.0f;	// 元の位置だと判定する範囲(この範囲に入ると捜索状態に戻る)
 }
 
 DroneEnemy::DroneEnemy(Vector2 firstPos, std::shared_ptr<Player> pPlayer, int handle):
