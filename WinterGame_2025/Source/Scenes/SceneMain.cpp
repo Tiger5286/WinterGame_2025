@@ -318,6 +318,7 @@ void SceneMain::LoadStage(Stages stage)
 	// 背景
 	_pBg = std::make_shared<Bg>(_graphHandles[static_cast<int>(Graphs::Bg)], _graphHandles[static_cast<int>(Graphs::SubBg)]);
 
+	// 各Managerの生成
 	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera);
 	_pGimmickManager = std::make_shared<GimmickManager>(_pPlayer);
 	_pItemManager = std::make_shared<ItemManager>(_pPlayer);
@@ -326,91 +327,97 @@ void SceneMain::LoadStage(Stages stage)
 	_pStage = std::make_shared<Stage>();
 	switch (stage)
 	{
+	case Stages::Temp:
+		_pStage->LoadData("data/Stages/TempStage.fmf");
+		break;
 	case Stages::Tutorial:
 		_pStage->LoadData("data/Stages/TutorialStage.fmf");
-		_pMap->SetMapData(_pStage->GetMapData(), _pStage->GetMapSize());
 		break;
 	default:
 		break;
 	}
+	// マップデータを設定
+	_pMap->SetMapData(_pStage->GetMapData(), _pStage->GetMapSize());
 
-	switch (stage)
-	{
-	case Stages::Temp:
-		//printfDx("Stages::Tempがロードされました\n");
+	// プレイヤーの位置を設定
+	_pPlayer->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());
 
-		_pPlayer->SetPosFromChipPos({ 3,19 });
+	// 敵の生成
+	_pEnemyManager->LoadEnemies(_pStage->GetObjectData(), _pStage->GetMapSize());
 
-		_pMap->LoadMapData("data/Map/TempMap.csv");
+	// ゴール旗を生成
+	_pClearFlag = std::make_shared<ClearFlag>(Vector2(166, 22), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
+	_pClearFlag->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());
 
-		_pClearFlag = std::make_shared<ClearFlag>(Vector2(68, 18), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
+	// ギミックの生成
+	_pGimmickManager->LoadGimmicks(_pStage->GetObjectData(), _pStage->GetMapSize());
 
-		_pItems.push_back(std::make_shared<Item>(Vector2(17, 17), ItemType::Coin, _pPlayer, _graphHandles[static_cast<int>(Graphs::Coin)]));
-		_pItems.push_back(std::make_shared<Item>(Vector2(19, 17), ItemType::BigCoin, _pPlayer, _graphHandles[static_cast<int>(Graphs::BigCoin)]));
-		_pItems.push_back(std::make_shared<Item>(Vector2(21, 17), ItemType::HealthItem, _pPlayer, _graphHandles[static_cast<int>(Graphs::HealthItem)]));
+	// アイテムの生成
+	_pItemManager->LoadItems(_pStage->GetObjectData(), _pStage->GetMapSize());
 
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(11, 12), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 4, false));
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(12, 12), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 7));
-
-		break;
-	case Stages::Tutorial: // ------------------------------------------------------------------------------------------チュートリアル
-		// プレイヤーの位置を設定
-		//_pPlayer->SetPosFromChipPos({ 3 ,36});
-		_pPlayer->Spawn(_pStage->GetObjectData(), _pStage->GetMapSize());
-		
-		// 敵の生成
-		_pEnemyManager->LoadEnemies(_pStage->GetObjectData(), _pStage->GetMapSize());
-
-		// ゴール旗を生成
-		_pClearFlag = std::make_shared<ClearFlag>(Vector2(166,22), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
-
-		// ギミックの生成
-		_pGimmickManager->LoadGimmicks(_pStage->GetObjectData(), _pStage->GetMapSize());
-
-		// アイテムの生成
-		_pItemManager->LoadItems(_pStage->GetObjectData(), _pStage->GetMapSize());
-
-#ifdef _DEBUG
-		//printfDx("Stages::Tutorialがロードされました\n");
-#endif
-		break;
-	case Stages::Stage1: // ------------------------------------------------------------------------------------------ステージ1
-		_pPlayer->SetPosFromChipPos({ 3 ,36  });
-
-		_pMap->LoadMapData("data/Map/Stage1Map.csv");
-
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(63, 32), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 4));
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(124, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 5));
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(135, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 5));
-
-#ifdef _DEBUG
-		//printfDx("Stages::Stage1がロードされました\n");
-#endif
-		break;
-	case Stages::Stage2: // ------------------------------------------------------------------------------------------ステージ2
-		_pPlayer->SetPosFromChipPos({ 3,19 });
-
-		_pMap->LoadMapData("data/Map/TempMap.csv");
-
-#ifdef _DEBUG
-		//printfDx("Stages::Stage2がロードされました\n");
-#endif
-		break;
-	case Stages::Boss: // ------------------------------------------------------------------------------------------ボスステージ
-		_pPlayer->SetPosFromChipPos({ 3,19 });
-
-		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(-1, -1), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 14, false));
-		//_pEnemies.push_back(std::make_shared<Boss>(_pPlayer, _pCamera, _pGimmicks[0], _graphHandles[static_cast<int>(Graphs::WalkEnemy)]));
-
-		_pBossHPUI = std::make_shared<BossHPUI>(_graphHandles[static_cast<int>(Graphs::BossHpUI)], _pEnemyManager->GetEnemies().back()->GetHp());
-
-		_pMap->LoadMapData("data/Map/BossStage.csv");
-
-#ifdef _DEBUG
-		//printfDx("Stages::Bossがロードされました\n");
-#endif
-		break;
-	}
+//	switch (stage)
+//	{
+//	case Stages::Temp:
+//		//printfDx("Stages::Tempがロードされました\n");
+//
+//		_pPlayer->SetPosFromChipPos({ 3,19 });
+//
+//		_pMap->LoadMapData("data/Map/TempMap.csv");
+//
+//		_pClearFlag = std::make_shared<ClearFlag>(Vector2(68, 18), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
+//
+//		_pItems.push_back(std::make_shared<Item>(Vector2(17, 17), ItemType::Coin, _pPlayer, _graphHandles[static_cast<int>(Graphs::Coin)]));
+//		_pItems.push_back(std::make_shared<Item>(Vector2(19, 17), ItemType::BigCoin, _pPlayer, _graphHandles[static_cast<int>(Graphs::BigCoin)]));
+//		_pItems.push_back(std::make_shared<Item>(Vector2(21, 17), ItemType::HealthItem, _pPlayer, _graphHandles[static_cast<int>(Graphs::HealthItem)]));
+//
+//		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(11, 12), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 4, false));
+//		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(12, 12), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 7));
+//
+//		break;
+//	case Stages::Tutorial: // ------------------------------------------------------------------------------------------チュートリアル
+//
+//
+//#ifdef _DEBUG
+//		//printfDx("Stages::Tutorialがロードされました\n");
+//#endif
+//		break;
+//	case Stages::Stage1: // ------------------------------------------------------------------------------------------ステージ1
+//		_pPlayer->SetPosFromChipPos({ 3 ,36  });
+//
+//		_pMap->LoadMapData("data/Map/Stage1Map.csv");
+//
+//		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(63, 32), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 4));
+//		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(124, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 5));
+//		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(135, 31), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 5));
+//
+//#ifdef _DEBUG
+//		//printfDx("Stages::Stage1がロードされました\n");
+//#endif
+//		break;
+//	case Stages::Stage2: // ------------------------------------------------------------------------------------------ステージ2
+//		_pPlayer->SetPosFromChipPos({ 3,19 });
+//
+//		_pMap->LoadMapData("data/Map/TempMap.csv");
+//
+//#ifdef _DEBUG
+//		//printfDx("Stages::Stage2がロードされました\n");
+//#endif
+//		break;
+//	case Stages::Boss: // ------------------------------------------------------------------------------------------ボスステージ
+//		_pPlayer->SetPosFromChipPos({ 3,19 });
+//
+//		_pGimmicks.push_back(std::make_shared<Laser>(Vector2(-1, -1), _pPlayer, _graphHandles[static_cast<int>(Graphs::Laser)], 14, false));
+//		//_pEnemies.push_back(std::make_shared<Boss>(_pPlayer, _pCamera, _pGimmicks[0], _graphHandles[static_cast<int>(Graphs::WalkEnemy)]));
+//
+//		_pBossHPUI = std::make_shared<BossHPUI>(_graphHandles[static_cast<int>(Graphs::BossHpUI)], _pEnemyManager->GetEnemies().back()->GetHp());
+//
+//		_pMap->LoadMapData("data/Map/BossStage.csv");
+//
+//#ifdef _DEBUG
+//		//printfDx("Stages::Bossがロードされました\n");
+//#endif
+//		break;
+//	}
 
 	// カメラの初期設定(ステージサイズなどをセットする必要があるため、最後に行う)
 	_pCamera->SetStageSize(_pMap->GetStageSize());
