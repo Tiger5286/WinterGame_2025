@@ -31,3 +31,21 @@ void ClearFlag::Draw(Vector2 cameraOffset)
 	_pCollider->Draw(cameraOffset);
 #endif // _DEBUG
 }
+
+void ClearFlag::InitPosFromStage(std::vector<uint16_t>& objectData, Size mapSize)
+{
+	for (int w = 0; w < mapSize.w; w++)
+	{
+		for (int h = 0; h < mapSize.h; h++)
+		{
+			int index = h * mapSize.w + w;
+			auto data = static_cast<ObjectData>(objectData[index]);
+			if (data == ObjectData::ClearFlag)
+			{
+				_pos = ChipPosToGamePos(Vector2(w, h));
+				_pCollider->SetPos(_pos);
+				return;
+			}
+		}
+	}
+}
