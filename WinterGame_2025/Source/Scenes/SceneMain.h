@@ -64,16 +64,15 @@ private:
 
 	/*オブジェクト*/
 	std::shared_ptr<Player> _pPlayer;	// プレイヤー
-	//std::vector<std::shared_ptr<Bullet>> _pBullets;	// 弾
 	std::shared_ptr<ClearFlag> _pClearFlag;	// ゴール旗
 	std::shared_ptr<Map> _pMap;	// マップ
 	std::shared_ptr<Camera> _pCamera;	// カメラ
 	/*UIオブジェクト*/
 	std::shared_ptr<HPUI> _pHPUI;
 	std::shared_ptr<BossHPUI> _pBossHPUI;
-
+	// 背景オブジェクト
 	std::shared_ptr<Bg> _pBg;
-
+	// 各種Manager
 	std::shared_ptr<EnemyManager> _pEnemyManager;
 	std::shared_ptr<GimmickManager> _pGimmickManager;
 	std::shared_ptr<ItemManager> _pItemManager;

@@ -211,6 +211,7 @@ void Player::Update(Map& map)
 	if (_hp <= 0)
 	{
 		_isCanControll = false;
+		_pCollider->SetIsEnabled(false);
 		if (_nowAnim.GetIsEnd())
 		{
 			// ‚±‚±‚É€‚ñ‚¾‚Æ‚«‚Ìˆ—‚ğ‘‚­
