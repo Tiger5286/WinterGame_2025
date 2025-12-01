@@ -50,15 +50,8 @@ namespace
 		PlayerShot,
 		ChargeShot,
 		ChargeParticle,
-		WalkEnemy,
-		FlyEnemy,
-		JumpEnemy,
 		MapChip,
 		ClearFlag,
-		Laser,
-		Coin,
-		BigCoin,
-		HealthItem,
 		HpUI,
 		BossHpUI,
 		Bg,
@@ -75,15 +68,8 @@ namespace
 		"data/Player/Shot.png",
 		"data/Player/ChargeShot.png",
 		"data/Player/ChargeParticle.png",
-		"data/Enemys/WalkEnemy.png",
-		"data/Enemys/FlyEnemy.png",
-		"data/Enemys/JumpEnemy.png",
 		"data/Map/MapChip.png",
 		"data/ClearFlag.png",
-		"data/Gimmicks/Laser.png",
-		"data/Items/Coin.png",
-		"data/Items/BigCoin.png",
-		"data/Items/HealthItem.png",
 		"data/UI/HpBar.png",
 		"data/UI/BossHpBar.png",
 		"data/Map/Bg.png",
@@ -181,23 +167,6 @@ void SceneMain::Update(Input& input)
 	}
 
 	// アイテム制御
-	//for (auto& item : _pItems)
-	//{
-	//	if (item != nullptr)
-	//	{
-	//		item->Update(*_pMap);
-	//		if (!item->GetIsAlive())
-	//		{	// 取られたアイテムをvectorから削除する(あんま意味わからん)
-	//			_pItems.erase(
-	//				std::remove_if(_pItems.begin(), _pItems.end(),
-	//					[](const std::shared_ptr<Item>& item) {
-	//						return !item->GetIsAlive();
-	//					}),
-	//				_pItems.end()
-	//			);
-	//		}
-	//	}
-	//}
 	_pItemManager->Update();
 
 	// HPUI更新
@@ -269,10 +238,6 @@ void SceneMain::Draw()
 	}
 
 	// アイテムの描画
-	//for (auto& item : _pItems)
-	//{
-	//	item->Draw(_pCamera->GetDrawOffset());
-	//}
 	_pItemManager->Draw(_pCamera->GetDrawOffset());
 
 	// ゴール旗の描画
@@ -319,9 +284,9 @@ void SceneMain::LoadStage(Stages stage)
 	_pBg = std::make_shared<Bg>(_graphHandles[static_cast<int>(Graphs::Bg)], _graphHandles[static_cast<int>(Graphs::SubBg)]);
 
 	// 各Managerの生成
-	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera);
 	_pGimmickManager = std::make_shared<GimmickManager>(_pPlayer);
 	_pItemManager = std::make_shared<ItemManager>(_pPlayer);
+	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera,_pGimmickManager);
 
 	/*ステージデータのロード*/
 	_pStage = std::make_shared<Stage>();
@@ -332,6 +297,15 @@ void SceneMain::LoadStage(Stages stage)
 		break;
 	case Stages::Tutorial:
 		_pStage->LoadData("data/Stages/TutorialStage.fmf");
+		break;
+	case Stages::Stage1:
+		_pStage->LoadData("data/Stages/template.fmf");
+		break;
+	case Stages::Stage2:
+		_pStage->LoadData("data/Stages/template.fmf");
+		break;
+	case Stages::Boss:
+		_pStage->LoadData("data/Stages/BossStage.fmf");
 		break;
 	default:
 		break;
@@ -344,9 +318,14 @@ void SceneMain::LoadStage(Stages stage)
 
 	// 敵の生成
 	_pEnemyManager->LoadEnemies(_pStage->GetObjectData(), _pStage->GetMapSize());
+	// ボスステージならボスHPUIの生成
+	if (stage == Stages::Boss)
+	{
+		_pBossHPUI = std::make_shared<BossHPUI>(_graphHandles[static_cast<int>(Graphs::BossHpUI)], _pEnemyManager->GetEnemies().back()->GetHp());
+	}
 
 	// ゴール旗を生成
-	_pClearFlag = std::make_shared<ClearFlag>(Vector2(166, 22), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
+	_pClearFlag = std::make_shared<ClearFlag>(Vector2(-10,-10), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
 	_pClearFlag->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());
 
 	// ギミックの生成
@@ -428,49 +407,4 @@ void SceneMain::StageClear()
 {
 	_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
 	return;
-}
-
-void SceneMain::LoadAllGraphs()
-{
-	// 画像をロード
-#if false
-	_graphHandles.push_back(LoadGraph("data/Player/Player.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Player/PlayerWhite.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Player/Shot.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Player/ChargeShot.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Player/ChargeParticle.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Enemys/WalkEnemy.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Enemys/FlyEnemy.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Enemys/JumpEnemy.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Map/MapChip.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/ClearFlag.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Gimmicks/Laser.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Items/Coin.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Items/BigCoin.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Items/HealthItem.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/UI/HpBar.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/UI/BossHpBar.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Map/Bg.png"));
-	assert(_graphHandles.back() != -1);
-	_graphHandles.push_back(LoadGraph("data/Map/subBg.png"));
-	assert(_graphHandles.back() != -1);
-#else
-
-#endif
 }

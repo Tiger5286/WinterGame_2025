@@ -64,4 +64,6 @@ enum class ObjectData : int
 	FlyEnemyIdle,
 	FlyEnemyMove,
 	JumpEnemy,
+
+	BossEnemy1 = 56,
 };

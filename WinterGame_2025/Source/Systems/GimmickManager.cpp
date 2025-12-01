@@ -56,3 +56,9 @@ void GimmickManager::LoadGimmicks(const std::vector<uint16_t>& objectData, Size 
 		}
 	}
 }
+
+std::shared_ptr<Gimmick> GimmickManager::AddBossLaser()
+{
+	_pGimmicks.push_back(std::make_shared<Laser>(Vector2(-1,-1), _pPlayer, _laserH, 14, false));
+	return _pGimmicks.back();
+}

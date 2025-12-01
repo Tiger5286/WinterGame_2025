@@ -6,7 +6,16 @@
 class Player;
 class Map;
 class Camera;
+class GimmickManager;
 class Enemy;
+
+enum class EnemyType
+{
+	Walk,
+	Fly,
+	Jump,
+	Boss,
+};
 
 /// <summary>
 /// 敵の出現、削除などを管理するクラス
@@ -14,14 +23,14 @@ class Enemy;
 class EnemyManager
 {
 public:
-	EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map> pMap, std::shared_ptr<Camera> pCamera);
+	EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map> pMap, std::shared_ptr<Camera> pCamera, std::shared_ptr<GimmickManager> pGimmickManager);
 	~EnemyManager();
 
 	void Update();
 	void Draw();
 
 	/// <summary>
-	/// 設定された位置に敵を出現させる
+	/// ステージデータをもとに敵を生成する
 	/// </summary>
 	/// <param name="objectData">オブジェクトデータの配列</param>
 	/// <param name="size">マップサイズ</param>
@@ -37,5 +46,6 @@ private:
 	std::shared_ptr<Player> _pPlayer;
 	std::shared_ptr<Map> _pMap;
 	std::shared_ptr<Camera> _pCamera;
+	std::shared_ptr<GimmickManager> _pGimmickManager;
 	std::vector<std::shared_ptr<Enemy>> _pEnemies;
 };

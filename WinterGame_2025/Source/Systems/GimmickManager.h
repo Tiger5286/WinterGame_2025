@@ -24,6 +24,12 @@ public:
 	/// <param name="size">マップのサイズ</param>
 	void LoadGimmicks(const std::vector<uint16_t>& objectData, Size size);
 
+	/// <summary>
+	/// ボス用のレーザを追加する
+	/// </summary>
+	/// <returns>追加したレーザーのポインタ</returns>
+	std::shared_ptr<Gimmick> AddBossLaser();
+
 private:
 	int _laserH = -1;
 

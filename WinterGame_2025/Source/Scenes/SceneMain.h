@@ -57,9 +57,6 @@ public:
 	void StageClear();
 
 private:
-	void LoadAllGraphs();
-
-private:
 	/*画像ハンドル*/
 	std::vector<int> _graphHandles;
 
@@ -72,8 +69,6 @@ private:
 	/*オブジェクト*/
 	std::shared_ptr<Player> _pPlayer;	// プレイヤー
 	std::vector<std::shared_ptr<Bullet>> _pBullets;	// 弾
-	std::vector<std::shared_ptr<Item>> _pItems;	// アイテム
-	std::vector<std::shared_ptr<Gimmick>> _pGimmicks;	// ギミック
 	std::shared_ptr<ClearFlag> _pClearFlag;	// ゴール旗
 	std::shared_ptr<Map> _pMap;	// マップ
 	std::shared_ptr<Camera> _pCamera;	// カメラ

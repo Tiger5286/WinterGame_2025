@@ -3,16 +3,19 @@
 #include "Dxlib.h"
 #include <cassert>
 
-#include "../Systems/Camera.h"
+#include "Camera.h"
+#include "GimmickManager.h"
 
 #include "../GameObjects/Enemies/WalkEnemy.h"
 #include "../GameObjects/Enemies/FlyEnemy.h"
 #include "../GameObjects/Enemies/JumpEnemy.h"
+#include "../GameObjects/Enemies/Boss.h"
 
-EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map> pMap, std::shared_ptr<Camera> pCamera):
+EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map> pMap, std::shared_ptr<Camera> pCamera, std::shared_ptr<GimmickManager> pGimmickManager):
 	_pPlayer(pPlayer),
 	_pMap(pMap),
-	_pCamera(pCamera)
+	_pCamera(pCamera),
+	_pGimmickManager(pGimmickManager)
 {
 	_walkEnemyH = LoadGraph("data/Enemys/WalkEnemy.png");
 	assert(_walkEnemyH != -1);
@@ -98,6 +101,8 @@ void EnemyManager::LoadEnemies(const std::vector<uint16_t>& objectData, Size siz
 			case ObjectData::JumpEnemy:
 				_pEnemies.push_back(std::make_shared<JumpEnemy>(pos, _pPlayer, _jumpEnemyH));
 				break;
+			case ObjectData::BossEnemy1:
+				_pEnemies.push_back(std::make_shared<Boss>(_pPlayer, _pCamera, _pGimmickManager->AddBossLaser(), _walkEnemyH));
 			default:
 				break;
 			}
