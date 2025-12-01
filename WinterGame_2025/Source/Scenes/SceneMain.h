@@ -11,11 +11,6 @@ class Input;
 class Player;
 class Bullet;
 
-class Item;
-
-class Enemy;
-class Gimmick;
-
 class ClearFlag;
 
 class Map;
