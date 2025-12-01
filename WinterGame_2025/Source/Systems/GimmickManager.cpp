@@ -14,6 +14,7 @@ GimmickManager::GimmickManager(std::shared_ptr<Player> pPlayer):
 
 GimmickManager::~GimmickManager()
 {
+	DeleteGraph(_laserH);
 }
 
 void GimmickManager::Update()

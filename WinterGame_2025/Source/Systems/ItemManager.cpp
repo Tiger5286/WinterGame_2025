@@ -18,6 +18,9 @@ ItemManager::ItemManager(std::shared_ptr<Player> pPlayer):
 
 ItemManager::~ItemManager()
 {
+	DeleteGraph(_coinH);
+	DeleteGraph(_bigCoinH);
+	DeleteGraph(_healthItemH);
 }
 
 void ItemManager::Update()

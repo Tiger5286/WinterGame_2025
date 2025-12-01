@@ -24,6 +24,9 @@ EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map>
 
 EnemyManager::~EnemyManager()
 {
+	DeleteGraph(_walkEnemyH);
+	DeleteGraph(_flyEnemyH);
+	DeleteGraph(_jumpEnemyH);
 }
 
 void EnemyManager::Update()
