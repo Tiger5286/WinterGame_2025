@@ -161,8 +161,8 @@ void SceneMain::Update(Input& input)
 	{
 		if (bullet->GetAlive())
 		{
-			bullet->SetContext(_pEnemyManager->GetEnemies());
-			bullet->Update(*_pMap,_pCamera->GetPos());
+			//bullet->SetContext(_pEnemyManager->GetEnemies());
+			bullet->Update(*_pMap,_pCamera->GetPos(), _pEnemyManager->GetEnemies());
 		}
 	}
 

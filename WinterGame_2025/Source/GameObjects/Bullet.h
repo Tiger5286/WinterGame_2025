@@ -19,12 +19,12 @@ public:
 
 	void Init() override;
 	void Update(Map& map) override;
-	void Update(Map& map, Vector2 cameraPos);
+	void Update(Map& map, Vector2 cameraPos, std::vector<std::shared_ptr<Enemy>> pEnemys);
 	void Draw(Vector2 offset) override;
 
 	void Shot(BulletType type, Vector2 shotPos, bool isTurn);
 
-	void SetContext(std::vector<std::shared_ptr<Enemy>> pEnemys);
+	//void SetContext(std::vector<std::shared_ptr<Enemy>> pEnemys);
 
 	bool GetAlive() const { return _isAlive; }
 

@@ -52,7 +52,7 @@ void Bullet::Update(Map& map)
 	printfDx("Bullet::Update(Map& map)が呼ばれました。Bullet::Update(Map& map, Vector2 cameraPos)を使用してください。\n");
 }
 
-void Bullet::Update(Map& map,Vector2 cameraPos)
+void Bullet::Update(Map& map,Vector2 cameraPos, std::vector<std::shared_ptr<Enemy>> pEnemys)
 {
 	if (_isTurn)
 	{
@@ -84,7 +84,7 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 	}
 
 	// 弾と敵の当たり判定
-	for (auto& enemy : _pEnemys)
+	for (auto& enemy : pEnemys)
 	{
 		if (_pCollider->CheckCollision(enemy->GetCollider()))	// 敵と当たっているかチェック
 		{
@@ -110,7 +110,7 @@ void Bullet::Update(Map& map,Vector2 cameraPos)
 	}
 
 	if (_isImpact && _nowAnim.GetIsEnd())
-	{	// インパクトアニメが終わったら消す
+	{	// 衝突アニメーションが終わったら消す
 		_isAlive = false;
 	}
 
@@ -147,10 +147,10 @@ void Bullet::Shot(BulletType type, Vector2 shotPos, bool isTurn)
 	}
 }
 
-void Bullet::SetContext(std::vector<std::shared_ptr<Enemy>> pEnemys)
-{
-	_pEnemys = pEnemys;
-}
+//void Bullet::SetContext(std::vector<std::shared_ptr<Enemy>> pEnemys)
+//{
+//	_pEnemys = pEnemys;
+//}
 
 void Bullet::Hit()
 {
