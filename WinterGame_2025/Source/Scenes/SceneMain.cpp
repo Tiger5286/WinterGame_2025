@@ -37,10 +37,11 @@
 #include "../Systems/EnemyManager.h"
 #include "../Systems/GimmickManager.h"
 #include "../Systems/ItemManager.h"
+#include "../Systems/BulletManager.h"
 
 namespace
 {
-	constexpr int kBulletNum = 15;
+	constexpr int kBulletNum = 0;
 
 	// 画像リスト
 	enum class Graphs
@@ -165,6 +166,7 @@ void SceneMain::Update(Input& input)
 			bullet->Update(*_pMap,_pCamera->GetPos(), _pEnemyManager->GetEnemies());
 		}
 	}
+	_pBulletManager->Update(*_pMap, _pCamera->GetPos(), _pEnemyManager->GetEnemies());
 
 	// アイテム制御
 	_pItemManager->Update();
@@ -231,11 +233,13 @@ void SceneMain::Draw()
 
 	// プレイヤーの描画
 	_pPlayer->Draw(_pCamera->GetDrawOffset());
+
 	// 弾の描画
 	for (auto& bullet : _pBullets)
 	{
 		bullet->Draw(_pCamera->GetDrawOffset());
 	}
+	_pBulletManager->Draw(_pCamera->GetDrawOffset());
 
 	// アイテムの描画
 	_pItemManager->Draw(_pCamera->GetDrawOffset());
@@ -246,6 +250,7 @@ void SceneMain::Draw()
 		_pClearFlag->Draw(_pCamera->GetDrawOffset());
 	}
 
+	// UIの描画
 	_pHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(), _pEnemyManager->GetEnemies());
 	if (_pBossHPUI != nullptr)
 	{
@@ -294,6 +299,7 @@ void SceneMain::LoadStage(Stages stage)
 	{
 		bullet = std::make_shared<Bullet>(_graphHandles[static_cast<int>(Graphs::PlayerShot)], _graphHandles[static_cast<int>(Graphs::ChargeShot)]);
 	}
+	_pBulletManager = std::make_shared<BulletManager>();
 
 	// マップ
 	_pMap = std::make_shared<Map>(_graphHandles[static_cast<int>(Graphs::MapChip)]);
