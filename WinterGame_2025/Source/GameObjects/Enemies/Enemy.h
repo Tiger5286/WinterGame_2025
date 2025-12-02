@@ -16,7 +16,7 @@ public:
 
 	void SetHp(int hp) { _hp = hp; }
 	int GetHp() const { return _hp; }
-	void OnDamage(int damage);
+	void TakeDamage(int damage);
 	bool GetIsAlive() const;
 	void SetIsHitChargeShot(bool isHit) { _isHitChargeShot = isHit; }
 	bool GetIsHitChargeShot()const { return _isHitChargeShot; }

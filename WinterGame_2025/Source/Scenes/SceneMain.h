@@ -27,6 +27,7 @@ class EnemyManager;
 class GimmickManager;
 class ItemManager;
 class BulletManager;
+class EffectManager;
 
 // どのステージかを表す列挙体
 enum class Stages
@@ -77,5 +78,6 @@ private:
 	std::shared_ptr<GimmickManager> _pGimmickManager;
 	std::shared_ptr<ItemManager> _pItemManager;
 	std::shared_ptr<BulletManager> _pBulletManager;
+	std::shared_ptr<EffectManager> _pEffectManager;
 };
 

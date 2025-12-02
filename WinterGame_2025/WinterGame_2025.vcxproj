@@ -139,6 +139,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Systems\EffectManager.cpp" />
+    <ClCompile Include="Source\GameObjects\Effects\Explosion.cpp" />
+    <ClCompile Include="Source\GameObjects\Effects\Effect.cpp" />
     <ClCompile Include="Source\Scenes\ScenePause.cpp" />
     <ClCompile Include="Source\Systems\BulletManager.cpp" />
     <ClCompile Include="Source\GameObjects\Enemies\DroneEnemy.cpp" />
@@ -182,6 +185,9 @@
     <ClCompile Include="Source\Systems\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Systems\EffectManager.h" />
+    <ClInclude Include="Source\GameObjects\Effects\Explosion.h" />
+    <ClInclude Include="Source\GameObjects\Effects\Effect.h" />
     <ClInclude Include="Source\Scenes\ScenePause.h" />
     <ClInclude Include="Source\Systems\BulletManager.h" />
     <ClInclude Include="Source\GameObjects\Enemies\DroneEnemy.h" />

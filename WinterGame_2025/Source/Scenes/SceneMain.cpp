@@ -40,6 +40,7 @@
 #include "../Systems/GimmickManager.h"
 #include "../Systems/ItemManager.h"
 #include "../Systems/BulletManager.h"
+#include "../Systems/EffectManager.h"
 
 namespace
 {
@@ -167,6 +168,8 @@ void SceneMain::Update(Input& input)
 	// アイテム制御
 	_pItemManager->Update();
 
+	_pEffectManager->Update();
+
 	// HPUI更新
 	_pHPUI->Update(_pPlayer->GetHp());
 	if (_pBossHPUI != nullptr)
@@ -236,6 +239,8 @@ void SceneMain::Draw()
 	// アイテムの描画
 	_pItemManager->Draw(_pCamera->GetDrawOffset());
 
+	_pEffectManager->Draw(_pCamera->GetDrawOffset());
+
 	// ゴール旗の描画
 	if (_pClearFlag != nullptr)
 	{
@@ -282,6 +287,8 @@ void SceneMain::LoadStage(Stages stage)
 
 	// オブジェクトの生成、初期化
 	
+	_pEffectManager = std::make_shared<EffectManager>();
+
 	// 弾
 	_pBulletManager = std::make_shared<BulletManager>();
 
