@@ -59,6 +59,7 @@ WalkBoss::WalkBoss(std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCam
 
 WalkBoss::~WalkBoss()
 {
+	_pLaser->SetPos(Vector2(-10, -10));	// レーザーの位置を消す(画面外に行くだけ)
 }
 
 void WalkBoss::Init()
@@ -245,12 +246,6 @@ void WalkBoss::Draw(Vector2 offset)
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
 #endif
-}
-
-void WalkBoss::Delete()
-{
-	_isAlive = false;
-	_pLaser->SetPos(Vector2(-10, -10));	// レーザーの位置を消す(画面外に行くだけ)
 }
 
 void WalkBoss::ChangeState(WalkBossState state)

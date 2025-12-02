@@ -90,7 +90,7 @@ void Bullet::Update(Map& map,Vector2 cameraPos, std::vector<std::shared_ptr<Enem
 		{
 			if (_type == BulletType::NormalShot)
 			{	// 通常弾ならダメージ与えて弾消える
-				enemy->SetHp(enemy->GetHp() - kNormalShotDamage);
+				enemy->OnDamage(kNormalShotDamage);
 				Hit();
 			}
 			else if (_type == BulletType::ChargeShot)
@@ -99,7 +99,7 @@ void Bullet::Update(Map& map,Vector2 cameraPos, std::vector<std::shared_ptr<Enem
 				enemy->SetIsHitChargeShot(true);	// 敵が持っている弾に当たったフラグをつける
 				if (enemy->GetIsHitChargeShot() && !isPrevHit)	// 今のフレームで当たっている、かつ前のフレームで当たっていない
 				{	// ダメージを与える
-					enemy->SetHp(enemy->GetHp() - kChargeShotDamage);
+					enemy->OnDamage(kChargeShotDamage);
 				}
 			}
 		}

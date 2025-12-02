@@ -16,13 +16,13 @@ public:
 
 	void SetHp(int hp) { _hp = hp; }
 	int GetHp() const { return _hp; }
-	virtual void Delete() { _isAlive = false; }
-	bool GetIsAlive()const { return _isAlive; }
+	void OnDamage(int damage);
+	bool GetIsAlive() const;
 	void SetIsHitChargeShot(bool isHit) { _isHitChargeShot = isHit; }
 	bool GetIsHitChargeShot()const { return _isHitChargeShot; }
 protected:
 	int _hp;
-	bool _isAlive;
+	int _damageFrame;
 	bool _isHitChargeShot;
 	std::shared_ptr<Player> _pPlayer;
 };

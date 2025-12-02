@@ -49,19 +49,14 @@ void EnemyManager::Update()
 			{
 				enemy->Update(*_pMap);
 			}
-			// ‘Ì—Í‚ª0ˆÈ‰º‚É‚È‚Á‚½‚çÁ‚·
-			if (enemy->GetHp() <= 0)
-			{
-				enemy->Delete();
-				// €‚ñ‚¾“G‚ğvector‚©‚çíœ‚·‚é(‚ ‚ñ‚ÜˆÓ–¡‚í‚©‚ç‚ñ)
-				_pEnemies.erase(
-					std::remove_if(_pEnemies.begin(), _pEnemies.end(),
-						[](const std::shared_ptr<Enemy>& enemy) {
-							return !enemy->GetIsAlive();
-						}),
-					_pEnemies.end()
-				);
-			}
+			// €‚ñ‚¾“G‚ğvector‚©‚çíœ‚·‚é(‚ ‚ñ‚ÜˆÓ–¡‚í‚©‚ç‚ñ)
+			_pEnemies.erase(
+				std::remove_if(_pEnemies.begin(), _pEnemies.end(),
+					[](const std::shared_ptr<Enemy>& enemy) {
+						return !enemy->GetIsAlive();
+					}),
+				_pEnemies.end()
+			);
 		}
 	}
 }
