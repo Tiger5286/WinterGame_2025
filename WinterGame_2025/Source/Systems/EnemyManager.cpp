@@ -108,7 +108,7 @@ void EnemyManager::LoadEnemies(const std::vector<uint16_t>& objectData, Size siz
 				_pEnemies.push_back(std::make_shared<DroneEnemy>(pos, _pPlayer, _pEffectManager, _droneEnemyH));
 				break;
 			case ObjectData::BossEnemy1:
-				_pEnemies.push_back(std::make_shared<WalkBoss>(_pPlayer, _pEffectManager, _pCamera, _pGimmickManager->AddBossLaser(), _walkEnemyH));
+				_pEnemies.push_back(std::make_shared<WalkBoss>(pos,_pPlayer, _pEffectManager, _pCamera, _pGimmickManager->AddBossLaser(), _walkEnemyH));
 				break;
 			default:
 				break;

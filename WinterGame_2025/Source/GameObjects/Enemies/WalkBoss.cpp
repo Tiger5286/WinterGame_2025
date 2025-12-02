@@ -14,10 +14,21 @@ namespace
 	constexpr float kDrawScale = 6.0f;
 	// 当たり判定
 	const Vector2 kColliderSize = { 130,150 };
-	// 初期位置
-	const Vector2 kFirstChipPos = { 32,18 };
 	// 体力
 	constexpr int kMaxHp = 100;
+
+	// アニメーション関連
+	constexpr int kIdleAnimIndex = 0;
+	constexpr int kIdleAnimNum = 5;
+	constexpr int kRunAnimIndex = 1;
+	constexpr int kRunAnimNum = 8;
+	constexpr int kFallAnimIndex = 2;
+	constexpr int kFallAnimNum = 1;
+
+	constexpr int kOneAnimFrameIdle = 6;
+	constexpr int kOneAnimFrameStun = 10;
+	constexpr int kOneAnimFrameRun = 3;
+	constexpr int kOneAnimFrameFall = 1;
 
 	// 壁走り、天井は知り時の描画角度
 	constexpr float kAngle90 = DX_PI_F / 2;	// 90度
@@ -30,13 +41,24 @@ namespace
 	const Vector2 kAngle270Offset = { -45,35 };
 
 	// 行動関係
-	constexpr int kRunReadyFrame = 60;	// 突進準備のフレーム数
+	constexpr int kIdleFrame = 60;	// 待機時間
+
 	constexpr int kStunFrame = 120;	// スタン時間
+	constexpr float kStunVelY = 10.0f;
+	constexpr float kStunVelX = 5.0f;
+
+	constexpr int kRunReadyFrame = 60;	// 突進準備のフレーム数
 	constexpr float kRunSpeed = 10.0f;	// 突進速度
 	constexpr float kWallRunSpeed = 7.5f;	// 壁走りの上昇速度
+
+	constexpr int kLaserPosY = 15 * GlobalConstants::kDrawChipSize + GlobalConstants::kDrawChipSizeHalf;
+
+	// 演出関連
+	constexpr int kCameraShakePower = 5;
+	constexpr int kCameraShakeFrame = 15;
 }
 
-WalkBoss::WalkBoss(std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser, int handle) :
+WalkBoss::WalkBoss(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser, int handle) :
 	Enemy(kMaxHp, pPlayer,pEffectManager),
 	_handle(handle),
 	_isTurn(true),
@@ -45,21 +67,21 @@ WalkBoss::WalkBoss(std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManage
 	_pCamera(pCamera),
 	_pLaser(pLaser)
 {
-	_pos = ChipPosToGamePos(kFirstChipPos);
+	_pos = ChipPosToGamePos(firstPos);
 	_pos.y += GlobalConstants::kDrawChipSizeHalf;	// チップ半分下にずらす
 	_pCollider = std::make_shared<BoxCollider>(_pos, kColliderSize);
 	_pCollider->SetPosToBox(_pos);
 
-	_idleAnim.Init(_handle, 0, kGraphSize, 5, 6, kDrawScale);
-	_stunAnim.Init(_handle, 1, kGraphSize, 8, 10, kDrawScale);
-	_tackleAnim.Init(_handle, 1, kGraphSize, 8, 3, kDrawScale);
-	_fallAnim.Init(_handle, 2, kGraphSize, 1, 6, kDrawScale);
+	_idleAnim.Init(_handle, kIdleAnimIndex, kGraphSize, kIdleAnimNum, kOneAnimFrameIdle, kDrawScale);
+	_stunAnim.Init(_handle, kRunAnimIndex, kGraphSize, kRunAnimNum, kOneAnimFrameStun, kDrawScale);
+	_tackleAnim.Init(_handle, kRunAnimIndex, kGraphSize, kRunAnimNum, kOneAnimFrameRun, kDrawScale);
+	_fallAnim.Init(_handle, kFallAnimIndex, kGraphSize, kFallAnimNum, kOneAnimFrameFall, kDrawScale);
 	_nowAnim = _idleAnim;
 }
 
 WalkBoss::~WalkBoss()
 {
-	_pLaser->SetPos(Vector2(-10, -10));	// レーザーの位置を消す(画面外に行くだけ)
+	_pLaser->SetPos(Vector2(-1, -1));	// レーザーの位置を消す(画面外に行くだけ)
 }
 
 void WalkBoss::Init()
@@ -96,7 +118,7 @@ void WalkBoss::Update(Map& map)
 		ChangeAnim(_idleAnim);
 		float toPlayerDis = _pPlayer->GetPos().x - _pos.x;
 		toPlayerDis < 0 ? _isTurn = true : _isTurn = false;
-		if (_frame == 60)
+		if (_frame == kIdleFrame)
 		{
 			bool attackType = GetRand(1);
 			attackType ? ChangeState(WalkBossState::Tackle) : ChangeState(WalkBossState::TackleAndWallRun);
@@ -117,13 +139,11 @@ void WalkBoss::Update(Map& map)
 	if (_state == WalkBossState::Tackle)
 	{
 		_frame++;
-		// 最初は走るモーションだけ
-		if (_frame == 1)
-		{
-			_pLaser->SetPos(Vector2(_pos.x, 15 * 48 + 24));
-			ChangeAnim(_tackleAnim);
-		}
 		isEnableLaser = true;
+
+		// 最初は走るモーションだけ
+		ChangeAnim(_tackleAnim);
+
 
 		// 走り出す
 		if (_frame == kRunReadyFrame)
@@ -134,12 +154,11 @@ void WalkBoss::Update(Map& map)
 		if (_hitDir.right || _hitDir.left)
 		{
 			// 跳ね返ってスタン
-			_vel.y = -10.0f;
-			_isTurn ? _vel.x = 5.0f : _vel.x = -5.0f;
+			_vel.y = -kStunVelY;
+			_isTurn ? _vel.x = kStunVelX : _vel.x = -kStunVelX;
 			ChangeState(WalkBossState::Stun);
 			_frame = 0;
-			_pCamera->Shake(15, 5);
-			//_pLaser->SetPos(Vector2(-10,-10));	// レーザーの位置を消す(画面外に行くだけ)
+			_pCamera->Shake(kCameraShakeFrame, kCameraShakePower);
 		}
 	}
 	// 壁走り突進の時の処理
@@ -149,7 +168,6 @@ void WalkBoss::Update(Map& map)
 		// 最初は走るモーションだけ
 		if (_frame == 1)
 		{
-			_pLaser->SetPos(Vector2(_pos.x, 15 * 48 + 24));	// レーザーを出す
 			ChangeAnim(_tackleAnim);
 		}
 
@@ -162,11 +180,10 @@ void WalkBoss::Update(Map& map)
 		// 左の壁にぶつかったら
 		if (_hitDir.left)
 		{
-			_pLaser->SetPos(Vector2(-10, -10));	// レーザーを消す(画面外に行くだけ)
 			// 上に向かって走る
 			_nowAnim.SetRotate(kAngle90);
 			_nowAnim.SetOffset(kAngle90Offset);
-			_vel.x = -1.0f;
+			_vel.x = -1.0f;	// X速度を壁に張り付くようにする
 			_vel.y = -kWallRunSpeed;
 			if (_hitDir.up)
 			{
@@ -177,11 +194,10 @@ void WalkBoss::Update(Map& map)
 		}
 		else if (_hitDir.right) // 右の壁にぶつかったら
 		{
-			//_pLaser->SetPos(Vector2(-10, -10));	// レーザーを消す(画面外に行くだけ)
 			// 上に向かって走る
 			_nowAnim.SetRotate(kAngle270);
 			_nowAnim.SetOffset(kAngle270Offset);
-			_vel.x = 1.0f;
+			_vel.x = 1.0f;	// X速度を壁に張り付くようにする
 			_vel.y = -kWallRunSpeed;
 			if (_hitDir.up)
 			{
@@ -200,7 +216,7 @@ void WalkBoss::Update(Map& map)
 	// 天井走りの時の処理
 	if (_state == WalkBossState::CeilingRun)
 	{
-		_vel.y = -1.0f;
+		_vel.y = -1.0f;	// 天井に張り付くようにY速度を上向きにする
 		_isTurn ? _vel.x = kRunSpeed : _vel.x = -kRunSpeed;
 		float toPlayerDis = _pPlayer->GetPos().x - _pos.x;
 		if (abs(toPlayerDis) < 75.0f)
@@ -217,7 +233,7 @@ void WalkBoss::Update(Map& map)
 		_nowAnim.SetOffset(Vector2());
 		if (_hitDir.down)
 		{
-			_pCamera->Shake(15, 5);
+			_pCamera->Shake(kCameraShakeFrame, kCameraShakePower);
 			ChangeState(WalkBossState::Idle);
 		}
 	}
@@ -226,11 +242,11 @@ void WalkBoss::Update(Map& map)
 
 	if (isEnableLaser)
 	{
-		_pLaser->SetPos(Vector2(_pos.x, _pLaser->GetPos().y));	// レーザーの位置を合わせる
+		_pLaser->SetPos(Vector2(_pos.x, kLaserPosY));	// レーザーの位置を合わせる
 	}
 	else
 	{
-		_pLaser->SetPos(Vector2(-10, -10));	// レーザーの位置を消す(画面外に行くだけ)
+		_pLaser->SetPos(Vector2(-1, -1));	// レーザーの位置を消す(画面外に行くだけ)
 	}
 
 	// プレイヤーに当たったらダメージを与える
