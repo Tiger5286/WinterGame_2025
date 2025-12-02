@@ -12,7 +12,7 @@ class FlyEnemy : public Enemy
 public:
 	//FlyEnemy(int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer);
 	//FlyEnemy(Vector2 firstPos,int handle, FlyEnemyState state,std::shared_ptr<Player> pPlayer);
-	FlyEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, int handle, FlyEnemyState state);
+	FlyEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle, FlyEnemyState state);
 	~FlyEnemy();
 
 	void Init() override;

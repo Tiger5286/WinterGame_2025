@@ -46,8 +46,8 @@ enum class WalkEnemyAnimType : int
 	Fall
 };
 
-WalkEnemy::WalkEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, int handle, WalkEnemyState state, bool isTurn) :
-	Enemy(kMaxHp, pPlayer,pEffectManager),
+WalkEnemy::WalkEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle, WalkEnemyState state, bool isTurn) :
+	Enemy(kMaxHp, pPlayer,pEffectManager,sceneManager),
 	_handle(handle),
 	_state(state),
 	_isTurn(isTurn)

@@ -3,7 +3,7 @@
 class JumpEnemy : public Enemy
 {
 public:
-	JumpEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, int handle);
+	JumpEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle);
 	~JumpEnemy();
 
 	void Init() override;

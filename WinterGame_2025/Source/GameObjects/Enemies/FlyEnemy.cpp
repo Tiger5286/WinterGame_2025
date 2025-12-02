@@ -22,8 +22,8 @@ namespace
 	constexpr float kMaxMoveSpeed = 2.5f;
 }
 
-FlyEnemy::FlyEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, int handle, FlyEnemyState state):
-	Enemy(5,pPlayer,pEffectManager),
+FlyEnemy::FlyEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle, FlyEnemyState state):
+	Enemy(5,pPlayer,pEffectManager,sceneManager),
 	_handle(handle),
 	_state(state),
 	_angle(0.0f)

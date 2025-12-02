@@ -3,6 +3,7 @@
 
 class Camera;
 class Gimmick;
+class SceneManager;
 
 enum class WalkBossState
 {
@@ -17,12 +18,14 @@ enum class WalkBossState
 class WalkBoss : public Enemy
 {
 public:
-	WalkBoss(Vector2 firstPos,std::shared_ptr<Player>pPlayer,std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser, int handle);
+	WalkBoss(Vector2 firstPos,std::shared_ptr<Player>pPlayer,std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser,SceneManager& sceneManager, int handle);
 	~WalkBoss();
 
 	void Init() override;
 	void Update(Map& map) override;
 	void Draw(Vector2 offset) override;
+
+	void TakeDamage(int damage) override;
 
 private:
 

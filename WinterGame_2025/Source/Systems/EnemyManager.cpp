@@ -14,12 +14,13 @@
 
 #include "../GameObjects/Enemies/WalkBoss.h"
 
-EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map> pMap, std::shared_ptr<Camera> pCamera, std::shared_ptr<GimmickManager> pGimmickManager, std::shared_ptr<EffectManager> pEffectManager):
+EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map> pMap, std::shared_ptr<Camera> pCamera, std::shared_ptr<GimmickManager> pGimmickManager, std::shared_ptr<EffectManager> pEffectManager,SceneManager& sceneManager):
 	_pPlayer(pPlayer),
 	_pMap(pMap),
 	_pCamera(pCamera),
 	_pGimmickManager(pGimmickManager),
-	_pEffectManager(pEffectManager)
+	_pEffectManager(pEffectManager),
+	_sceneManager(sceneManager)
 {
 	_walkEnemyH = LoadGraph("data/Enemys/WalkEnemy.png");
 	assert(_walkEnemyH != -1);
@@ -87,28 +88,28 @@ void EnemyManager::LoadEnemies(const std::vector<uint16_t>& objectData, Size siz
 			switch (data)
 			{
 			case ObjectData::WalkEnemyIdle:
-				_pEnemies.push_back(std::make_shared<WalkEnemy>(pos, _pPlayer,_pEffectManager, _walkEnemyH, WalkEnemyState::Idle, false));
+				_pEnemies.push_back(std::make_shared<WalkEnemy>(pos, _pPlayer,_pEffectManager, _sceneManager, _walkEnemyH, WalkEnemyState::Idle, false));
 				break;
 			case ObjectData::WalkEnemyMoveLeft:
-				_pEnemies.push_back(std::make_shared<WalkEnemy>(pos, _pPlayer, _pEffectManager, _walkEnemyH, WalkEnemyState::Move, true));
+				_pEnemies.push_back(std::make_shared<WalkEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _walkEnemyH, WalkEnemyState::Move, true));
 				break;
 			case ObjectData::WalkEnemyMoveRight:
-				_pEnemies.push_back(std::make_shared<WalkEnemy>(pos, _pPlayer, _pEffectManager, _walkEnemyH, WalkEnemyState::Move, false));
+				_pEnemies.push_back(std::make_shared<WalkEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _walkEnemyH, WalkEnemyState::Move, false));
 				break;
 			case ObjectData::FlyEnemyIdle:
-				_pEnemies.push_back(std::make_shared<FlyEnemy>(pos, _pPlayer, _pEffectManager, _flyEnemyH, FlyEnemyState::Idle));
+				_pEnemies.push_back(std::make_shared<FlyEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _flyEnemyH, FlyEnemyState::Idle));
 				break;
 			case ObjectData::FlyEnemyMove:
-				_pEnemies.push_back(std::make_shared<FlyEnemy>(pos, _pPlayer, _pEffectManager, _flyEnemyH, FlyEnemyState::Move));
+				_pEnemies.push_back(std::make_shared<FlyEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _flyEnemyH, FlyEnemyState::Move));
 				break;
 			case ObjectData::JumpEnemy:
-				_pEnemies.push_back(std::make_shared<JumpEnemy>(pos, _pPlayer, _pEffectManager, _jumpEnemyH));
+				_pEnemies.push_back(std::make_shared<JumpEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _jumpEnemyH));
 				break;
 			case ObjectData::DroneEnemy:
-				_pEnemies.push_back(std::make_shared<DroneEnemy>(pos, _pPlayer, _pEffectManager, _droneEnemyH));
+				_pEnemies.push_back(std::make_shared<DroneEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _droneEnemyH));
 				break;
 			case ObjectData::BossEnemy1:
-				_pEnemies.push_back(std::make_shared<WalkBoss>(pos,_pPlayer, _pEffectManager, _pCamera, _pGimmickManager->AddBossLaser(), _walkEnemyH));
+				_pEnemies.push_back(std::make_shared<WalkBoss>(pos,_pPlayer, _pEffectManager, _pCamera, _pGimmickManager->AddBossLaser(),_sceneManager, _walkEnemyH));
 				break;
 			default:
 				break;

@@ -5,7 +5,8 @@
 #include "Dxlib.h"
 #include "../../Systems/Camera.h"
 #include "../Gimmick.h"
-
+#include "../../Systems/EffectManager.h"
+#include "../../Scenes/SceneManager.h"
 
 namespace
 {
@@ -58,8 +59,8 @@ namespace
 	constexpr int kCameraShakeFrame = 15;
 }
 
-WalkBoss::WalkBoss(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser, int handle) :
-	Enemy(kMaxHp, pPlayer,pEffectManager),
+WalkBoss::WalkBoss(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser,SceneManager& sceneManager, int handle) :
+	Enemy(kMaxHp, pPlayer,pEffectManager,sceneManager),
 	_handle(handle),
 	_isTurn(true),
 	_frame(0),
@@ -269,6 +270,17 @@ void WalkBoss::Draw(Vector2 offset)
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
 #endif
+}
+
+void WalkBoss::TakeDamage(int damage)
+{
+	_hp -= damage;
+	_damageFrame = 5;
+	if (_hp <= 0)
+	{
+		_sceneManager.Stop(60);
+		_pEffectManager->Create(_pCollider->GetPos(), EffectType::Explosion);
+	}
 }
 
 void WalkBoss::ChangeState(WalkBossState state)

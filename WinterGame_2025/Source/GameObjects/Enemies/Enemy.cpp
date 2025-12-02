@@ -1,14 +1,16 @@
 #include "Enemy.h"
 #include "../../Systems/EffectManager.h"
 #include "../../Utility/Collider.h"
+#include "../../Scenes/SceneManager.h"
 
 namespace
 {
 	constexpr int kDamageFrameMax = 5;
 }
 
-Enemy::Enemy(int hp, std::shared_ptr<Player> pPlayer,std::shared_ptr<EffectManager> pEffectManager) :
+Enemy::Enemy(int hp, std::shared_ptr<Player> pPlayer,std::shared_ptr<EffectManager> pEffectManager,SceneManager& sceneManager) :
 	_hp(hp),
+	_sceneManager(sceneManager),
 	_damageFrame(0),
 	_isHitChargeShot(false),
 	_pPlayer(pPlayer),
@@ -26,6 +28,7 @@ void Enemy::TakeDamage(int damage)
 	_damageFrame = kDamageFrameMax;
 	if (_hp <= 0)
 	{
+		//_sceneManager.Stop(5);
 		_pEffectManager->Create(_pCollider->GetPos(), EffectType::Explosion);
 	}
 }
