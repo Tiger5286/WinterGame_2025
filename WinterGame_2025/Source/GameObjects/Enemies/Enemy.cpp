@@ -17,7 +17,7 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::OnDamage(int damage)
+void Enemy::TakeDamage(int damage)
 {
 	_hp -= damage;
 	_damageFrame = kDamageFrameMax;
