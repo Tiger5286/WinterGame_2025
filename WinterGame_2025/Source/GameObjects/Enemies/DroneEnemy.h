@@ -12,7 +12,7 @@ class DroneEnemy :
     public Enemy
 {
 public:
-    DroneEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer,int handle);
+    DroneEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager,int handle);
     ~DroneEnemy();
 
     void Init() override;

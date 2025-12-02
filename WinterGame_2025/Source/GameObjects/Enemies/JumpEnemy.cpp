@@ -31,8 +31,8 @@ namespace
 	constexpr float kAttackDis = 600.0f;
 }
 
-JumpEnemy::JumpEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer, int handle) :
-	Enemy(5, pPlayer),
+JumpEnemy::JumpEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, int handle) :
+	Enemy(5, pPlayer,pEffectManager),
 	_handle(handle),
 	_attackCooltime(0),
 	_attackFrame(0),

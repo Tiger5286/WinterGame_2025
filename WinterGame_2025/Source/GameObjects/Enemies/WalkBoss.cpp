@@ -36,8 +36,8 @@ namespace
 	constexpr float kWallRunSpeed = 7.5f;	// ï«ëñÇËÇÃè„è∏ë¨ìx
 }
 
-WalkBoss::WalkBoss(std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser, int handle) :
-	Enemy(kMaxHp, pPlayer),
+WalkBoss::WalkBoss(std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser, int handle) :
+	Enemy(kMaxHp, pPlayer,pEffectManager),
 	_handle(handle),
 	_isTurn(true),
 	_frame(0),

@@ -3,11 +3,12 @@
 #include <vector>
 
 class Player;
+class EffectManager;
 
 class Enemy : public GameObject
 {
 public:
-	Enemy(int hp, std::shared_ptr<Player> pPlayer);
+	Enemy(int hp, std::shared_ptr<Player> pPlayer,std::shared_ptr<EffectManager> pEffectManager);
 	virtual ~Enemy();
 
 	virtual void Init() override = 0;
@@ -27,6 +28,7 @@ protected:
 	int _hp;
 	int _damageFrame;
 	bool _isHitChargeShot;
+	std::shared_ptr<EffectManager> _pEffectManager;
 	std::shared_ptr<Player> _pPlayer;
 };
 

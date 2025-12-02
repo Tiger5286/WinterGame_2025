@@ -12,7 +12,7 @@ enum class WalkEnemyState
 class WalkEnemy : public Enemy
 {
 public:
-	WalkEnemy(Vector2 chipPos, std::shared_ptr<Player>pPlayer, int handle, WalkEnemyState state, bool isTurn);
+	WalkEnemy(Vector2 chipPos, std::shared_ptr<Player>pPlayer, std::shared_ptr<EffectManager> pEffectManager, int handle, WalkEnemyState state, bool isTurn);
 	~WalkEnemy();
 
 	void Init() override;

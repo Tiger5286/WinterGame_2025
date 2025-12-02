@@ -32,8 +32,8 @@ namespace
 	constexpr float kReturnRange = 20.0f;	// Œ³‚ÌˆÊ’u‚¾‚Æ”»’è‚·‚é”ÍˆÍ(‚±‚Ì”ÍˆÍ‚É“ü‚é‚Æ‘{õó‘Ô‚É–ß‚é)
 }
 
-DroneEnemy::DroneEnemy(Vector2 firstPos, std::shared_ptr<Player> pPlayer, int handle):
-	Enemy(2,pPlayer),
+DroneEnemy::DroneEnemy(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, int handle):
+	Enemy(2,pPlayer,pEffectManager),
 	_handle(handle),
 	_frame(kAttackCoolTime)
 {
