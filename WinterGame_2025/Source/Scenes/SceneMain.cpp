@@ -13,6 +13,7 @@
 #include "DebugScene.h"
 #include "SceneClear.h"
 #include "SceneGameOver.h"
+#include "ScenePause.h"
 
 #include "../GameObjects/Player.h"
 //#include "../GameObjects/Bullet.h"
@@ -131,6 +132,12 @@ void SceneMain::Init()
 void SceneMain::Update(Input& input)
 {
 	_frameCount++;
+
+	if (input.IsTriggered("start"))
+	{	// ポーズシーンへ切り替え
+		_manager.PushScene(std::make_shared<ScenePause>(_manager));
+		return;
+	}
 
 	// プレイヤー制御
 	_pPlayer->SetContext(input);

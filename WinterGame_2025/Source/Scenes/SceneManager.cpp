@@ -4,7 +4,6 @@
 #include "../Systems/Fade.h"
 
 SceneManager::SceneManager():
-	_pScene(nullptr),
 	_pFade(std::make_shared<Fade>()),
 	_pNextScene(nullptr),
 	_nextFadeType(FadeState::NormalFadeIn)
@@ -13,7 +12,7 @@ SceneManager::SceneManager():
 
 void SceneManager::Init()
 {
-	_pScene->Init();
+	_pScenes.back()->Init();
 }
 
 void SceneManager::Update(Input input)
@@ -22,7 +21,7 @@ void SceneManager::Update(Input input)
 	// フェード中はシーンの更新を行わない
 	if (_pFade->GetState() == FadeState::NoFade)
 	{
-		_pScene->Update(input);
+		_pScenes.back()->Update(input);
 	}
 
 	// 次のシーンが決まっているときにフェードアウトが終わったらシーンを変える
@@ -38,14 +37,44 @@ void SceneManager::Update(Input input)
 
 void SceneManager::Draw()
 {
-	_pScene->Draw();
+	for (auto& scene : _pScenes)
+	{
+		scene->Draw();
+	}
 	_pFade->Draw();
+}
+
+void SceneManager::ResetScene(std::shared_ptr<SceneBase> pScene)
+{
+	_pScenes.clear();
+	_pScenes.push_back(pScene);
+	_pScenes.back()->Init();
+}
+
+void SceneManager::PushScene(std::shared_ptr<SceneBase> pScene)
+{
+	_pScenes.push_back(pScene);
+	_pScenes.back()->Init();
+}
+
+void SceneManager::PopScene()
+{
+	_pScenes.pop_back();
 }
 
 void SceneManager::ChangeScene(std::shared_ptr<SceneBase> scene,FadeState fadeType)
 {
-	_pScene = scene;
-	_pScene->Init();
+	// もしシーンがなければ追加、あれば置き換え
+	if (_pScenes.empty())
+	{
+		_pScenes.push_back(scene);
+		_pScenes.back()->Init();
+	}
+	else
+	{
+		_pScenes.back() = scene;
+		_pScenes.back()->Init();
+	}
 	// シーン変更時にフェードインを開始する
 	if (fadeType == FadeState::NormalFadeIn)
 	{

@@ -128,6 +128,7 @@
     <ClCompile Include="Source\Systems\ItemManager.cpp" />
     <ClCompile Include="Source\GameObjects\Enemies\DroneEnemy.cpp" />
     <ClCompile Include="Source\Systems\BulletManager.cpp" />
+    <ClCompile Include="Source\Scenes\ScenePause.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GameObjects\Bullet.h">
@@ -230,5 +231,6 @@
     <ClInclude Include="Source\Systems\ItemManager.h" />
     <ClInclude Include="Source\GameObjects\Enemies\DroneEnemy.h" />
     <ClInclude Include="Source\Systems\BulletManager.h" />
+    <ClInclude Include="Source\Scenes\ScenePause.h" />
   </ItemGroup>
 </Project>

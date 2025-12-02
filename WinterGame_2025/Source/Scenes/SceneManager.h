@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <list>
 #include "../Systems/Fade.h"
 
 class Input;
@@ -17,6 +18,12 @@ public:
 	void Init();
 	void Update(Input input);
 	void Draw();
+
+	void ResetScene(std::shared_ptr<SceneBase> pScene);
+
+	void PushScene(std::shared_ptr<SceneBase> pScene);
+
+	void PopScene();
 
 	/// <summary>
 	/// ƒV[ƒ“‚ð•ÏX‚·‚é
@@ -36,7 +43,8 @@ public:
 	void SetFadeCirclePos(const Vector2& pos) { _pFade->SetCirclePos(pos); }
 
 private:
-	std::shared_ptr<SceneBase> _pScene;
+	//std::shared_ptr<SceneBase> _pScene;
+	std::list<std::shared_ptr<SceneBase>> _pScenes;
 	std::shared_ptr<Fade> _pFade;
 	std::shared_ptr<SceneBase> _pNextScene;
 	FadeState _nextFadeType;
