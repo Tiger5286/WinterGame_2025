@@ -35,6 +35,7 @@ namespace
 	constexpr int kChargeShotAnimNum = 4;
 
 	constexpr int kOneAnimFrame = 6;	// 何フレームでアニメーションを切り替えるか
+	constexpr int kMoveOneAnimFrame = 4;
 	constexpr int kDeathOneAnimFrame = 7;	// 死亡時のアニメーション用
 	constexpr int kFlashOneAnimFrame = 4;	// 通常ショットのマズルフラッシュ
 	constexpr int kChargeShotFlashOneAnimFrame = 6;	// チャージショットのマズルフラッシュ
@@ -132,7 +133,7 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	}
 
 	_idleAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Idle), kFrameSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
-	_moveAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Move), kFrameSize, kMoveAnimNum, kOneAnimFrame, kDrawScale);
+	_moveAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Move), kFrameSize, kMoveAnimNum, kMoveOneAnimFrame, kDrawScale);
 	_damageAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Damage), kFrameSize, kDamageAnimNum, kOneAnimFrame, kDrawScale);
 	_jumpAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Jump), kFrameSize, 1, kOneAnimFrame, kDrawScale);
 	_fallAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Fall), 2, kFrameSize, kDrawScale);
