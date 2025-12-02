@@ -320,7 +320,7 @@ void SceneMain::LoadStage(Stages stage)
 	_pItemManager->LoadItems(_pStage->GetObjectData(), _pStage->GetMapSize());	// アイテムの生成
 
 	// 敵
-	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera,_pGimmickManager);
+	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera,_pGimmickManager,_pEffectManager);
 	_pEnemyManager->LoadEnemies(_pStage->GetObjectData(), _pStage->GetMapSize());// 敵の生成
 	if (stage == Stages::Boss)	// ボスステージならボスHPUIの生成
 	{

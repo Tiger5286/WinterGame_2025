@@ -7,6 +7,8 @@ class Player;
 class Map;
 class Camera;
 class GimmickManager;
+class EffectManager;
+
 class Enemy;
 
 /// <summary>
@@ -15,7 +17,11 @@ class Enemy;
 class EnemyManager
 {
 public:
-	EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map> pMap, std::shared_ptr<Camera> pCamera, std::shared_ptr<GimmickManager> pGimmickManager);
+	EnemyManager(std::shared_ptr<Player> pPlayer,
+		std::shared_ptr<Map> pMap,
+		std::shared_ptr<Camera> pCamera,
+		std::shared_ptr<GimmickManager> pGimmickManager,
+		std::shared_ptr<EffectManager> pEffectManager);
 	~EnemyManager();
 
 	void Update();
@@ -40,5 +46,6 @@ private:
 	std::shared_ptr<Map> _pMap;
 	std::shared_ptr<Camera> _pCamera;
 	std::shared_ptr<GimmickManager> _pGimmickManager;
+	std::shared_ptr<EffectManager> _pEffectManager;
 	std::vector<std::shared_ptr<Enemy>> _pEnemies;
 };

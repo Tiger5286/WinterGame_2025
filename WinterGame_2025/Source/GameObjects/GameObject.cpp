@@ -91,6 +91,11 @@ Vector2 GameObject::ChipPosToGamePos(Vector2 mapChipPos)
 }
 
 
+Vector2 GameObject::GetColliderPos()
+{
+	return _pCollider->GetPos();
+}
+
 void GameObject::Gravity()
 {
 	_vel += kGravity;

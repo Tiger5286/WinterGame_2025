@@ -5,6 +5,7 @@
 
 #include "Camera.h"
 #include "GimmickManager.h"
+#include "EffectManager.h"
 
 #include "../GameObjects/Enemies/WalkEnemy.h"
 #include "../GameObjects/Enemies/FlyEnemy.h"
@@ -13,11 +14,12 @@
 
 #include "../GameObjects/Enemies/WalkBoss.h"
 
-EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map> pMap, std::shared_ptr<Camera> pCamera, std::shared_ptr<GimmickManager> pGimmickManager):
+EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map> pMap, std::shared_ptr<Camera> pCamera, std::shared_ptr<GimmickManager> pGimmickManager, std::shared_ptr<EffectManager> pEffectManager):
 	_pPlayer(pPlayer),
 	_pMap(pMap),
 	_pCamera(pCamera),
-	_pGimmickManager(pGimmickManager)
+	_pGimmickManager(pGimmickManager),
+	_pEffectManager(pEffectManager)
 {
 	_walkEnemyH = LoadGraph("data/Enemys/WalkEnemy.png");
 	assert(_walkEnemyH != -1);
@@ -48,6 +50,10 @@ void EnemyManager::Update()
 			if (abs(toCameraDisX) < GlobalConstants::kScreenWidth / 2 + 100)
 			{
 				enemy->Update(*_pMap);
+				if (!enemy->GetIsAlive())
+				{
+					_pEffectManager->Create(enemy->GetColliderPos(), EffectType::Explosion);
+				}
 			}
 			// €‚ñ‚¾“G‚ğvector‚©‚çíœ‚·‚é(‚ ‚ñ‚ÜˆÓ–¡‚í‚©‚ç‚ñ)
 			_pEnemies.erase(
