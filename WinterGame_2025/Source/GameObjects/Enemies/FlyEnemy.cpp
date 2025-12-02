@@ -2,6 +2,7 @@
 #include "../../Utility/CircleCollider.h"
 #include <cmath>
 #include "../Player.h"
+#include "Dxlib.h"
 
 namespace
 {
@@ -42,6 +43,7 @@ void FlyEnemy::Init()
 
 void FlyEnemy::Update(Map& map)
 {
+	BaseUpdate();
 	_nowAnim.Update();
 
 	// ステートがMoveの時はプレイヤーを追う
@@ -76,8 +78,13 @@ void FlyEnemy::Update(Map& map)
 
 void FlyEnemy::Draw(Vector2 offset)
 {
+	if (_damageFrame > 0)
+	{
+		SetDrawBright(255, 64, 64);	// ダメージを受けている間は赤くなる
+	}
 	const Vector2 adjustPos = { _pos.x - offset.x, _pos.y - offset.y + sinf(_angle) * kWaveHeight };
 	_nowAnim.Draw(adjustPos, false);
+	SetDrawBright(255, 255, 255);	// 色を元に戻す
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
 #endif

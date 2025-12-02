@@ -2,7 +2,7 @@
 
 namespace
 {
-	constexpr int kDamageFrameMax = 10;
+	constexpr int kDamageFrameMax = 5;
 }
 
 Enemy::Enemy(int hp, std::shared_ptr<Player> pPlayer) :
@@ -26,4 +26,12 @@ void Enemy::OnDamage(int damage)
 bool Enemy::GetIsAlive() const
 {
 	return _hp > 0;
+}
+
+void Enemy::BaseUpdate()
+{
+	if (_damageFrame > 0)
+	{
+		_damageFrame--;
+	}
 }

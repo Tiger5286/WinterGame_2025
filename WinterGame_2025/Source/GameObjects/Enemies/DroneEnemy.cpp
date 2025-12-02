@@ -54,6 +54,8 @@ void DroneEnemy::Init()
 
 void DroneEnemy::Update(Map& map)
 {
+	BaseUpdate();
+
 	auto dist = _pPlayer->GetPos() - _pos;
 
 	if (_frame < kAttackCoolTime)
@@ -115,7 +117,12 @@ void DroneEnemy::Update(Map& map)
 
 void DroneEnemy::Draw(Vector2 offset)
 {
+	if (_damageFrame > 0)
+	{
+		SetDrawBright(255, 64, 64);	// ダメージを受けている間は赤くなる
+	}
 	_nowAnim.Draw(_pos - offset, false);
+	SetDrawBright(255, 255, 255);	// 色を元に戻す
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
 	DrawFormatString(_pos.x - offset.x, _pos.y - offset.y - 50, 0xffffff, "%d", _frame);

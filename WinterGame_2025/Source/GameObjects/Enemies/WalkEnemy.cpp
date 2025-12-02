@@ -33,6 +33,10 @@ namespace
 
 	// HP
 	constexpr int kMaxHp = 5;
+
+	const auto kDamageColorR = 255;
+	const auto kDamageColorG = 64;
+	const auto kDamageColorB = 64;
 }
 
 enum class WalkEnemyAnimType : int
@@ -69,6 +73,8 @@ void WalkEnemy::Init()
 
 void WalkEnemy::Update(Map& map)
 {
+	BaseUpdate();
+
 	Gravity();
 
 	if (_state == WalkEnemyState::Idle)
@@ -119,8 +125,13 @@ void WalkEnemy::Update(Map& map)
 
 void WalkEnemy::Draw(Vector2 offset)
 {
+	if (_damageFrame > 0)
+	{
+		SetDrawBright(kDamageColorR, kDamageColorB, kDamageColorB);
+	}
 	//DrawRectRotaGraph(_pos.x, _pos.y - WALKENEMY_GRAPH_CUT_H / 2 * DRAW_SCALE, WALKENEMY_GRAPH_CUT_W * 0, WALKENEMY_GRAPH_CUT_H * 0, WALKENEMY_GRAPH_CUT_W, WALKENEMY_GRAPH_CUT_H, DRAW_SCALE, 0.0f, _handle, true);
 	_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - kGraphCutH / 2 * kDrawScale }, _isTurn);
+	SetDrawBright(255, 255, 255);
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
 #endif

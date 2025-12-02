@@ -84,6 +84,8 @@ void WalkBoss::Update(Map& map)
 	}
 #endif // _DEBUG
 
+	BaseUpdate();
+
 	Gravity();
 	bool isEnableLaser = false;
 
@@ -242,7 +244,12 @@ void WalkBoss::Update(Map& map)
 
 void WalkBoss::Draw(Vector2 offset)
 {
+	if (_damageFrame > 0)
+	{
+		SetDrawBright(255, 64, 64);	// ダメージを受けている間は赤くなる
+	}
 	_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - kGraphSize.y / 2 * kDrawScale }, _isTurn);
+	SetDrawBright(255, 255, 255);	// 明るさリセット
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
 #endif

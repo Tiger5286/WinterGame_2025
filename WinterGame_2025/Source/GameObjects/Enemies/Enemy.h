@@ -21,6 +21,9 @@ public:
 	void SetIsHitChargeShot(bool isHit) { _isHitChargeShot = isHit; }
 	bool GetIsHitChargeShot()const { return _isHitChargeShot; }
 protected:
+	void BaseUpdate();
+
+protected:
 	int _hp;
 	int _damageFrame;
 	bool _isHitChargeShot;

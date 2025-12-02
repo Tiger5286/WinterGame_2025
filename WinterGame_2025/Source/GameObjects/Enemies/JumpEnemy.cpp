@@ -58,6 +58,8 @@ void JumpEnemy::Init()
 
 void JumpEnemy::Update(Map& map)
 {
+	BaseUpdate();
+
 	// プレイヤーとは逆の方を向く
 	if (!_isAttacking)	// 攻撃中は向きを変えない
 	{
@@ -124,7 +126,12 @@ void JumpEnemy::Update(Map& map)
 
 void JumpEnemy::Draw(Vector2 offset)
 {
+	if (_damageFrame > 0)
+	{
+		SetDrawBright(255, 64, 64);	// ダメージを受けている間は赤くなる
+	}
 	_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - kGraphHeight / 2 * kDrawScale }, _isTurn);
+	SetDrawBright(255, 255, 255);	// 明るさリセット
 #ifdef _DEBUG
 	// プレイヤーを検知する範囲を表示
 	DrawLine(_pos.x - kAttackDis - offset.x, 0, _pos.x - kAttackDis - offset.x, 1080, 0x0000ff);
