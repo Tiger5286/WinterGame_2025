@@ -1,4 +1,4 @@
-#include "Boss.h"
+#include "WalkBoss.h"
 #include "../../Game.h"
 #include "../../Utility/BoxCollider.h"
 #include "../Player.h"
@@ -36,12 +36,12 @@ namespace
 	constexpr float kWallRunSpeed = 7.5f;	// 壁走りの上昇速度
 }
 
-Boss::Boss(std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser, int handle) :
+WalkBoss::WalkBoss(std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser, int handle) :
 	Enemy(kMaxHp, pPlayer),
 	_handle(handle),
 	_isTurn(true),
 	_frame(0),
-	_state(BossState::Idle),
+	_state(WalkBossState::Idle),
 	_pCamera(pCamera),
 	_pLaser(pLaser)
 {
@@ -57,29 +57,29 @@ Boss::Boss(std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, std
 	_nowAnim = _idleAnim;
 }
 
-Boss::~Boss()
+WalkBoss::~WalkBoss()
 {
 }
 
-void Boss::Init()
+void WalkBoss::Init()
 {
 }
 
-void Boss::Update(Map& map)
+void WalkBoss::Update(Map& map)
 {
 #ifdef _DEBUG
 
 	if (CheckHitKey(KEY_INPUT_1))
 	{
-		ChangeState(BossState::Idle);
+		ChangeState(WalkBossState::Idle);
 	}
 	if (CheckHitKey(KEY_INPUT_2))
 	{
-		ChangeState(BossState::Tackle);
+		ChangeState(WalkBossState::Tackle);
 	}
 	if (CheckHitKey(KEY_INPUT_3))
 	{
-		ChangeState(BossState::TackleAndWallRun);
+		ChangeState(WalkBossState::TackleAndWallRun);
 	}
 #endif // _DEBUG
 
@@ -87,7 +87,7 @@ void Boss::Update(Map& map)
 	bool isEnableLaser = false;
 
 	// 待機状態の時の処理
-	if (_state == BossState::Idle)
+	if (_state == WalkBossState::Idle)
 	{
 		_frame++;
 		ChangeAnim(_idleAnim);
@@ -96,22 +96,22 @@ void Boss::Update(Map& map)
 		if (_frame == 60)
 		{
 			bool attackType = GetRand(1);
-			attackType ? ChangeState(BossState::Tackle) : ChangeState(BossState::TackleAndWallRun);
+			attackType ? ChangeState(WalkBossState::Tackle) : ChangeState(WalkBossState::TackleAndWallRun);
 		}
 	}
 	// スタン時の処理
-	if (_state == BossState::Stun)
+	if (_state == WalkBossState::Stun)
 	{
 		_frame++;
 		ChangeAnim(_stunAnim);
 		_vel = Vector2::Vlerp(_vel, Vector2(), 0.1f);
 		if (_frame == kStunFrame)
 		{
-			ChangeState(BossState::Idle);
+			ChangeState(WalkBossState::Idle);
 		}
 	}
 	//タックル攻撃の時の処理
-	if (_state == BossState::Tackle)
+	if (_state == WalkBossState::Tackle)
 	{
 		_frame++;
 		// 最初は走るモーションだけ
@@ -133,14 +133,14 @@ void Boss::Update(Map& map)
 			// 跳ね返ってスタン
 			_vel.y = -10.0f;
 			_isTurn ? _vel.x = 5.0f : _vel.x = -5.0f;
-			ChangeState(BossState::Stun);
+			ChangeState(WalkBossState::Stun);
 			_frame = 0;
 			_pCamera->Shake(15, 5);
 			//_pLaser->SetPos(Vector2(-10,-10));	// レーザーの位置を消す(画面外に行くだけ)
 		}
 	}
 	// 壁走り突進の時の処理
-	if (_state == BossState::TackleAndWallRun)
+	if (_state == WalkBossState::TackleAndWallRun)
 	{
 		_frame++;
 		// 最初は走るモーションだけ
@@ -169,7 +169,7 @@ void Boss::Update(Map& map)
 			{
 				_nowAnim.SetRotate(DX_PI_F);
 				_nowAnim.SetOffset(kAngle180Offset);
-				ChangeState(BossState::CeilingRun);
+				ChangeState(WalkBossState::CeilingRun);
 			}
 		}
 		else if (_hitDir.right) // 右の壁にぶつかったら
@@ -184,7 +184,7 @@ void Boss::Update(Map& map)
 			{
 				_nowAnim.SetRotate(DX_PI_F);
 				_nowAnim.SetOffset(kAngle180Offset);
-				ChangeState(BossState::CeilingRun);
+				ChangeState(WalkBossState::CeilingRun);
 			}
 		}
 		else
@@ -195,7 +195,7 @@ void Boss::Update(Map& map)
 		
 	}
 	// 天井走りの時の処理
-	if (_state == BossState::CeilingRun)
+	if (_state == WalkBossState::CeilingRun)
 	{
 		_vel.y = -1.0f;
 		_isTurn ? _vel.x = kRunSpeed : _vel.x = -kRunSpeed;
@@ -203,11 +203,11 @@ void Boss::Update(Map& map)
 		if (abs(toPlayerDis) < 75.0f)
 		{
 			_vel.x = 0.0f;
-			ChangeState(BossState::FallAttack);
+			ChangeState(WalkBossState::FallAttack);
 		}
 	}
 	// 落下攻撃の時の処理
-	if (_state == BossState::FallAttack)
+	if (_state == WalkBossState::FallAttack)
 	{
 		ChangeAnim(_fallAnim);
 		_nowAnim.SetRotate(0.0f);
@@ -215,7 +215,7 @@ void Boss::Update(Map& map)
 		if (_hitDir.down)
 		{
 			_pCamera->Shake(15, 5);
-			ChangeState(BossState::Idle);
+			ChangeState(WalkBossState::Idle);
 		}
 	}
 
@@ -239,7 +239,7 @@ void Boss::Update(Map& map)
 	_nowAnim.Update();
 }
 
-void Boss::Draw(Vector2 offset)
+void WalkBoss::Draw(Vector2 offset)
 {
 	_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - kGraphSize.y / 2 * kDrawScale }, _isTurn);
 #ifdef _DEBUG
@@ -247,13 +247,13 @@ void Boss::Draw(Vector2 offset)
 #endif
 }
 
-void Boss::Delete()
+void WalkBoss::Delete()
 {
 	_isAlive = false;
 	_pLaser->SetPos(Vector2(-10, -10));	// レーザーの位置を消す(画面外に行くだけ)
 }
 
-void Boss::ChangeState(BossState state)
+void WalkBoss::ChangeState(WalkBossState state)
 {
 	_state = state;
 	_frame = 0;

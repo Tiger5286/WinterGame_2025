@@ -109,7 +109,7 @@
     <ClCompile Include="Source\GameObjects\ClearFlag.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObjects\Enemies\Boss.cpp">
+    <ClCompile Include="Source\GameObjects\Enemies\WalkBoss.cpp">
       <Filter>GameObjects\Enemys</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\SceneGameOver.cpp">
@@ -211,7 +211,7 @@
     <ClInclude Include="Source\GameObjects\ClearFlag.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObjects\Enemies\Boss.h">
+    <ClInclude Include="Source\GameObjects\Enemies\WalkBoss.h">
       <Filter>GameObjects\Enemys</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\SceneGameOver.h">

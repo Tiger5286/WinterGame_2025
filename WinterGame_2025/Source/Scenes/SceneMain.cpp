@@ -15,17 +15,18 @@
 #include "SceneGameOver.h"
 
 #include "../GameObjects/Player.h"
-#include "../GameObjects/Bullet.h"
+//#include "../GameObjects/Bullet.h"
 
-#include "../GameObjects/Enemies/WalkEnemy.h"
-#include "../GameObjects/Enemies/FlyEnemy.h"
-#include "../GameObjects/Enemies/JumpEnemy.h"
-#include "../GameObjects/Enemies/Boss.h"
+#include "../GameObjects/Enemies/Enemy.h"
+//#include "../GameObjects/Enemies/WalkEnemy.h"
+//#include "../GameObjects/Enemies/FlyEnemy.h"
+//#include "../GameObjects/Enemies/JumpEnemy.h"
+//#include "../GameObjects/Enemies/WalkBoss.h"
 
-#include "../GameObjects/Item.h"
+//#include "../GameObjects/Item.h"
 
 #include "../GameObjects/ClearFlag.h"
-#include "../GameObjects/Laser.h"
+//#include "../GameObjects/Laser.h"
 
 #include "../UI/HPUI.h"
 #include "../UI/BossHPUI.h"

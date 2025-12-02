@@ -4,7 +4,7 @@
 class Camera;
 class Gimmick;
 
-enum class BossState
+enum class WalkBossState
 {
 	Idle,
 	Stun,	// ひるみ
@@ -14,11 +14,11 @@ enum class BossState
 	FallAttack,	// 落下攻撃
 };
 
-class Boss : public Enemy
+class WalkBoss : public Enemy
 {
 public:
-	Boss(std::shared_ptr<Player>pPlayer, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser, int handle);
-	~Boss();
+	WalkBoss(std::shared_ptr<Player>pPlayer, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser, int handle);
+	~WalkBoss();
 
 	void Init() override;
 	void Update(Map& map) override;
@@ -27,7 +27,7 @@ public:
 
 private:
 
-	void ChangeState(BossState state);
+	void ChangeState(WalkBossState state);
 
 private:
 	int _handle;
@@ -35,7 +35,7 @@ private:
 
 	int _frame;	// いろんな行動に使うフレームカウント
 
-	BossState _state;
+	WalkBossState _state;
 
 	Animation _idleAnim;
 	Animation _stunAnim;
