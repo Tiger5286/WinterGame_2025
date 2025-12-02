@@ -6,7 +6,8 @@
 SceneManager::SceneManager():
 	_pFade(std::make_shared<Fade>()),
 	_pNextScene(nullptr),
-	_nextFadeType(FadeState::NormalFadeIn)
+	_nextFadeType(FadeState::NormalFadeIn),
+	_stopFrame(0)
 {
 }
 
@@ -17,6 +18,13 @@ void SceneManager::Init()
 
 void SceneManager::Update(Input input)
 {
+	// 停止フレームが設定されている場合は更新をスキップする
+	if (_stopFrame > 0)
+	{
+		_stopFrame--;
+		return;
+	}
+
 	_pFade->Update();
 	// フェード中はシーンの更新を行わない
 	if (_pFade->GetState() == FadeState::NoFade)

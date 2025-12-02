@@ -42,10 +42,17 @@ public:
 	
 	void SetFadeCirclePos(const Vector2& pos) { _pFade->SetCirclePos(pos); }
 
+	/// <summary>
+	/// 指定されたフレームの間、シーンの更新を停止する
+	/// </summary>
+	/// <param name="frame">停止するフレーム数</param>
+	void Stop(int frame) { _stopFrame = frame; }
+
 private:
 	//std::shared_ptr<SceneBase> _pScene;
 	std::list<std::shared_ptr<SceneBase>> _pScenes;
 	std::shared_ptr<Fade> _pFade;
 	std::shared_ptr<SceneBase> _pNextScene;
 	FadeState _nextFadeType;
+	int _stopFrame;
 };
