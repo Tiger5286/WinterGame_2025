@@ -152,7 +152,13 @@ void SceneMain::Update(Input& input)
 	}
 
 	// フェードサークルの位置更新
-	_manager.SetFadeCirclePos(_pPlayer->GetPos() - _pCamera->GetDrawOffset());
+	Vector2 circleFadePos = _pPlayer->GetPos() - _pCamera->GetDrawOffset();
+	// プレイヤーの落下死でフェード位置が画面外になっている場合、マップの底面にフェード位置を設定する
+	if (circleFadePos.y > _pMap->GetStageSize().y + 100)
+	{
+		circleFadePos.y = _pMap->GetStageSize().y;
+	}
+	_manager.SetFadeCirclePos(circleFadePos);
 
 	// 敵制御
 	_pEnemyManager->Update();

@@ -208,6 +208,12 @@ void Player::Update(Map& map)
 	// マップとの当たり判定処理
 	_hitDir = MapCollision(map);
 
+	// マップの下に落ちたら死ぬ
+	if (_pos.y > map.GetStageSize().y + 100)
+	{
+		_hp = 0;
+	}
+
 	// hpがなくなったときの処理
 	if (_hp <= 0)
 	{
