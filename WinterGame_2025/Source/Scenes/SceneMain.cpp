@@ -189,7 +189,6 @@ void SceneMain::Update(Input& input)
 	}
 
 	// ゴール判定
-#ifdef _DEBUG
 	if (_pClearFlag != nullptr)
 	{
 		if (_pPlayer->GetCollider()->CheckCollision(_pClearFlag->GetCollider()))
@@ -197,19 +196,14 @@ void SceneMain::Update(Input& input)
 			StageClear();
 		}
 	}
-#else
-	if (_pClearFlag != nullptr)
+	if (_nowStage == Stages::Boss)	// ボスステージで敵がいなくなった(ボスを倒した)ならクリア
 	{
-		if (_pPlayer->GetCollider()->CheckCollision(_pClearFlag->GetCollider()))
-		{	// プレイヤーとゴール旗が接触したらステージクリアへ
-			StageClear();
+		if (_pEnemyManager->GetEnemies().empty())
+		{
+			_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager, _score));
+			return;
 		}
 	}
-	else
-	{
-		assert(false, "ゴール旗が存在しません");
-	}
-#endif
 
 	// 【デバッグ用】デバッグシーンに切り替え
 #ifdef _DEBUG

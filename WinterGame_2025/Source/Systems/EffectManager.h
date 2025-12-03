@@ -8,6 +8,8 @@ class Effect;
 enum class EffectType
 {
 	Explosion,
+	ExplosionSmall,
+	ExplosionBig
 };
 
 class EffectManager

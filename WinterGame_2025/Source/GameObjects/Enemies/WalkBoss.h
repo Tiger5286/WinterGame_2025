@@ -13,6 +13,7 @@ enum class WalkBossState
 	TackleAndWallRun,	// “Ëi••Ç‘–‚è
 	CeilingRun,	// “Vˆä‘–‚è
 	FallAttack,	// —‰ºUŒ‚
+	Death,	// €–S
 };
 
 class WalkBoss : public Enemy
@@ -25,6 +26,7 @@ public:
 	void Update(Map& map) override;
 	void Draw(Vector2 offset) override;
 
+	bool GetIsAlive() const override;
 	void TakeDamage(int damage) override;
 
 private:

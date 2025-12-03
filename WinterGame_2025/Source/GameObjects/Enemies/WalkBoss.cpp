@@ -7,6 +7,7 @@
 #include "../Gimmick.h"
 #include "../../Systems/EffectManager.h"
 #include "../../Scenes/SceneManager.h"
+#include "../../Scenes/SceneClear.h"
 
 namespace
 {
@@ -105,6 +106,10 @@ void WalkBoss::Update(Map& map)
 	if (CheckHitKey(KEY_INPUT_3))
 	{
 		ChangeState(WalkBossState::TackleAndWallRun);
+	}
+	if (CheckHitKey(KEY_INPUT_0))
+	{
+		_hp = 1;
 	}
 #endif // _DEBUG
 
@@ -239,6 +244,13 @@ void WalkBoss::Update(Map& map)
 			ChangeState(WalkBossState::Idle);
 		}
 	}
+	// 死亡時の処理
+	if (_state == WalkBossState::Death)
+	{
+		_frame++;
+		_pCollider->SetIsEnabled(false);
+		ChangeAnim(_tackleAnim);
+	}
 
 	_hitDir = MapCollision(map);
 
@@ -262,25 +274,64 @@ void WalkBoss::Update(Map& map)
 
 void WalkBoss::Draw(Vector2 offset)
 {
-	if (_damageFrame > 0)
+	if (_state == WalkBossState::Death)	// 死亡時の演出描画
 	{
-		SetDrawBright(255, 64, 64);	// ダメージを受けている間は赤くなる
+		if (_frame < 120)
+		{
+			if (_frame % 20 < 10)
+			{
+				SetDrawBright(255, 0, 0);	// 赤く点滅させる
+			}
+			_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - kGraphSize.y / 2 * kDrawScale }, _isTurn);
+			SetDrawBright(255, 255, 255);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			if (_frame % 10 == 0)
+			{
+				Vector2 explosionPosGap;
+				explosionPosGap.x = GetRand(200) - 100;
+				explosionPosGap.y = GetRand(200) - 100;
+				_pEffectManager->Create(GetColliderPos() + explosionPosGap, EffectType::ExplosionSmall);
+			}
+		}
+		if (_frame == 120)
+		{
+			_pEffectManager->Create(GetColliderPos(), EffectType::ExplosionBig);
+		}
 	}
-	_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - kGraphSize.y / 2 * kDrawScale }, _isTurn);
-	SetDrawBright(255, 255, 255);	// 明るさリセット
+	else	// 通常描画
+	{
+		if (_damageFrame > 0)
+		{
+			SetDrawBright(255, 64, 64);	// ダメージを受けている間は赤くなる
+		}
+		_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - kGraphSize.y / 2 * kDrawScale }, _isTurn);
+		SetDrawBright(255, 255, 255);	// 明るさリセット
+	}
+	
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
 #endif
 }
 
+bool WalkBoss::GetIsAlive() const
+{
+	return !(_state == WalkBossState::Death && _frame > 210);
+}
+
 void WalkBoss::TakeDamage(int damage)
 {
-	_hp -= damage;
-	_damageFrame = 5;
-	if (_hp <= 0)
+	if (!(_hp <= 0))
 	{
-		_sceneManager.Stop(60);
-		//_pEffectManager->Create(_pCollider->GetPos(), EffectType::Explosion);
+		_hp--;
+		_damageFrame = 5;
+		if (_hp <= 0)
+		{
+			_state = WalkBossState::Death;
+			_frame = 0;
+			_hp = 0;
+			_pCamera->Shake(120, 5);
+			_vel = Vector2();
+		}
 	}
 }
 
