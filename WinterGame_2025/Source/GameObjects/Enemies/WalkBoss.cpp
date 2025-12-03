@@ -59,6 +59,10 @@ namespace
 	// 演出関連
 	constexpr int kCameraShakePower = 5;
 	constexpr int kCameraShakeFrame = 15;
+	constexpr int kDeathDirectionFrame = 120;
+	constexpr int kDeathFrickerFrame = 10;
+	constexpr int kDeathExplosionGapDis = 100;
+	constexpr int kAliveTimeBeforeDeath = 210;
 }
 
 WalkBoss::WalkBoss(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser,SceneManager& sceneManager, int handle) :
@@ -276,24 +280,24 @@ void WalkBoss::Draw(Vector2 offset)
 {
 	if (_state == WalkBossState::Death)	// 死亡時の演出描画
 	{
-		if (_frame < 120)
+		if (_frame < kDeathDirectionFrame)
 		{
-			if (_frame % 20 < 10)
+			if (_frame % kDeathFrickerFrame * 2 < kDeathFrickerFrame)
 			{
 				SetDrawBright(255, 0, 0);	// 赤く点滅させる
 			}
 			_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - kGraphSize.y / 2 * kDrawScale }, _isTurn);
 			SetDrawBright(255, 255, 255);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-			if (_frame % 10 == 0)
+			if (_frame % kDeathFrickerFrame == 0)
 			{
 				Vector2 explosionPosGap;
-				explosionPosGap.x = GetRand(200) - 100;
-				explosionPosGap.y = GetRand(200) - 100;
+				explosionPosGap.x = GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis;
+				explosionPosGap.y = GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis;
 				_pEffectManager->Create(GetColliderPos() + explosionPosGap, EffectType::ExplosionSmall);
 			}
 		}
-		if (_frame == 120)
+		if (_frame == kDeathDirectionFrame)
 		{
 			_pEffectManager->Create(GetColliderPos(), EffectType::ExplosionBig);
 		}
@@ -315,7 +319,7 @@ void WalkBoss::Draw(Vector2 offset)
 
 bool WalkBoss::GetIsAlive() const
 {
-	return !(_state == WalkBossState::Death && _frame > 210);
+	return !(_state == WalkBossState::Death && _frame > kAliveTimeBeforeDeath);
 }
 
 void WalkBoss::TakeDamage(int damage)
@@ -329,7 +333,7 @@ void WalkBoss::TakeDamage(int damage)
 			_state = WalkBossState::Death;
 			_frame = 0;
 			_hp = 0;
-			_pCamera->Shake(120, 5);
+			_pCamera->Shake(kDeathDirectionFrame, kCameraShakePower);
 			_vel = Vector2();
 		}
 	}
