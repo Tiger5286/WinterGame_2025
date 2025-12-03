@@ -14,6 +14,8 @@ public:
 	void Update(Input& input);
 	void Draw();
 private:
+	int _bgHandle = -1;
+	int _gameOverHandle = -1;
 
 	bool _isSelectRestart;
 
