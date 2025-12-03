@@ -2,6 +2,7 @@
 #include <memory>
 #include <list>
 #include "../Systems/Fade.h"
+#include "../Game.h"
 
 class Input;
 class SceneBase;
@@ -48,11 +49,13 @@ public:
 	/// <param name="frame">’â~‚·‚éƒtƒŒ[ƒ€”</param>
 	void Stop(int frame) { _stopFrame = frame; }
 
+	Stages GetClearedStage() const { return _clearedStage; }
+
 private:
-	//std::shared_ptr<SceneBase> _pScene;
 	std::list<std::shared_ptr<SceneBase>> _pScenes;
 	std::shared_ptr<Fade> _pFade;
 	std::shared_ptr<SceneBase> _pNextScene;
 	FadeState _nextFadeType;
 	int _stopFrame;
+	Stages _clearedStage = Stages::None;
 };

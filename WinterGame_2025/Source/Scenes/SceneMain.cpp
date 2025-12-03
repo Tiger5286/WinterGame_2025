@@ -16,18 +16,10 @@
 #include "ScenePause.h"
 
 #include "../GameObjects/Player.h"
-//#include "../GameObjects/Bullet.h"
 
 #include "../GameObjects/Enemies/Enemy.h"
-//#include "../GameObjects/Enemies/WalkEnemy.h"
-//#include "../GameObjects/Enemies/FlyEnemy.h"
-//#include "../GameObjects/Enemies/JumpEnemy.h"
-//#include "../GameObjects/Enemies/WalkBoss.h"
-
-//#include "../GameObjects/Item.h"
 
 #include "../GameObjects/ClearFlag.h"
-//#include "../GameObjects/Laser.h"
 
 #include "../UI/HPUI.h"
 #include "../UI/BossHPUI.h"
@@ -200,8 +192,7 @@ void SceneMain::Update(Input& input)
 	{
 		if (_pEnemyManager->GetEnemies().empty())
 		{
-			_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager, _score));
-			return;
+			StageClear();
 		}
 	}
 

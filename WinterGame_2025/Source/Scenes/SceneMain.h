@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include "../Game.h"
 
 class Stage;
 
@@ -28,16 +29,6 @@ class GimmickManager;
 class ItemManager;
 class BulletManager;
 class EffectManager;
-
-// どのステージかを表す列挙体
-enum class Stages
-{
-	Temp,
-	Tutorial,
-	Stage1,
-	Stage2,
-	Boss
-};
 
 class SceneMain : public SceneBase
 {

@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "DebugScene.h"
 #include "SceneStageSelect.h"
+#include "SceneMain.h"
 #include "../Game.h"
 #include <cassert>
 #include <string>
@@ -39,7 +40,14 @@ void SceneTitle::Update(Input& input)
 
 	if (input.IsTriggered("decision"))
 	{
-		_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager));
+		if (_manager.GetClearedStage() == Stages::None)
+		{
+			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Tutorial));
+		}
+		else
+		{
+			_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager));
+		}
 	}
 
 

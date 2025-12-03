@@ -68,3 +68,16 @@ enum class ObjectData : int
 
 	BossEnemy1 = 56,
 };
+
+// ステージの種類定義
+enum class Stages
+{
+	None,
+	Tutorial,
+	Stage1,
+	Stage2,
+	Boss,
+
+	Num,
+	Temp,
+};
