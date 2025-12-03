@@ -2,13 +2,30 @@
 #include "../Systems/Input.h"
 #include "SceneManager.h"
 #include "SceneMain.h"
+#include "SceneTitle.h"
 #include "Dxlib.h"
 #include "DebugScene.h"
+#include "../Game.h"
+#include <cassert>
+
+namespace
+{
+	constexpr int kUIControllInterval = 10;
+	constexpr int kUIMoveScale = 40;
+	constexpr float kUIDrawScale = 0.5f;
+	constexpr float kUIDrawScaleHalf = kUIDrawScale / 2;
+}
 
 SceneStageSelect::SceneStageSelect(SceneManager& manager):
 	SceneBase(manager),
-	_selectIndex(0)
+	_selectIndex(0),
+	_frame(kUIControllInterval)
 {
+	_bgHandle = LoadGraph("data/map/bg.png");
+	assert(_bgHandle != -1);
+	_stageUIHandle = LoadGraph("data/UI/StageUI.png");
+	assert(_stageUIHandle != -1);
+
 	_stageList =
 	{
 		"Tutorial Stage",
@@ -32,6 +49,8 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager):
 
 SceneStageSelect::~SceneStageSelect()
 {
+	DeleteGraph(_bgHandle);
+	DeleteGraph(_stageUIHandle);
 }
 
 void SceneStageSelect::Init()
@@ -40,11 +59,23 @@ void SceneStageSelect::Init()
 
 void SceneStageSelect::Update(Input& input)
 {
+	if (_frame < kUIControllInterval && _isUIMoveRight)
+	{
+		_frame++;
+	}
+
+	if (_frame > -kUIControllInterval && !_isUIMoveRight)
+	{
+		_frame--;
+	}
+
 	if (input.IsTriggered("right"))
 	{
 		if (_selectIndex < _stageList.size() - 1)
 		{
 			_selectIndex++;
+			_isUIMoveRight = false;
+			_frame = 0;
 		}
 	}
 	if (input.IsTriggered("left"))
@@ -52,12 +83,19 @@ void SceneStageSelect::Update(Input& input)
 		if (_selectIndex > 0)
 		{
 			_selectIndex--;
+			_isUIMoveRight = true;
+			_frame = 0;
 		}
 	}
 	if (input.IsTriggered("decision"))
 	{
 		auto& stageName = _stageList[_selectIndex];
 		_execTable[stageName]();
+		return;
+	}
+	if (input.IsTriggered("back"))
+	{
+		_manager.ChangeSceneWithFade(std::make_shared<SceneTitle>(_manager), FadeState::NormalFadeIn);
 		return;
 	}
 
@@ -71,25 +109,64 @@ void SceneStageSelect::Update(Input& input)
 
 void SceneStageSelect::Draw()
 {
-	DrawBox(0, 0, 1920, 1080, 0x444444, true);
+	constexpr int screenW = GlobalConstants::kScreenWidth;
+	constexpr int screenH = GlobalConstants::kScreenHeight;
 
-	// 最初のステージと最後のステージ以外を選択中の時は選択中、左、右のステージ名を表示
-	if (_selectIndex > 0 && _selectIndex < _stageList.size() - 1)
+	// 背景
+	DrawExtendGraph(0, 0, screenW, screenH, _bgHandle, false);
+
+	// ステージUIの描画
+	float progress = abs(static_cast<float>(_frame) / kUIControllInterval);
+	int posX = _frame * kUIMoveScale;
+	int sidePosX = kUIControllInterval * kUIMoveScale;
+	if (_isUIMoveRight)
 	{
-		DrawFormatString(1920 / 2 - 400, 1080 / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
-		DrawFormatString(1920 / 2, 1080 / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
-		DrawFormatString(1920 / 2 + 400, 1080 / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+		if (_selectIndex > 0)
+		{
+			DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から現れるUI
+		}
+		if (_selectIndex < _stageList.size() - 1 - 1)
+		{
+			DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向で消えるUI
+		}
+		DrawRotaGraph(screenW / 2 - sidePosX + posX, screenH / 2, kUIDrawScaleHalf + progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から真ん中に向かうUI
 	}
-	else if (_selectIndex == 0)	// 最初のステージを選択中のときは選択中と右のステージ名を表示
+	else
 	{
-		DrawFormatString(1920 / 2, 1080 / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
-		DrawFormatString(1920 / 2 + 400, 1080 / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+		if (_selectIndex < _stageList.size() - 1)
+		{
+			DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から現れるUI
+		}
+		if (_selectIndex > 0 + 1)
+		{
+			DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向で消えるUI
+		}
+		DrawRotaGraph(screenW / 2 + sidePosX + posX, screenH / 2, kUIDrawScaleHalf + progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から真ん中に向かうUI
 	}
-	else if (_selectIndex == _stageList.size() - 1)	// 最後のステージを選択中のときは選択中と左のステージ名を表示
+	DrawRotaGraph(screenW / 2 + posX, screenH / 2, kUIDrawScale - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 真ん中から進行方向に向かうUI
+	
+
+	// ステージ名の描画
+	if (_frame == kUIControllInterval || _frame == -kUIControllInterval)
 	{
-		DrawFormatString(1920 / 2 - 400, 1080 / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
-		DrawFormatString(1920 / 2, 1080 / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
+		if (_selectIndex > 0 && _selectIndex < _stageList.size() - 1)		// 最初のステージと最後のステージ以外を選択中の時は選択中、左、右のステージ名を表示
+		{
+			DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
+			DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
+			DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+		}
+		else if (_selectIndex == 0)	// 最初のステージを選択中のときは選択中と右のステージ名を表示
+		{
+			DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
+			DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+		}
+		else if (_selectIndex == _stageList.size() - 1)	// 最後のステージを選択中のときは選択中と左のステージ名を表示
+		{
+			DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
+			DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
+		}
 	}
+	
 
 #ifdef _DEBUG
 	DrawString(0, 0, "SceneStageSelect",0xffffff);
