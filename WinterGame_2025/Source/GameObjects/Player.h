@@ -27,7 +27,7 @@ public:
 	void InitPosFromStage(const std::vector<uint16_t>& objectData,const Size mapSize);
 
 	void TakeDamage();	// ƒ_ƒ[ƒW‚ğó‚¯‚é
-	bool GetIsAlive() { return _isAlive; }
+	bool GetIsAlive() const { return _isAlive; }
 	int GetHp() { return _hp; }
 	int GetMaxHp();
 

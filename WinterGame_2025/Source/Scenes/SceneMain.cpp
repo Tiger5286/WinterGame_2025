@@ -139,12 +139,20 @@ void SceneMain::Update(Input& input)
 	// プレイヤーが死んだときの処理
 	if (!_pPlayer->GetIsAlive())
 	{
-		_manager.ChangeSceneWithFade(std::make_shared<SceneGameOver>(_manager, _nowStage),FadeState::NormalFadeIn,FadeState::CircleFadeOut);
+		_manager.SetFadeCirclePos(_pPlayer->GetColliderPos() - _pCamera->GetDrawOffset());	// プレイヤーが死んだ位置にフェードサークルを置く
+		if (_manager.GetClearedStage() == Stages::None)
+		{
+			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _nowStage), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
+		}
+		else
+		{
+			_manager.ChangeSceneWithFade(std::make_shared<SceneGameOver>(_manager, _nowStage), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
+		}
 		return;
 	}
 
 	// フェードサークルの位置更新
-	Vector2 circleFadePos = _pPlayer->GetPos() - _pCamera->GetDrawOffset();
+	Vector2 circleFadePos = _pPlayer->GetColliderPos() - _pCamera->GetDrawOffset();
 	// プレイヤーの落下死でフェード位置が画面外になっている場合、マップの底面にフェード位置を設定する
 	if (circleFadePos.y > _pMap->GetStageSize().y + 100)
 	{
