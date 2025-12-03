@@ -22,6 +22,11 @@ namespace
 	constexpr float kCoinColliderR = 16.0f;
 	constexpr float kBigCoinColliderR = 40.0f;
 	constexpr float kHealthItemColliderR = 24.0f;
+
+	// スコア
+	constexpr int kCoinScore = 100;
+	constexpr int kBigCoinScore = 1000;
+	constexpr int kHealthItemScore = 300;
 }
 
 Item::Item(Vector2 mapChipFirstPos, ItemType type, std::shared_ptr<Player> pPlayer,int handle):
@@ -34,16 +39,19 @@ Item::Item(Vector2 mapChipFirstPos, ItemType type, std::shared_ptr<Player> pPlay
 	{
 		_nowAnim.Init(_handle, 0, kFrameSize, kCoinAnimNum, kOneAnimFrame, kDrawScale);
 		_pCollider = std::make_shared<CircleCollider>(Vector2{ 0.0f,0.0f }, kCoinColliderR);
+		_score = kCoinScore;
 	}
 	else if (_type == ItemType::BigCoin)
 	{
 		_nowAnim.Init(_handle, 0, kFrameSize, kCoinAnimNum, kOneAnimFrame, kBigCoinDrawScale);
 		_pCollider = std::make_shared<CircleCollider>(Vector2{ 0.0f,0.0f }, kBigCoinColliderR);
+		_score = kBigCoinScore;
 	}
 	else if (_type == ItemType::HealthItem)
 	{
 		_nowAnim.Init(_handle, 0, kFrameSize, kHealthAnimNum, kOneAnimFrame, kDrawScale);
 		_pCollider = std::make_shared<CircleCollider>(Vector2{ 0.0f,0.0f }, kHealthItemColliderR);
+		_score = kHealthItemScore;
 	}
 	else
 	{
@@ -89,13 +97,13 @@ void Item::GetItem()
 	switch (_type)
 	{
 	case ItemType::Coin:
-		printfDx("コインを取得しました\n");
+		//printfDx("コインを取得しました\n");
 		break;
 	case ItemType::BigCoin:
-		printfDx("大コインを取得しました\n");
+		//printfDx("大コインを取得しました\n");
 		break;
 	case ItemType::HealthItem:
-		printfDx("体力回復アイテムを取得しました\n");
+		//printfDx("体力回復アイテムを取得しました\n");
 		break;
 	default:
 		assert(false && "不正なItemTypeが指定されました");

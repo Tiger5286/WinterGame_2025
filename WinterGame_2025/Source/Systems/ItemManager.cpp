@@ -4,9 +4,11 @@
 #include <cassert>
 
 #include "../GameObjects/Item.h"
+#include "../Scenes/SceneMain.h"
 
-ItemManager::ItemManager(std::shared_ptr<Player> pPlayer):
-	_pPlayer(pPlayer)
+ItemManager::ItemManager(std::shared_ptr<Player> pPlayer,SceneMain& sceneMain):
+	_pPlayer(pPlayer),
+	_sceneMain(sceneMain)
 {
 	_coinH = LoadGraph("data/Items/Coin.png");
 	assert(_coinH != -1);
@@ -31,18 +33,21 @@ void ItemManager::Update()
 		if (item != nullptr)
 		{
 			item->Update();
+
 			if (!item->GetIsAlive())
-			{	// æ‚ç‚ê‚½ƒAƒCƒeƒ€‚ğvector‚©‚çíœ‚·‚é(‚ ‚ñ‚ÜˆÓ–¡‚í‚©‚ç‚ñ)
-				_pItems.erase(
-					std::remove_if(_pItems.begin(), _pItems.end(),
-						[](const std::shared_ptr<Item>& item) {
-							return !item->GetIsAlive();
-						}),
-					_pItems.end()
-				);
+			{
+				_sceneMain.AddScore(item->GetScore());
 			}
 		}
 	}
+
+	_pItems.erase(
+		std::remove_if(_pItems.begin(), _pItems.end(),
+			[](const std::shared_ptr<Item>& item) {
+				return !item->GetIsAlive();
+			}),
+		_pItems.end()
+	);
 }
 
 void ItemManager::Draw(Vector2 offset)

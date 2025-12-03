@@ -5,11 +5,12 @@
 
 class Item;
 class Player;
+class SceneMain;
 
 class ItemManager
 {
 public:
-	ItemManager(std::shared_ptr<Player> pPlayer);
+	ItemManager(std::shared_ptr<Player> pPlayer,SceneMain& sceneMain);
 	~ItemManager();
 
 	void Update();
@@ -24,4 +25,6 @@ private:
 
 	std::shared_ptr<Player> _pPlayer;
 	std::vector<std::shared_ptr<Item>> _pItems;
+
+	SceneMain& _sceneMain;
 };

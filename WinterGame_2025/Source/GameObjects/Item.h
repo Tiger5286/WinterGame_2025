@@ -25,6 +25,7 @@ public:
 	void Draw(Vector2 offset) override;
 
 	bool GetIsAlive() const { return _isAlive; }
+	int GetScore() const { return _score; }
 
 private:
 	void GetItem();
@@ -34,6 +35,7 @@ private:
 	int _handle;
 
 	bool _isAlive;
+	int _score = 0;
 
 	ItemType _type;
 	std::shared_ptr<Player> _pPlayer;
