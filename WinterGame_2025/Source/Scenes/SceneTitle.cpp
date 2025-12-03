@@ -4,14 +4,29 @@
 #include "SceneManager.h"
 #include "DebugScene.h"
 #include "SceneStageSelect.h"
+#include "../Game.h"
+#include <cassert>
+#include <string>
+#include <cmath>
+
+namespace
+{
+	constexpr int kStringFrickerInterval = 60;
+}
 
 SceneTitle::SceneTitle(SceneManager& manager):
 	SceneBase(manager)
 {
+	_bgHandle = LoadGraph("data/Map/Bg.png");
+	assert(_bgHandle != -1);
+	_titleHandle = LoadGraph("data/UI/Title.png");
+	assert(_titleHandle != -1);
 }
 
 SceneTitle::~SceneTitle()
 {
+	DeleteGraph(_bgHandle);
+	DeleteGraph(_titleHandle);
 }
 
 void SceneTitle::Init()
@@ -20,6 +35,8 @@ void SceneTitle::Init()
 
 void SceneTitle::Update(Input& input)
 {
+	_frame++;
+
 	if (input.IsTriggered("decision"))
 	{
 		_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager));
@@ -36,10 +53,22 @@ void SceneTitle::Update(Input& input)
 
 void SceneTitle::Draw()
 {
-	DrawBox(0, 0, 1920, 1080, 0x444444, true);
+	constexpr int screenW = GlobalConstants::kScreenWidth;
+	constexpr int screenH = GlobalConstants::kScreenHeight;
 
-	DrawString(1920 / 2, 1080 / 2, "Title", 0xffffff);
-	DrawString(1920 / 2, 1080 / 2 + 250, "Press A to Start", 0xffffff);
+	DrawExtendGraph(0, 0, screenW, screenH, _bgHandle, false);
+
+	float sin = sinf(_frame * 0.02f);
+	DrawRotaGraph(screenW / 2, screenH / 2 + sin * 15, 1.0, 0.0, _titleHandle, true);
+
+	// "Press A to Start"‚ð“_–Å‚³‚¹‚é
+	if (_frame % kStringFrickerInterval < kStringFrickerInterval / 2)
+	{
+		const std::string pressAString = "Press A to Start";
+		int strW = GetDrawStringWidth(pressAString.c_str(), static_cast<int>(pressAString.size()));
+		DrawString(screenW / 2 - strW / 2, screenH / 2 + 250, pressAString.c_str(), 0xffffff);
+	}
+	
 
 #ifdef _DEBUG
 	DrawString(0, 0, "SceneTitle", 0xffffff);
