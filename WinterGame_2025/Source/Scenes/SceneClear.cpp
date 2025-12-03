@@ -4,14 +4,23 @@
 #include "SceneManager.h"
 #include "SceneStageSelect.h"
 #include "DebugScene.h"
+#include "../Game.h"
+#include <cassert>
 
-SceneClear::SceneClear(SceneManager& manager):
-	SceneBase(manager)
+SceneClear::SceneClear(SceneManager& manager,int score):
+	SceneBase(manager),
+	_score(score)
 {
+	_bgHandle = LoadGraph("data/Map/Bg.png");
+	assert(_bgHandle != -1);
+	_clearLogoHandle = LoadGraph("data/UI/StageClear.png");
+	assert(_clearLogoHandle != -1);
 }
 
 SceneClear::~SceneClear()
 {
+	DeleteGraph(_bgHandle);
+	DeleteGraph(_clearLogoHandle);
 }
 
 void SceneClear::Init()
@@ -35,10 +44,25 @@ void SceneClear::Update(Input& input)
 
 void SceneClear::Draw()
 {
-	DrawBox(0, 0, 1920, 1080, 0x444444, true);
+	constexpr int screenW = GlobalConstants::kScreenWidth;
+	constexpr int screenH = GlobalConstants::kScreenHeight;
 
-	DrawString(1920 / 2, 1080 / 2 , "Stage Clear", 0xffffff);
-	DrawString(1920 / 2, 1080 / 2 + 250, "Press A to Back to Stage Select", 0xffffff);
+	DrawExtendGraph(0, 0, screenW, screenH, _bgHandle, false);
+
+	DrawRotaGraph(screenW / 2, screenH / 2 - 100, 0.75, 0.0, _clearLogoHandle, true);
+
+	_dispScore = std::lerp(_dispScore, static_cast<float>(_score), 0.02f);
+
+	if (_score != 0)
+	{
+		DrawFormatString(screenW / 2, screenH / 2 + 130, 0xffffff, "Score:%d", static_cast<int>(_dispScore) + 1);	// なぜか_score-1で止まるので+1して補正
+	}
+	else
+	{
+		DrawFormatString(screenW / 2, screenH / 2 + 130, 0xffffff, "Score:%d", static_cast<int>(_dispScore));	// スコアが0のときに+1するとダメなのでそのまま表示
+	}
+	
+	DrawString(screenW / 2, screenH / 2 + 250, "Press A to Back to Stage Select", 0xffffff);
 
 #ifdef _DEBUG
 	DrawString(0, 0, "SceneClear", 0xffffff);
