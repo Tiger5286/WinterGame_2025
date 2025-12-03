@@ -2,6 +2,7 @@
 #include "SceneBase.h"
 #include "../Systems/Input.h"
 #include "../Systems/Fade.h"
+#include "Dxlib.h"
 
 SceneManager::SceneManager():
 	_pFade(std::make_shared<Fade>()),
@@ -50,6 +51,8 @@ void SceneManager::Draw()
 		scene->Draw();
 	}
 	_pFade->Draw();
+
+	DrawFormatString(300, 300, 0xffffff, "clearedStage:%d", static_cast<int>(_clearedStage));
 }
 
 void SceneManager::ResetScene(std::shared_ptr<SceneBase> pScene)
@@ -106,4 +109,20 @@ void SceneManager::ChangeSceneWithFade(std::shared_ptr<SceneBase> scene, FadeSta
 	}
 	_nextFadeType = nextFadeType;
 	_pNextScene = scene;
+}
+
+void SceneManager::CheckClearedStage(Stages clearedStage)
+{
+	// クリアしたステージが登録済みのステージより前なら何もしない
+	if (static_cast<int>(clearedStage) <= static_cast<int>(_clearedStage)) return;
+
+	for (int i = 0; i < static_cast<int>(Stages::Num); i++)
+	{
+		// クリアしたステージを登録する
+		if (clearedStage == static_cast<Stages>(i))
+		{
+			_clearedStage = clearedStage;
+			return;	// ステージを登録した時点でループを終わる
+		}
+	}
 }

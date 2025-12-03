@@ -51,6 +51,8 @@ public:
 
 	Stages GetClearedStage() const { return _clearedStage; }
 
+	void CheckClearedStage(Stages clearedStage);
+
 private:
 	std::list<std::shared_ptr<SceneBase>> _pScenes;
 	std::shared_ptr<Fade> _pFade;

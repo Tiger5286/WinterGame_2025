@@ -202,6 +202,10 @@ void SceneMain::Update(Input& input)
 	{
 		_manager.ChangeScene(std::make_shared<DebugScene>(_manager));
 	}
+	if (CheckHitKey(KEY_INPUT_L))
+	{
+		StageClear();
+	}
 #endif
 }
 
@@ -324,6 +328,7 @@ void SceneMain::LoadStage(Stages stage)
 
 void SceneMain::StageClear()
 {
+	_manager.CheckClearedStage(_nowStage);
 	_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager,_score), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
 	return;
 }
