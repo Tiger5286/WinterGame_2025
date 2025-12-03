@@ -67,7 +67,7 @@ void EnemyManager::Update()
 			if (!enemy->GetIsAlive())
 			{
 				_sceneMain.AddScore(enemy->GetScore());	// スコア加算
-				_pEffectManager->Create(enemy->GetColliderPos(), EffectType::Explosion);	// エフェクト生成
+				//_pEffectManager->Create(enemy->GetColliderPos(), EffectType::Explosion);	// エフェクト生成
 			}
 		}
 	}

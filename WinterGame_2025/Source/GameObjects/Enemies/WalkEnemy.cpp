@@ -32,7 +32,7 @@ namespace
 	constexpr int kOneAnimFrame = 6;
 
 	// HP
-	constexpr int kMaxHp = 5;
+	constexpr int kMaxHp = 3;
 	// ÉXÉRÉA
 	constexpr int kScore = 100;
 

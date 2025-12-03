@@ -18,7 +18,7 @@ public:
 
 	int GetHp() const { return _hp; }
 	virtual void TakeDamage(int damage);
-	bool GetIsAlive() const;
+	virtual bool GetIsAlive() const;
 	int GetScore() const { return _kScore; }
 	void SetIsHitChargeShot(bool isHit) { _isHitChargeShot = isHit; }
 	bool GetIsHitChargeShot()const { return _isHitChargeShot; }

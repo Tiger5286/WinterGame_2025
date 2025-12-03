@@ -34,7 +34,7 @@ namespace
 	constexpr float kAttackDis = 600.0f;
 
 	// hp
-	constexpr int kHp = 10;
+	constexpr int kHp = 5;
 
 	// ÉXÉRÉA
 	constexpr int kScore = 300;

@@ -32,7 +32,7 @@ namespace
 	constexpr float kReturnRange = 20.0f;	// 元の位置だと判定する範囲(この範囲に入ると捜索状態に戻る)
 
 	// hp
-	constexpr int kHp = 2;
+	constexpr int kHp = 1;
 
 	// スコア
 	constexpr int kScore = 150;

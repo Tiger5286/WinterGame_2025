@@ -29,8 +29,7 @@ void Enemy::TakeDamage(int damage)
 	_damageFrame = kDamageFrameMax;
 	if (_hp <= 0)
 	{
-		//_sceneManager.Stop(1);
-		//_pEffectManager->Create(_pCollider->GetPos(), EffectType::Explosion);
+		_pEffectManager->Create(GetColliderPos(), EffectType::Explosion);
 	}
 }
 

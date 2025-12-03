@@ -22,7 +22,7 @@ namespace
 	constexpr float kMaxMoveSpeed = 2.5f;
 
 	// hp
-	constexpr int kHp = 5;
+	constexpr int kHp = 2;
 
 	// ÉXÉRÉA
 	constexpr int kScore = 200;
