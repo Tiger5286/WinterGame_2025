@@ -59,7 +59,7 @@ void EnemyManager::Update()
 			float toCameraDisY = enemy->GetPos().y - _pCamera->GetPos().y;	// 敵とカメラの距離Y
 			// カメラの画面内にいる敵だけ更新する
 			if (abs(toCameraDisX) < GlobalConstants::kScreenWidth / 2 + 100 &&
-				abs(toCameraDisY) < GlobalConstants::kScreenHeight / 2 + 50)
+				abs(toCameraDisY) < GlobalConstants::kScreenHeight / 2 + 100)
 			{
 				enemy->Update(*_pMap);
 			}
