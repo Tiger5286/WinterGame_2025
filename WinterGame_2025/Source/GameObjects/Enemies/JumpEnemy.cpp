@@ -16,6 +16,9 @@ namespace
 	constexpr int kGraphHeight = 48;
 	const Vector2 kGraphFrameSize = { 80.0f,48.0f };
 
+	// アニメーション関連
+	constexpr int kIdleAnimIndex = 0;
+	constexpr int kAttackAnimIndex = 1;
 	constexpr int kIdleAnimNum = 4;
 	constexpr int kAttackAnimNum = 21;
 	constexpr int kAttackImpactFrameNum = 12;	// ハンマーを振り下ろし、地面にぶつけるアニメーションのフレーム番号
@@ -29,10 +32,16 @@ namespace
 
 	// プレイヤーに攻撃しようとする距離
 	constexpr float kAttackDis = 600.0f;
+
+	// hp
+	constexpr int kHp = 10;
+
+	// スコア
+	constexpr int kScore = 300;
 }
 
 JumpEnemy::JumpEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle) :
-	Enemy(5, pPlayer,pEffectManager,sceneManager),
+	Enemy(kHp, kScore, pPlayer,pEffectManager,sceneManager),
 	_handle(handle),
 	_attackCooltime(0),
 	_attackFrame(0),
@@ -43,8 +52,8 @@ JumpEnemy::JumpEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shar
 	_pos = ChipPosToGamePos(firstPos);
 	_pos.y += GlobalConstants::kDrawChipSizeHalf;
 
-	_idleAnim.Init(_handle, 0, kGraphFrameSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
-	_attackAnim.Init(_handle, 1, kGraphFrameSize, kAttackAnimNum, kOneAnimFrame, kDrawScale);
+	_idleAnim.Init(_handle, kIdleAnimIndex, kGraphFrameSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
+	_attackAnim.Init(_handle, kAttackAnimIndex, kGraphFrameSize, kAttackAnimNum, kOneAnimFrame, kDrawScale);
 	_nowAnim = _idleAnim;
 }
 

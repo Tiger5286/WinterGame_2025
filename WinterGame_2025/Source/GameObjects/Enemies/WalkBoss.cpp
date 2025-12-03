@@ -17,6 +17,7 @@ namespace
 	const Vector2 kColliderSize = { 130,150 };
 	// 体力
 	constexpr int kMaxHp = 100;
+	constexpr int kScore = 10000;
 
 	// アニメーション関連
 	constexpr int kIdleAnimIndex = 0;
@@ -60,7 +61,7 @@ namespace
 }
 
 WalkBoss::WalkBoss(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser,SceneManager& sceneManager, int handle) :
-	Enemy(kMaxHp, pPlayer,pEffectManager,sceneManager),
+	Enemy(kMaxHp, kScore, pPlayer,pEffectManager,sceneManager),
 	_handle(handle),
 	_isTurn(true),
 	_frame(0),
@@ -279,7 +280,7 @@ void WalkBoss::TakeDamage(int damage)
 	if (_hp <= 0)
 	{
 		_sceneManager.Stop(60);
-		_pEffectManager->Create(_pCollider->GetPos(), EffectType::Explosion);
+		//_pEffectManager->Create(_pCollider->GetPos(), EffectType::Explosion);
 	}
 }
 

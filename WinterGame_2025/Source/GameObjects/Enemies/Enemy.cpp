@@ -8,8 +8,9 @@ namespace
 	constexpr int kDamageFrameMax = 5;
 }
 
-Enemy::Enemy(int hp, std::shared_ptr<Player> pPlayer,std::shared_ptr<EffectManager> pEffectManager,SceneManager& sceneManager) :
+Enemy::Enemy(int hp,int score, std::shared_ptr<Player> pPlayer,std::shared_ptr<EffectManager> pEffectManager,SceneManager& sceneManager) :
 	_hp(hp),
+	_kScore(score),
 	_sceneManager(sceneManager),
 	_damageFrame(0),
 	_isHitChargeShot(false),
@@ -28,8 +29,8 @@ void Enemy::TakeDamage(int damage)
 	_damageFrame = kDamageFrameMax;
 	if (_hp <= 0)
 	{
-		//_sceneManager.Stop(5);
-		_pEffectManager->Create(_pCollider->GetPos(), EffectType::Explosion);
+		//_sceneManager.Stop(1);
+		//_pEffectManager->Create(_pCollider->GetPos(), EffectType::Explosion);
 	}
 }
 

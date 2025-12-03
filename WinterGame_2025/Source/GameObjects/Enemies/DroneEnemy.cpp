@@ -30,10 +30,16 @@ namespace
 	constexpr float kReturnAccelX = 0.5f;	// 元の位置に戻るときの加速度
 	constexpr float kMinReturnSpeedX = 5.0f;	// 元の位置に戻るときのX最低速度
 	constexpr float kReturnRange = 20.0f;	// 元の位置だと判定する範囲(この範囲に入ると捜索状態に戻る)
+
+	// hp
+	constexpr int kHp = 2;
+
+	// スコア
+	constexpr int kScore = 150;
 }
 
 DroneEnemy::DroneEnemy(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle):
-	Enemy(2,pPlayer,pEffectManager,sceneManager),
+	Enemy(kHp,kScore,pPlayer,pEffectManager,sceneManager),
 	_handle(handle),
 	_frame(kAttackCoolTime)
 {

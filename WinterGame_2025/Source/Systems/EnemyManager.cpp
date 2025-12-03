@@ -14,12 +14,21 @@
 
 #include "../GameObjects/Enemies/WalkBoss.h"
 
-EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer, std::shared_ptr<Map> pMap, std::shared_ptr<Camera> pCamera, std::shared_ptr<GimmickManager> pGimmickManager, std::shared_ptr<EffectManager> pEffectManager,SceneManager& sceneManager):
+#include "../Scenes/SceneMain.h"
+
+EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer,
+	std::shared_ptr<Map> pMap,
+	std::shared_ptr<Camera> pCamera,
+	std::shared_ptr<GimmickManager> pGimmickManager,
+	std::shared_ptr<EffectManager> pEffectManager,
+	SceneMain& sceneMain,
+	SceneManager& sceneManager):
 	_pPlayer(pPlayer),
 	_pMap(pMap),
 	_pCamera(pCamera),
 	_pGimmickManager(pGimmickManager),
 	_pEffectManager(pEffectManager),
+	_sceneMain(sceneMain),
 	_sceneManager(sceneManager)
 {
 	_walkEnemyH = LoadGraph("data/Enemys/WalkEnemy.png");
@@ -46,23 +55,31 @@ void EnemyManager::Update()
 	{
 		if (enemy != nullptr)
 		{
-			float toCameraDisX = enemy->GetPos().x - _pCamera->GetPos().x;	// “G‚ÆƒJƒƒ‰‚Ì‹——£
+			float toCameraDisX = enemy->GetPos().x - _pCamera->GetPos().x;	// “G‚ÆƒJƒƒ‰‚Ì‹——£X
+			float toCameraDisY = enemy->GetPos().y - _pCamera->GetPos().y;	// “G‚ÆƒJƒƒ‰‚Ì‹——£Y
 			// ƒJƒƒ‰‚Ì‰æ–Ê“à‚É‚¢‚é“G‚¾‚¯XV‚·‚é
-			if (abs(toCameraDisX) < GlobalConstants::kScreenWidth / 2 + 100)
+			if (abs(toCameraDisX) < GlobalConstants::kScreenWidth / 2 + 100 &&
+				abs(toCameraDisY) < GlobalConstants::kScreenHeight / 2 + 50)
 			{
 				enemy->Update(*_pMap);
 			}
-
-			// €‚ñ‚¾“G‚ğvector‚©‚çíœ‚·‚é(‚ ‚ñ‚ÜˆÓ–¡‚í‚©‚ç‚ñ)
-			_pEnemies.erase(
-				std::remove_if(_pEnemies.begin(), _pEnemies.end(),
-					[](const std::shared_ptr<Enemy>& enemy) {
-						return !enemy->GetIsAlive();
-					}),
-				_pEnemies.end()
-			);
+			// “G‚ª€‚ñ‚¾‚Æ‚«
+			if (!enemy->GetIsAlive())
+			{
+				_sceneMain.AddScore(enemy->GetScore());	// ƒXƒRƒA‰ÁZ
+				_pEffectManager->Create(enemy->GetColliderPos(), EffectType::Explosion);	// ƒGƒtƒFƒNƒg¶¬
+			}
 		}
 	}
+
+	// €‚ñ‚¾“G‚ğvector‚©‚çíœ‚·‚é
+	_pEnemies.erase(
+		std::remove_if(_pEnemies.begin(), _pEnemies.end(),
+			[](const std::shared_ptr<Enemy>& enemy) {
+				return !enemy->GetIsAlive();
+			}),
+		_pEnemies.end()
+	);
 }
 
 void EnemyManager::Draw()

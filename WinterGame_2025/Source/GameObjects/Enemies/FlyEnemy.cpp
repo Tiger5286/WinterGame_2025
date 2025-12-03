@@ -20,10 +20,16 @@ namespace
 	constexpr float kWaveHeight = 20.0f;
 	constexpr float kAccel = 0.05;
 	constexpr float kMaxMoveSpeed = 2.5f;
+
+	// hp
+	constexpr int kHp = 5;
+
+	// ÉXÉRÉA
+	constexpr int kScore = 200;
 }
 
 FlyEnemy::FlyEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle, FlyEnemyState state):
-	Enemy(5,pPlayer,pEffectManager,sceneManager),
+	Enemy(kHp, kScore,pPlayer,pEffectManager,sceneManager),
 	_handle(handle),
 	_state(state),
 	_angle(0.0f)

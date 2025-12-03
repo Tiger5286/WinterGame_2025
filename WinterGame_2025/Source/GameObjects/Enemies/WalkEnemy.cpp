@@ -33,6 +33,8 @@ namespace
 
 	// HP
 	constexpr int kMaxHp = 5;
+	// ÉXÉRÉA
+	constexpr int kScore = 100;
 
 	const auto kDamageColorR = 255;
 	const auto kDamageColorG = 64;
@@ -47,7 +49,7 @@ enum class WalkEnemyAnimType : int
 };
 
 WalkEnemy::WalkEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle, WalkEnemyState state, bool isTurn) :
-	Enemy(kMaxHp, pPlayer,pEffectManager,sceneManager),
+	Enemy(kMaxHp, kScore, pPlayer,pEffectManager,sceneManager),
 	_handle(handle),
 	_state(state),
 	_isTurn(isTurn)
