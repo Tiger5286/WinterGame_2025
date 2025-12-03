@@ -44,8 +44,6 @@
 
 namespace
 {
-	//constexpr int kBulletNum = 0;
-
 	// 画像リスト
 	enum class Graphs
 	{
@@ -257,6 +255,7 @@ void SceneMain::Draw()
 #ifdef _DEBUG
 	DrawString(0,0,"SceneMain",0xffffff);
 	DrawFormatString(0, 16, 0xffffff, "FRAME:%d", _frameCount);
+	DrawFormatString(0, 32, 0xffffff, "score:%d", _score);
 #endif // _DEBUG
 }
 
@@ -273,7 +272,7 @@ void SceneMain::LoadStage(Stages stage)
 		_pStage->LoadData("data/Stages/TutorialStage.fmf");
 		break;
 	case Stages::Stage1:
-		_pStage->LoadData("data/Stages/template.fmf");
+		_pStage->LoadData("data/Stages/Stage1.fmf");
 		break;
 	case Stages::Stage2:
 		_pStage->LoadData("data/Stages/template.fmf");
@@ -316,11 +315,11 @@ void SceneMain::LoadStage(Stages stage)
 	_pGimmickManager->LoadGimmicks(_pStage->GetObjectData(), _pStage->GetMapSize());// ギミックの生成
 
 	// アイテム
-	_pItemManager = std::make_shared<ItemManager>(_pPlayer);
+	_pItemManager = std::make_shared<ItemManager>(_pPlayer, *this);
 	_pItemManager->LoadItems(_pStage->GetObjectData(), _pStage->GetMapSize());	// アイテムの生成
 
 	// 敵
-	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera,_pGimmickManager,_pEffectManager,_manager);
+	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera,_pGimmickManager,_pEffectManager,*this,_manager);
 	_pEnemyManager->LoadEnemies(_pStage->GetObjectData(), _pStage->GetMapSize());// 敵の生成
 	if (stage == Stages::Boss)	// ボスステージならボスHPUIの生成
 	{
@@ -334,6 +333,6 @@ void SceneMain::LoadStage(Stages stage)
 
 void SceneMain::StageClear()
 {
-	_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
+	_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager,_score), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
 	return;
 }

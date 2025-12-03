@@ -53,11 +53,14 @@ public:
 
 	void StageClear();
 
+	void AddScore(int score) { _score += score; }
+
 private:
 	/*画像ハンドル*/
 	std::vector<int> _graphHandles;
 
 	int _frameCount;	// 経過フレーム数
+	int _score = 0;		// スコア
 
 	Stages _nowStage;
 
