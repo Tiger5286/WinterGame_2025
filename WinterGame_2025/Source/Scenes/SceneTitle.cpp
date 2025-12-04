@@ -42,7 +42,7 @@ void SceneTitle::Update(Input& input)
 	{
 		if (_manager.GetClearedStage() == Stages::None)
 		{
-			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Tutorial));
+			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Tutorial), FadeState::CircleFadeIn, FadeState::NormalFadeOut);
 		}
 		else
 		{

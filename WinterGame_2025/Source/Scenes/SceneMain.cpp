@@ -142,7 +142,7 @@ void SceneMain::Update(Input& input)
 		_manager.SetFadeCirclePos(_pPlayer->GetColliderPos() - _pCamera->GetDrawOffset());	// プレイヤーが死んだ位置にフェードサークルを置く
 		if (_manager.GetClearedStage() == Stages::None)
 		{
-			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _nowStage), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
+			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _nowStage), FadeState::CircleFadeIn, FadeState::CircleFadeOut);
 		}
 		else
 		{
