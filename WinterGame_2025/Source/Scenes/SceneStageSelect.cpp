@@ -69,22 +69,25 @@ void SceneStageSelect::Update(Input& input)
 		_frame--;
 	}
 
-	// UI移動演出中のみ操作を有効にする
+	// UI移動演出中は操作が効かないようにする
 	if (_frame == kUIControllInterval || _frame == -kUIControllInterval)
 	{
 		if (input.IsTriggered("right"))
 		{
 			// クリアしたステージ番号を反転したもの
 			int clearedStageRev = static_cast<int>(Stages::Num) - 1 - static_cast<int>(_manager.GetClearedStage());
-
+			if (clearedStageRev <= 0)	// 0になると最後のステージの次まで選べてしまうので0なら1にする
+			{
+				clearedStageRev = 1;
+			}
 			// 総ステージ数-反転ステージ番号=クリアしたステージ番号
-			if (_selectIndex < _stageList.size() - 1 - clearedStageRev)
+			if (_selectIndex < _stageList.size() - clearedStageRev)
 			{
 				_selectIndex++;
 				_isUIMoveRight = false;
 				_frame = 0;
 			}
-			printfDx("clearedStageRev:%d\n", clearedStageRev);
+			//printfDx("selectIndex:%d,stageList.size:%d,clearedStageRev:%d\n",_selectIndex,_stageList.size(), clearedStageRev);
 		}
 		if (input.IsTriggered("left"))
 		{
@@ -156,6 +159,7 @@ void SceneStageSelect::Draw()
 	
 
 	// ステージ名の描画
+	// UI移動中は描画しない
 	if (_frame == kUIControllInterval || _frame == -kUIControllInterval)
 	{
 		if (_selectIndex > 0 && _selectIndex < _stageList.size() - 1)		// 最初のステージと最後のステージ以外を選択中の時は選択中、左、右のステージ名を表示
@@ -174,8 +178,16 @@ void SceneStageSelect::Draw()
 			DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
 			DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
 		}
+
+		if (_selectIndex == static_cast<int>(_manager.GetClearedStage()))
+		{
+			DrawBox(screenW / 2 + 250 - 25,
+				screenH / 2 - 200,
+				screenW / 2+ 250 + 25,
+				screenH / 2 + 200,
+				0xff0000, true);
+		}
 	}
-	
 
 #ifdef _DEBUG
 	DrawString(0, 0, "SceneStageSelect",0xffffff);
