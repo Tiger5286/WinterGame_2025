@@ -69,34 +69,43 @@ void SceneStageSelect::Update(Input& input)
 		_frame--;
 	}
 
-	if (input.IsTriggered("right"))
+	// UI移動演出中のみ操作を有効にする
+	if (_frame == kUIControllInterval || _frame == -kUIControllInterval)
 	{
-		if (_selectIndex < _stageList.size() - 1)
+		if (input.IsTriggered("right"))
 		{
-			_selectIndex++;
-			_isUIMoveRight = false;
-			_frame = 0;
+			// クリアしたステージ番号を反転したもの
+			int clearedStageRev = static_cast<int>(Stages::Num) - 1 - static_cast<int>(_manager.GetClearedStage());
+
+			// 総ステージ数-反転ステージ番号=クリアしたステージ番号
+			if (_selectIndex < _stageList.size() - 1 - clearedStageRev)
+			{
+				_selectIndex++;
+				_isUIMoveRight = false;
+				_frame = 0;
+			}
+			printfDx("clearedStageRev:%d\n", clearedStageRev);
 		}
-	}
-	if (input.IsTriggered("left"))
-	{
-		if (_selectIndex > 0)
+		if (input.IsTriggered("left"))
 		{
-			_selectIndex--;
-			_isUIMoveRight = true;
-			_frame = 0;
+			if (_selectIndex > 0)
+			{
+				_selectIndex--;
+				_isUIMoveRight = true;
+				_frame = 0;
+			}
 		}
-	}
-	if (input.IsTriggered("decision"))
-	{
-		auto& stageName = _stageList[_selectIndex];
-		_execTable[stageName]();
-		return;
-	}
-	if (input.IsTriggered("back"))
-	{
-		_manager.ChangeSceneWithFade(std::make_shared<SceneTitle>(_manager), FadeState::NormalFadeIn);
-		return;
+		if (input.IsTriggered("decision"))
+		{
+			auto& stageName = _stageList[_selectIndex];
+			_execTable[stageName]();
+			return;
+		}
+		if (input.IsTriggered("back"))
+		{
+			_manager.ChangeSceneWithFade(std::make_shared<SceneTitle>(_manager), FadeState::NormalFadeIn);
+			return;
+		}
 	}
 
 #ifdef _DEBUG
