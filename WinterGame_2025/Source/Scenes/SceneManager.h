@@ -20,10 +20,21 @@ public:
 	void Update(Input input);
 	void Draw();
 
+	/// <summary>
+	/// 積んでいるシーンを全てクリアし、新たなシーンを再生する
+	/// </summary>
+	/// <param name="pScene">再生するシーン</param>
 	void ResetScene(std::shared_ptr<SceneBase> pScene);
 
+	/// <summary>
+	/// シーンを積む
+	/// </summary>
+	/// <param name="pScene">シーン</param>
 	void PushScene(std::shared_ptr<SceneBase> pScene);
 
+	/// <summary>
+	/// 一番上に積んでいるシーンを消す
+	/// </summary>
 	void PopScene();
 
 	/// <summary>
@@ -41,6 +52,10 @@ public:
 	/// <param name="fadeType">シーン終了時に行うフェードアウトの種類</param>
 	void ChangeSceneWithFade(std::shared_ptr<SceneBase> scene, FadeState nextFadeType = FadeState::NormalFadeIn, FadeState fadeType = FadeState::NormalFadeOut);
 	
+	/// <summary>
+	/// 丸フェードの位置を設定する
+	/// </summary>
+	/// <param name="pos">丸フェードの位置</param>
 	void SetFadeCirclePos(const Vector2& pos) { _pFade->SetCirclePos(pos); }
 
 	/// <summary>
@@ -49,8 +64,16 @@ public:
 	/// <param name="frame">停止するフレーム数</param>
 	void Stop(int frame) { _stopFrame = frame; }
 
+	/// <summary>
+	/// クリア済みの最後のステージを取得する
+	/// </summary>
+	/// <returns>クリア済みステージ</returns>
 	Stages GetClearedStage() const { return _clearedStage; }
 
+	/// <summary>
+	/// クリアしたステージが未クリアなら、クリア済みとして登録する
+	/// </summary>
+	/// <param name="clearedStage">クリアしたステージ</param>
 	void CheckClearedStage(Stages clearedStage);
 
 private:
