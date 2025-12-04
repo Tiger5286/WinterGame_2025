@@ -40,11 +40,24 @@ public:
 	void Update(Input& input) override;
 	void Draw() override;
 
+	/// <summary>
+	/// ステージを読み込む
+	/// </summary>
+	/// <param name="stage">読み込むステージ</param>
 	void LoadStage(Stages stage);
 
-	void StageClear();
-
+	/// <summary>
+	/// スコアを加算する
+	/// </summary>
+	/// <param name="score">加算するスコア</param>
 	void AddScore(int score) { _score += score; }
+
+private:
+
+	/// <summary>
+	/// ステージをクリアしたときの処理
+	/// </summary>
+	void StageClear();
 
 private:
 	/*画像ハンドル*/
@@ -53,8 +66,9 @@ private:
 	int _frameCount;	// 経過フレーム数
 	int _score = 0;		// スコア
 
-	Stages _nowStage;
+	Stages _nowStage;	// 今プレイしているステージ
 
+	// ステージを読み込むためのクラスを準備
 	std::shared_ptr<Stage> _pStage;
 
 	/*オブジェクト*/
