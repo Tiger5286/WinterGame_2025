@@ -172,6 +172,7 @@ void SceneMain::Update(Input& input)
 	// アイテム制御
 	_pItemManager->Update();
 
+	// エフェクト制御
 	_pEffectManager->Update();
 
 	// HPUI更新
@@ -237,6 +238,7 @@ void SceneMain::Draw()
 	// アイテムの描画
 	_pItemManager->Draw(_pCamera->GetDrawOffset());
 
+	// エフェクトの描画
 	_pEffectManager->Draw(_pCamera->GetDrawOffset());
 
 	// ゴール旗の描画
