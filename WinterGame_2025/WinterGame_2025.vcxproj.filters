@@ -132,6 +132,7 @@
     <ClCompile Include="Source\GameObjects\Effects\Effect.cpp" />
     <ClCompile Include="Source\GameObjects\Effects\Explosion.cpp" />
     <ClCompile Include="Source\Systems\EffectManager.cpp" />
+    <ClCompile Include="Source\Systems\DataManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GameObjects\Bullet.h">
@@ -238,5 +239,6 @@
     <ClInclude Include="Source\GameObjects\Effects\Effect.h" />
     <ClInclude Include="Source\GameObjects\Effects\Explosion.h" />
     <ClInclude Include="Source\Systems\EffectManager.h" />
+    <ClInclude Include="Source\Systems\DataManager.h" />
   </ItemGroup>
 </Project>

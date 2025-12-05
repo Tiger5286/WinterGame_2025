@@ -7,14 +7,18 @@
 class Input;
 class SceneBase;
 class Fade;
+class DataManager;
+class DebugScene;
 
 /// <summary>
 /// 内部にシーンを保持し、切り替えなどを行うクラス
 /// </summary>
 class SceneManager
 {
+	friend DebugScene;
 public:
 	SceneManager();
+	~SceneManager();
 
 	void Init();
 	void Update(Input input);
@@ -83,4 +87,6 @@ private:
 	FadeState _nextFadeType;
 	int _stopFrame;
 	Stages _clearedStage = Stages::None;
+
+	std::shared_ptr<DataManager> _pDataManager;
 };

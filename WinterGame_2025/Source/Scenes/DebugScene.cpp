@@ -2,6 +2,7 @@
 #include "../Systems/Input.h"
 #include "Dxlib.h"
 #include "SceneManager.h"
+#include "../Systems/DataManager.h"
 
 #include "SceneMain.h"
 #include "SceneTitle.h"
@@ -50,6 +51,14 @@ void DebugScene::Update(Input& input)
 		auto& menuName = _menuList[_selectIndex];
 		_execTable[menuName]();
 		return;
+	}
+
+	if (input.IsTriggered("select"))
+	{
+		_manager._clearedStage = Stages::None;
+
+		_manager._pDataManager->DeleteSaveData();
+		printfDx("Delete SaveData\n");
 	}
 }
 

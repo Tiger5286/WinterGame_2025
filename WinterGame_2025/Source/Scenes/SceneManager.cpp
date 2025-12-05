@@ -3,6 +3,7 @@
 #include "../Systems/Input.h"
 #include "../Systems/Fade.h"
 #include "Dxlib.h"
+#include "../Systems/DataManager.h"
 
 SceneManager::SceneManager():
 	_pFade(std::make_shared<Fade>()),
@@ -10,6 +11,17 @@ SceneManager::SceneManager():
 	_nextFadeType(FadeState::NormalFadeIn),
 	_stopFrame(0)
 {
+	_pDataManager = std::make_shared<DataManager>();
+	_pDataManager->Load();
+	_clearedStage = static_cast<Stages>(_pDataManager->GetSaveData().clearedStage);
+}
+
+SceneManager::~SceneManager()
+{
+	SaveData data;
+	data.clearedStage = static_cast<int>(_clearedStage);
+	_pDataManager->SetSaveData(data);
+	_pDataManager->Save();
 }
 
 void SceneManager::Init()
@@ -51,6 +63,7 @@ void SceneManager::Draw()
 		scene->Draw();
 	}
 	_pFade->Draw();
+	DrawFormatString(0, 100, 0xffffff, "clearedStage:%d", static_cast<int>(_clearedStage));
 }
 
 void SceneManager::ResetScene(std::shared_ptr<SceneBase> pScene)
