@@ -135,6 +135,7 @@
     <ClCompile Include="Source\Systems\DataManager.cpp" />
     <ClCompile Include="Source\GameObjects\Effects\ItemGet.cpp" />
     <ClCompile Include="Source\GameObjects\Effects\SmallDust.cpp" />
+    <ClCompile Include="Source\GameObjects\Effects\BigDust.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GameObjects\Bullet.h">
@@ -244,5 +245,6 @@
     <ClInclude Include="Source\Systems\DataManager.h" />
     <ClInclude Include="Source\GameObjects\Effects\ItemGet.h" />
     <ClInclude Include="Source\GameObjects\Effects\SmallDust.h" />
+    <ClInclude Include="Source\GameObjects\Effects\BigDust.h" />
   </ItemGroup>
 </Project>

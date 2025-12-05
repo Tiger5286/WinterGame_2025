@@ -12,6 +12,7 @@ enum class EffectType
 	ExplosionBig,
 	ItemGet,
 	SmallDust,
+	BigDust,
 };
 
 class EffectManager
@@ -28,5 +29,6 @@ private:
 	int _explosionH = -1;
 	int _itemGetH = -1;
 	int _smallDustH = -1;
+	int _bigDustH = -1;
 	std::vector<std::shared_ptr<Effect>> _pEffects;
 };

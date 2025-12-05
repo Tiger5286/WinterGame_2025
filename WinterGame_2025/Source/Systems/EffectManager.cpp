@@ -6,6 +6,7 @@
 #include "../GameObjects/Effects/Explosion.h"
 #include "../GameObjects/Effects/ItemGet.h"
 #include "../GameObjects/Effects/SmallDust.h"
+#include "../GameObjects/Effects/BigDust.h"
 
 EffectManager::EffectManager()
 {
@@ -15,12 +16,16 @@ EffectManager::EffectManager()
 	assert(_itemGetH != -1);
 	_smallDustH = LoadGraph("data/Effects/SmallDust.png");
 	assert(_smallDustH != -1);
+	_bigDustH = LoadGraph("data/Effects/BigDust.png");
+	assert(_bigDustH != -1);
 }
 
 EffectManager::~EffectManager()
 {
 	DeleteGraph(_explosionH);
 	DeleteGraph(_itemGetH);
+	DeleteGraph(_smallDustH);
+	DeleteGraph(_bigDustH);
 }
 
 void EffectManager::Update()
@@ -61,6 +66,9 @@ void EffectManager::Create(Vector2 pos,EffectType type)
 		break;
 	case EffectType::SmallDust:
 		_pEffects.push_back(std::make_shared<SmallDust>(_smallDustH,pos));
+		break;
+	case EffectType::BigDust:
+		_pEffects.push_back(std::make_shared<BigDust>(_bigDustH, pos));
 		break;
 	default:
 		break;
