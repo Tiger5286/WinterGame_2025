@@ -45,6 +45,12 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, int selectIndex):
 	_execTable["Boss Stage"] = [this]() {
 		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Boss), FadeState::CircleFadeIn);
 		};
+
+	if (_selectIndex == static_cast<int>(Stages::Num) - 2)
+	{
+		_isUIMoveRight = false;
+		_frame = -kUIControllInterval;
+	}
 }
 
 SceneStageSelect::~SceneStageSelect()
@@ -188,6 +194,8 @@ void SceneStageSelect::Draw()
 				0xff0000, true);
 		}
 	}
+
+	DrawFormatString(0, 100, 0xffffff, "frame:%d", _frame);
 
 #ifdef _DEBUG
 	DrawString(0, 0, "SceneStageSelect",0xffffff);
