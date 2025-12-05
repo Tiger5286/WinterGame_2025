@@ -63,6 +63,8 @@ namespace
 	constexpr float kStopSpeed = 0.9f;	// 横移動速度がこれ以下になったら完全に停止する
 	constexpr float kFrictionPower = 0.7f;	// 自然に止まる力
 
+	constexpr float kMaxFallSpeed = 15.0f;	// 最大落下速度
+
 	// ダッシュ関連
 	constexpr int kDashCoolTime = 120;	// ダッシュのクールタイム
 	constexpr float kDashSpeed = 20.0f;	// ダッシュの速度
@@ -81,7 +83,12 @@ namespace
 	constexpr int kChargeEffectTime = 30;		// チャージエフェクトが出始める時間
 	constexpr int kChargeTimeMax = 90;	// 最大チャージ時間
 
+	// 体力
 	constexpr int kMaxHp = 5;
+
+	// 演出関連
+	constexpr int kWalkDustInterval = 15;	// 歩行時の埃エフェクトの間隔
+	constexpr int kSlideDustInterval = 10;	// 壁ずり落ち時の埃エフェクトの間隔
 }
 
 // アニメーション種類
@@ -208,6 +215,8 @@ void Player::Update(Map& map)
 		_isGround = false;
 	}
 
+
+	_prevVel = _vel;	// 前フレームの速度を保存
 	// マップとの当たり判定処理
 	_hitDir = MapCollision(map);
 
@@ -283,14 +292,8 @@ void Player::Update(Map& map)
 
 void Player::Draw(Vector2 offset)
 {
-	// 移動の時にダストエフェクトを出す
-	if (abs(_vel.x) > 1.0f && _hitDir.down)
-	{
-		if (_frame % 15 == 0)
-		{
- 			_effectManager.Create(_pos, EffectType::SmallDust);
-		}
-	}
+	// エフェクトの描画
+	DrawEffect();
 
 	// 残像の描画
 	for (auto& afterimage : _playerAfterimage)
@@ -361,12 +364,6 @@ void Player::Draw(Vector2 offset)
 	}
 #endif // _DEBUG
 }
-
-//void Player::SetContext(const Input& input, std::vector<std::shared_ptr<Bullet>>& pBullets)
-//{
-//	_input = input;
-//	_pBullets = pBullets;
-//}
 
 void Player::SetContext(const Input& input)
 {
@@ -696,6 +693,43 @@ void Player::UpdateAfterimage()
 		if (afterimage.frame <= kAfterimageFrameMax)
 		{
 			afterimage.frame++;
+		}
+	}
+}
+
+void Player::DrawEffect()
+{
+	// 地面に接地しているとき、横移動速度が一定以上なら埃エフェクトを出す
+	if (abs(_vel.x) > 1.0f && _hitDir.down)
+	{
+		if (_frame % kWalkDustInterval == 0)
+		{
+			_effectManager.Create(_pos, EffectType::SmallDust);
+		}
+	}
+
+	// 高速落下で地面に着地したとき、大きな埃エフェクトを出す
+	if (_hitDir.down && _prevVel.y >= kMaxFallSpeed)
+	{
+		_effectManager.Create(_pos, EffectType::BigDust);
+	}
+
+	// 壁ずり落ち中に埃エフェクトを出す
+	if (_isSlide && _frame % kSlideDustInterval == 0)
+	{
+		if (_hitDir.left)
+		{
+			Vector2 dustPos = _pos;
+			dustPos.x -= kColliderW / 2;	// 左壁に接触しているので左側に出す
+			dustPos.y -= kColliderH / 2;	// 少し位置を上げる
+			_effectManager.Create(dustPos, EffectType::SmallDust);
+		}
+		else if (_hitDir.right)
+		{
+			Vector2 dustPos = _pos;
+			dustPos.x += kColliderW / 2;	// 右壁に接触しているので右側に出す
+			dustPos.y -= kColliderH / 2;	// 少し位置を上げる
+			_effectManager.Create(dustPos, EffectType::SmallDust);
 		}
 	}
 }

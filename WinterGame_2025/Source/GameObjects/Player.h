@@ -45,6 +45,7 @@ private:
 	void Dash();
 	void UpdateAnim();
 	void UpdateAfterimage();
+	void DrawEffect();
 
 	// 残像を表す構造体
 	struct PlayerAfterimage
@@ -87,6 +88,7 @@ private:
 	int _frame = 0;
 	int _hp;
 	bool _isAlive;
+	Vector2 _prevVel;
 
 	// ジャンプ関連変数
 	int _jumpFrame;		// ジャンプ長押し時間
