@@ -60,6 +60,11 @@ void DebugScene::Update(Input& input)
 		_manager._pDataManager->DeleteSaveData();
 		printfDx("Delete SaveData\n");
 	}
+	if (CheckHitKey(KEY_INPUT_1))
+	{
+		_manager._clearedStage = static_cast<Stages>((static_cast<int>(Stages::Num) - 1));
+		printfDx("All Stages Cleared\n");
+	}
 }
 
 void DebugScene::Draw()
