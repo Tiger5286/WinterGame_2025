@@ -10,6 +10,12 @@ class Fade;
 class DataManager;
 class DebugScene;
 
+enum class SceneChangeMode
+{
+	Change,
+	Reset
+};
+
 /// <summary>
 /// 内部にシーンを保持し、切り替えなどを行うクラス
 /// </summary>
@@ -28,7 +34,15 @@ public:
 	/// 積んでいるシーンを全てクリアし、新たなシーンを再生する
 	/// </summary>
 	/// <param name="pScene">再生するシーン</param>
-	void ResetScene(std::shared_ptr<SceneBase> pScene);
+	void ResetScene(std::shared_ptr<SceneBase> pScene,FadeState fadeType = FadeState::NormalFadeIn);
+
+	/// <summary>
+	/// ResetSceneをフェード付きで行う
+	/// </summary>
+	/// <param name="pScene">再生するシーン</param>
+	/// <param name="nextFadeType">次のシーン開始時に行うフェードの種類</param>
+	/// <param name="fadeType">現在のシーン終了時に行うフェードの種類</param>
+	void ResetSceneWithFade(std::shared_ptr<SceneBase> pScene, FadeState nextFadeType = FadeState::NormalFadeIn, FadeState fadeType = FadeState::NormalFadeOut);
 
 	/// <summary>
 	/// シーンを積む
@@ -87,6 +101,7 @@ private:
 	FadeState _nextFadeType;
 	int _stopFrame;
 	Stages _clearedStage = Stages::None;
+	SceneChangeMode _changeMode = SceneChangeMode::Change;
 
 	std::shared_ptr<DataManager> _pDataManager;
 };

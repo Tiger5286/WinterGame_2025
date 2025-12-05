@@ -50,7 +50,16 @@ void SceneManager::Update(Input input)
 	{
 		if (_pFade->GetIsFadeEnd())
 		{
-			ChangeScene(_pNextScene,_nextFadeType);
+			// シーン変更モードに応じたシーン変更をする
+			if (_changeMode == SceneChangeMode::Change)
+			{	// 通常のシーン変更
+				ChangeScene(_pNextScene, _nextFadeType);
+			}
+			else if (_changeMode == SceneChangeMode::Reset)
+			{	// 積んでいるシーンをすべて破棄して新たなシーンに変更
+				ResetScene(_pNextScene);
+				_changeMode = SceneChangeMode::Change;
+			}
 			_pNextScene = nullptr;
 		}
 	}
@@ -66,11 +75,35 @@ void SceneManager::Draw()
 	DrawFormatString(0, 100, 0xffffff, "clearedStage:%d", static_cast<int>(_clearedStage));
 }
 
-void SceneManager::ResetScene(std::shared_ptr<SceneBase> pScene)
+void SceneManager::ResetScene(std::shared_ptr<SceneBase> pScene, FadeState fadeType)
 {
 	_pScenes.clear();
 	_pScenes.push_back(pScene);
 	_pScenes.back()->Init();
+	// シーン変更時にフェードインを開始する
+	if (fadeType == FadeState::NormalFadeIn)
+	{
+		_pFade->StartFadeIn();
+	}
+	else if (fadeType == FadeState::CircleFadeIn)
+	{
+		_pFade->StartCircleFadeIn();
+	}
+}
+
+void SceneManager::ResetSceneWithFade(std::shared_ptr<SceneBase> pScene, FadeState nextFadeType, FadeState fadeType)
+{
+	if (fadeType == FadeState::NormalFadeOut)
+	{
+		_pFade->StartFadeOut();
+	}
+	else if (fadeType == FadeState::CircleFadeOut)
+	{
+		_pFade->StartCircleFadeOut();
+	}
+	_changeMode = SceneChangeMode::Reset;
+	_nextFadeType = nextFadeType;
+	_pNextScene = pScene;
 }
 
 void SceneManager::PushScene(std::shared_ptr<SceneBase> pScene)
