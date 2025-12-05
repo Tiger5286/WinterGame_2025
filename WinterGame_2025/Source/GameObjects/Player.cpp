@@ -7,6 +7,7 @@
 #include "../Systems/Map.h"
 #include "../Game.h"
 #include "../Systems/BulletManager.h"
+#include "../Systems/EffectManager.h"
 
 namespace
 {
@@ -98,7 +99,7 @@ enum class PlayerAnimType : int
 	Fall = 8
 };
 
-Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH, std::shared_ptr<BulletManager>& pBulletManager):
+Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH, BulletManager& bulletManager,EffectManager& effectManager):
 	_playerH(playerH),
 	_playerWhiteH(playerWhiteH),
 	_chargeParticleH(chargeParticleH),
@@ -118,7 +119,8 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_isDashing(false),
 	_isTurnDashing(false),
 	_chargeFrame(0),
-	_pBulletManager(pBulletManager)
+	_bulletManager(bulletManager),
+	_effectManager(effectManager)
 {
 #ifdef _DEBUG
 	_isCanFly = false;
@@ -161,6 +163,7 @@ void Player::Init()
 
 void Player::Update(Map& map)
 {
+	_frame++;
 	// 重力をかける
 	Gravity();
 
@@ -280,6 +283,15 @@ void Player::Update(Map& map)
 
 void Player::Draw(Vector2 offset)
 {
+	// 移動の時にダストエフェクトを出す
+	if (abs(_vel.x) > 1.0f && _hitDir.down)
+	{
+		if (_frame % 15 == 0)
+		{
+ 			_effectManager.Create(_pos, EffectType::SmallDust);
+		}
+	}
+
 	// 残像の描画
 	for (auto& afterimage : _playerAfterimage)
 	{
@@ -563,7 +575,7 @@ void Player::Shot()
 	// 通常射撃処理
 	if (_input.IsTriggered("shot"))
 	{	
-		_pBulletManager->Shot(BulletType::NormalShot, _shotPos, _isTurn);
+		_bulletManager.Shot(BulletType::NormalShot, _shotPos, _isTurn);
 		_shotFlashAnim.SetFirst();
 	}
 }
@@ -578,12 +590,12 @@ void Player::ChargeShot()
 	{	
 		if (_chargeFrame > kChargeTimeMax)
 		{	// チャージが完了しているならチャージショットを発射
-			_pBulletManager->Shot(BulletType::ChargeShot, _shotPos, _isTurn);
+			_bulletManager.Shot(BulletType::ChargeShot, _shotPos, _isTurn);
 			_chargeShotFlashAnim.SetFirst();
 		}
 		else if (_chargeFrame > kChargeEffectTime)
 		{	// チャージが未完了なら通常弾を発射
-			_pBulletManager->Shot(BulletType::NormalShot, _shotPos, _isTurn);
+			_bulletManager.Shot(BulletType::NormalShot, _shotPos, _isTurn);
 			_shotFlashAnim.SetFirst();
 		}
 		_chargeFrame = 0;

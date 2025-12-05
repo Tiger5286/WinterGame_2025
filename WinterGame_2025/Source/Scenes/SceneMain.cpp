@@ -297,7 +297,7 @@ void SceneMain::LoadStage(Stages stage)
 	_pBulletManager = std::make_shared<BulletManager>();
 
 	// プレイヤー
-	_pPlayer = std::make_shared<Player>(_graphHandles[static_cast<int>(Graphs::Player)], _graphHandles[static_cast<int>(Graphs::PlayerWhite)], _graphHandles[static_cast<int>(Graphs::ChargeParticle)], _graphHandles[static_cast<int>(Graphs::PlayerShot)], _graphHandles[static_cast<int>(Graphs::ChargeShot)], _pBulletManager);
+	_pPlayer = std::make_shared<Player>(_graphHandles[static_cast<int>(Graphs::Player)], _graphHandles[static_cast<int>(Graphs::PlayerWhite)], _graphHandles[static_cast<int>(Graphs::ChargeParticle)], _graphHandles[static_cast<int>(Graphs::PlayerShot)], _graphHandles[static_cast<int>(Graphs::ChargeShot)], *_pBulletManager,*_pEffectManager);
 	_pPlayer->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());		// プレイヤーの位置を設定
 
 	// マップ

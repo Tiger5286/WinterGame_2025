@@ -7,11 +7,12 @@
 class Bullet;
 class Map;
 class BulletManager;
+class EffectManager;
 
 class Player : public GameObject
 {
 public:
-	Player(int playerH,int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH, std::shared_ptr<BulletManager>& pBulletManager);
+	Player(int playerH,int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH, BulletManager& bulletManager,EffectManager& effectManager);
 	~Player();
 
 	void Init() override;
@@ -59,7 +60,8 @@ private:
 private:
 	Input _input;
 	//std::vector<std::shared_ptr<Bullet>> _pBullets;
-	std::shared_ptr<BulletManager> _pBulletManager;
+	BulletManager& _bulletManager;
+	EffectManager& _effectManager;
 
 	// ‰æ‘œƒnƒ“ƒhƒ‹
 	int _playerH;
@@ -82,6 +84,7 @@ private:
 	Animation _chargeShotFlashAnim;
 	Animation _ChargeParticleAnim;
 
+	int _frame = 0;
 	int _hp;
 	bool _isAlive;
 
