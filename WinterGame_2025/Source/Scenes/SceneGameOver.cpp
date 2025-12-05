@@ -45,7 +45,7 @@ void SceneGameOver::Update(Input& input)
 		}
 		else
 		{
-			_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager));
+			_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager, static_cast<int>(_playedStage) - 1));
 		}
 	}
 }
