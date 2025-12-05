@@ -15,13 +15,3 @@ ItemGet::ItemGet(int handle, Vector2 pos):
 {
 	_nowAnim.Init(_handle, 0, Vector2(kGraphSize, kGraphSize), kAnimNum, kOneAnimFrame, kDrawScale, false);
 }
-
-void ItemGet::Update()
-{
-	Effect::Update();
-}
-
-void ItemGet::Draw(Vector2 offset)
-{
-	Effect::Draw(offset);
-}

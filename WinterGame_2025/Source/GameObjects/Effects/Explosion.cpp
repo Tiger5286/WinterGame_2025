@@ -29,13 +29,3 @@ Explosion::Explosion(int handle,Vector2 pos,ExplosionType type):
 	}
 	
 }
-
-void Explosion::Update()
-{
-	Effect::Update();
-}
-
-void Explosion::Draw(Vector2 offset)
-{
-	Effect::Draw(offset);
-}
