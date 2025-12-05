@@ -231,9 +231,6 @@ void SceneMain::Draw()
 	// 敵の描画
 	_pEnemyManager->Draw();
 
-	// プレイヤーの描画
-	_pPlayer->Draw(_pCamera->GetDrawOffset());
-
 	// 弾の描画
 	_pBulletManager->Draw(_pCamera->GetDrawOffset());
 
@@ -247,6 +244,9 @@ void SceneMain::Draw()
 	{
 		_pClearFlag->Draw(_pCamera->GetDrawOffset());
 	}
+
+	// プレイヤーの描画
+	_pPlayer->Draw(_pCamera->GetDrawOffset());
 
 	// UIの描画
 	_pHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(), _pEnemyManager->GetEnemies());
@@ -318,7 +318,7 @@ void SceneMain::LoadStage(Stages stage)
 	_pGimmickManager->LoadGimmicks(_pStage->GetObjectData(), _pStage->GetMapSize());// ギミックの生成
 
 	// アイテム
-	_pItemManager = std::make_shared<ItemManager>(_pPlayer, *this);
+	_pItemManager = std::make_shared<ItemManager>(_pPlayer, *this, *_pEffectManager);
 	_pItemManager->LoadItems(_pStage->GetObjectData(), _pStage->GetMapSize());	// アイテムの生成
 
 	// 敵

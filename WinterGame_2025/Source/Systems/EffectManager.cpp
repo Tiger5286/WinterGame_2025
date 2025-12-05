@@ -4,16 +4,20 @@
 
 #include "../GameObjects/Effects/Effect.h"
 #include "../GameObjects/Effects/Explosion.h"
+#include "../GameObjects/Effects/ItemGet.h"
 
 EffectManager::EffectManager()
 {
 	_explosionH = LoadGraph("data/Effects/Explosion.png");
 	assert(_explosionH != -1);
+	_itemGetH = LoadGraph("data/Effects/ItemGet.png");
+	assert(_itemGetH != -1);
 }
 
 EffectManager::~EffectManager()
 {
 	DeleteGraph(_explosionH);
+	DeleteGraph(_itemGetH);
 }
 
 void EffectManager::Update()
@@ -49,6 +53,8 @@ void EffectManager::Create(Vector2 pos,EffectType type)
 	case EffectType::ExplosionBig:
 		_pEffects.push_back(std::make_shared<Explosion>(_explosionH, pos, ExplosionType::Big));
 		break;
+	case EffectType::ItemGet:
+		_pEffects.push_back(std::make_shared<ItemGet>(_itemGetH, pos));
 	default:
 		break;
 	}

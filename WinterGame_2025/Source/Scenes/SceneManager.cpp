@@ -72,7 +72,7 @@ void SceneManager::Draw()
 		scene->Draw();
 	}
 	_pFade->Draw();
-	DrawFormatString(0, 100, 0xffffff, "clearedStage:%d", static_cast<int>(_clearedStage));
+	//DrawFormatString(0, 100, 0xffffff, "clearedStage:%d", static_cast<int>(_clearedStage));
 }
 
 void SceneManager::ResetScene(std::shared_ptr<SceneBase> pScene, FadeState fadeType)

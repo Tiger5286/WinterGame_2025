@@ -5,10 +5,12 @@
 
 #include "../GameObjects/Item.h"
 #include "../Scenes/SceneMain.h"
+#include "EffectManager.h"
 
-ItemManager::ItemManager(std::shared_ptr<Player> pPlayer,SceneMain& sceneMain):
+ItemManager::ItemManager(std::shared_ptr<Player> pPlayer,SceneMain& sceneMain,EffectManager& effectManager):
 	_pPlayer(pPlayer),
-	_sceneMain(sceneMain)
+	_sceneMain(sceneMain),
+	_effectManager(effectManager)
 {
 	_coinH = LoadGraph("data/Items/Coin.png");
 	assert(_coinH != -1);
@@ -37,6 +39,7 @@ void ItemManager::Update()
 			if (!item->GetIsAlive())
 			{
 				_sceneMain.AddScore(item->GetScore());
+				_effectManager.Create(item->GetColliderPos(), EffectType::ItemGet);
 			}
 		}
 	}
