@@ -337,6 +337,6 @@ void SceneMain::LoadStage(Stages stage)
 void SceneMain::StageClear()
 {
 	_manager.CheckClearedStage(_nowStage);
-	_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager,_score), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
+	_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager,_score,_nowStage), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
 	return;
 }

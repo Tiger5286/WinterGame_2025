@@ -7,9 +7,10 @@
 #include "../Game.h"
 #include <cassert>
 
-SceneClear::SceneClear(SceneManager& manager,int score):
+SceneClear::SceneClear(SceneManager& manager,int score, Stages clearStage):
 	SceneBase(manager),
-	_score(score)
+	_score(score),
+	_clearStage(clearStage)
 {
 	_bgHandle = LoadGraph("data/Map/Bg.png");
 	assert(_bgHandle != -1);
@@ -31,7 +32,7 @@ void SceneClear::Update(Input& input)
 {
 	if (input.IsTriggered("decision"))
 	{
-		_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager));
+		_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager,static_cast<int>(_clearStage) - 1));
 	}
 
 #ifdef _DEBUG

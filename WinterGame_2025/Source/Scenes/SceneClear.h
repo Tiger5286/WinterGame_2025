@@ -1,9 +1,11 @@
 #pragma once
 #include "SceneBase.h"
+#include "../Game.h"
+
 class SceneClear : public SceneBase
 {
 public:
-	SceneClear(SceneManager& manager,int score);
+	SceneClear(SceneManager& manager,int score,Stages clearStage);
 	~SceneClear();
 
 	void Init() override;
@@ -15,5 +17,7 @@ private:
 
 	const int _score;
 	float _dispScore = 0.0f;
+
+	Stages _clearStage;
 };
 

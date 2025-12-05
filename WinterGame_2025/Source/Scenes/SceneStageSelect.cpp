@@ -16,9 +16,9 @@ namespace
 	constexpr float kUIDrawScaleHalf = kUIDrawScale / 2;
 }
 
-SceneStageSelect::SceneStageSelect(SceneManager& manager):
+SceneStageSelect::SceneStageSelect(SceneManager& manager, int selectIndex):
 	SceneBase(manager),
-	_selectIndex(0),
+	_selectIndex(selectIndex),
 	_frame(kUIControllInterval)
 {
 	_bgHandle = LoadGraph("data/map/bg.png");

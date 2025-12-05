@@ -8,7 +8,7 @@
 class SceneStageSelect : public SceneBase
 {
 public:
-	SceneStageSelect(SceneManager& manager);
+	SceneStageSelect(SceneManager& manager,int selectIndex = 0);
 	~SceneStageSelect();
 
 	void Init() override;
