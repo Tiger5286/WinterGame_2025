@@ -23,6 +23,10 @@ Enemy::~Enemy()
 {
 }
 
+void Enemy::UpdateAnytime()
+{
+}
+
 void Enemy::TakeDamage(int damage)
 {
 	_hp -= damage;

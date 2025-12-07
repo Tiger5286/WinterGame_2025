@@ -14,6 +14,7 @@ public:
 
 	virtual void Init() override = 0;
 	virtual void Update(Map& map) override = 0;
+	virtual void UpdateAnytime();	// 画面外に行っても呼ばれる更新関数
 	virtual void Draw(Vector2 offset) override = 0;
 
 	int GetHp() const { return _hp; }

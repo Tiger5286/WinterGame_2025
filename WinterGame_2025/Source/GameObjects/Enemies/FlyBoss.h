@@ -1,5 +1,12 @@
 #pragma once
 #include "Enemy.h"
+
+enum class FlyBossState
+{
+    Idle,
+    AimTackle,
+};
+
 class FlyBoss :
     public Enemy
 {
@@ -9,6 +16,7 @@ public:
 
     void Init() override;
     void Update(Map& map) override;
+    void UpdateAnytime() override;
     void Draw(Vector2 offset) override;
 
 private:
@@ -16,5 +24,11 @@ private:
 
 private:
     int _handle = -1;
+
+    int _frame = 0;
+    FlyBossState _state = FlyBossState::Idle;
+    bool _isPlayerOnLeft = true;
+
+    float _sinAngle = 0.0f;
 };
 
