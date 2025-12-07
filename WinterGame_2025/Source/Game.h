@@ -78,8 +78,11 @@ enum class Stages
 	None,
 	Tutorial,
 	Stage1,
+	Boss1,
 	Stage2,
-	Boss,
+	Boss2,
+	Stage3,
+	Boss3,
 
 	Num,
 	Temp,

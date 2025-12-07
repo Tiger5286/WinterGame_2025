@@ -197,7 +197,7 @@ void SceneMain::Update(Input& input)
 			StageClear();
 		}
 	}
-	if (_nowStage == Stages::Boss)	// ボスステージで敵がいなくなった(ボスを倒した)ならクリア
+	if (_nowStage == Stages::Boss1)	// ボスステージで敵がいなくなった(ボスを倒した)ならクリア
 	{
 		if (_pEnemyManager->GetEnemies().empty())
 		{
@@ -282,10 +282,12 @@ void SceneMain::LoadStage(Stages stage)
 	case Stages::Stage2:
 		_pStage->LoadData("data/Stages/template.fmf");
 		break;
-	case Stages::Boss:
+	case Stages::Boss1:
 		_pStage->LoadData("data/Stages/BossStage.fmf");
 		break;
 	default:
+		_pStage->LoadData("data/Stages/template.fmf");
+		printfDx("未知のステージが呼ばれました");
 		break;
 	}
 
@@ -326,7 +328,7 @@ void SceneMain::LoadStage(Stages stage)
 	// 敵
 	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera,_pGimmickManager,_pEffectManager,*this,_manager);
 	_pEnemyManager->LoadEnemies(_pStage->GetObjectData(), _pStage->GetMapSize());// 敵の生成
-	if (stage == Stages::Boss)	// ボスステージならボスHPUIの生成
+	if (stage == Stages::Boss1)	// ボスステージならボスHPUIの生成
 	{
 		_pBossHPUI = std::make_shared<BossHPUI>(_graphHandles[static_cast<int>(Graphs::BossHpUI)], _pEnemyManager->GetEnemies().back()->GetHp());
 	}
