@@ -70,6 +70,8 @@ enum class ObjectData : int
 	DroneEnemy,
 
 	BossEnemy1 = 56,
+	BossEnemy2,
+	BossEnemy3,
 };
 
 // ステージの種類定義

@@ -128,6 +128,12 @@ void EnemyManager::LoadEnemies(const std::vector<uint16_t>& objectData, Size siz
 			case ObjectData::BossEnemy1:
 				_pEnemies.push_back(std::make_shared<WalkBoss>(pos,_pPlayer, _pEffectManager, _pCamera, _pGimmickManager->AddBossLaser(),_sceneManager, _walkEnemyH));
 				break;
+			case ObjectData::BossEnemy2:
+				printfDx("BossEnemy2‚Í–¢ŽÀ‘•‚Å‚·");
+				break;
+			case ObjectData::BossEnemy3:
+				printfDx("BossEnemy3‚Í–¢ŽÀ‘•‚Å‚·");
+				break;
 			default:
 				break;
 			}

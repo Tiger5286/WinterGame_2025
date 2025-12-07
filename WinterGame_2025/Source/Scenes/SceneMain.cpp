@@ -285,6 +285,15 @@ void SceneMain::LoadStage(Stages stage)
 	case Stages::Stage2:
 		_pStage->LoadData("data/Stages/template.fmf");
 		break;
+	case Stages::Boss2:
+		_pStage->LoadData("data/Stages/Boss2Stage.fmf");
+		break;
+	case Stages::Stage3:
+		_pStage->LoadData("data/Stages/template.fmf");
+		break;
+	case Stages::Boss3:
+		_pStage->LoadData("data/Stages/Boss3Stage.fmf");
+		break;
 	default:
 		_pStage->LoadData("data/Stages/template.fmf");
 		printfDx("未知のステージが呼ばれました");
