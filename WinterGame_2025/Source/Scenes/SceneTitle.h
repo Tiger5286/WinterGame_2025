@@ -14,5 +14,8 @@ private:
 	// 画像ハンドル
 	int _bgHandle = -1;
 	int _titleHandle = -1;
+
+	// フォントハンドル
+	int _fontHandle = -1;
 };
 

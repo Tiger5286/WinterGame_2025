@@ -19,5 +19,7 @@ private:
 	int _selectIndex;	// 現在選択中のインデックス
 	std::vector<std::string> _menuList;	// メニューリスト
 	std::map<std::string, std::function<void()>> _execTable;	// メニュー名と実行関数の対応表
+
+	int _tempFontHandle = -1;
 };
 

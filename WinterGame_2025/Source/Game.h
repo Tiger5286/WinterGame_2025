@@ -29,6 +29,9 @@ namespace GlobalConstants
 	constexpr float kDrawScale = 3.0f;
 	constexpr int kDrawChipSize = kChipSize * kDrawScale;
 	constexpr int kDrawChipSizeHalf = kChipSize * kDrawScale / 2;
+
+	// 共通フォント名
+	constexpr char kMainFontName[] = "廻想体 ネクスト UP B";
 }
 
 // オブジェクトデータ定義

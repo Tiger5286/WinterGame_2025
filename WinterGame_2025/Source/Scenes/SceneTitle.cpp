@@ -22,12 +22,14 @@ SceneTitle::SceneTitle(SceneManager& manager):
 	assert(_bgHandle != -1);
 	_titleHandle = LoadGraph("data/UI/Title.png");
 	assert(_titleHandle != -1);
+	_fontHandle = CreateFontToHandle(GlobalConstants::kMainFontName, 64, -1, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);
 }
 
 SceneTitle::~SceneTitle()
 {
 	DeleteGraph(_bgHandle);
 	DeleteGraph(_titleHandle);
+	DeleteFontToHandle(_fontHandle);
 }
 
 void SceneTitle::Init()
@@ -73,8 +75,10 @@ void SceneTitle::Draw()
 	if (_frame % kStringFrickerInterval < kStringFrickerInterval / 2)
 	{
 		const std::string pressAString = "Press A to Start";
-		int strW = GetDrawStringWidth(pressAString.c_str(), static_cast<int>(pressAString.size()));
-		DrawString(screenW / 2 - strW / 2, screenH / 2 + 250, pressAString.c_str(), 0xffffff);
+		int strW = GetDrawStringWidthToHandle(pressAString.c_str(), static_cast<int>(pressAString.size()), _fontHandle);
+		//int strW = GetDrawStringWidth(pressAString.c_str(), static_cast<int>(pressAString.size()));
+		//DrawString(screenW / 2 - strW / 2, screenH / 2 + 250, pressAString.c_str(), 0xffffff);
+		DrawStringToHandle(screenW / 2 - strW / 2, screenH / 2 + 250, pressAString.c_str(), 0x0022bb,_fontHandle,0xffffff);
 	}
 	
 

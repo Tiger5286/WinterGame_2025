@@ -5,6 +5,7 @@
 #include "Scenes/SceneManager.h"
 #include "Scenes/SceneTitle.h"
 #include "Scenes/DebugScene.h"
+#include <Windows.h>
 
 Application::Application()
 {
@@ -39,6 +40,9 @@ void Application::Run()
 {
 	SetDrawScreen(DX_SCREEN_BACK);
 
+	// フォントを読み込む
+	AddFontResourceExA("data/UI/MainFont.ttf", FR_PRIVATE, NULL);
+
 	Input input;
 	SceneManager sceneManager;
 #ifdef _DEBUG
@@ -68,5 +72,8 @@ void Application::Run()
 
 void Application::Terminate()
 {
+	// 読み込んだフォントを解放
+	RemoveFontResourceExA("data/UI/MainFont.ttf", FR_PRIVATE, NULL);
+
 	DxLib_End();				// ＤＸライブラリ使用の終了処理
 }

@@ -7,6 +7,7 @@
 #include "SceneMain.h"
 #include "SceneTitle.h"
 #include "SceneStageSelect.h"
+#include <cassert>
 
 DebugScene::DebugScene(SceneManager& manager):
 	SceneBase(manager),
@@ -26,10 +27,14 @@ DebugScene::DebugScene(SceneManager& manager):
 	_execTable["SceneStageSelect"] = [this]() {
 		_manager.ChangeScene(std::make_shared<SceneStageSelect>(_manager));
 		};
+
+	_tempFontHandle = CreateFontToHandle(GlobalConstants::kMainFontName, 48, -1, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);
+	assert(_tempFontHandle != -1);
 }
 
 DebugScene::~DebugScene()
 {
+	DeleteFontToHandle(_tempFontHandle);
 }
 
 void DebugScene::Init()
@@ -83,4 +88,6 @@ void DebugScene::Draw()
 			DrawString(100, 100 + i * 30, _menuList[i].c_str(), GetColor(255, 255, 255));
 		}
 	}
+
+	DrawStringToHandle(300, 300, "テスト用文字列です", 0x000000, _tempFontHandle, 0xffffff);
 }
