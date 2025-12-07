@@ -279,11 +279,11 @@ void SceneMain::LoadStage(Stages stage)
 	case Stages::Stage1:
 		_pStage->LoadData("data/Stages/Stage1.fmf");
 		break;
+	case Stages::Boss1:
+		_pStage->LoadData("data/Stages/Boss1Stage.fmf");
+		break;
 	case Stages::Stage2:
 		_pStage->LoadData("data/Stages/template.fmf");
-		break;
-	case Stages::Boss1:
-		_pStage->LoadData("data/Stages/BossStage.fmf");
 		break;
 	default:
 		_pStage->LoadData("data/Stages/template.fmf");
@@ -293,6 +293,7 @@ void SceneMain::LoadStage(Stages stage)
 
 	// オブジェクトの生成、初期化
 	
+	// エフェクト
 	_pEffectManager = std::make_shared<EffectManager>();
 
 	// 弾
