@@ -13,6 +13,7 @@
 #include "../GameObjects/Enemies/DroneEnemy.h"
 
 #include "../GameObjects/Enemies/WalkBoss.h"
+#include "../GameObjects/Enemies/FlyBoss.h"
 
 #include "../Scenes/SceneMain.h"
 
@@ -129,7 +130,7 @@ void EnemyManager::LoadEnemies(const std::vector<uint16_t>& objectData, Size siz
 				_pEnemies.push_back(std::make_shared<WalkBoss>(pos,_pPlayer, _pEffectManager, _pCamera, _pGimmickManager->AddBossLaser(),_sceneManager, _walkEnemyH));
 				break;
 			case ObjectData::BossEnemy2:
-				printfDx("BossEnemy2‚Í–¢ŽÀ‘•‚Å‚·");
+				_pEnemies.push_back(std::make_shared<FlyBoss>(pos, _pPlayer, _pEffectManager, _sceneManager, _flyEnemyH));
 				break;
 			case ObjectData::BossEnemy3:
 				printfDx("BossEnemy3‚Í–¢ŽÀ‘•‚Å‚·");

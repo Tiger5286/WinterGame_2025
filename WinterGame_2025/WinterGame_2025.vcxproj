@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\GameObjects\Enemies\FlyBoss.cpp" />
     <ClCompile Include="Source\GameObjects\Effects\BigDust.cpp" />
     <ClCompile Include="Source\GameObjects\Effects\SmallDust.cpp" />
     <ClCompile Include="Source\GameObjects\Effects\ItemGet.cpp" />
@@ -189,6 +190,7 @@
     <ClCompile Include="Source\Systems\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\GameObjects\Enemies\FlyBoss.h" />
     <ClInclude Include="Source\GameObjects\Effects\BigDust.h" />
     <ClInclude Include="Source\GameObjects\Effects\SmallDust.h" />
     <ClInclude Include="Source\GameObjects\Effects\ItemGet.h" />
