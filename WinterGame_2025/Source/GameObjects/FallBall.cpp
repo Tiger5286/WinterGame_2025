@@ -1,5 +1,6 @@
 #include "FallBall.h"
 #include "../Utility/CircleCollider.h"
+#include "Player.h"
 
 namespace
 {
@@ -45,7 +46,11 @@ void FallBall::Update(Map& map)
 		_pos += _vel;
 	}
 	
-
+	// プレイヤーに当たったらダメージを与える
+	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
+	{
+		_pPlayer->TakeDamage();
+	}
 
 	_nowAnim.Update();
 }

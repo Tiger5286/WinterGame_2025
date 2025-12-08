@@ -130,6 +130,8 @@ void FlyBoss::UpdateAnytime()
 
 void FlyBoss::Update()
 {
+	BaseUpdate();
+
 	if (_state == FlyBossState::Idle)	// Idle状態
 	{
 		_frame++;
@@ -219,6 +221,13 @@ void FlyBoss::Update()
 	adjustPos.y = _pos.y + sinf(_sinAngle) * kSinAngleScale;
 
 	_pCollider->SetPos(adjustPos);
+
+	// プレイヤーに当たったらダメージを与える
+	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
+	{
+		_pPlayer->TakeDamage();
+	}
+
 	_nowAnim.Update();
 }
 
@@ -229,8 +238,13 @@ void FlyBoss::CheckIsPlayerOnLeft()
 
 void FlyBoss::Draw(Vector2 offset)
 {
+	if (_damageFrame > 0)
+	{
+		SetDrawBright(255, 64, 64);	// ダメージを受けている間は赤くなる
+	}
 	// コライダーが縦揺れを適用した位置にいるのでそのまま使う
-	_nowAnim.Draw(GetColliderPos() - offset, false);
+	_nowAnim.Draw(_pCollider->GetPos() - offset, false);
+	SetDrawBright(255, 255, 255);	// 明るさリセット
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
 	DrawFormatString(_pos.x, _pos.y - 60, 0xffffff, "_frame:%d", _frame);

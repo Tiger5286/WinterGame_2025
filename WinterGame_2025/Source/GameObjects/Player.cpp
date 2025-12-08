@@ -573,7 +573,6 @@ void Player::Shot()
 	if (_input.IsTriggered("shot"))
 	{	
 		_bulletManager.Shot(BulletType::NormalShot, _shotPos, _isTurn);
-		_bulletManager.ShotFallBall(_shotPos);
 		_shotFlashAnim.SetFirst();
 	}
 }
