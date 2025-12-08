@@ -1,5 +1,4 @@
 #include "EnemyManager.h"
-#include "../Game.h"
 #include "Dxlib.h"
 #include <cassert>
 
@@ -56,6 +55,8 @@ void EnemyManager::Update()
 	{
 		if (enemy != nullptr)
 		{
+			// 画面外でも常に更新する処理
+			enemy->UpdateAnytime();
 			float toCameraDisX = enemy->GetPos().x - _pCamera->GetPos().x;	// 敵とカメラの距離X
 			float toCameraDisY = enemy->GetPos().y - _pCamera->GetPos().y;	// 敵とカメラの距離Y
 			// カメラの画面内にいる敵だけ更新する
@@ -63,6 +64,12 @@ void EnemyManager::Update()
 				abs(toCameraDisY) < GlobalConstants::kScreenHeight / 2 + 100)
 			{
 				enemy->Update(*_pMap);
+				// 敵が増えたらループを抜ける
+				if (_isAddEnemy)
+				{
+					_isAddEnemy = false;
+					break;
+				}
 			}
 			// 敵が死んだとき
 			if (!enemy->GetIsAlive())
@@ -103,41 +110,53 @@ void EnemyManager::LoadEnemies(const std::vector<uint16_t>& objectData, Size siz
 			auto index = w + h * size.w;
 			auto data = static_cast<ObjectData>(objectData[index]);
 			Vector2 pos = Vector2(static_cast<float>(w), static_cast<float>(h));
-			switch (data)
-			{
-			case ObjectData::WalkEnemyIdle:
-				_pEnemies.push_back(std::make_shared<WalkEnemy>(pos, _pPlayer,_pEffectManager, _sceneManager, _walkEnemyH, WalkEnemyState::Idle, false));
-				break;
-			case ObjectData::WalkEnemyMoveLeft:
-				_pEnemies.push_back(std::make_shared<WalkEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _walkEnemyH, WalkEnemyState::Move, true));
-				break;
-			case ObjectData::WalkEnemyMoveRight:
-				_pEnemies.push_back(std::make_shared<WalkEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _walkEnemyH, WalkEnemyState::Move, false));
-				break;
-			case ObjectData::FlyEnemyIdle:
-				_pEnemies.push_back(std::make_shared<FlyEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _flyEnemyH, FlyEnemyState::Idle));
-				break;
-			case ObjectData::FlyEnemyMove:
-				_pEnemies.push_back(std::make_shared<FlyEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _flyEnemyH, FlyEnemyState::Move));
-				break;
-			case ObjectData::JumpEnemy:
-				_pEnemies.push_back(std::make_shared<JumpEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _jumpEnemyH));
-				break;
-			case ObjectData::DroneEnemy:
-				_pEnemies.push_back(std::make_shared<DroneEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _droneEnemyH));
-				break;
-			case ObjectData::BossEnemy1:
-				_pEnemies.push_back(std::make_shared<WalkBoss>(pos,_pPlayer, _pEffectManager, _pCamera, _pGimmickManager->AddBossLaser(),_sceneManager, _walkEnemyH));
-				break;
-			case ObjectData::BossEnemy2:
-				_pEnemies.push_back(std::make_shared<FlyBoss>(pos, _pPlayer, _pEffectManager, _sceneManager, _flyEnemyH));
-				break;
-			case ObjectData::BossEnemy3:
-				printfDx("BossEnemy3は未実装です");
-				break;
-			default:
-				break;
-			}
+			Create(data, pos);
 		}
 	}
+}
+
+void EnemyManager::Create(ObjectData enemyData, Vector2 pos, bool isChipPos)
+{
+	switch (enemyData)
+	{
+	case ObjectData::WalkEnemyIdle:
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _walkEnemyH, WalkEnemyState::Idle, false));
+		break;
+	case ObjectData::WalkEnemyMoveLeft:
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _walkEnemyH, WalkEnemyState::Move, true));
+		break;
+	case ObjectData::WalkEnemyMoveRight:
+		_pEnemies.push_back(std::make_shared<WalkEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _walkEnemyH, WalkEnemyState::Move, false));
+		break;
+	case ObjectData::FlyEnemyIdle:
+		_pEnemies.push_back(std::make_shared<FlyEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _flyEnemyH, FlyEnemyState::Idle));
+		break;
+	case ObjectData::FlyEnemyMove:
+		_pEnemies.push_back(std::make_shared<FlyEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _flyEnemyH, FlyEnemyState::Move));
+		break;
+	case ObjectData::JumpEnemy:
+		_pEnemies.push_back(std::make_shared<JumpEnemy>(pos, _pPlayer, _pEffectManager, _sceneManager, _jumpEnemyH));
+		break;
+	case ObjectData::DroneEnemy:
+		_pEnemies.push_back(std::make_shared<DroneEnemy>(pos, _pPlayer,_pCamera, _pEffectManager, _sceneManager, _droneEnemyH));
+		break;
+	case ObjectData::BossEnemy1:
+		_pEnemies.push_back(std::make_shared<WalkBoss>(pos, _pPlayer, _pEffectManager, _pCamera, _pGimmickManager->AddBossLaser(), _sceneManager, _walkEnemyH));
+		break;
+	case ObjectData::BossEnemy2:
+		_pEnemies.push_back(std::make_shared<FlyBoss>(pos, _pPlayer, _pCamera, *this, _pEffectManager, _sceneManager, _flyEnemyH));
+		break;
+	case ObjectData::BossEnemy3:
+		printfDx("BossEnemy3は未実装です");
+		break;
+	default:
+		break;
+	}
+	// チップ座標指定ではない場合、そのまま位置をセットする
+	if (!isChipPos)
+	{
+		_pEnemies.back()->SetPos(pos);
+		_pEnemies.back()->Init();
+	}
+	_isAddEnemy = true;
 }

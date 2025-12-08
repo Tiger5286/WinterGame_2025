@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include "../Utility/Geometry.h"
+#include "../Game.h"
 
 class Player;
 class Map;
@@ -38,6 +39,13 @@ public:
 	/// <param name="size">マップサイズ</param>
 	void LoadEnemies(const std::vector<uint16_t>& objectData, Size size);
 
+	/// <summary>
+	/// 敵を生成する
+	/// </summary>
+	/// <param name="enemyData">敵の種類</param>
+	/// <param name="pos">生成する位置</param>
+	void Create(ObjectData enemyData, Vector2 pos, bool isChipPos = true);
+
 	const std::vector<std::shared_ptr<Enemy>>& GetEnemies() const { return _pEnemies; }
 
 private:
@@ -45,6 +53,8 @@ private:
 	int _flyEnemyH = -1;
 	int _jumpEnemyH = -1;
 	int _droneEnemyH = -1;
+
+	bool _isAddEnemy = false;
 
 	std::shared_ptr<Player> _pPlayer;
 	std::shared_ptr<Map> _pMap;
