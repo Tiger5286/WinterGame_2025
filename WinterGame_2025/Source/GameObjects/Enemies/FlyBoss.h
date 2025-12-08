@@ -8,10 +8,11 @@ class BulletManager;
 enum class FlyBossState
 {
     Idle,
-    AimAndTackle,
-    FallBall,
-    SummonEnemies,
-    Back,
+    AimAndTackle,   // ‘_‚Á‚Ä“ËiUŒ‚
+    FallBall,       // ‹…‚ğ—‚Æ‚·UŒ‚
+    SummonEnemies,  // G‹›¢Š«
+    Back,   // ‹K’è‚ÌˆÊ’u‚É–ß‚é
+    Death,  // €–S
 };
 
 class FlyBoss :
@@ -25,6 +26,9 @@ public:
     void Update(Map& map) override;
     void UpdateAnytime() override;
     void Draw(Vector2 offset) override;
+
+    void TakeDamage(int damage) override;
+    bool GetIsAlive() const override;
 
 private:
     void Update();
