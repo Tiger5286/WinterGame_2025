@@ -3,6 +3,7 @@
 #include "../../Utility/CircleCollider.h"
 #include "../../Systems/Camera.h"
 #include "../../Systems/EnemyManager.h"
+#include "../../Systems/EffectManager.h"
 #include "DroneEnemy.h"
 #include "../../Game.h"
 #include "../Player.h"
@@ -80,6 +81,7 @@ void FlyBoss::UpdateAnytime()
 			_pos.x > _pCamera->GetPos().x + GlobalConstants::kScreenWidth / 2 + kOutOfScreenMargin)
 		{
 			_state = FlyBossState::Back;
+			_prevState = FlyBossState::AimAndTackle;
 			_frame = 0;
 			_vel = Vector2(0, 0);
 			CheckIsPlayerOnLeft();
@@ -133,8 +135,9 @@ void FlyBoss::Update()
 		_frame++;
 		if (_frame > kIdleWaitFrame)
 		{
-			// 敵が複数いるならタックル、そうでなければドローン召喚へ
-			if (_enemyManager.GetEnemies().size() > 1)
+			// 敵が複数いる、もしくは前回の行動が召喚なら他の攻撃、そうでなければドローン召喚へ
+			if (_enemyManager.GetEnemies().size() > 1 ||
+				_prevState == FlyBossState::SummonEnemies)
 			{
 				_state = FlyBossState::AimAndTackle;
 			}
@@ -177,6 +180,7 @@ void FlyBoss::Update()
 		// 一定間隔でドローンを召喚
 		if (_frame % 120 == 0)
 		{
+			_pEffectManager->Create(_pos, EffectType::ItemGet);
 			_enemyManager.Create(ObjectData::DroneEnemy, _pos, false);
 		}
 
@@ -202,6 +206,7 @@ void FlyBoss::Update()
 		if ((targetPos - _pos).Length() < 5.0f)
 		{
 			_state = FlyBossState::Idle;
+			_prevState = FlyBossState::SummonEnemies;
 			_frame = 0;
 		}
 	}

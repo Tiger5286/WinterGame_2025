@@ -40,6 +40,7 @@ private:
 
     int _frame = 0;
     FlyBossState _state = FlyBossState::Idle;
+	FlyBossState _prevState = FlyBossState::Idle;
 	bool _isPlayerOnLeft = true;    // プレイヤーが左にいるかどうか
     bool _isOnLeft = false;     // 自身が左側にいるかどうか
 
