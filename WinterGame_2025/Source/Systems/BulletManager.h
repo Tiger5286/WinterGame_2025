@@ -16,7 +16,7 @@ class FallBall;
 class BulletManager
 {
 public:
-	BulletManager(std::shared_ptr<Player> pPlayer);
+	BulletManager(Vector2 mapSize);
 	~BulletManager();
 
 	void Update(Map& map, Vector2 cameraPos, std::vector<std::shared_ptr<Enemy>> pEnemys);
@@ -25,10 +25,14 @@ public:
 	void Shot(BulletType type, Vector2 shotPos, bool isTurn);
 	void ShotFallBall(Vector2 pos);
 
+	void SetPlayer(std::shared_ptr<Player> pPlayer);
+
 private:
 	int _shotH = -1;
 	int _chargeShotH = -1;
 	int _fallBallH = -1;
+
+	const Vector2 _kMapSize;
 
 	std::vector<std::shared_ptr<Bullet>> _pBullets;
 	std::vector<std::shared_ptr<FallBall>> _pFallBalls;

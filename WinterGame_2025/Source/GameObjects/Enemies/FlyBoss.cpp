@@ -4,6 +4,7 @@
 #include "../../Systems/Camera.h"
 #include "../../Systems/EnemyManager.h"
 #include "../../Systems/EffectManager.h"
+#include "../../Systems/BulletManager.h"
 #include "DroneEnemy.h"
 #include "../../Game.h"
 #include "../Player.h"
@@ -48,11 +49,12 @@ namespace
 	constexpr int kScore = 10000;
 }
 
-FlyBoss::FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer,std::shared_ptr<Camera> pCamera, EnemyManager& enemyManager, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager,int handle):
-	Enemy(kHp, kScore,pPlayer,pEffectManager,sceneManager),
+FlyBoss::FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, EnemyManager& enemyManager, BulletManager& bulletManager, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle) :
+	Enemy(kHp, kScore, pPlayer, pEffectManager, sceneManager),
 	_handle(handle),
 	_pCamera(pCamera),
-	_enemyManager(enemyManager)
+	_enemyManager(enemyManager),
+	_bulletManager(bulletManager)
 {
 	_nowAnim.Init(_handle, 0, Vector2(kGraphSize, kGraphSize), kAnimNum, kOneAnimFrame, kDrawScale);
 	_pos = ChipPosToGamePos(pos);
@@ -84,7 +86,7 @@ void FlyBoss::UpdateAnytime()
 			_prevState = FlyBossState::AimAndTackle;
 			_frame = 0;
 			_vel = Vector2(0, 0);
-			CheckIsPlayerOnLeft();
+			CheckIsOnLeft();
 		}
 	}
 
@@ -94,8 +96,8 @@ void FlyBoss::UpdateAnytime()
 		// 少し間をおいてから元の位置に戻る
 		if (_frame > kBackWaitFrame)
 		{
-			if (_isPlayerOnLeft)
-			{	// プレイヤーが左にいる
+			if (!_isOnLeft)
+			{
 				// 右の既定の位置に戻る
 				Vector2 targetPos = Vector2(kBasePosXRight, kBasePosY);
 				Vector2 vec = targetPos - _pos;
@@ -110,7 +112,7 @@ void FlyBoss::UpdateAnytime()
 				}
 			}
 			else
-			{	// プレイヤーが右にいる
+			{
 				// 左の既定の位置に戻る
 				Vector2 targetPos = Vector2(kBasePosXLeft, kBasePosY);
 				Vector2 vec = targetPos - _pos;
@@ -137,16 +139,17 @@ void FlyBoss::Update()
 		_frame++;
 		if (_frame > kIdleWaitFrame)
 		{
+			_state = FlyBossState::FallBall;
 			// 敵が複数いる、もしくは前回の行動が召喚なら他の攻撃、そうでなければドローン召喚へ
-			if (_enemyManager.GetEnemies().size() > 1 ||
-				_prevState == FlyBossState::SummonEnemies)
-			{
-				_state = FlyBossState::AimAndTackle;
-			}
-			else
-			{
-				_state = FlyBossState::SummonEnemies;
-			}
+			//if (_enemyManager.GetEnemies().size() > 1 ||
+			//	_prevState == FlyBossState::SummonEnemies)
+			//{
+			//	_state = FlyBossState::FallBall;
+			//}
+			//else
+			//{
+			//	_state = FlyBossState::SummonEnemies;
+			//}
 			_frame = 0;
 		}
 	}
@@ -190,7 +193,7 @@ void FlyBoss::Update()
 
 		if (_frame == 1)
 		{	// 最初に自分がどちら側にいるかを判定しておく
-			_isOnLeft = _pos.x < _pCamera->GetPos().x;
+			CheckIsOnLeft();
 		}
 
 		Vector2 targetPos;
@@ -209,6 +212,27 @@ void FlyBoss::Update()
 		{
 			_state = FlyBossState::Idle;
 			_prevState = FlyBossState::SummonEnemies;
+			_frame = 0;
+		}
+	}
+	else if (_state == FlyBossState::FallBall)
+	{
+		_frame++;
+		_pos.x = std::lerp(_pos.x, _pPlayer->GetColliderPos().x, kAimLerpRate);
+		_pos.y = std::lerp(_pos.y, _pPlayer->GetColliderPos().y - 400, kAimLerpRate);
+		if (_pos.y < 100)
+		{
+			_pos.y = 100;
+		}
+		if (_frame % 60 == 0)
+		{
+			Vector2 shotPos = _pos + Vector2(0, 50);
+			_bulletManager.ShotFallBall(shotPos);
+		}
+
+		if (_frame > 60 * 6)
+		{
+			_state = FlyBossState::Back;
 			_frame = 0;
 		}
 	}
@@ -234,6 +258,11 @@ void FlyBoss::Update()
 void FlyBoss::CheckIsPlayerOnLeft()
 {
 	_isPlayerOnLeft = _pos.x - _pPlayer->GetPos().x > 0;
+}
+
+void FlyBoss::CheckIsOnLeft()
+{
+	_isOnLeft = _pos.x < _pCamera->GetPos().x;
 }
 
 void FlyBoss::Draw(Vector2 offset)

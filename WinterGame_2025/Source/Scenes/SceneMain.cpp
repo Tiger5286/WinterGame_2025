@@ -304,27 +304,29 @@ void SceneMain::LoadStage(Stages stage)
 
 	// オブジェクトの生成、初期化
 	
-	// エフェクト
-	_pEffectManager = std::make_shared<EffectManager>();
-
-	// 弾
-	_pBulletManager = std::make_shared<BulletManager>(_pPlayer);
-
-	// プレイヤー
-	_pPlayer = std::make_shared<Player>(_graphHandles[static_cast<int>(Graphs::Player)], _graphHandles[static_cast<int>(Graphs::PlayerWhite)], _graphHandles[static_cast<int>(Graphs::ChargeParticle)], _graphHandles[static_cast<int>(Graphs::PlayerShot)], _graphHandles[static_cast<int>(Graphs::ChargeShot)], *_pBulletManager,*_pEffectManager);
-	_pPlayer->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());		// プレイヤーの位置を設定
-
 	// マップ
 	_pMap = std::make_shared<Map>(_graphHandles[static_cast<int>(Graphs::MapChip)]);
 	_pMap->SetMapData(_pStage->GetMapData(), _pStage->GetMapSize());		// マップデータを設定
-
-	// HPUI
-	_pHPUI = std::make_shared<HPUI>(_graphHandles[static_cast<int>(Graphs::HpUI)], _pPlayer->GetMaxHp());
 
 	// カメラ
 	_pCamera = std::make_shared<Camera>();
 	_pCamera->SetStageSize(_pMap->GetStageSize());
 	_pCamera->SetPos(Vector2(GlobalConstants::kScreenWidth / 2, _pMap->GetStageSize().y - GlobalConstants::kScreenHeight / 2));
+
+	// エフェクト
+	_pEffectManager = std::make_shared<EffectManager>();
+
+	// 弾
+	Vector2 mapSize = { static_cast<float>(_pStage->GetMapSize().w) * GlobalConstants::kDrawChipSize,static_cast<float>(_pStage->GetMapSize().h) * GlobalConstants::kDrawChipSize };
+	_pBulletManager = std::make_shared<BulletManager>(mapSize);
+
+	// プレイヤー
+	_pPlayer = std::make_shared<Player>(_graphHandles[static_cast<int>(Graphs::Player)], _graphHandles[static_cast<int>(Graphs::PlayerWhite)], _graphHandles[static_cast<int>(Graphs::ChargeParticle)], _graphHandles[static_cast<int>(Graphs::PlayerShot)], _graphHandles[static_cast<int>(Graphs::ChargeShot)], *_pBulletManager,*_pEffectManager);
+	_pPlayer->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());		// プレイヤーの位置を設定]
+	_pBulletManager->SetPlayer(_pPlayer);	// プレイヤー情報を弾マネージャーに渡す
+
+	// HPUI
+	_pHPUI = std::make_shared<HPUI>(_graphHandles[static_cast<int>(Graphs::HpUI)], _pPlayer->GetMaxHp());
 
 	// 背景
 	_pBg = std::make_shared<Bg>(_graphHandles[static_cast<int>(Graphs::Bg)], _graphHandles[static_cast<int>(Graphs::SubBg)]);
@@ -338,7 +340,7 @@ void SceneMain::LoadStage(Stages stage)
 	_pItemManager->LoadItems(_pStage->GetObjectData(), _pStage->GetMapSize());	// アイテムの生成
 
 	// 敵
-	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera,_pGimmickManager,_pEffectManager,*this,_manager);
+	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera, _pGimmickManager, _pEffectManager, *_pBulletManager, *this, _manager);
 	_pEnemyManager->LoadEnemies(_pStage->GetObjectData(), _pStage->GetMapSize());// 敵の生成
 	if (stage == Stages::Boss1 || 
 		stage == Stages::Boss2 ||

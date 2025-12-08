@@ -7,7 +7,7 @@ class FallBall :
     public GameObject
 {
 public:
-    FallBall(std::shared_ptr<Player> pPlayer,int handle);
+    FallBall(std::shared_ptr<Player> pPlayer,Vector2 mapSize,int handle);
     ~FallBall();
 
     void Init() override;
@@ -21,6 +21,7 @@ public:
 private:
     int _handle;
     std::shared_ptr<Player> _pPlayer;
+    const Vector2 _kMapSize;
 
     bool _isBounced = false;
 

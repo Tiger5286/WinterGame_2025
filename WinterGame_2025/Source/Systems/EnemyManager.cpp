@@ -21,6 +21,7 @@ EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer,
 	std::shared_ptr<Camera> pCamera,
 	std::shared_ptr<GimmickManager> pGimmickManager,
 	std::shared_ptr<EffectManager> pEffectManager,
+	BulletManager& bulletManager,
 	SceneMain& sceneMain,
 	SceneManager& sceneManager):
 	_pPlayer(pPlayer),
@@ -28,6 +29,7 @@ EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer,
 	_pCamera(pCamera),
 	_pGimmickManager(pGimmickManager),
 	_pEffectManager(pEffectManager),
+	_bulletManager(bulletManager),
 	_sceneMain(sceneMain),
 	_sceneManager(sceneManager)
 {
@@ -144,7 +146,7 @@ void EnemyManager::Create(ObjectData enemyData, Vector2 pos, bool isChipPos)
 		_pEnemies.push_back(std::make_shared<WalkBoss>(pos, _pPlayer, _pEffectManager, _pCamera, _pGimmickManager->AddBossLaser(), _sceneManager, _walkEnemyH));
 		break;
 	case ObjectData::BossEnemy2:
-		_pEnemies.push_back(std::make_shared<FlyBoss>(pos, _pPlayer, _pCamera, *this, _pEffectManager, _sceneManager, _flyEnemyH));
+		_pEnemies.push_back(std::make_shared<FlyBoss>(pos, _pPlayer, _pCamera, *this, _bulletManager, _pEffectManager, _sceneManager, _flyEnemyH));
 		break;
 	case ObjectData::BossEnemy3:
 		printfDx("BossEnemy3‚Í–¢ŽÀ‘•‚Å‚·");

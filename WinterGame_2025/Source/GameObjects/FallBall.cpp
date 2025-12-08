@@ -1,6 +1,7 @@
 #include "FallBall.h"
 #include "../Utility/CircleCollider.h"
 #include "Player.h"
+#include "Dxlib.h"
 
 namespace
 {
@@ -13,9 +14,10 @@ namespace
 	constexpr int kColliderRadius = 30;
 }
 
-FallBall::FallBall(std::shared_ptr<Player> pPlayer, int handle):
+FallBall::FallBall(std::shared_ptr<Player> pPlayer, Vector2 mapSize, int handle):
 	_handle(handle),
-	_pPlayer(pPlayer)
+	_pPlayer(pPlayer),
+	_kMapSize(mapSize)
 {
 	_nowAnim.Init(_handle, 0, Vector2(kGraphSize, kGraphSize), kAnimNum, kOneAnimFrame, kDrawScale);
 	_pCollider = std::make_shared<CircleCollider>(_pos, kColliderRadius);
@@ -46,10 +48,20 @@ void FallBall::Update(Map& map)
 		_pos += _vel;
 	}
 	
+	if (_pPlayer == nullptr)
+	{
+		printfDx("Playerのポインタがnullptrです\n");
+	}
 	// プレイヤーに当たったらダメージを与える
 	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
 	{
 		_pPlayer->TakeDamage();
+	}
+
+	// 画面外に出たら消える
+	if (_pos.y > _kMapSize.y + 100.0f)
+	{
+		_isAlive = false;
 	}
 
 	_nowAnim.Update();

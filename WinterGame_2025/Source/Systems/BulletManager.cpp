@@ -12,8 +12,8 @@ namespace
 	constexpr int kFallBallNum = 10;
 }
 
-BulletManager::BulletManager(std::shared_ptr<Player> pPlayer):
-	_pPlayer(pPlayer)
+BulletManager::BulletManager(Vector2 mapSize):
+	_kMapSize(mapSize)
 {
 	_shotH = LoadGraph("data/Player/Shot.png");
 	assert(_shotH != -1);
@@ -26,12 +26,6 @@ BulletManager::BulletManager(std::shared_ptr<Player> pPlayer):
 	for (auto& bullet : _pBullets)
 	{
 		bullet = std::make_shared<Bullet>(_shotH, _chargeShotH);
-	}
-
-	_pFallBalls.resize(kFallBallNum);
-	for (auto& fallBall : _pFallBalls)
-	{
-		fallBall = std::make_shared<FallBall>(_pPlayer, _fallBallH);
 	}
 }
 
@@ -101,5 +95,15 @@ void BulletManager::ShotFallBall(Vector2 pos)
 			ball->Shot(pos);
 			break;
 		}
+	}
+}
+
+void BulletManager::SetPlayer(std::shared_ptr<Player> pPlayer)
+{
+	_pPlayer = pPlayer;
+	_pFallBalls.resize(kFallBallNum);
+	for (auto& fallBall : _pFallBalls)
+	{
+		fallBall = std::make_shared<FallBall>(_pPlayer, _kMapSize, _fallBallH);
 	}
 }

@@ -9,6 +9,7 @@ class Map;
 class Camera;
 class GimmickManager;
 class EffectManager;
+class BulletManager;
 class SceneMain;
 class SceneManager;
 
@@ -25,6 +26,7 @@ public:
 		std::shared_ptr<Camera> pCamera,
 		std::shared_ptr<GimmickManager> pGimmickManager,
 		std::shared_ptr<EffectManager> pEffectManager,
+		BulletManager& bulletManager,
 		SceneMain& sceneMain,
 		SceneManager& sceneManager);
 	~EnemyManager();
@@ -62,6 +64,8 @@ private:
 	std::shared_ptr<GimmickManager> _pGimmickManager;
 	std::shared_ptr<EffectManager> _pEffectManager;
 	std::vector<std::shared_ptr<Enemy>> _pEnemies;
+
+	BulletManager& _bulletManager;
 
 	SceneMain& _sceneMain;
 	SceneManager& _sceneManager;

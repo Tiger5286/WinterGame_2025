@@ -3,12 +3,14 @@
 
 class Camera;
 class EnemyManager;
+class BulletManager;
 
 enum class FlyBossState
 {
     Idle,
     AimAndTackle,
     SummonEnemies,
+    FallBall,
     Back,
 };
 
@@ -16,7 +18,7 @@ class FlyBoss :
     public Enemy
 {
 public:
-    FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, EnemyManager& enemyManager, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle);
+    FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, EnemyManager& enemyManager,BulletManager& bulletManager, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle);
     ~FlyBoss();
 
     void Init() override;
@@ -32,11 +34,17 @@ private:
 	/// </summary>
 	void CheckIsPlayerOnLeft();
 
+	/// <summary>
+	/// 自身が左右どちらにいるかチェックし、_isOnLeftを更新する
+	/// </summary>
+	void CheckIsOnLeft();
+
 private:
     int _handle = -1;
 
     std::shared_ptr<Camera> _pCamera;
     EnemyManager& _enemyManager;
+	BulletManager& _bulletManager;
 
     int _frame = 0;
     FlyBossState _state = FlyBossState::Idle;
