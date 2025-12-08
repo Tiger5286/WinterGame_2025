@@ -59,7 +59,7 @@ namespace
 	// ‰‰oŠÖ˜A
 	constexpr int kCameraShakePower = 5;
 	constexpr int kCameraShakeFrame = 15;
-	constexpr int kDeathDirectionFrame = 120;
+	constexpr int kDeathFrame = 120;
 	constexpr int kDeathFrickerFrame = 10;
 	constexpr int kDeathExplosionGapDis = 100;
 	constexpr int kAliveTimeBeforeDeath = 210;
@@ -280,7 +280,7 @@ void WalkBoss::Draw(Vector2 offset)
 {
 	if (_state == WalkBossState::Death)	// €–S‚Ì‰‰o•`‰æ
 	{
-		if (_frame < kDeathDirectionFrame)
+		if (_frame < kDeathFrame)
 		{
 			if (_frame % kDeathFrickerFrame * 2 < kDeathFrickerFrame)
 			{
@@ -297,7 +297,7 @@ void WalkBoss::Draw(Vector2 offset)
 				_pEffectManager->Create(GetColliderPos() + explosionPosGap, EffectType::ExplosionSmall);
 			}
 		}
-		if (_frame == kDeathDirectionFrame)
+		if (_frame == kDeathFrame)
 		{
 			_pEffectManager->Create(GetColliderPos(), EffectType::ExplosionBig);
 		}
@@ -333,7 +333,7 @@ void WalkBoss::TakeDamage(int damage)
 			_state = WalkBossState::Death;
 			_frame = 0;
 			_hp = 0;
-			_pCamera->Shake(kDeathDirectionFrame, kCameraShakePower);
+			_pCamera->Shake(kDeathFrame, kCameraShakePower);
 			_vel = Vector2();
 		}
 	}
