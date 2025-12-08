@@ -8,7 +8,7 @@ class Enemy;
 enum class BulletType
 {
 	NormalShot,
-	ChargeShot
+	ChargeShot,
 };
 
 class Bullet : public GameObject

@@ -308,7 +308,7 @@ void SceneMain::LoadStage(Stages stage)
 	_pEffectManager = std::make_shared<EffectManager>();
 
 	// ’e
-	_pBulletManager = std::make_shared<BulletManager>();
+	_pBulletManager = std::make_shared<BulletManager>(_pPlayer);
 
 	// ƒvƒŒƒCƒ„[
 	_pPlayer = std::make_shared<Player>(_graphHandles[static_cast<int>(Graphs::Player)], _graphHandles[static_cast<int>(Graphs::PlayerWhite)], _graphHandles[static_cast<int>(Graphs::ChargeParticle)], _graphHandles[static_cast<int>(Graphs::PlayerShot)], _graphHandles[static_cast<int>(Graphs::ChargeShot)], *_pBulletManager,*_pEffectManager);
