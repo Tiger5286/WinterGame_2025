@@ -11,6 +11,7 @@ public:
 	void Shake(int frame, int power);
 
 	void SetStageSize(Vector2 stageSize) { _stageSize = stageSize; }
+	Vector2 GetStageSize() const { return _stageSize; }
 	void SetPos(Vector2 pos) { _pos = pos; }
 	Vector2 GetPos() const { return _pos; }
 	Vector2 GetDrawOffset() const;
