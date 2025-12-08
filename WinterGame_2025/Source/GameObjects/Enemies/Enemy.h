@@ -14,7 +14,10 @@ public:
 
 	virtual void Init() override = 0;
 	virtual void Update(Map& map) override = 0;
-	virtual void UpdateAnytime();	// 画面外に行っても呼ばれる更新関数
+	/// <summary>
+	/// 状況関係なく毎フレーム呼ばれる更新処理(画面外に行っても呼ばれ続ける)
+	/// </summary>
+	virtual void UpdateAnytime();
 	virtual void Draw(Vector2 offset) override = 0;
 
 	int GetHp() const { return _hp; }
