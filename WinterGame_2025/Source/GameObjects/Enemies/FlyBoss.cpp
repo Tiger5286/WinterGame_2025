@@ -45,7 +45,7 @@ namespace
 
 	constexpr int kOutOfScreenMargin = 100;
 
-	constexpr int kHp = 100;
+	constexpr int kHp = 50;
 	constexpr int kScore = 10000;
 }
 
@@ -139,17 +139,18 @@ void FlyBoss::Update()
 		_frame++;
 		if (_frame > kIdleWaitFrame)
 		{
-			_state = FlyBossState::FallBall;
-			// 敵が複数いる、もしくは前回の行動が召喚なら他の攻撃、そうでなければドローン召喚へ
-			//if (_enemyManager.GetEnemies().size() > 1 ||
-			//	_prevState == FlyBossState::SummonEnemies)
-			//{
-			//	_state = FlyBossState::FallBall;
-			//}
-			//else
-			//{
-			//	_state = FlyBossState::SummonEnemies;
-			//}
+			// 敵が複数いる、もしくは前回の行動が召喚なら召喚以外のランダムな攻撃、そうでなければ召喚を含めたランダムな攻撃を行う
+			if (_enemyManager.GetEnemies().size() > 1 ||
+				_prevState == FlyBossState::SummonEnemies)
+			{
+				auto nextState = static_cast<FlyBossState>(GetRand(1) + 1); // 1~3のランダム
+				_state = nextState;
+			}
+			else
+			{
+				auto nextState = static_cast<FlyBossState>(GetRand(2) + 1); // 1~2のランダム
+				_state = nextState;
+			}
 			_frame = 0;
 		}
 	}
@@ -232,6 +233,7 @@ void FlyBoss::Update()
 
 		if (_frame > 60 * 6)
 		{
+			CheckIsOnLeft();
 			_state = FlyBossState::Back;
 			_frame = 0;
 		}

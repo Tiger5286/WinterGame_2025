@@ -9,8 +9,8 @@ enum class FlyBossState
 {
     Idle,
     AimAndTackle,
-    SummonEnemies,
     FallBall,
+    SummonEnemies,
     Back,
 };
 
