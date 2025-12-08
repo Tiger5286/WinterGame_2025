@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\GameObjects\Enemies\HammerBoss.cpp" />
     <ClCompile Include="Source\GameObjects\FallBall.cpp" />
     <ClCompile Include="Source\GameObjects\Enemies\FlyBoss.cpp" />
     <ClCompile Include="Source\GameObjects\Effects\BigDust.cpp" />
@@ -191,6 +192,7 @@
     <ClCompile Include="Source\Systems\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\GameObjects\Enemies\HammerBoss.h" />
     <ClInclude Include="Source\GameObjects\FallBall.h" />
     <ClInclude Include="Source\GameObjects\Enemies\FlyBoss.h" />
     <ClInclude Include="Source\GameObjects\Effects\BigDust.h" />

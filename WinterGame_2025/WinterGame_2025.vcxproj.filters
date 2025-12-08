@@ -137,6 +137,8 @@
     <ClCompile Include="Source\GameObjects\Effects\SmallDust.cpp" />
     <ClCompile Include="Source\GameObjects\Effects\BigDust.cpp" />
     <ClCompile Include="Source\GameObjects\Enemies\FlyBoss.cpp" />
+    <ClCompile Include="Source\GameObjects\FallBall.cpp" />
+    <ClCompile Include="Source\GameObjects\Enemies\HammerBoss.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GameObjects\Bullet.h">
@@ -248,5 +250,7 @@
     <ClInclude Include="Source\GameObjects\Effects\SmallDust.h" />
     <ClInclude Include="Source\GameObjects\Effects\BigDust.h" />
     <ClInclude Include="Source\GameObjects\Enemies\FlyBoss.h" />
+    <ClInclude Include="Source\GameObjects\FallBall.h" />
+    <ClInclude Include="Source\GameObjects\Enemies\HammerBoss.h" />
   </ItemGroup>
 </Project>

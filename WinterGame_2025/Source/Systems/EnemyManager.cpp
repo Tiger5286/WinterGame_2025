@@ -13,6 +13,7 @@
 
 #include "../GameObjects/Enemies/WalkBoss.h"
 #include "../GameObjects/Enemies/FlyBoss.h"
+#include "../GameObjects/Enemies/HammerBoss.h"
 
 #include "../Scenes/SceneMain.h"
 
@@ -149,7 +150,7 @@ void EnemyManager::Create(ObjectData enemyData, Vector2 pos, bool isChipPos)
 		_pEnemies.push_back(std::make_shared<FlyBoss>(pos, _pPlayer, _pCamera, *this, _bulletManager, _pEffectManager, _sceneManager, _flyEnemyH));
 		break;
 	case ObjectData::BossEnemy3:
-		printfDx("BossEnemy3‚Í–¢ŽÀ‘•‚Å‚·");
+		_pEnemies.push_back(std::make_shared<HammerBoss>(pos, _pPlayer, _pEffectManager, _pCamera, _sceneManager, _jumpEnemyH));
 		break;
 	default:
 		break;

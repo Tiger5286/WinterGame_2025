@@ -1,0 +1,61 @@
+#include "HammerBoss.h"
+#include "../../Game.h"
+#include "../../Utility/BoxCollider.h"
+
+namespace
+{
+	// 描画関連
+	constexpr int kGraphSizeW = 80;
+	constexpr int kGraphSizeH = 48;
+	const Vector2 kGraphSize = { 80.0f,48.0f };
+	constexpr float kDrawScale = 6.0f;
+
+	// アニメーション関連
+	constexpr int kIdleAnimIndex = 0;
+	constexpr int kIdleAnimNum = 4;
+	constexpr int kAttackAnimIndex = 1;
+	constexpr int kAttackAnimNum = 21;
+	constexpr int kOneAnimFrame = 8;
+
+	// 当たり判定
+	const Vector2 kColliderSize = { 250,180 };
+}
+
+HammerBoss::HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, SceneManager& sceneManager, int handle) :
+	Enemy(100, 10000, pPlayer, pEffectManager, sceneManager),
+	_handle(handle),
+	_pCamera(pCamera)
+{
+	_pos = ChipPosToGamePos(firstPos);
+	_pos.y += GlobalConstants::kDrawChipSizeHalf;	// チップ半分下にずらす
+
+	_pCollider = std::make_shared<BoxCollider>(_pos, kColliderSize);
+	_pCollider->SetPosToBox(_pos);
+
+	_idleAnim.Init(_handle, kIdleAnimIndex, kGraphSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
+	_attackAnim.Init(_handle, kAttackAnimIndex, kGraphSize, kAttackAnimNum, kOneAnimFrame, kDrawScale);
+
+	_nowAnim = _idleAnim;
+}
+
+HammerBoss::~HammerBoss()
+{
+}
+
+void HammerBoss::Init()
+{
+}
+
+void HammerBoss::Update(Map& map)
+{
+	_nowAnim.Update();
+}
+
+void HammerBoss::Draw(Vector2 offset)
+{
+	Vector2 drawPos(_pos.x - offset.x, _pos.y - offset.y - kGraphSize.y / 2 * kDrawScale);
+	_nowAnim.Draw(drawPos, true);
+#ifdef _DEBUG
+	_pCollider->Draw(offset);
+#endif
+}
