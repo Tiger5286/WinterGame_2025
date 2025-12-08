@@ -1,6 +1,7 @@
 #include "DroneEnemy.h"
 #include "../../Utility/BoxCollider.h"
 #include "../Player.h"
+#include "../../Systems/Camera.h"
 #include "Dxlib.h"
 
 namespace
@@ -25,6 +26,7 @@ namespace
 	constexpr int kAttackCoolTime = 60 + 120;
 	constexpr float kAttackMoveSpeed = 7.0f;	// 攻撃状態の突進の速度
 	constexpr int kAttackTime = 60;		// 突進を続ける時間
+	constexpr int kFirstFrame = 60;		// 初期フレーム数(出現してから攻撃可能になるまでの時間を確保)
 
 	constexpr float kReturnAccelY = 0.3f;	// 元の位置に戻るときの加速度
 	constexpr float kReturnAccelX = 0.5f;	// 元の位置に戻るときの加速度
@@ -38,14 +40,16 @@ namespace
 	constexpr int kScore = 150;
 }
 
-DroneEnemy::DroneEnemy(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle):
+DroneEnemy::DroneEnemy(Vector2 firstPos, std::shared_ptr<Player> pPlayer,std::shared_ptr<Camera> pCamera, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle):
 	Enemy(kHp,kScore,pPlayer,pEffectManager,sceneManager),
 	_handle(handle),
-	_frame(kAttackCoolTime)
+	_frame(kAttackCoolTime),
+	_pCamera(pCamera)
 {
 	_nowAnim.Init(_handle, 0, kGraphSize, kAnimNum, kOneAnimFrame, kDrawScale);
 	_pos = ChipPosToGamePos(firstPos);
 	_firstPosY = _pos.y;
+	_frame = kFirstFrame;	// 出現してから攻撃可能になるまでの時間を確保
 
 	_pCollider = std::make_shared<BoxCollider>(_pos, Vector2(kColliderWidth, kColliderHeight));
 }
@@ -56,6 +60,8 @@ DroneEnemy::~DroneEnemy()
 
 void DroneEnemy::Init()
 {
+	_firstPosY = _pos.y;
+	_frame = kFirstFrame;	// 出現してから攻撃可能になるまでの時間を確保
 }
 
 void DroneEnemy::Update(Map& map)
@@ -116,6 +122,17 @@ void DroneEnemy::Update(Map& map)
 	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
 	{
 		_pPlayer->TakeDamage();
+	}
+
+	// ステージ外に出たら消滅
+	if (_pos.x < 0 - 100 ||
+		_pos.y < 0 - 100 ||
+		_pos.x > _pCamera->GetStageSize().x + 100 ||
+		_pos.y > _pCamera->GetStageSize().y + 100)
+	{
+		_pos = Vector2(-10, -10); // 画面外に移動させて死亡演出が見えないようにする
+		_pCollider->SetPos(_pos);
+		TakeDamage(9999);
 	}
 
 	_nowAnim.Update();
