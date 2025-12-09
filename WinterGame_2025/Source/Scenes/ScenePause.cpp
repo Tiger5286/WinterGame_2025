@@ -23,7 +23,7 @@ ScenePause::ScenePause(SceneManager& manager,Stages playingStage) :
 		return;
 		};
 	_execTable["ステージセレクトに戻る"] = [this]() {
-		_manager.ResetSceneWithFade(std::make_shared<SceneStageSelect>(_manager, static_cast<int>(_playingStage) - 1));
+		_manager.ResetSceneWithFade(std::make_shared<SceneStageSelect>(_manager, _playingStage));
 		return;
 		};
 }

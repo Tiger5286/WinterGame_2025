@@ -32,7 +32,7 @@ void SceneClear::Update(Input& input)
 {
 	if (input.IsTriggered("decision"))
 	{
-		_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager,static_cast<int>(_clearStage) - 1));
+		_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager,_clearStage));
 	}
 
 #ifdef _DEBUG

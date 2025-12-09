@@ -100,7 +100,6 @@ private:
 	std::shared_ptr<SceneBase> _pNextScene;
 	FadeState _nextFadeType;
 	int _stopFrame;
-	//Stages _clearedStage = Stages::None;
 	SaveData _saveData;
 	SceneChangeMode _changeMode = SceneChangeMode::Change;
 

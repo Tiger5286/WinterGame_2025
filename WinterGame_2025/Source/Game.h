@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 
 // ゲーム全体で使用する定数
 namespace GlobalConstants
@@ -100,4 +101,5 @@ struct SaveDataHeader
 struct SaveData
 {
 	int clearedStage = 0;
+	std::array<int, static_cast<int>(Stages::Num)> highScores = {};
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include "SceneBase.h"
+#include "../Game.h"
 #include <vector>
 #include <functional>
 #include <string>
@@ -8,7 +9,7 @@
 class SceneStageSelect : public SceneBase
 {
 public:
-	SceneStageSelect(SceneManager& manager,int selectIndex = 0);
+	SceneStageSelect(SceneManager& manager,Stages playedStage = Stages::Tutorial);
 	~SceneStageSelect();
 
 	void Init() override;

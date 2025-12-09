@@ -16,15 +16,24 @@ namespace
 	constexpr float kUIDrawScaleHalf = kUIDrawScale / 2;
 }
 
-SceneStageSelect::SceneStageSelect(SceneManager& manager, int selectIndex):
+SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 	SceneBase(manager),
-	_selectIndex(selectIndex),
 	_frame(kUIControllInterval)
 {
 	_bgHandle = LoadGraph("data/map/bg.png");
 	assert(_bgHandle != -1);
 	_stageUIHandle = LoadGraph("data/UI/StageUI.png");
 	assert(_stageUIHandle != -1);
+
+	if (playedStage == Stages::None)
+	{
+		printfDx("playedStage‚ªNone‚É‚È‚Á‚Ä‚¢‚Ü‚·");
+		_selectIndex = 0;
+	}
+	else
+	{
+		_selectIndex = static_cast<int>(playedStage) - 1;
+	}
 
 	_stageList =
 	{
