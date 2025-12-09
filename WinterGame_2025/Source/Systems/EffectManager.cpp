@@ -6,7 +6,9 @@
 #include "../GameObjects/Effects/Explosion.h"
 #include "../GameObjects/Effects/ItemGet.h"
 #include "../GameObjects/Effects/SmallDust.h"
-#include "../GameObjects/Effects/BigDust.h"
+#include "../GameObjects/Effects/BigDust.h",
+#include "../GameObjects/Effects/ExplosionFloor.h"
+#include "../GameObjects/Effects/ExplosionUpward.h"
 
 EffectManager::EffectManager()
 {
@@ -18,6 +20,10 @@ EffectManager::EffectManager()
 	assert(_smallDustH != -1);
 	_bigDustH = LoadGraph("data/Effects/BigDust.png");
 	assert(_bigDustH != -1);
+	_explosionFloorH = LoadGraph("data/Effects/ExplosionFloor.png");
+	assert(_explosionFloorH != -1);
+	_explosionUpwardH = LoadGraph("data/Effects/ExplosionUpward.png");
+	assert(_explosionUpwardH != -1);
 }
 
 EffectManager::~EffectManager()
@@ -26,6 +32,8 @@ EffectManager::~EffectManager()
 	DeleteGraph(_itemGetH);
 	DeleteGraph(_smallDustH);
 	DeleteGraph(_bigDustH);
+	DeleteGraph(_explosionFloorH);
+	DeleteGraph(_explosionUpwardH);
 }
 
 void EffectManager::Update()
@@ -69,6 +77,12 @@ void EffectManager::Create(Vector2 pos,EffectType type)
 		break;
 	case EffectType::BigDust:
 		_pEffects.push_back(std::make_shared<BigDust>(_bigDustH, pos));
+		break;
+	case EffectType::ExplosionFloor:
+		_pEffects.push_back(std::make_shared<ExplosionFloor>(_explosionFloorH, pos));
+		break;
+	case EffectType::ExplosionUpward:
+		_pEffects.push_back(std::make_shared<ExplosionUpward>(_explosionUpwardH, pos));
 		break;
 	default:
 		break;
