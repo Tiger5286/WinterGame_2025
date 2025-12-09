@@ -9,7 +9,7 @@
 namespace
 {
 	constexpr int kBulletNum = 20;
-	constexpr int kFallBallNum = 10;
+	constexpr int kFallBallNum = 20;
 }
 
 BulletManager::BulletManager(Vector2 mapSize):

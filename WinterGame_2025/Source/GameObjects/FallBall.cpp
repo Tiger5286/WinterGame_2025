@@ -36,7 +36,8 @@ void FallBall::Update(Map& map)
 	Gravity();
 	if (!_isBounced)
 	{
-		if (MapCollision(map).down)
+		HitDirection hitDir = MapCollision(map);
+		if (hitDir.down && !hitDir.up)
 		{
 			_isBounced = true;
 			_vel.y = -15.0f;
