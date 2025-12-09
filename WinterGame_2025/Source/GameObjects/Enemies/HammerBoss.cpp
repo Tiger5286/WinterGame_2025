@@ -52,6 +52,11 @@ namespace
 
 	constexpr int kHp = 100;
 	constexpr int kScore = 10000;
+
+	constexpr int kDeathFrame = 120;
+	constexpr int kDeathFrickerFrame = 10;
+	constexpr int kDeathExplosionGapDis = 100;
+	constexpr int kAliveTimeBeforeDeath = 210;
 }
 
 HammerBoss::HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, BulletManager& bulletManager, std::shared_ptr<Camera> pCamera, SceneManager& sceneManager, int handle) :
@@ -89,14 +94,30 @@ void HammerBoss::Init()
 
 void HammerBoss::Update(Map& map)
 {
+#ifdef _DEBUG
+	if (CheckHitKey(KEY_INPUT_0))
+	{
+		_hp = 1;
+	}
+#endif
+	BaseUpdate();
 	if (_state == HammerBossState::Idle)
 	{
 		_frame++;
 		if (_frame > kIdleWaitFrame)
 		{
 			_frame = 0;
-			_state = HammerBossState::FallBallAttack;
-			_nowAnim = _rapidAttackAnim;
+			switch (GetRand(1))
+			{
+			case 0:
+				_state = HammerBossState::WaveAttack;
+				_nowAnim = _attackAnim;
+				break;
+			case 1:
+				_state = HammerBossState::FallBallAttack;
+				_nowAnim = _rapidAttackAnim;
+				break;
+			}
 		}
 	}
 	if (_state == HammerBossState::WaveAttack)
@@ -164,6 +185,10 @@ void HammerBoss::Update(Map& map)
 			_nowAnim = _idleAnim;
 		}
 	}
+	else if (_state == HammerBossState::Death)
+	{
+		_frame++;
+	}
 
 	// プレイヤーに当たったらダメージを与える
 	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
@@ -181,10 +206,66 @@ void HammerBoss::Update(Map& map)
 void HammerBoss::Draw(Vector2 offset)
 {
 	Vector2 drawPos(_pos.x - offset.x, _pos.y - offset.y - kGraphSize.y / 2 * kDrawScale);
-	_nowAnim.Draw(drawPos, true);
+	if (_state == HammerBossState::Death)
+	{
+
+		if (_frame < kDeathFrame)
+		{
+			if (_frame % kDeathFrickerFrame * 2 < kDeathFrickerFrame)
+			{
+				SetDrawBright(255, 0, 0);	// 赤く点滅させる
+			}
+			_nowAnim.Draw(drawPos, true);
+			SetDrawBright(255, 255, 255);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			if (_frame % kDeathFrickerFrame == 0)
+			{
+				Vector2 explosionPosGap;
+				explosionPosGap.x = GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis;
+				explosionPosGap.y = GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis;
+				_pEffectManager->Create(GetColliderPos() + explosionPosGap, EffectType::ExplosionSmall);
+			}
+		}
+		if (_frame == kDeathFrame)
+		{
+			_pEffectManager->Create(GetColliderPos(), EffectType::ExplosionBig);
+		}
+	}
+	else
+	{
+		if (_damageFrame > 0)
+		{
+			SetDrawBright(255, 64, 64);	// ダメージを受けている間は赤くなる
+		}
+		_nowAnim.Draw(drawPos, true);
+		SetDrawBright(255, 255, 255);	// 明るさリセット
+	}
 
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
 	_pAttackCollider->Draw(offset);
 #endif
+}
+
+void HammerBoss::TakeDamage(int damage)
+{
+	if (!(_hp <= 0))
+	{
+		_hp -= damage;
+		_damageFrame = 5;
+		if (_hp <= 0)
+		{
+			_state = HammerBossState::Death;
+			_frame = 0;
+			_hp = 0;
+			_pCamera->Shake(120, 5);
+			_pCollider->SetIsEnabled(false);
+			_nowAnim = _rapidAttackAnim;
+		}
+	}
+}
+
+bool HammerBoss::GetIsAlive() const
+{
+	return !(_state == HammerBossState::Death && _frame > kAliveTimeBeforeDeath);
 }
