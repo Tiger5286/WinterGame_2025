@@ -1,8 +1,10 @@
 #include "HammerBoss.h"
+#include "Dxlib.h"
 #include "../../Game.h"
 #include "../../Utility/BoxCollider.h"
 #include "../../Systems/Camera.h"
 #include "../../Systems/EffectManager.h"
+#include "../../Systems/BulletManager.h"
 #include "../Player.h"
 
 namespace
@@ -20,6 +22,7 @@ namespace
 	constexpr int kAttackAnimNum = 21;
 	constexpr int kAttackImpactFrameNum = 11;	// ハンマーを振り下ろし、地面にぶつけるアニメーションのフレーム番号
 	constexpr int kOneAnimFrame = 8;
+	constexpr int kRapidOneAnimFrame = 3; // 速い攻撃アニメーションの1フレームあたりの表示フレーム数
 
 	// 当たり判定
 	const Vector2 kColliderSize = { 250,180 };
@@ -34,18 +37,28 @@ namespace
 	constexpr int kWaveAttackColliderOffsetX = 70;
 	constexpr int kWaveEffectIntervalFrame = 20;
 	constexpr int kWaveAttackFrame = 400;
+	// fallBallAttack
+	constexpr int kFBPosRimitLeft = 150;
+	constexpr int kFBPosRimitRight = GlobalConstants::kScreenWidth - 600;
+	constexpr int kFBAreaNum = 4;
+	constexpr int kFBNum = 5;	// 1回の攻撃で落とすボールの数
+	constexpr int kFBIntervalFrame = 3;	// ボールを落とす間隔(フレーム数)
+	constexpr int kDropNum = 6;	// ボールを落とす回数
 
+	// カメラ揺れ
 	constexpr int kCameraShakeFrame = 15;
-	constexpr int kCameraShakePower = 10;
+	constexpr int kCameraShakePowerStrong = 10;
+	constexpr int kCameraShakePowerWeak = 5;
 
 	constexpr int kHp = 100;
 	constexpr int kScore = 10000;
 }
 
-HammerBoss::HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, SceneManager& sceneManager, int handle) :
+HammerBoss::HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, BulletManager& bulletManager, std::shared_ptr<Camera> pCamera, SceneManager& sceneManager, int handle) :
 	Enemy(kHp, kScore, pPlayer, pEffectManager, sceneManager),
 	_handle(handle),
-	_pCamera(pCamera)
+	_pCamera(pCamera),
+	_bulletManager(bulletManager)
 {
 	// 初期位置設定
 	_pos = ChipPosToGamePos(firstPos);
@@ -62,6 +75,7 @@ HammerBoss::HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::s
 	// アニメーション設定
 	_idleAnim.Init(_handle, kIdleAnimIndex, kGraphSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
 	_attackAnim.Init(_handle, kAttackAnimIndex, kGraphSize, kAttackAnimNum, kOneAnimFrame, kDrawScale);
+	_rapidAttackAnim.Init(_handle, kAttackAnimIndex, kGraphSize, kAttackAnimNum, kRapidOneAnimFrame, kDrawScale); // 速い攻撃アニメーション
 	_nowAnim = _idleAnim;
 }
 
@@ -82,7 +96,7 @@ void HammerBoss::Update(Map& map)
 		{
 			_frame = 0;
 			_state = HammerBossState::FallBallAttack;
-			_nowAnim = _attackAnim;
+			_nowAnim = _rapidAttackAnim;
 		}
 	}
 	if (_state == HammerBossState::WaveAttack)
@@ -92,7 +106,7 @@ void HammerBoss::Update(Map& map)
 		constexpr int kAnimEndFrame = kAttackAnimNum * kOneAnimFrame;
 		if (_frame == kImpactFrame)
 		{
-			_pCamera->Shake(kCameraShakeFrame, kCameraShakePower);
+			_pCamera->Shake(kCameraShakeFrame, kCameraShakePowerStrong);
 			Vector2 impactPos = { _pos.x - kImpactOffsetX,_pos.y};	// ハンマーの衝撃位置補正
 			_pEffectManager->Create(impactPos, EffectType::ExplosionFloor);
 			_pAttackCollider->SetPosToBox(impactPos);
@@ -118,6 +132,38 @@ void HammerBoss::Update(Map& map)
 			_pAttackCollider->SetIsEnabled(false);
 		}
 	}
+	else if (_state == HammerBossState::FallBallAttack)
+	{
+		_frame++;
+		constexpr int kImpactFrame = kAttackImpactFrameNum * kRapidOneAnimFrame;
+		constexpr int kAnimEndFrame = kAttackAnimNum * kRapidOneAnimFrame;
+		// ハンマーを地面にぶつけたときにカメラを揺らす
+		if (_frame % kAnimEndFrame == kImpactFrame)
+		{
+			_pCamera->Shake(kCameraShakeFrame, kCameraShakePowerWeak);
+			_fBArea = GetRand(kFBAreaNum - 1);
+		}
+		// 一定間隔で落下ボールを発射
+		for (int i = 0; i < kFBNum; i++)
+		{
+			// ボールの落ちてくる位置で最も左側のX座標
+			float fallPosXLeft = kFBPosRimitRight / kFBAreaNum * _fBArea + kFBPosRimitLeft;
+			// ボールの落ちてくる位置で最も右側のX座標
+			float fallPosXRight = kFBPosRimitRight / kFBAreaNum * _fBArea + kFBPosRimitLeft + kFBPosRimitRight / kFBAreaNum;
+
+			// left ~ right の範囲でランダムに落下位置を決定
+			auto fallPosX = fallPosXLeft + GetRand(fallPosXRight - fallPosXLeft);
+			if (_frame % kAnimEndFrame == kImpactFrame + i * kFBIntervalFrame) _bulletManager.ShotFallBall({ static_cast<float>(fallPosX), 0.0f });
+		}
+
+		// kDropNum回ボールを落としたら状態遷移
+		if (_frame > kAnimEndFrame * kDropNum)
+		{
+			_frame = 0;
+			_state = HammerBossState::Idle;
+			_nowAnim = _idleAnim;
+		}
+	}
 
 	// プレイヤーに当たったらダメージを与える
 	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
@@ -136,6 +182,7 @@ void HammerBoss::Draw(Vector2 offset)
 {
 	Vector2 drawPos(_pos.x - offset.x, _pos.y - offset.y - kGraphSize.y / 2 * kDrawScale);
 	_nowAnim.Draw(drawPos, true);
+
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
 	_pAttackCollider->Draw(offset);
