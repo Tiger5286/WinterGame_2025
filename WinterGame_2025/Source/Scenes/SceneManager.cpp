@@ -153,10 +153,10 @@ void SceneManager::ChangeSceneWithFade(std::shared_ptr<SceneBase> scene, FadeSta
 	_pNextScene = scene;
 }
 
-Stages SceneManager::GetClearedStage()
-{
-	return static_cast<Stages>(_saveData.clearedStage);
-}
+//Stages SceneManager::GetClearedStage()
+//{
+//	return static_cast<Stages>(_saveData.clearedStage);
+//}
 
 void SceneManager::CheckClearedStage(Stages clearedStage)
 {

@@ -86,7 +86,9 @@ public:
 	/// クリア済みの最後のステージを取得する
 	/// </summary>
 	/// <returns>クリア済みステージ</returns>
-	Stages GetClearedStage();
+	//Stages GetClearedStage();
+
+	SaveData GetSaveData() { return _saveData; }
 
 	/// <summary>
 	/// クリアしたステージが未クリアなら、クリア済みとして登録する

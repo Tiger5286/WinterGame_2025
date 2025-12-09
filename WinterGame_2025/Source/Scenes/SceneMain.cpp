@@ -140,11 +140,12 @@ void SceneMain::Update(Input& input)
 	if (!_pPlayer->GetIsAlive())
 	{
 		_manager.SetFadeCirclePos(_pPlayer->GetColliderPos() - _pCamera->GetDrawOffset());	// プレイヤーが死んだ位置にフェードサークルを置く
-		if (_manager.GetClearedStage() == Stages::None)
+		// 全てのステージが未クリアなら再度チュートリアルステージを再生
+		if (_manager.GetSaveData().clearedStage == static_cast<int>(Stages::None))
 		{
 			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _nowStage), FadeState::CircleFadeIn, FadeState::CircleFadeOut);
 		}
-		else
+		else	// そうでないならゲームオーバーへ
 		{
 			_manager.ChangeSceneWithFade(std::make_shared<SceneGameOver>(_manager, _nowStage), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
 		}

@@ -42,11 +42,12 @@ void SceneTitle::Update(Input& input)
 
 	if (input.IsTriggered("decision"))
 	{
-		if (_manager.GetClearedStage() == Stages::None)
+		// 全てのステージが未クリアなら直接シーンメインへ
+		if (_manager.GetSaveData().clearedStage == static_cast<int>(Stages::None))
 		{
 			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Tutorial), FadeState::CircleFadeIn, FadeState::NormalFadeOut);
 		}
-		else
+		else	// そうでないならステージセレクトへ
 		{
 			_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager));
 		}

@@ -102,7 +102,7 @@ void SceneStageSelect::Update(Input& input)
 		if (input.IsTriggered("right"))
 		{
 			// クリアしたステージ番号を反転したもの
-			int clearedStageRev = static_cast<int>(Stages::Num) - 1 - static_cast<int>(_manager.GetClearedStage());
+			int clearedStageRev = static_cast<int>(Stages::Num) - 1 - _manager.GetSaveData().clearedStage;
 			if (clearedStageRev <= 0)	// 0になると最後のステージの次まで選べてしまうので0なら1にする
 			{
 				clearedStageRev = 1;
@@ -185,10 +185,10 @@ void SceneStageSelect::Draw()
 	DrawRotaGraph(screenW / 2 + posX, screenH / 2, kUIDrawScale - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 真ん中から進行方向に向かうUI
 	
 
-	// ステージ名の描画
 	// UI移動中は描画しない
 	if (_frame == kUIControllInterval || _frame == -kUIControllInterval)
 	{
+		// ステージ名の描画
 		if (_selectIndex > 0 && _selectIndex < _stageList.size() - 1)		// 最初のステージと最後のステージ以外を選択中の時は選択中、左、右のステージ名を表示
 		{
 			DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
@@ -206,7 +206,11 @@ void SceneStageSelect::Draw()
 			DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
 		}
 
-		if (_selectIndex == static_cast<int>(_manager.GetClearedStage()))
+		// ハイスコアの描画
+		//DrawFormatString(screenW / 2, 300,0xffffff,"High Score : %d",_manager.Get)
+
+		// 選択できないステージを表す赤い四角を描画
+		if (_selectIndex == _manager.GetSaveData().clearedStage)
 		{
 			DrawBox(screenW / 2 + 250 - 25,
 				screenH / 2 - 200,
