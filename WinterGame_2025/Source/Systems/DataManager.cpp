@@ -22,7 +22,7 @@ void DataManager::Save()
 	auto err = fopen_s(&fp, kDataFileName, "wb");
 	if (fp == nullptr) return;
 
-	DataHeader header;
+	SaveDataHeader header;
 	header.signature[0] = 's';
 	header.signature[1] = 'd';
 	header.signature[2] = 'a';
@@ -39,7 +39,7 @@ void DataManager::Load()
 {
 	auto fileName = kDataFileName;
 	int handle = FileRead_open(fileName);
-	DataHeader header;
+	SaveDataHeader header;
 	FileRead_read(&header, sizeof(header), handle);
 	FileRead_read(&_saveData, sizeof(_saveData), handle);
 

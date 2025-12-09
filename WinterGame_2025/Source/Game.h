@@ -89,3 +89,15 @@ enum class Stages
 	Num,
 	Temp,
 };
+
+struct SaveDataHeader
+{
+	char signature[4];	// "sdat"
+	float version;
+	int size;
+};
+
+struct SaveData
+{
+	int clearedStage = 0;
+};

@@ -1,18 +1,7 @@
 #pragma once
+#include "../Game.h"
 
 class DebugScene;
-
-struct DataHeader
-{
-	char signature[4];	// "sdat"
-	float version;
-	int size;
-};
-
-struct SaveData
-{
-	int clearedStage = 0;
-};
 
 class DataManager
 {
@@ -31,4 +20,3 @@ public:
 private:
 	SaveData _saveData;
 };
-
