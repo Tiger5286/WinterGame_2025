@@ -5,7 +5,6 @@ class DebugScene;
 
 class DataManager
 {
-	//friend DebugScene;
 public:
 	DataManager();
 	~DataManager();

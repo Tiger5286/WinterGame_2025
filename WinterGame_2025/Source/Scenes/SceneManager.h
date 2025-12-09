@@ -83,11 +83,9 @@ public:
 	void Stop(int frame) { _stopFrame = frame; }
 
 	/// <summary>
-	/// クリア済みの最後のステージを取得する
+	/// セーブデータを取得する
 	/// </summary>
-	/// <returns>クリア済みステージ</returns>
-	//Stages GetClearedStage();
-
+	/// <returns>セーブデータ</returns>
 	SaveData GetSaveData() { return _saveData; }
 
 	/// <summary>
@@ -95,6 +93,16 @@ public:
 	/// </summary>
 	/// <param name="clearedStage">クリアしたステージ</param>
 	void CheckClearedStage(Stages clearedStage);
+
+
+	
+	/// <summary>
+	/// 渡されたスコアがハイスコアを上回っているなら、ハイスコアを登録する
+	/// </summary>
+	/// <param name="score">スコア</param>
+	/// <param name="clearedStage">クリアしたステージ</param>
+	/// <returns>ハイスコアを更新したらtrue</returns>
+	bool CheckHighScore(int score,Stages clearedStage);
 
 private:
 	std::list<std::shared_ptr<SceneBase>> _pScenes;

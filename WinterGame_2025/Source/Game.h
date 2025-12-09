@@ -101,5 +101,5 @@ struct SaveDataHeader
 struct SaveData
 {
 	int clearedStage = 0;
-	std::array<int, static_cast<int>(Stages::Num)> highScores = {};
+	std::array<int, static_cast<int>(Stages::Num)> highScores = {0};
 };

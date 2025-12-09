@@ -207,7 +207,7 @@ void SceneStageSelect::Draw()
 		}
 
 		// ハイスコアの描画
-		//DrawFormatString(screenW / 2, 300,0xffffff,"High Score : %d",_manager.Get)
+		DrawFormatString(screenW / 2, 300, 0xffffff, "High Score : %d", _manager.GetSaveData().highScores[_selectIndex + 1]);
 
 		// 選択できないステージを表す赤い四角を描画
 		if (_selectIndex == _manager.GetSaveData().clearedStage)

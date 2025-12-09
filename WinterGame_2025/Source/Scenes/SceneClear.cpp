@@ -16,6 +16,9 @@ SceneClear::SceneClear(SceneManager& manager,int score, Stages clearStage):
 	assert(_bgHandle != -1);
 	_clearLogoHandle = LoadGraph("data/UI/StageClear.png");
 	assert(_clearLogoHandle != -1);
+
+	// スコア更新
+	_isUpdateScore = manager.CheckHighScore(score, clearStage);
 }
 
 SceneClear::~SceneClear()
@@ -48,12 +51,14 @@ void SceneClear::Draw()
 	constexpr int screenW = GlobalConstants::kScreenWidth;
 	constexpr int screenH = GlobalConstants::kScreenHeight;
 
+	// 背景の描画
 	DrawExtendGraph(0, 0, screenW, screenH, _bgHandle, false);
-
+	// クリア文字画像の描画
 	DrawRotaGraph(screenW / 2, screenH / 2 - 100, 0.75, 0.0, _clearLogoHandle, true);
 
+	// 描画用スコアの計算
 	_dispScore = std::lerp(_dispScore, static_cast<float>(_score), 0.02f);
-
+	// 描画用スコアを描画
 	if (_score != 0)
 	{
 		DrawFormatString(screenW / 2, screenH / 2 + 130, 0xffffff, "Score:%d", static_cast<int>(_dispScore) + 1);	// なぜか_score-1で止まるので+1して補正
@@ -63,6 +68,12 @@ void SceneClear::Draw()
 		DrawFormatString(screenW / 2, screenH / 2 + 130, 0xffffff, "Score:%d", static_cast<int>(_dispScore));	// スコアが0のときに+1するとダメなのでそのまま表示
 	}
 	
+	// ハイスコアを更新していたらそのメッセージを表示
+	if (_isUpdateScore)
+	{
+		DrawString(screenW / 2, 150, "High score update!", 0xffffff);
+	}
+
 	DrawString(screenW / 2, screenH / 2 + 250, "Press A to Back to Stage Select", 0xffffff);
 
 #ifdef _DEBUG

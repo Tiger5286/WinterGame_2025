@@ -17,6 +17,7 @@ private:
 
 	const int _score;
 	float _dispScore = 0.0f;
+	bool _isUpdateScore = false;
 
 	Stages _clearStage;
 };
