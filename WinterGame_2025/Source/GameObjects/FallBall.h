@@ -23,6 +23,7 @@ private:
     std::shared_ptr<Player> _pPlayer;
     const Vector2 _kMapSize;
 
+    int _frame = 0;
     bool _isBounced = false;
 
     bool _isAlive = false;

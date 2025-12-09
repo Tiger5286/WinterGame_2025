@@ -34,10 +34,11 @@ void FallBall::Init()
 void FallBall::Update(Map& map)
 {
 	Gravity();
-	if (!_isBounced)
+	_frame++;	// 30フレーム経過後のみ跳ねるようにする
+	if (!_isBounced && _frame > 30)
 	{
 		HitDirection hitDir = MapCollision(map);
-		if (hitDir.down && !hitDir.up)
+		if (hitDir.down)
 		{
 			_isBounced = true;
 			_vel.y = -15.0f;
@@ -49,6 +50,8 @@ void FallBall::Update(Map& map)
 		_pos += _vel;
 	}
 	
+	_pCollider->SetPos(_pos);
+
 	if (_pPlayer == nullptr)
 	{
 		printfDx("Playerのポインタがnullptrです\n");
@@ -83,4 +86,5 @@ void FallBall::Shot(Vector2 pos)
 	_isAlive = true;
 	_pCollider->SetIsEnabled(true);
 	_isBounced = false;
+	_frame = 0;
 }
