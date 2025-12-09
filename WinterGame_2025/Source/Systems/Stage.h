@@ -12,7 +12,7 @@ struct DataSetting
 	uint8_t bitCount;	// 1チップに何ビット使用しているのか
 };
 // マップデータのヘッダ
-struct DataHeader
+struct FMFDataHeader
 {
 	char identifier[4];	// 正しければ'FMF_'になっている
 	uint32_t size;	// データのサイズ
@@ -37,7 +37,7 @@ public:
 	Size GetMapSize() const { return Size(static_cast<int>(_header.width), static_cast<int>(_header.height)); }
 
 private:
-	DataHeader _header;	// データヘッダ
+	FMFDataHeader _header;	// データヘッダ
 	std::vector<uint16_t> _mapData;	// マップデータ
 	std::vector<uint16_t> _objectData;	// オブジェクトデータ
 };
