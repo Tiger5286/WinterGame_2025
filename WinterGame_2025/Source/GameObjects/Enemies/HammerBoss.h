@@ -7,6 +7,7 @@ enum class HammerBossState
 {
     Idle,
     WaveAttack,
+    FallBallAttack,
     Death,
 };
 

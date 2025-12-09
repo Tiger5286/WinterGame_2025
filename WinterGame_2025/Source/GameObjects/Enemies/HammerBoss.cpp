@@ -25,6 +25,19 @@ namespace
 	const Vector2 kColliderSize = { 250,180 };
 	const Vector2 kWaveAttackColliderSize = { 100,120 };
 
+	// 行動関係
+	// idle
+	constexpr int kIdleWaitFrame = 60;
+	// waveAttack
+	constexpr int kImpactOffsetX = 150;
+	constexpr int kWaveMoveScale = 4;
+	constexpr int kWaveAttackColliderOffsetX = 70;
+	constexpr int kWaveEffectIntervalFrame = 20;
+	constexpr int kWaveAttackFrame = 400;
+
+	constexpr int kCameraShakeFrame = 15;
+	constexpr int kCameraShakePower = 10;
+
 	constexpr int kHp = 100;
 	constexpr int kScore = 10000;
 }
@@ -34,18 +47,21 @@ HammerBoss::HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::s
 	_handle(handle),
 	_pCamera(pCamera)
 {
+	// 初期位置設定
 	_pos = ChipPosToGamePos(firstPos);
 	_pos.y += GlobalConstants::kDrawChipSizeHalf;	// チップ半分下にずらす
 
+	// 当たり判定設定
 	_pCollider = std::make_shared<BoxCollider>(_pos, kColliderSize);
 	_pCollider->SetPosToBox(_pos);
 
+	// 攻撃用当たり判定設定(最初は無効化)
 	_pAttackCollider = std::make_shared<BoxCollider>(Vector2(), kWaveAttackColliderSize);
 	_pAttackCollider->SetIsEnabled(false);
 
+	// アニメーション設定
 	_idleAnim.Init(_handle, kIdleAnimIndex, kGraphSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
 	_attackAnim.Init(_handle, kAttackAnimIndex, kGraphSize, kAttackAnimNum, kOneAnimFrame, kDrawScale);
-
 	_nowAnim = _idleAnim;
 }
 
@@ -62,10 +78,10 @@ void HammerBoss::Update(Map& map)
 	if (_state == HammerBossState::Idle)
 	{
 		_frame++;
-		if (_frame > 60)
+		if (_frame > kIdleWaitFrame)
 		{
 			_frame = 0;
-			_state = HammerBossState::WaveAttack;
+			_state = HammerBossState::FallBallAttack;
 			_nowAnim = _attackAnim;
 		}
 	}
@@ -76,17 +92,17 @@ void HammerBoss::Update(Map& map)
 		constexpr int kAnimEndFrame = kAttackAnimNum * kOneAnimFrame;
 		if (_frame == kImpactFrame)
 		{
-			_pCamera->Shake(15, 10);
-			Vector2 impactPos = { _pos.x - 150,_pos.y};	// ハンマーの衝撃位置補正
+			_pCamera->Shake(kCameraShakeFrame, kCameraShakePower);
+			Vector2 impactPos = { _pos.x - kImpactOffsetX,_pos.y};	// ハンマーの衝撃位置補正
 			_pEffectManager->Create(impactPos, EffectType::ExplosionFloor);
 			_pAttackCollider->SetPosToBox(impactPos);
 			_pAttackCollider->SetIsEnabled(true);
 		}
 		if (_frame > kImpactFrame)
 		{
-			Vector2 wavePos = { _pos.x - (_frame - kImpactFrame) * 4 - 150, _pos.y };
-			_pAttackCollider->SetPosToBox({ wavePos.x + 70,wavePos.y });
-			if (_frame % 20 == 0)
+			Vector2 wavePos = { _pos.x - (_frame - kImpactFrame) * kWaveMoveScale - kImpactOffsetX, _pos.y };
+			_pAttackCollider->SetPosToBox({ wavePos.x + kWaveAttackColliderOffsetX,wavePos.y });
+			if (_frame % kWaveEffectIntervalFrame == 0)
 			{
 				_pEffectManager->Create(wavePos, EffectType::ExplosionUpward);
 			}
@@ -95,7 +111,7 @@ void HammerBoss::Update(Map& map)
 		{
 			_nowAnim = _idleAnim;
 		}
-		if (_frame > 400)
+		if (_frame > kWaveAttackFrame)
 		{
 			_frame = 0;
 			_state = HammerBossState::Idle;
