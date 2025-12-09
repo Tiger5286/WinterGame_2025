@@ -326,7 +326,7 @@ void WalkBoss::TakeDamage(int damage)
 {
 	if (!(_hp <= 0))
 	{
-		_hp--;
+		_hp-=damage;
 		_damageFrame = 5;
 		if (_hp <= 0)
 		{
