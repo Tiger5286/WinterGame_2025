@@ -86,7 +86,7 @@ public:
 	/// クリア済みの最後のステージを取得する
 	/// </summary>
 	/// <returns>クリア済みステージ</returns>
-	Stages GetClearedStage() const { return _clearedStage; }
+	Stages GetClearedStage();
 
 	/// <summary>
 	/// クリアしたステージが未クリアなら、クリア済みとして登録する
@@ -100,7 +100,8 @@ private:
 	std::shared_ptr<SceneBase> _pNextScene;
 	FadeState _nextFadeType;
 	int _stopFrame;
-	Stages _clearedStage = Stages::None;
+	//Stages _clearedStage = Stages::None;
+	SaveData _saveData;
 	SceneChangeMode _changeMode = SceneChangeMode::Change;
 
 	std::shared_ptr<DataManager> _pDataManager;

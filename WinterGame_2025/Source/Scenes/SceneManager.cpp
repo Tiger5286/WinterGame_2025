@@ -13,14 +13,12 @@ SceneManager::SceneManager():
 {
 	_pDataManager = std::make_shared<DataManager>();
 	_pDataManager->Load();
-	_clearedStage = static_cast<Stages>(_pDataManager->GetSaveData().clearedStage);
+	_saveData = _pDataManager->GetSaveData();
 }
 
 SceneManager::~SceneManager()
 {
-	SaveData data;
-	data.clearedStage = static_cast<int>(_clearedStage);
-	_pDataManager->SetSaveData(data);
+	_pDataManager->SetSaveData(_saveData);
 	_pDataManager->Save();
 }
 
@@ -155,17 +153,22 @@ void SceneManager::ChangeSceneWithFade(std::shared_ptr<SceneBase> scene, FadeSta
 	_pNextScene = scene;
 }
 
+Stages SceneManager::GetClearedStage()
+{
+	return static_cast<Stages>(_saveData.clearedStage);
+}
+
 void SceneManager::CheckClearedStage(Stages clearedStage)
 {
 	// クリアしたステージが登録済みのステージより前なら何もしない
-	if (static_cast<int>(clearedStage) <= static_cast<int>(_clearedStage)) return;
+	if (static_cast<int>(clearedStage) <= _saveData.clearedStage) return;
 
 	for (int i = 0; i < static_cast<int>(Stages::Num); i++)
 	{
 		// クリアしたステージを登録する
 		if (clearedStage == static_cast<Stages>(i))
 		{
-			_clearedStage = clearedStage;
+			_saveData.clearedStage = static_cast<int>(clearedStage);
 			return;	// ステージを登録した時点でループを終わる
 		}
 	}

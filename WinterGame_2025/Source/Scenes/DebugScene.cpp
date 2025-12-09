@@ -60,14 +60,14 @@ void DebugScene::Update(Input& input)
 
 	if (input.IsTriggered("select"))
 	{
-		_manager._clearedStage = Stages::None;
+		_manager._saveData.clearedStage = static_cast<int>(Stages::None);
 
 		_manager._pDataManager->DeleteSaveData();
 		printfDx("Delete SaveData\n");
 	}
 	if (CheckHitKey(KEY_INPUT_1))
 	{
-		_manager._clearedStage = static_cast<Stages>((static_cast<int>(Stages::Num) - 1));
+		_manager._saveData.clearedStage = static_cast<int>(Stages::Num) - 1;
 		printfDx("All Stages Cleared\n");
 	}
 }
