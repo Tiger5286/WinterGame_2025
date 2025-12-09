@@ -3,6 +3,13 @@
 
 class Camera;
 
+enum class HammerBossState
+{
+    Idle,
+    WaveAttack,
+    Death,
+};
+
 class HammerBoss :
     public Enemy
 {
@@ -16,6 +23,11 @@ public:
 
 private:
     int _handle;
+
+    int _frame = 0;
+    HammerBossState _state = HammerBossState::Idle;
+
+	std::shared_ptr<Collider> _pAttackCollider;
 
     std::shared_ptr<Camera> _pCamera;
 
