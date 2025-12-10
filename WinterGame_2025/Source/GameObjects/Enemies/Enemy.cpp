@@ -30,13 +30,19 @@ void Enemy::UpdateAnytime()
 
 void Enemy::TakeDamage(int damage,Bullet& bullet)
 {
+	// ダメージを受ける
 	_hp -= damage;
 	_damageFrame = kDamageFrameMax;
+	// 死んだらエフェクトを出す
 	if (_hp <= 0)
 	{
 		_pEffectManager->Create(GetColliderPos(), EffectType::Explosion);
 	}
-	bullet.Hit();
+	// 通常弾なら消す
+	if (bullet.GetType() == BulletType::NormalShot)
+	{
+		bullet.Hit();
+	}
 }
 
 bool Enemy::GetIsAlive() const
