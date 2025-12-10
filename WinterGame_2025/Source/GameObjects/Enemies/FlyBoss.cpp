@@ -54,7 +54,7 @@ namespace
 
 	constexpr int kOutOfScreenMargin = 100;
 
-	constexpr int kHp = 50;
+	constexpr int kHp = 30;
 	constexpr int kScore = 10000;
 
 	// ‰‰oŠÖ˜A
@@ -357,6 +357,11 @@ void FlyBoss::TakeDamage(int damage,Bullet& bullet)
 			{
 				enemy->TakeDamage(9999,bullet);
 			}
+		}
+		// ’Êí’e‚È‚çÁ‚·
+		if (bullet.GetType() == BulletType::NormalShot)
+		{
+			bullet.Hit();
 		}
 	}
 }
