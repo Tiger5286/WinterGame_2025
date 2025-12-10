@@ -24,13 +24,13 @@ public:
 
 	void Shot(BulletType type, Vector2 shotPos, bool isTurn);
 
-	//void SetContext(std::vector<std::shared_ptr<Enemy>> pEnemys);
+	void Hit();
+	void Reflect();
 
 	bool GetAlive() const { return _isAlive; }
 
 	BulletType GetType() const { return _type; }
 private:
-	void Hit();
 
 	int _shotH;
 	int _chargeShotH;
@@ -43,6 +43,7 @@ private:
 	std::vector<std::shared_ptr<Enemy>> _pEnemys;
 
 	BulletType _type;
+	bool _isReflected = false;
 	bool _isImpact;
 	bool _isAlive;
 	bool _isTurn;

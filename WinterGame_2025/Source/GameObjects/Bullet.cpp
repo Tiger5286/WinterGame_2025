@@ -54,6 +54,7 @@ void Bullet::Update(Map& map)
 
 void Bullet::Update(Map& map,Vector2 cameraPos, std::vector<std::shared_ptr<Enemy>> pEnemys)
 {
+	// 移動処理
 	if (_isTurn)
 	{
 		_vel = { -kMoveSpeed,0.0f };
@@ -63,6 +64,20 @@ void Bullet::Update(Map& map,Vector2 cameraPos, std::vector<std::shared_ptr<Enem
 		_vel = { kMoveSpeed,0.0f };
 	}
 
+	// 反射時の移動処理
+	if (_isReflected)
+	{
+		if (_isTurn)
+		{
+			_vel = Vector2(1.0f, -1.0f).Normalized() * kMoveSpeed;
+		}
+		else
+		{
+			_vel = Vector2(-1.0f, -1.0f).Normalized() * kMoveSpeed;
+		}
+	}
+
+	// 衝突していなければ移動
 	if (!_isImpact)
 	{
 		_pos += _vel;
@@ -78,8 +93,8 @@ void Bullet::Update(Map& map,Vector2 cameraPos, std::vector<std::shared_ptr<Enem
 	_pCollider->SetPosToBox(_pos);
 
 	Vector2 hitChipPos;	// 未使用
-	if (map.IsCollision(_pCollider,hitChipPos))
-	{	// マップに当たったら
+	if (map.IsCollision(_pCollider,hitChipPos) && !_isReflected)
+	{	// マップに当たった、かつ反射されていないなら処理
 		Hit();
 	}
 
@@ -91,7 +106,6 @@ void Bullet::Update(Map& map,Vector2 cameraPos, std::vector<std::shared_ptr<Enem
 			if (_type == BulletType::NormalShot)
 			{	// 通常弾ならダメージ与えて弾消える
 				enemy->TakeDamage(kNormalShotDamage,*this);
-				Hit();
 			}
 			else if (_type == BulletType::ChargeShot)
 			{	// チャージ弾なら最初に当たったときだけダメージ与える
@@ -130,6 +144,7 @@ void Bullet::Draw(Vector2 offset)
 void Bullet::Shot(BulletType type, Vector2 shotPos, bool isTurn)
 {
 	_pCollider->SetIsEnabled(true);
+	_isReflected = false;
 	_isImpact = false;
 	_isAlive = true;
 	_type = type;
@@ -147,11 +162,6 @@ void Bullet::Shot(BulletType type, Vector2 shotPos, bool isTurn)
 	}
 }
 
-//void Bullet::SetContext(std::vector<std::shared_ptr<Enemy>> pEnemys)
-//{
-//	_pEnemys = pEnemys;
-//}
-
 void Bullet::Hit()
 {
 	if (!_isImpact)
@@ -167,5 +177,11 @@ void Bullet::Hit()
 		_nowAnim.SetFirst();
 		_isImpact = true;
 	}
+	_pCollider->SetIsEnabled(false);	// 当たり判定無効化
+}
+
+void Bullet::Reflect()
+{
+	_isReflected = true;
 	_pCollider->SetIsEnabled(false);	// 当たり判定無効化
 }
