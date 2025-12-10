@@ -32,6 +32,7 @@ public:
 private:
 
 	void ChangeState(WalkBossState state);
+	void TakeDamageMyself(int damage);
 
 private:
 	int _handle;

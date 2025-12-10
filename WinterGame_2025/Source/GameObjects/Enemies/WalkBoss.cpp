@@ -8,6 +8,7 @@
 #include "../../Systems/EffectManager.h"
 #include "../../Scenes/SceneManager.h"
 #include "../../Scenes/SceneClear.h"
+#include "../Bullet.h"
 
 namespace
 {
@@ -326,15 +327,25 @@ void WalkBoss::TakeDamage(int damage,Bullet& bullet)
 {
 	if (!(_hp <= 0))
 	{
-		_hp-=damage;
-		_damageFrame = 5;
-		if (_hp <= 0)
+		if (_state == WalkBossState::Tackle ||		// UŒ‚s“®’†‚Í’Êí’e‚Ìƒ_ƒ[ƒW‚ðŽó‚¯‚È‚¢
+			_state == WalkBossState::TackleAndWallRun ||
+			_state == WalkBossState::CeilingRun ||
+			_state == WalkBossState::FallAttack)
 		{
-			_state = WalkBossState::Death;
-			_frame = 0;
-			_hp = 0;
-			_pCamera->Shake(kDeathFrame, kCameraShakePower);
-			_vel = Vector2();
+			if (bullet.GetType() == BulletType::NormalShot)
+			{
+				bullet.Reflect();
+			}
+			else if (bullet.GetType() == BulletType::ChargeShot)
+			{
+				TakeDamageMyself(damage);
+				bullet.Hit();
+			}
+		}
+		else
+		{
+			TakeDamageMyself(damage);
+			bullet.Hit();
 		}
 	}
 }
@@ -343,4 +354,18 @@ void WalkBoss::ChangeState(WalkBossState state)
 {
 	_state = state;
 	_frame = 0;
+}
+
+void WalkBoss::TakeDamageMyself(int damage)
+{
+	_hp -= damage;
+	_damageFrame = 5;
+	if (_hp <= 0)
+	{
+		_state = WalkBossState::Death;
+		_frame = 0;
+		_hp = 0;
+		_pCamera->Shake(kDeathFrame, kCameraShakePower);
+		_vel = Vector2();
+	}
 }
