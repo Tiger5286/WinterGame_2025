@@ -50,7 +50,7 @@ namespace
 	constexpr int kCameraShakePowerStrong = 10;
 	constexpr int kCameraShakePowerWeak = 5;
 
-	constexpr int kHp = 100;
+	constexpr int kHp = 50;
 	constexpr int kScore = 10000;
 
 	constexpr int kDeathFrame = 120;
