@@ -251,8 +251,17 @@ void HammerBoss::TakeDamage(int damage, Bullet& bullet)
 {
 	if (!(_hp <= 0))
 	{
-		_hp -= damage;
-		_damageFrame = 5;
+		if (bullet.GetType() == BulletType::NormalShot)
+		{
+			bullet.Reflect();
+		}
+		else if (bullet.GetType() == BulletType::ChargeShot)
+		{
+			_hp -= damage;
+			_damageFrame = 5;
+			bullet.Hit();
+		}
+		
 		if (_hp <= 0)
 		{
 			_state = HammerBossState::Death;
