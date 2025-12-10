@@ -53,6 +53,7 @@ void DebugScene::Update(Input& input)
 	}
 	if (input.IsTriggered("decision"))
 	{
+		clsDx();
 		auto& menuName = _menuList[_selectIndex];
 		_execTable[menuName]();
 		return;
@@ -61,11 +62,12 @@ void DebugScene::Update(Input& input)
 	if (input.IsTriggered("select"))
 	{
 		_manager._saveData.clearedStage = static_cast<int>(Stages::None);
+		_manager._saveData.highScores.fill(0);
 
 		_manager._pDataManager->DeleteSaveData();
 		printfDx("Delete SaveData\n");
 	}
-	if (CheckHitKey(KEY_INPUT_1))
+	if (input.IsTriggered("start"))
 	{
 		_manager._saveData.clearedStage = static_cast<int>(Stages::Num) - 1;
 		printfDx("All Stages Cleared\n");
