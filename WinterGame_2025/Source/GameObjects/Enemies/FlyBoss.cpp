@@ -341,8 +341,31 @@ void FlyBoss::TakeDamage(int damage,Bullet& bullet)
 {
 	if (!(_hp <= 0))
 	{
-		_hp -= damage;
-		_damageFrame = 5;
+		// タックル中なら通常弾を反射
+		if (_state == FlyBossState::AimAndTackle)
+		{
+			if (bullet.GetType() == BulletType::NormalShot)
+			{
+				bullet.Reflect();
+			}
+			else if (bullet.GetType() == BulletType::ChargeShot)
+			{
+				_hp -= damage;
+				_damageFrame = 5;
+				bullet.Hit();
+			}
+		}
+		else	// それ以外の状態なら通常通りダメージを受ける
+		{
+			_hp -= damage;
+			_damageFrame = 5;
+			// 通常弾なら消す
+			if (bullet.GetType() == BulletType::NormalShot)
+			{
+				bullet.Hit();
+			}
+		}
+		// HPが0以下になったら死亡処理
 		if (_hp <= 0)
 		{
 			_state = FlyBossState::Death;
@@ -355,13 +378,8 @@ void FlyBoss::TakeDamage(int damage,Bullet& bullet)
 			// 自身が死んだとき、他に存在している敵も全員死ぬ
 			for (auto& enemy : _enemyManager.GetEnemies())
 			{
-				enemy->TakeDamage(9999,bullet);
+				enemy->TakeDamage(9999, bullet);
 			}
-		}
-		// 通常弾なら消す
-		if (bullet.GetType() == BulletType::NormalShot)
-		{
-			bullet.Hit();
 		}
 	}
 }
