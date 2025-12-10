@@ -338,14 +338,24 @@ void WalkBoss::TakeDamage(int damage,Bullet& bullet)
 			}
 			else if (bullet.GetType() == BulletType::ChargeShot)
 			{
-				TakeDamageMyself(damage);
+				_hp -= damage;
+				_damageFrame = 5;
 				bullet.Hit();
 			}
 		}
 		else
 		{
-			TakeDamageMyself(damage);
+			_hp -= damage;
+			_damageFrame = 5;
 			bullet.Hit();
+		}
+		if (_hp <= 0)
+		{
+			_state = WalkBossState::Death;
+			_frame = 0;
+			_hp = 0;
+			_pCamera->Shake(kDeathFrame, kCameraShakePower);
+			_vel = Vector2();
 		}
 	}
 }
@@ -354,18 +364,4 @@ void WalkBoss::ChangeState(WalkBossState state)
 {
 	_state = state;
 	_frame = 0;
-}
-
-void WalkBoss::TakeDamageMyself(int damage)
-{
-	_hp -= damage;
-	_damageFrame = 5;
-	if (_hp <= 0)
-	{
-		_state = WalkBossState::Death;
-		_frame = 0;
-		_hp = 0;
-		_pCamera->Shake(kDeathFrame, kCameraShakePower);
-		_vel = Vector2();
-	}
 }
