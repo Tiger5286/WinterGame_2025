@@ -63,6 +63,10 @@ namespace
 	constexpr float kStopSpeed = 0.9f;	// 横移動速度がこれ以下になったら完全に停止する
 	constexpr float kFrictionPower = 0.7f;	// 自然に止まる力
 
+	constexpr float kSlideFallSpeed = 4.0f;	// 壁ずり落ち時の落下速度制限
+	constexpr float kWallJumpPowerX = 15.0f;	// 壁ジャンプの横方向の力
+	constexpr float kSlideGravityResistance = 0.5f;
+
 	constexpr float kMaxFallSpeed = 15.0f;	// 最大落下速度
 
 	// ダッシュ関連
@@ -461,8 +465,11 @@ void Player::Move()
 
 void Player::Slide()
 {
+	// 前のフレームの壁ずり落ち状態を保存
+	bool isPrevSlide = _isSlide;
+
 	// 壁ずり落ち判定
-	if ((_hitDir.left || _hitDir.right) && !_hitDir.down && _vel.y > 0)
+	if ((_hitDir.left || _hitDir.right) && !_hitDir.down && _vel.y >= 0)
 	{
 		_isSlide = true;
 	}
@@ -474,10 +481,19 @@ void Player::Slide()
 	// 壁ずり落ち中の処理
 	if (_isSlide)
 	{
+		if (!isPrevSlide)
+		{	// 壁ずり落ちを開始した瞬間だけ落下速度をリセット
+			_vel.y = 0.0f;
+		}
+
 		// 落下速度制限
-		if (_vel.y > 4.0f)
+		if (_vel.y > kSlideFallSpeed)
 		{
-			_vel.y = 4.0f;
+			_vel.y = kSlideFallSpeed;
+		}
+		else
+		{
+			_vel.y -= kSlideGravityResistance;	// ゆっくり落ちる
 		}
 
 		if (_hitDir.left)
@@ -493,13 +509,13 @@ void Player::Slide()
 		if (_input.IsTriggered("jump") && _hitDir.left)
 		{	// 壁ジャンプ(左壁)
 			_vel.y = kJumpPower;
-			_vel.x = 15;
+			_vel.x = kWallJumpPowerX;
 			_isSlide = false;
 		}
 		else if (_input.IsTriggered("jump") && _hitDir.right)
 		{	// 壁ジャンプ(右壁)
 			_vel.y = kJumpPower;
-			_vel.x = -15;
+			_vel.x = -kWallJumpPowerX;
 			_isSlide = false;
 		}
 	}
