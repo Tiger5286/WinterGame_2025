@@ -269,6 +269,7 @@ void HammerBoss::TakeDamage(int damage, Bullet& bullet)
 			_hp = 0;
 			_pCamera->Shake(120, 5);
 			_pCollider->SetIsEnabled(false);
+			_pAttackCollider->SetIsEnabled(false);
 			_nowAnim = _rapidAttackAnim;
 		}
 	}
