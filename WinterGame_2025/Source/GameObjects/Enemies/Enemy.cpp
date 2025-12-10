@@ -2,6 +2,7 @@
 #include "../../Systems/EffectManager.h"
 #include "../../Utility/Collider.h"
 #include "../../Scenes/SceneManager.h"
+#include "../Bullet.h"
 
 namespace
 {
@@ -35,6 +36,7 @@ void Enemy::TakeDamage(int damage,Bullet& bullet)
 	{
 		_pEffectManager->Create(GetColliderPos(), EffectType::Explosion);
 	}
+	bullet.Hit();
 }
 
 bool Enemy::GetIsAlive() const
