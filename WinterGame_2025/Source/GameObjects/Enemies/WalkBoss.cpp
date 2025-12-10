@@ -322,7 +322,7 @@ bool WalkBoss::GetIsAlive() const
 	return !(_state == WalkBossState::Death && _frame > kAliveTimeBeforeDeath);
 }
 
-void WalkBoss::TakeDamage(int damage)
+void WalkBoss::TakeDamage(int damage,Bullet& bullet)
 {
 	if (!(_hp <= 0))
 	{

@@ -5,6 +5,7 @@
 class Player;
 class EffectManager;
 class SceneManager;
+class Bullet;
 
 class Enemy : public GameObject
 {
@@ -21,7 +22,7 @@ public:
 	virtual void Draw(Vector2 offset) override = 0;
 
 	int GetHp() const { return _hp; }
-	virtual void TakeDamage(int damage);
+	virtual void TakeDamage(int damage, Bullet& bullet);
 	virtual bool GetIsAlive() const;
 	int GetScore() const { return _kScore; }
 	void SetIsHitChargeShot(bool isHit) { _isHitChargeShot = isHit; }

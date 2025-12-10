@@ -337,7 +337,7 @@ void FlyBoss::Draw(Vector2 offset)
 #endif
 }
 
-void FlyBoss::TakeDamage(int damage)
+void FlyBoss::TakeDamage(int damage,Bullet& bullet)
 {
 	if (!(_hp <= 0))
 	{
@@ -355,7 +355,7 @@ void FlyBoss::TakeDamage(int damage)
 			// Ž©g‚ªŽ€‚ñ‚¾‚Æ‚«A‘¼‚É‘¶Ý‚µ‚Ä‚¢‚é“G‚à‘SˆõŽ€‚Ê
 			for (auto& enemy : _enemyManager.GetEnemies())
 			{
-				enemy->TakeDamage(9999);
+				enemy->TakeDamage(9999,bullet);
 			}
 		}
 	}

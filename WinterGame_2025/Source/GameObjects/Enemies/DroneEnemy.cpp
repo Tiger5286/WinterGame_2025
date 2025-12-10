@@ -132,7 +132,7 @@ void DroneEnemy::Update(Map& map)
 	{
 		_pos = Vector2(-10, -10); // âÊñ äOÇ…à⁄ìÆÇ≥ÇπÇƒéÄñSââèoÇ™å©Ç¶Ç»Ç¢ÇÊÇ§Ç…Ç∑ÇÈ
 		_pCollider->SetPos(_pos);
-		TakeDamage(9999);
+		_hp = 0; // è¡ñ≈Ç≥ÇπÇÈ
 	}
 
 	_nowAnim.Update();

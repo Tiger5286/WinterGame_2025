@@ -247,7 +247,7 @@ void HammerBoss::Draw(Vector2 offset)
 #endif
 }
 
-void HammerBoss::TakeDamage(int damage)
+void HammerBoss::TakeDamage(int damage, Bullet& bullet)
 {
 	if (!(_hp <= 0))
 	{

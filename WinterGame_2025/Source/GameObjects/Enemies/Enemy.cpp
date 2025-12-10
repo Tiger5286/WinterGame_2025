@@ -27,7 +27,7 @@ void Enemy::UpdateAnytime()
 {
 }
 
-void Enemy::TakeDamage(int damage)
+void Enemy::TakeDamage(int damage,Bullet& bullet)
 {
 	_hp -= damage;
 	_damageFrame = kDamageFrameMax;

@@ -27,7 +27,7 @@ public:
     void UpdateAnytime() override;
     void Draw(Vector2 offset) override;
 
-    void TakeDamage(int damage) override;
+    void TakeDamage(int damage,Bullet& bullet) override;
     bool GetIsAlive() const override;
 
 private:
