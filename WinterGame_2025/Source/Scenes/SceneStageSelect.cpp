@@ -39,11 +39,11 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 	{
 		"Tutorial Stage",
 		"Stage 1",
-		"Boss 1",
+		//"Boss 1",
 		"Stage 2",
-		"Boss 2",
+		//"Boss 2",
 		"Stage 3",
-		"Boss 3",
+		//"Boss 3",
 	};
 	_execTable["Tutorial Stage"] = [this]() {
 		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager,Stages::Tutorial),FadeState::CircleFadeIn);
@@ -51,21 +51,21 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 	_execTable["Stage 1"] = [this]() {
 		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Stage1), FadeState::CircleFadeIn);
 		};
-	_execTable["Boss 1"] = [this]() {
-		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Boss1), FadeState::CircleFadeIn);
-		};
+	//_execTable["Boss 1"] = [this]() {
+	//	_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Boss1), FadeState::CircleFadeIn);
+	//	};
 	_execTable["Stage 2"] = [this]() {
 		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Stage2), FadeState::CircleFadeIn);
 		};
-	_execTable["Boss 2"] = [this]() {
-		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Boss2), FadeState::CircleFadeIn);
-		};
+	//_execTable["Boss 2"] = [this]() {
+	//	_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Boss2), FadeState::CircleFadeIn);
+	//	};
 	_execTable["Stage 3"] = [this]() {
 		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Stage3), FadeState::CircleFadeIn);
 		};
-	_execTable["Boss 3"] = [this]() {
-		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Boss3), FadeState::CircleFadeIn);
-		};
+	//_execTable["Boss 3"] = [this]() {
+	//	_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Boss3), FadeState::CircleFadeIn);
+	//	};
 
 	if (_selectIndex == static_cast<int>(Stages::Num) - 2)
 	{
