@@ -153,15 +153,15 @@ void SceneManager::ChangeSceneWithFade(std::shared_ptr<SceneBase> scene, FadeSta
 	_pNextScene = scene;
 }
 
-void SceneManager::CheckClearedStage(Stages clearedStage)
+void SceneManager::CheckClearedStage(SelectableStages clearedStage)
 {
 	// クリアしたステージが登録済みのステージより前なら何もしない
 	if (static_cast<int>(clearedStage) <= _saveData.clearedStage) return;
 
-	for (int i = 0; i < static_cast<int>(Stages::Num); i++)
+	for (int i = 0; i < static_cast<int>(SelectableStages::Num); i++)
 	{
 		// クリアしたステージを登録する
-		if (clearedStage == static_cast<Stages>(i))
+		if (clearedStage == static_cast<SelectableStages>(i))
 		{
 			_saveData.clearedStage = static_cast<int>(clearedStage);
 			return;	// ステージを登録した時点でループを終わる
@@ -169,7 +169,7 @@ void SceneManager::CheckClearedStage(Stages clearedStage)
 	}
 }
 
-bool SceneManager::CheckHighScore(int score, Stages clearedStage)
+bool SceneManager::CheckHighScore(int score, SelectableStages clearedStage)
 {
 	// スコアがクリアしたステージのハイスコアを上回っていたら更新
 	if (score > _saveData.highScores[static_cast<int>(clearedStage)])

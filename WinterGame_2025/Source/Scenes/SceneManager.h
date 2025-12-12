@@ -92,7 +92,7 @@ public:
 	/// クリアしたステージが未クリアなら、クリア済みとして登録する
 	/// </summary>
 	/// <param name="clearedStage">クリアしたステージ</param>
-	void CheckClearedStage(Stages clearedStage);
+	void CheckClearedStage(SelectableStages clearedStage);
 
 
 	
@@ -102,7 +102,7 @@ public:
 	/// <param name="score">スコア</param>
 	/// <param name="clearedStage">クリアしたステージ</param>
 	/// <returns>ハイスコアを更新したらtrue</returns>
-	bool CheckHighScore(int score,Stages clearedStage);
+	bool CheckHighScore(int score, SelectableStages clearedStage);
 
 private:
 	std::list<std::shared_ptr<SceneBase>> _pScenes;
