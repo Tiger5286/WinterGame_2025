@@ -18,7 +18,8 @@ SceneClear::SceneClear(SceneManager& manager,int score, Stages clearStage):
 	assert(_clearLogoHandle != -1);
 
 	// スコア更新
-	_isUpdateScore = manager.CheckHighScore(score, clearStage);
+	auto selectableStage = StageToSelectableStage(clearStage);
+	_isUpdateScore = manager.CheckHighScore(score, selectableStage);
 }
 
 SceneClear::~SceneClear()
@@ -35,7 +36,7 @@ void SceneClear::Update(Input& input)
 {
 	if (input.IsTriggered("decision"))
 	{
-		_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager,_clearStage));
+		_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager, _clearStage));
 	}
 
 #ifdef _DEBUG

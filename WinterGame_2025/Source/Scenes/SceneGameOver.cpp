@@ -45,6 +45,7 @@ void SceneGameOver::Update(Input& input)
 		}
 		else
 		{
+			auto selectableStage = StageToSelectableStage(_playedStage);
 			_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager, _playedStage));
 		}
 	}

@@ -25,14 +25,16 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 	_stageUIHandle = LoadGraph("data/UI/StageUI.png");
 	assert(_stageUIHandle != -1);
 
-	if (playedStage == Stages::None)
+	auto selectableStage = StageToSelectableStage(playedStage);
+
+	if (selectableStage == SelectableStages::None)
 	{
 		printfDx("playedStage‚ªNone‚É‚È‚Á‚Ä‚¢‚Ü‚·");
 		_selectIndex = 0;
 	}
 	else
 	{
-		_selectIndex = static_cast<int>(playedStage) - 1;
+		_selectIndex = static_cast<int>(selectableStage) - 1;
 	}
 
 	_stageList =
