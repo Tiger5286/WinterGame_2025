@@ -91,6 +91,16 @@ enum class Stages
 	Temp,
 };
 
+// 選択可能なステージ定義
+enum class SelectableStages
+{
+	Tutorial,
+	Stage1,
+	Stage2,
+	Stage3,
+	Num,
+};
+
 struct SaveDataHeader
 {
 	char signature[4];	// "sdat"
