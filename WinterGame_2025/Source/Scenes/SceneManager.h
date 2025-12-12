@@ -30,6 +30,8 @@ public:
 	void Update(Input input);
 	void Draw();
 
+	/*シーン遷移関連関数***********************************************************************************************************************************/
+
 	/// <summary>
 	/// 積んでいるシーンを全てクリアし、新たなシーンを再生する
 	/// </summary>
@@ -70,11 +72,33 @@ public:
 	/// <param name="fadeType">シーン終了時に行うフェードアウトの種類</param>
 	void ChangeSceneWithFade(std::shared_ptr<SceneBase> scene, FadeState nextFadeType = FadeState::NormalFadeIn, FadeState fadeType = FadeState::NormalFadeOut);
 	
+	/*フェード関連関数***********************************************************************************************************************************/
+
+	/// <summary>
+	/// フェードアウトを開始する
+	/// </summary>
+	/// <param name="fadeState">フェードの種類</param>
+	void StartFadeOut(FadeState fadeState);
+
+	/// <summary>
+	/// フェードインを開始する
+	/// </summary>
+	/// <param name="fadeState">フェードの種類</param>
+	void StartFadeIn(FadeState fadeState);
+
 	/// <summary>
 	/// 丸フェードの位置を設定する
 	/// </summary>
 	/// <param name="pos">丸フェードの位置</param>
 	void SetFadeCirclePos(const Vector2& pos) { _pFade->SetCirclePos(pos); }
+
+	/// <summary>
+	/// 現在のフェード状態を取得する
+	/// </summary>
+	/// <returns>フェード状態</returns>
+	FadeState GetFadeState() const { return _pFade->GetState(); }
+
+	/*その他関数***********************************************************************************************************************************/
 
 	/// <summary>
 	/// 指定されたフレームの間、シーンの更新を停止する
@@ -93,8 +117,6 @@ public:
 	/// </summary>
 	/// <param name="clearedStage">クリアしたステージ</param>
 	void CheckClearedStage(SelectableStages clearedStage);
-
-
 	
 	/// <summary>
 	/// 渡されたスコアがハイスコアを上回っているなら、ハイスコアを登録する

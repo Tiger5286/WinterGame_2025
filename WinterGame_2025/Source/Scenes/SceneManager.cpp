@@ -153,6 +153,38 @@ void SceneManager::ChangeSceneWithFade(std::shared_ptr<SceneBase> scene, FadeSta
 	_pNextScene = scene;
 }
 
+void SceneManager::StartFadeOut(FadeState fadeState)
+{
+	switch (fadeState)
+	{
+	case FadeState::NormalFadeOut:
+		_pFade->StartFadeOut();
+		break;
+	case FadeState::CircleFadeOut:
+		_pFade->StartCircleFadeOut();
+		break;
+	default:
+		printfDx("無効なフェード状態です\n");
+		break;
+	}
+}
+
+void SceneManager::StartFadeIn(FadeState fadeState)
+{
+	switch (fadeState)
+	{
+	case FadeState::NormalFadeIn:
+		_pFade->StartFadeIn();
+		break;
+	case FadeState::CircleFadeIn:
+		_pFade->StartCircleFadeIn();
+		break;
+	default:
+		printfDx("無効なフェード状態です\n");
+		break;
+	}
+}
+
 void SceneManager::CheckClearedStage(SelectableStages clearedStage)
 {
 	// クリアしたステージが登録済みのステージより前なら何もしない
