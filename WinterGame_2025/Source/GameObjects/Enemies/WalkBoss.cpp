@@ -34,6 +34,13 @@ namespace
 	constexpr int kOneAnimFrameRun = 3;
 	constexpr int kOneAnimFrameFall = 1;
 
+	constexpr int kBarrierGraphSize = 16;
+	constexpr int kBarrierAnimNum = 4;
+	constexpr float kBarrierDrawScale = 15.0f;
+	constexpr int kBarrierOneAnimFrame = 5;
+
+	constexpr int kDrawBarrierMaxFrame = 15;	// バリアを描画する最大フレーム数
+
 	// 壁走り、天井は知り時の描画角度
 	constexpr float kAngle90 = DX_PI_F / 2;	// 90度
 	constexpr float kAngle180 = DX_PI_F;	// 180度
@@ -66,9 +73,10 @@ namespace
 	constexpr int kAliveTimeBeforeDeath = 210;
 }
 
-WalkBoss::WalkBoss(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser,SceneManager& sceneManager, int handle) :
+WalkBoss::WalkBoss(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser,SceneManager& sceneManager, int handle,int barrierH) :
 	Enemy(kMaxHp, kScore, pPlayer,pEffectManager,sceneManager),
 	_handle(handle),
+	_barrierH(barrierH),
 	_isTurn(true),
 	_frame(0),
 	_state(WalkBossState::Idle),
@@ -85,6 +93,7 @@ WalkBoss::WalkBoss(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared
 	_tackleAnim.Init(_handle, kRunAnimIndex, kGraphSize, kRunAnimNum, kOneAnimFrameRun, kDrawScale);
 	_fallAnim.Init(_handle, kFallAnimIndex, kGraphSize, kFallAnimNum, kOneAnimFrameFall, kDrawScale);
 	_nowAnim = _idleAnim;
+	_barrierAnim.Init(_barrierH, 0, Vector2(kBarrierGraphSize, kBarrierGraphSize), kBarrierAnimNum, kBarrierOneAnimFrame, kBarrierDrawScale);
 }
 
 WalkBoss::~WalkBoss()
@@ -275,6 +284,7 @@ void WalkBoss::Update(Map& map)
 	}
 
 	_nowAnim.Update();
+	_barrierAnim.Update();
 }
 
 void WalkBoss::Draw(Vector2 offset)
@@ -311,6 +321,16 @@ void WalkBoss::Draw(Vector2 offset)
 		}
 		_nowAnim.Draw({ _pos.x - offset.x,_pos.y - offset.y - kGraphSize.y / 2 * kDrawScale }, _isTurn);
 		SetDrawBright(255, 255, 255);	// 明るさリセット
+
+		// バリア描画
+		if (_drawBarrierFrame > 0)
+		{
+			_drawBarrierFrame--;
+		}
+		float progress = static_cast<float>(_drawBarrierFrame) / kDrawBarrierMaxFrame;
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, progress * 128);
+		_barrierAnim.Draw(GetColliderPos() - offset, false);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 	
 #ifdef _DEBUG
@@ -334,6 +354,7 @@ void WalkBoss::TakeDamage(int damage,Bullet& bullet)
 		{
 			if (bullet.GetType() == BulletType::NormalShot)
 			{
+				_drawBarrierFrame = kDrawBarrierMaxFrame;
 				bullet.Reflect();
 			}
 			else if (bullet.GetType() == BulletType::ChargeShot)

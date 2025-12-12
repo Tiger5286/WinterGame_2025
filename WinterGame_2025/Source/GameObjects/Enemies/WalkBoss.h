@@ -19,7 +19,7 @@ enum class WalkBossState
 class WalkBoss : public Enemy
 {
 public:
-	WalkBoss(Vector2 firstPos,std::shared_ptr<Player>pPlayer,std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser,SceneManager& sceneManager, int handle);
+	WalkBoss(Vector2 firstPos,std::shared_ptr<Player>pPlayer,std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser,SceneManager& sceneManager, int handle,int barrierH);
 	~WalkBoss();
 
 	void Init() override;
@@ -35,9 +35,11 @@ private:
 
 private:
 	int _handle;
+	int _barrierH;
 	bool _isTurn;
 
 	int _frame;	// いろんな行動に使うフレームカウント
+	int _drawBarrierFrame = 0;
 
 	WalkBossState _state;
 
@@ -45,6 +47,8 @@ private:
 	Animation _stunAnim;
 	Animation _tackleAnim;
 	Animation _fallAnim;
+
+	Animation _barrierAnim;
 
 	std::shared_ptr<Camera> _pCamera;
 	std::shared_ptr<Gimmick> _pLaser;
