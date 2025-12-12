@@ -33,7 +33,7 @@ class EffectManager;
 class SceneMain : public SceneBase
 {
 public:
-	SceneMain(SceneManager& manager, Stages stage);
+	SceneMain(SceneManager& manager, Stages stage,int score = 0);
 	~SceneMain();
 
 	void Init() override;

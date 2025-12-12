@@ -7,7 +7,7 @@ class SceneManager;
 class SceneGameOver : public SceneBase
 {
 public:
-	SceneGameOver(SceneManager& manager,Stages playedStage);
+	SceneGameOver(SceneManager& manager,Stages playedStage,int score);
 	~SceneGameOver();
 
 	void Init();
@@ -17,6 +17,7 @@ private:
 	int _bgHandle = -1;
 	int _gameOverHandle = -1;
 
+	int _score;
 	bool _isSelectRestart;
 
 	Stages _playedStage;

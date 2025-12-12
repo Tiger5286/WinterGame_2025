@@ -75,10 +75,11 @@ namespace
 	static_assert(static_cast<int>(Graphs::Num) == size);
 }
 
-SceneMain::SceneMain(SceneManager& manager, Stages stage) :
+SceneMain::SceneMain(SceneManager& manager, Stages stage,int score) :
 	SceneBase(manager),
 	_frameCount(0),
-	_nowStage(stage)
+	_nowStage(stage),
+	_score(score)
 {
 	/*画像の読み込み*/
 	_graphHandles.resize(static_cast<int>(Graphs::Num));
@@ -147,7 +148,7 @@ void SceneMain::Update(Input& input)
 		}
 		else	// そうでないならゲームオーバーへ
 		{
-			_manager.ChangeSceneWithFade(std::make_shared<SceneGameOver>(_manager, _nowStage), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
+			_manager.ChangeSceneWithFade(std::make_shared<SceneGameOver>(_manager, _nowStage,_score), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
 		}
 		return;
 	}

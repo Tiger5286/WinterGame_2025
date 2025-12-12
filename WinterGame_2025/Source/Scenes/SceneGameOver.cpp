@@ -9,9 +9,10 @@
 
 #include <cassert>
 
-SceneGameOver::SceneGameOver(SceneManager& manager,Stages playedStage):
+SceneGameOver::SceneGameOver(SceneManager& manager,Stages playedStage,int score):
 	SceneBase(manager),
 	_isSelectRestart(true),
+	_score(score),
 	_playedStage(playedStage)
 {
 	_bgHandle = LoadGraph("data/Map/Bg.png");
@@ -41,7 +42,7 @@ void SceneGameOver::Update(Input& input)
 	{
 		if (_isSelectRestart)
 		{
-			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _playedStage),FadeState::CircleFadeIn);
+			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _playedStage,_score),FadeState::CircleFadeIn);
 		}
 		else
 		{
