@@ -69,7 +69,7 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 	//	_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Boss3), FadeState::CircleFadeIn);
 	//	};
 
-	if (_selectIndex == static_cast<int>(Stages::Num) - 2)
+	if (_selectIndex == static_cast<int>(SelectableStages::Num) - 2)
 	{
 		_isUIMoveRight = false;
 		_frame = -kUIControllInterval;
