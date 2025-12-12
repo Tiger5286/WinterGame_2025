@@ -361,12 +361,14 @@ void SceneMain::LoadStage(Stages stage)
 
 void SceneMain::StageClear()
 {
+	// 通常ステージかボスステージかを判定
 	bool isNormalStage = _nowStage == Stages::Stage1 ||
 		_nowStage == Stages::Stage2 ||
 		_nowStage == Stages::Stage3;
 	bool isBossStage = _nowStage == Stages::Boss1 ||
 		_nowStage == Stages::Boss2 ||
 		_nowStage == Stages::Boss3;
+
 	// 通常ステージなら次のボスステージへ
 	if (isNormalStage)
 	{

@@ -94,12 +94,60 @@ enum class Stages
 // 選択可能なステージ定義
 enum class SelectableStages
 {
+	None,
 	Tutorial,
 	Stage1,
 	Stage2,
 	Stage3,
 	Num,
 };
+
+/// <summary>
+/// ステージを選択可能なステージに変換する
+/// </summary>
+/// <param name="stage">ステージ</param>
+/// <returns>選択可能ステージ</returns>
+static SelectableStages StageToSelectableStage(Stages stage)
+{
+	switch (stage)
+	{
+	case Stages::Tutorial:
+		return SelectableStages::Tutorial;
+	case Stages::Stage1:
+	case Stages::Boss1:
+		return SelectableStages::Stage1;
+	case Stages::Stage2:
+	case Stages::Boss2:
+		return SelectableStages::Stage2;
+	case Stages::Stage3:
+	case Stages::Boss3:
+		return SelectableStages::Stage3;
+	default:
+		return SelectableStages::None;
+	}
+}
+
+/// <summary>
+/// 選択可能ステージをステージに変換する
+/// </summary>
+/// <param name="stage">選択可能ステージ</param>
+/// <returns>ステージ</returns>
+static Stages SelectableStageToStage(SelectableStages stage)
+{
+	switch (stage)
+	{
+	case SelectableStages::Tutorial:
+		return Stages::Tutorial;
+	case SelectableStages::Stage1:
+		return Stages::Stage1;
+	case SelectableStages::Stage2:
+		return Stages::Stage2;
+	case SelectableStages::Stage3:
+		return Stages::Stage3;
+	default:
+		return Stages::None;
+	}
+}
 
 struct SaveDataHeader
 {
