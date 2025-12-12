@@ -198,6 +198,7 @@ void SceneMain::Update(Input& input)
 			StageClear();
 		}
 	}
+
 	if (_nowStage == Stages::Boss1 || 
 		_nowStage == Stages::Boss2 ||
 		_nowStage == Stages::Boss3)	// ボスステージで敵がいなくなった(ボスを倒した)ならクリア
@@ -269,6 +270,9 @@ void SceneMain::Draw()
 
 void SceneMain::LoadStage(Stages stage)
 {
+	// 現在のステージを設定
+	_nowStage = stage;
+
 	/*ステージデータのロード*/
 	_pStage = std::make_shared<Stage>();
 	switch (stage)
@@ -280,7 +284,7 @@ void SceneMain::LoadStage(Stages stage)
 		_pStage->LoadData("data/Stages/TutorialStage.fmf");
 		break;
 	case Stages::Stage1:
-		_pStage->LoadData("data/Stages/Stage1.fmf");
+		_pStage->LoadData("data/Stages/template.fmf");
 		break;
 	case Stages::Boss1:
 		_pStage->LoadData("data/Stages/Boss1Stage.fmf");
@@ -357,7 +361,25 @@ void SceneMain::LoadStage(Stages stage)
 
 void SceneMain::StageClear()
 {
-	_manager.CheckClearedStage(_nowStage);
-	_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager,_score,_nowStage), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
+	bool isNormalStage = _nowStage == Stages::Stage1 ||
+		_nowStage == Stages::Stage2 ||
+		_nowStage == Stages::Stage3;
+	bool isBossStage = _nowStage == Stages::Boss1 ||
+		_nowStage == Stages::Boss2 ||
+		_nowStage == Stages::Boss3;
+	// 通常ステージなら次のボスステージへ
+	if (isNormalStage)
+	{
+		LoadStage(static_cast<Stages>(static_cast<int>(_nowStage) + 1));
+	}
+	else if (isBossStage)	// ボスステージならクリアシーンへ
+	{
+		_manager.CheckClearedStage(_nowStage);
+		_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager, _score, _nowStage), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
+	}
+	else
+	{
+		printfDx("SceneMain::StageClearで未知のステージがクリアされました\n");
+	}
 	return;
 }
