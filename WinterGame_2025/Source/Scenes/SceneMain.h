@@ -66,6 +66,8 @@ private:
 	int _frameCount;	// 経過フレーム数
 	int _score = 0;		// スコア
 
+	bool _isClearFading = false;	// ステージクリア時のフェードを行っているかどうか
+
 	Stages _nowStage;	// 今プレイしているステージ
 
 	// ステージを読み込むためのクラスを準備

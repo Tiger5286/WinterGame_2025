@@ -210,6 +210,18 @@ void SceneMain::Update(Input& input)
 		}
 	}
 
+	// ステージ移動時のフェード処理
+	if (_isClearFading)
+	{	// フェードアウトが完了したら次のステージをロードしてフェードイン開始
+		if (_manager.GetFadeState() == FadeState::NoFade)
+		{
+			LoadStage(static_cast<Stages>(static_cast<int>(_nowStage) + 1));
+			_manager.SetFadeCirclePos(_pPlayer->GetPos() - _pCamera->GetDrawOffset());
+			_manager.StartFadeIn(FadeState::CircleFadeIn);
+			_isClearFading = false;
+		}
+	}
+
 	// 【デバッグ用】デバッグシーンに切り替え
 #ifdef _DEBUG
 	if (input.IsTriggered("select"))
@@ -370,10 +382,14 @@ void SceneMain::StageClear()
 		_nowStage == Stages::Boss2 ||
 		_nowStage == Stages::Boss3;
 
-	// 通常ステージなら次のボスステージへ
+	// 通常ステージならフェードアウトして次のボスステージへ
 	if (isNormalStage)
 	{
-		LoadStage(static_cast<Stages>(static_cast<int>(_nowStage) + 1));
+		if (!_isClearFading)
+		{
+			_isClearFading = true;
+			_manager.StartFadeOut(FadeState::CircleFadeOut);
+		}
 	}
 	else if (isBossStage || _nowStage == Stages::Tutorial)	// ボスステージ、またはチュートリアルならクリアシーンへ
 	{
