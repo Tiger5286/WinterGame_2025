@@ -104,7 +104,7 @@ void SceneStageSelect::Update(Input& input)
 		if (input.IsTriggered("right"))
 		{
 			// クリアしたステージ番号を反転したもの
-			int clearedStageRev = static_cast<int>(Stages::Num) - 1 - _manager.GetSaveData().clearedStage;
+			int clearedStageRev = static_cast<int>(SelectableStages::Num) - 1 - _manager.GetSaveData().clearedStage;
 			if (clearedStageRev <= 0)	// 0になると最後のステージの次まで選べてしまうので0なら1にする
 			{
 				clearedStageRev = 1;

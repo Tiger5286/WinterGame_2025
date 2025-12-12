@@ -69,7 +69,7 @@ void DebugScene::Update(Input& input)
 	}
 	if (input.IsTriggered("start"))
 	{
-		_manager._saveData.clearedStage = static_cast<int>(Stages::Num) - 1;
+		_manager._saveData.clearedStage = static_cast<int>(SelectableStages::Num) - 1;
 		printfDx("All Stages Cleared\n");
 	}
 }
