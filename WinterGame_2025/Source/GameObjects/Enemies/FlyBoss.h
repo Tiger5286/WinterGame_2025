@@ -19,7 +19,7 @@ class FlyBoss :
     public Enemy
 {
 public:
-    FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, EnemyManager& enemyManager,BulletManager& bulletManager, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle);
+    FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, EnemyManager& enemyManager,BulletManager& bulletManager, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle, int barrierH);
     ~FlyBoss();
 
     void Init() override;
@@ -44,18 +44,22 @@ private:
 	void CheckIsOnLeft();
 
 private:
-    int _handle = -1;
+    int _handle;
+	int _barrierH;
 
     std::shared_ptr<Camera> _pCamera;
     EnemyManager& _enemyManager;
 	BulletManager& _bulletManager;
 
     int _frame = 0;
+	int _drawBarrierFrame = 0;
     FlyBossState _state = FlyBossState::Idle;
 	FlyBossState _prevState = FlyBossState::Idle;
 	bool _isPlayerOnLeft = true;    // プレイヤーが左にいるかどうか
     bool _isOnLeft = false;     // 自身が左側にいるかどうか
 
     float _sinAngle = 0.0f;
+
+    Animation _barrierAnim;
 };
 

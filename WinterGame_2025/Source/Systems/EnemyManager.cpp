@@ -150,7 +150,7 @@ void EnemyManager::Create(ObjectData enemyData, Vector2 pos, bool isChipPos)
 		_pEnemies.push_back(std::make_shared<WalkBoss>(pos, _pPlayer, _pEffectManager, _pCamera, _pGimmickManager->AddBossLaser(), _sceneManager, _walkEnemyH,_barrierH));
 		break;
 	case ObjectData::BossEnemy2:
-		_pEnemies.push_back(std::make_shared<FlyBoss>(pos, _pPlayer, _pCamera, *this, _bulletManager, _pEffectManager, _sceneManager, _flyEnemyH));
+		_pEnemies.push_back(std::make_shared<FlyBoss>(pos, _pPlayer, _pCamera, *this, _bulletManager, _pEffectManager, _sceneManager, _flyEnemyH, _barrierH));
 		break;
 	case ObjectData::BossEnemy3:
 		_pEnemies.push_back(std::make_shared<HammerBoss>(pos, _pPlayer, _pEffectManager,_bulletManager, _pCamera, _sceneManager, _jumpEnemyH,_barrierH));

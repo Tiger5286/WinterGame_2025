@@ -20,6 +20,13 @@ namespace
 	constexpr int kAnimNum = 5;
 	constexpr int kOneAnimFrame = 6;
 
+	constexpr int kBarrierGraphSize = 16;
+	constexpr int kBarrierAnimNum = 4;
+	constexpr float kBarrierDrawScale = 15.0f;
+	constexpr int kBarrierOneAnimFrame = 5;
+
+	constexpr int kDrawBarrierMaxFrame = 15;	// バリアを描画する最大フレーム数
+
 	// 当たり判定
 	constexpr int kColliderRadius = 70;
 
@@ -64,9 +71,10 @@ namespace
 	constexpr int kAliveTimeBeforeDeath = 210;
 }
 
-FlyBoss::FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, EnemyManager& enemyManager, BulletManager& bulletManager, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle) :
+FlyBoss::FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, EnemyManager& enemyManager, BulletManager& bulletManager, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle,int barrierH) :
 	Enemy(kHp, kScore, pPlayer, pEffectManager, sceneManager),
 	_handle(handle),
+	_barrierH(barrierH),
 	_pCamera(pCamera),
 	_enemyManager(enemyManager),
 	_bulletManager(bulletManager)
@@ -74,6 +82,8 @@ FlyBoss::FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<C
 	_nowAnim.Init(_handle, 0, Vector2(kGraphSize, kGraphSize), kAnimNum, kOneAnimFrame, kDrawScale);
 	_pos = ChipPosToGamePos(pos);
 	_pCollider = std::make_shared<CircleCollider>(_pos, kColliderRadius);
+
+	_barrierAnim.Init(_barrierH, 0, Vector2(kBarrierGraphSize, kBarrierGraphSize), kBarrierAnimNum, kBarrierOneAnimFrame, kBarrierDrawScale);
 }
 
 FlyBoss::~FlyBoss()
@@ -281,6 +291,7 @@ void FlyBoss::Update()
 	}
 
 	_nowAnim.Update();
+	_barrierAnim.Update();
 }
 
 void FlyBoss::CheckIsPlayerOnLeft()
@@ -328,6 +339,16 @@ void FlyBoss::Draw(Vector2 offset)
 		// コライダーが縦揺れを適用した位置にいるのでそのまま使う
 		_nowAnim.Draw(_pCollider->GetPos() - offset, false);
 		SetDrawBright(255, 255, 255);	// 明るさリセット
+
+		// バリア描画
+		if (_drawBarrierFrame > 0)
+		{
+			_drawBarrierFrame--;
+		}
+		float progress = static_cast<float>(_drawBarrierFrame) / kDrawBarrierMaxFrame;
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, progress * 128);
+		_barrierAnim.Draw(GetColliderPos() - offset, false);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 	
 #ifdef _DEBUG
@@ -346,6 +367,7 @@ void FlyBoss::TakeDamage(int damage,Bullet& bullet)
 		{
 			if (bullet.GetType() == BulletType::NormalShot)
 			{
+				_drawBarrierFrame = kDrawBarrierMaxFrame;
 				bullet.Reflect();
 			}
 			else if (bullet.GetType() == BulletType::ChargeShot)
