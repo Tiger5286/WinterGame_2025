@@ -27,6 +27,7 @@ namespace
 	constexpr int kBarrierGraphSize = 16;
 	constexpr int kBarrierAnimNum = 4;
 	constexpr float kBarrierDrawScale = 20.0f;
+	constexpr int kBarrierOneAnimFrame = 5;
 
 	constexpr int kDrawBarrierMaxFrame = 15;	// バリアを描画する最大フレーム数
 
@@ -89,7 +90,7 @@ HammerBoss::HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::s
 	_attackAnim.Init(_handle, kAttackAnimIndex, kGraphSize, kAttackAnimNum, kOneAnimFrame, kDrawScale);
 	_rapidAttackAnim.Init(_handle, kAttackAnimIndex, kGraphSize, kAttackAnimNum, kRapidOneAnimFrame, kDrawScale); // 速い攻撃アニメーション
 	_nowAnim = _idleAnim;
-	_barrierAnim.Init(_barrierH, 0, Vector2(kBarrierGraphSize, kBarrierGraphSize), kBarrierAnimNum, kOneAnimFrame, kBarrierDrawScale);
+	_barrierAnim.Init(_barrierH, 0, Vector2(kBarrierGraphSize, kBarrierGraphSize), kBarrierAnimNum, kBarrierOneAnimFrame, kBarrierDrawScale);
 }
 
 HammerBoss::~HammerBoss()
