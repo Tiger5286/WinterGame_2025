@@ -16,7 +16,7 @@ class HammerBoss :
     public Enemy
 {
 public:
-    HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, BulletManager& bulletManager, std::shared_ptr<Camera> pCamera, SceneManager& sceneManager, int handle);
+    HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, BulletManager& bulletManager, std::shared_ptr<Camera> pCamera, SceneManager& sceneManager, int handle,int barrierH);
     ~HammerBoss();
 
     void Init() override;
@@ -28,9 +28,12 @@ public:
 
 private:
     int _handle;
+    int _barrierH;
 
     int _frame = 0;
     HammerBossState _state = HammerBossState::Idle;
+
+	int _drawBarrierFrame = 0;
 
     // ボール落下攻撃のボールが落ちてくるエリアの番号
     int _fBArea = 0;
@@ -43,5 +46,7 @@ private:
     Animation _idleAnim;
     Animation _attackAnim;
 	Animation _rapidAttackAnim;
+
+    Animation _barrierAnim;
 };
 

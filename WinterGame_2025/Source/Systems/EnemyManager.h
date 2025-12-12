@@ -55,6 +55,7 @@ private:
 	int _flyEnemyH = -1;
 	int _jumpEnemyH = -1;
 	int _droneEnemyH = -1;
+	int _barrierH = -1;
 
 	bool _isAddEnemy = false;
 

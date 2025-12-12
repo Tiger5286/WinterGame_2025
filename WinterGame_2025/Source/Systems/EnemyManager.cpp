@@ -42,6 +42,8 @@ EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer,
 	assert(_jumpEnemyH != -1);
 	_droneEnemyH = LoadGraph("data/Enemys/DroneEnemy.png");
 	assert(_droneEnemyH != -1);
+	_barrierH = LoadGraph("data/Enemys/BouncingBall.png");
+	assert(_barrierH != -1);
 }
 
 EnemyManager::~EnemyManager()
@@ -50,6 +52,7 @@ EnemyManager::~EnemyManager()
 	DeleteGraph(_flyEnemyH);
 	DeleteGraph(_jumpEnemyH);
 	DeleteGraph(_droneEnemyH);
+	DeleteGraph(_barrierH);
 }
 
 void EnemyManager::Update()
@@ -150,7 +153,7 @@ void EnemyManager::Create(ObjectData enemyData, Vector2 pos, bool isChipPos)
 		_pEnemies.push_back(std::make_shared<FlyBoss>(pos, _pPlayer, _pCamera, *this, _bulletManager, _pEffectManager, _sceneManager, _flyEnemyH));
 		break;
 	case ObjectData::BossEnemy3:
-		_pEnemies.push_back(std::make_shared<HammerBoss>(pos, _pPlayer, _pEffectManager,_bulletManager, _pCamera, _sceneManager, _jumpEnemyH));
+		_pEnemies.push_back(std::make_shared<HammerBoss>(pos, _pPlayer, _pEffectManager,_bulletManager, _pCamera, _sceneManager, _jumpEnemyH,_barrierH));
 		break;
 	default:
 		break;

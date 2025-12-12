@@ -24,6 +24,12 @@ namespace
 	constexpr int kOneAnimFrame = 8;
 	constexpr int kRapidOneAnimFrame = 3; // 速い攻撃アニメーションの1フレームあたりの表示フレーム数
 
+	constexpr int kBarrierGraphSize = 16;
+	constexpr int kBarrierAnimNum = 4;
+	constexpr float kBarrierDrawScale = 20.0f;
+
+	constexpr int kDrawBarrierMaxFrame = 15;	// バリアを描画する最大フレーム数
+
 	// 当たり判定
 	const Vector2 kColliderSize = { 250,180 };
 	const Vector2 kWaveAttackColliderSize = { 100,120 };
@@ -59,9 +65,10 @@ namespace
 	constexpr int kAliveTimeBeforeDeath = 210;
 }
 
-HammerBoss::HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, BulletManager& bulletManager, std::shared_ptr<Camera> pCamera, SceneManager& sceneManager, int handle) :
+HammerBoss::HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, BulletManager& bulletManager, std::shared_ptr<Camera> pCamera, SceneManager& sceneManager, int handle,int _barrierH) :
 	Enemy(kHp, kScore, pPlayer, pEffectManager, sceneManager),
 	_handle(handle),
+	_barrierH(_barrierH),
 	_pCamera(pCamera),
 	_bulletManager(bulletManager)
 {
@@ -82,6 +89,7 @@ HammerBoss::HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::s
 	_attackAnim.Init(_handle, kAttackAnimIndex, kGraphSize, kAttackAnimNum, kOneAnimFrame, kDrawScale);
 	_rapidAttackAnim.Init(_handle, kAttackAnimIndex, kGraphSize, kAttackAnimNum, kRapidOneAnimFrame, kDrawScale); // 速い攻撃アニメーション
 	_nowAnim = _idleAnim;
+	_barrierAnim.Init(_barrierH, 0, Vector2(kBarrierGraphSize, kBarrierGraphSize), kBarrierAnimNum, kOneAnimFrame, kBarrierDrawScale);
 }
 
 HammerBoss::~HammerBoss()
@@ -201,6 +209,7 @@ void HammerBoss::Update(Map& map)
 	}
 
 	_nowAnim.Update();
+	_barrierAnim.Update();
 }
 
 void HammerBoss::Draw(Vector2 offset)
@@ -239,6 +248,16 @@ void HammerBoss::Draw(Vector2 offset)
 		}
 		_nowAnim.Draw(drawPos, true);
 		SetDrawBright(255, 255, 255);	// 明るさリセット
+
+		// バリア描画
+		if (_drawBarrierFrame > 0)
+		{
+			_drawBarrierFrame--;
+		}
+		float progress = static_cast<float>(_drawBarrierFrame) / kDrawBarrierMaxFrame;
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, progress * 128);
+		_barrierAnim.Draw(GetColliderPos() - offset, false);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
 #ifdef _DEBUG
@@ -253,6 +272,7 @@ void HammerBoss::TakeDamage(int damage, Bullet& bullet)
 	{
 		if (bullet.GetType() == BulletType::NormalShot)
 		{
+			_drawBarrierFrame = kDrawBarrierMaxFrame;
 			bullet.Reflect();
 		}
 		else if (bullet.GetType() == BulletType::ChargeShot)
