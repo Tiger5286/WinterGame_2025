@@ -36,7 +36,15 @@ void SceneClear::Update(Input& input)
 {
 	if (input.IsTriggered("decision"))
 	{
-		_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager, _clearStage));
+		// スコア表示が最後まで行っていたらステージセレクトへ戻る
+		if (_score == 0 || static_cast<int>(_dispScore) == _score - 1)
+		{
+			_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager, _clearStage));
+		}
+		else	// スコア表示が最後まで行っていなかったら最後まで進める
+		{
+			_dispScore = _score - 1;	// スコア表示を最後まで進める
+		}
 	}
 
 #ifdef _DEBUG
