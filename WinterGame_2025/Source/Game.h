@@ -86,6 +86,8 @@ enum class Stages
 	Boss2,
 	Stage3,
 	Boss3,
+	SecretStage,
+	SecretBoss,
 
 	Num,
 	Temp,
@@ -99,6 +101,7 @@ enum class SelectableStages
 	Stage1,
 	Stage2,
 	Stage3,
+	SecretBoss,
 	Num,
 };
 

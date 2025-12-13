@@ -43,6 +43,7 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 		"Stage 1",
 		"Stage 2",
 		"Stage 3",
+		"Secret Stage"
 	};
 	_execTable["Tutorial Stage"] = [this]() {
 		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager,Stages::Tutorial),FadeState::CircleFadeIn);
@@ -55,6 +56,9 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 		};
 	_execTable["Stage 3"] = [this]() {
 		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Stage3), FadeState::CircleFadeIn);
+		};
+	_execTable["Secret Stage"] = [this]() {
+		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::SecretStage), FadeState::CircleFadeIn);
 		};
 
 	if (_selectIndex == static_cast<int>(SelectableStages::Num) - 2)

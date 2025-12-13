@@ -314,6 +314,12 @@ void SceneMain::LoadStage(Stages stage)
 	case Stages::Boss3:
 		_pStage->LoadData("data/Stages/Boss3Stage.fmf");
 		break;
+	case Stages::SecretStage:
+		_pStage->LoadData("data/Stages/template.fmf");
+		break;
+	case Stages::SecretBoss:
+		_pStage->LoadData("data/Stages/SecretBossStage.fmf");
+		break;
 	default:
 		_pStage->LoadData("data/Stages/template.fmf");
 		printfDx("未知のステージが呼ばれました");
@@ -362,7 +368,8 @@ void SceneMain::LoadStage(Stages stage)
 	_pEnemyManager->LoadEnemies(_pStage->GetObjectData(), _pStage->GetMapSize());// 敵の生成
 	if (stage == Stages::Boss1 || 
 		stage == Stages::Boss2 ||
-		stage == Stages::Boss3)	// ボスステージならボスHPUIの生成
+		stage == Stages::Boss3 ||
+		stage == Stages::SecretBoss)	// ボスステージならボスHPUIの生成
 	{
 		_pBossHPUI = std::make_shared<BossHPUI>(_graphHandles[static_cast<int>(Graphs::BossHpUI)], _pEnemyManager->GetEnemies().back()->GetHp());
 	}
@@ -377,10 +384,12 @@ void SceneMain::StageClear()
 	// 通常ステージかボスステージかを判定
 	bool isNormalStage = _nowStage == Stages::Stage1 ||
 		_nowStage == Stages::Stage2 ||
-		_nowStage == Stages::Stage3;
+		_nowStage == Stages::Stage3 ||
+		_nowStage == Stages::SecretStage;
 	bool isBossStage = _nowStage == Stages::Boss1 ||
 		_nowStage == Stages::Boss2 ||
-		_nowStage == Stages::Boss3;
+		_nowStage == Stages::Boss3 ||
+		_nowStage == Stages::SecretBoss;
 
 	// 通常ステージならフェードアウトして次のボスステージへ
 	if (isNormalStage)
