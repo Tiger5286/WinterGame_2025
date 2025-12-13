@@ -101,7 +101,7 @@ enum class SelectableStages
 	Stage1,
 	Stage2,
 	Stage3,
-	SecretBoss,
+	SecretStage,
 	Num,
 };
 
@@ -125,6 +125,9 @@ static SelectableStages StageToSelectableStage(Stages stage)
 	case Stages::Stage3:
 	case Stages::Boss3:
 		return SelectableStages::Stage3;
+	case Stages::SecretStage:
+	case Stages::SecretBoss:
+		return SelectableStages::SecretStage;
 	default:
 		return SelectableStages::None;
 	}
@@ -147,6 +150,8 @@ static Stages SelectableStageToStage(SelectableStages stage)
 		return Stages::Stage2;
 	case SelectableStages::Stage3:
 		return Stages::Stage3;
+	case SelectableStages::SecretStage:
+		return Stages::SecretStage;
 	default:
 		return Stages::None;
 	}
