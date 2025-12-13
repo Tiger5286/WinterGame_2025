@@ -187,7 +187,7 @@ void SceneMain::Update(Input& input)
 		}
 		else
 		{
-			_pBossHPUI->Update(_pEnemyManager->GetEnemies().front()->GetHp());	// 最後にいる敵をボスとみなす
+			_pBossHPUI->Update(_pEnemyManager->GetTotalBossHp());
 		}
 	}
 
@@ -372,7 +372,7 @@ void SceneMain::LoadStage(Stages stage)
 		stage == Stages::Boss3 ||
 		stage == Stages::SecretBoss)	// ボスステージならボスHPUIの生成
 	{
-		_pBossHPUI = std::make_shared<BossHPUI>(_graphHandles[static_cast<int>(Graphs::BossHpUI)], _pEnemyManager->GetEnemies().back()->GetHp());
+		_pBossHPUI = std::make_shared<BossHPUI>(_graphHandles[static_cast<int>(Graphs::BossHpUI)], _pEnemyManager->GetTotalBossHp());
 	}
 
 	// ゴール旗を生成
