@@ -202,7 +202,8 @@ void SceneMain::Update(Input& input)
 
 	if (_nowStage == Stages::Boss1 || 
 		_nowStage == Stages::Boss2 ||
-		_nowStage == Stages::Boss3)	// ボスステージで敵がいなくなった(ボスを倒した)ならクリア
+		_nowStage == Stages::Boss3 ||
+		_nowStage == Stages::SecretBoss)	// ボスステージで敵がいなくなった(ボスを倒した)ならクリア
 	{
 		if (_pEnemyManager->GetEnemies().empty())
 		{
