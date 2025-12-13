@@ -29,6 +29,8 @@ public:
 	bool GetIsAlive() const override;
 	void TakeDamage(int damage,Bullet& bullet) override;
 
+	EnemyType GetEnemyType() const override { return EnemyType::Boss; }
+
 private:
 
 	void ChangeState(WalkBossState state);

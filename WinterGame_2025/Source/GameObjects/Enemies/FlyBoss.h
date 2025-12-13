@@ -30,6 +30,8 @@ public:
     void TakeDamage(int damage,Bullet& bullet) override;
     bool GetIsAlive() const override;
 
+    EnemyType GetEnemyType() const override { return EnemyType::Boss; }
+
 private:
     void Update();
 

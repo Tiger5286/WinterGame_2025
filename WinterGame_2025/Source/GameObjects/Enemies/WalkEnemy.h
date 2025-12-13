@@ -22,6 +22,8 @@ public:
 	void SetIsTurn(bool isTurn) { _isTurn = isTurn; }
 	void SetState(WalkEnemyState state) { _state = state; }
 
+	EnemyType GetEnemyType() const override { return EnemyType::Normal; }
+
 private:
 	void UpdateAnim();
 

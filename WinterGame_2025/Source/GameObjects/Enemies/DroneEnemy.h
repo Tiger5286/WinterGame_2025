@@ -20,6 +20,9 @@ public:
     void Init() override;
 	void Update(Map& map) override;
     void Draw(Vector2 offset) override;
+
+    EnemyType GetEnemyType() const override { return EnemyType::Normal; }
+
 private:
     int _handle = -1;
     int _frame = 0;

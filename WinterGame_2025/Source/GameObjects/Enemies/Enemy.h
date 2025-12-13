@@ -2,6 +2,12 @@
 #include "../GameObject.h"
 #include <vector>
 
+enum class EnemyType
+{
+	Normal,
+	Boss,
+};
+
 class Player;
 class EffectManager;
 class SceneManager;
@@ -20,6 +26,8 @@ public:
 	/// </summary>
 	virtual void UpdateAnytime();
 	virtual void Draw(Vector2 offset) override = 0;
+
+	virtual EnemyType GetEnemyType() const = 0;
 
 	int GetHp() const { return _hp; }
 	virtual void TakeDamage(int damage, Bullet& bullet);
