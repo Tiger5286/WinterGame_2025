@@ -397,10 +397,13 @@ void FlyBoss::TakeDamage(int damage,Bullet& bullet)
 			_vel = {};
 			_pCollider->SetIsEnabled(false);
 
-			// 自身が死んだとき、他に存在している敵も全員死ぬ
+			// 自身が死んだとき、他に存在しているボス以外の敵がいたら全て倒す
 			for (auto& enemy : _enemyManager.GetEnemies())
 			{
-				enemy->TakeDamage(9999, bullet);
+				if (enemy->GetEnemyType() == EnemyType::Normal)
+				{
+					enemy->TakeDamage(9999, bullet);
+				}
 			}
 		}
 	}
