@@ -154,6 +154,7 @@ void SceneStageSelect::Draw()
 	{
 		_bgOffsetX -= 10;
 	}
+	DrawExtendGraph(-screenW + _bgOffsetX, 0, 0 + _bgOffsetX, screenH, _bgHandle, false);
 	DrawExtendGraph(0 + _bgOffsetX, 0, screenW + _bgOffsetX, screenH, _bgHandle, false);
 	DrawExtendGraph(screenW + _bgOffsetX, 0, screenW * 2 + _bgOffsetX, screenH, _bgHandle, false);
 
