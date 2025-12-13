@@ -166,3 +166,16 @@ void EnemyManager::Create(ObjectData enemyData, Vector2 pos, bool isChipPos)
 	}
 	_isAddEnemy = true;
 }
+
+int EnemyManager::GetTotalBossHp() const
+{
+	int ans = 0;
+	for (auto& enemy : _pEnemies)
+	{
+		if (enemy->GetEnemyType() == EnemyType::Boss)
+		{
+			ans += enemy->GetHp();
+		}
+	}
+	return ans;
+}

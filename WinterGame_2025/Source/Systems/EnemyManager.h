@@ -48,6 +48,12 @@ public:
 	/// <param name="pos">生成する位置</param>
 	void Create(ObjectData enemyData, Vector2 pos, bool isChipPos = true);
 
+	/// <summary>
+	/// 存在するボスの合計体力を取得する
+	/// </summary>
+	/// <returns>存在するボスの合計体力</returns>
+	int GetTotalBossHp() const;
+
 	const std::vector<std::shared_ptr<Enemy>>& GetEnemies() const { return _pEnemies; }
 
 private:
