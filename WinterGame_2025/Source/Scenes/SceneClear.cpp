@@ -17,9 +17,11 @@ SceneClear::SceneClear(SceneManager& manager,int score, Stages clearStage):
 	_clearLogoHandle = LoadGraph("data/UI/StageClear.png");
 	assert(_clearLogoHandle != -1);
 
-	// スコア更新
+	// ハイスコア更新
 	auto selectableStage = StageToSelectableStage(clearStage);
 	_isUpdateScore = manager.CheckHighScore(score, selectableStage);
+	// クリア済みステージ登録
+	manager.CheckClearedStage(selectableStage);
 }
 
 SceneClear::~SceneClear()

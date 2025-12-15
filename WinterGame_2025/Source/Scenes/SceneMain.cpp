@@ -403,8 +403,6 @@ void SceneMain::StageClear()
 	}
 	else if (isBossStage || _nowStage == Stages::Tutorial)	// ボスステージ、またはチュートリアルならクリアシーンへ
 	{
-		auto selectableStage = StageToSelectableStage(_nowStage);
-		_manager.CheckClearedStage(selectableStage);
 		_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager, _score, _nowStage), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
 	}
 	else
