@@ -27,6 +27,7 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 
 	auto selectableStage = StageToSelectableStage(playedStage);
 
+	// 選択位置をプレイしたステージに合わせる
 	if (selectableStage == SelectableStages::None)
 	{
 		printfDx("playedStageがNoneになっています");
@@ -37,6 +38,7 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 		_selectIndex = static_cast<int>(selectableStage) - 1;
 	}
 
+	// ステージリスト
 	_stageList =
 	{
 		"Tutorial Stage",
@@ -45,6 +47,7 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 		"Stage 3",
 		"Secret Stage"
 	};
+	// ステージ選択時の処理
 	_execTable["Tutorial Stage"] = [this]() {
 		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager,Stages::Tutorial),FadeState::CircleFadeIn);
 		};
@@ -61,6 +64,7 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::SecretStage), FadeState::CircleFadeIn);
 		};
 
+	// 最後のステージを選択している場合、右に存在しない次のステージが見えるのを防ぐ
 	if (_selectIndex == static_cast<int>(SelectableStages::Num) - 2)
 	{
 		_isUIMoveRight = false;
@@ -80,13 +84,13 @@ void SceneStageSelect::Init()
 
 void SceneStageSelect::Update(Input& input)
 {
+	// UI移動演出用フレームカウントの更新
 	if (_frame < kUIControllInterval && _isUIMoveRight)
-	{
+	{	// 右移動中
 		_frame++;
 	}
-
 	if (_frame > -kUIControllInterval && !_isUIMoveRight)
-	{
+	{	// 左移動中
 		_frame--;
 	}
 
@@ -108,7 +112,6 @@ void SceneStageSelect::Update(Input& input)
 				_isUIMoveRight = false;
 				_frame = 0;
 			}
-			//printfDx("selectIndex:%d,stageList.size:%d,clearedStageRev:%d\n",_selectIndex,_stageList.size(), clearedStageRev);
 		}
 		if (input.IsTriggered("left"))
 		{
