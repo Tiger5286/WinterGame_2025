@@ -183,11 +183,14 @@ void SceneStageSelect::Draw()
 	int sidePosX = kUIControllInterval * kUIMoveScale;
 	if (_isUIMoveRight)
 	{
-		if (_selectIndex > 0)
+		const bool isSelectExceptFirst = (_selectIndex > 0);
+		const bool isSelectExceptLast = (_selectIndex < _stageList.size() - 2);
+
+		if (isSelectExceptFirst)
 		{
 			DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から現れるUI
 		}
-		if (_selectIndex < _stageList.size() - 2)
+		if (isSelectExceptLast)
 		{
 			DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向で消えるUI
 		}
@@ -195,11 +198,14 @@ void SceneStageSelect::Draw()
 	}
 	else
 	{
-		if (_selectIndex < _stageList.size() - 1)
+		const bool isSelectExceptLast = (_selectIndex < _stageList.size() - 1);
+		const bool isSelectExceptFirst = (_selectIndex > 1);
+
+		if (isSelectExceptLast)
 		{
 			DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から現れるUI
 		}
-		if (_selectIndex > 0 + 1)
+		if (isSelectExceptFirst)
 		{
 			DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向で消えるUI
 		}

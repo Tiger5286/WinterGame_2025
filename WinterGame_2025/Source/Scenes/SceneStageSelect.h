@@ -20,6 +20,8 @@ private:
 	int _stageUIHandle = -1;
 
 	int _frame;
+	// UIがどっちに移動しているかどうかのフラグ
+	// (UIが右に移動=左入力)
 	bool _isUIMoveRight = true;
 	int _bgOffsetX = 0;
 	// 隠しステージ開放に使う右入力カウント
