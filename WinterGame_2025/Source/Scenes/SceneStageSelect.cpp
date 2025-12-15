@@ -103,9 +103,22 @@ void SceneStageSelect::Update(Input& input)
 			if (_selectIndex < _stageList.size() - 1 &&
 				_selectIndex < _manager.GetSaveData().clearedStage)	// クリア済みステージの次までしか移動できないようにする
 			{
-				_selectIndex++;
-				_isUIMoveRight = false;
-				_frame = 0;
+				// 隠しステージが解放されている場合、最後のステージに移動可能にする
+				if (_selectIndex == static_cast<int>(SelectableStages::Num) - 3)	// 隠しステージの一つ手前 = Num - 3
+				{	// 隠しステージの一つ手前を選択中の時、隠しステージが解放されていれば移動する
+					if (_manager.GetSaveData().isReleasedSecretStage)
+					{
+						_selectIndex++;
+						_isUIMoveRight = false;
+						_frame = 0;
+					}
+				}
+				else // 通常のステージ移動
+				{
+					_selectIndex++;
+					_isUIMoveRight = false;
+					_frame = 0;
+				}
 			}
 		}
 		if (input.IsTriggered("left"))
@@ -219,6 +232,16 @@ void SceneStageSelect::Draw()
 				screenW / 2+ 250 + 25,
 				screenH / 2 + 200,
 				0xff0000, true);
+		}
+		// 隠しステージが解放されていない場合、隠しステージの前のステージを選択中の時に青い四角を描画
+		if (!_manager.GetSaveData().isReleasedSecretStage &&
+			_selectIndex == static_cast<int>(SelectableStages::Num) - 3)	// 隠しステージの一つ手前 = Num - 3
+		{
+			DrawBox(screenW / 2 + 250 - 25,
+				screenH / 2 - 200,
+				screenW / 2 + 250 + 25,
+				screenH / 2 + 200,
+				0x0000ff, true);
 		}
 	}
 
