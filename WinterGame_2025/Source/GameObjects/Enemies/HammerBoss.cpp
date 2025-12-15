@@ -51,6 +51,8 @@ namespace
 	constexpr int kFBNum = 5;	// 1回の攻撃で落とすボールの数
 	constexpr int kFBIntervalFrame = 3;	// ボールを落とす間隔(フレーム数)
 	constexpr int kDropNum = 6;	// ボールを落とす回数
+	const Vector2 kFallBallAttackColliderOffset = { 170,0 };
+	constexpr int kHammerAttackColliderDurationFrame = 10;
 
 	// カメラ揺れ
 	constexpr int kCameraShakeFrame = 15;
@@ -167,11 +169,21 @@ void HammerBoss::Update(Map& map)
 		_frame++;
 		constexpr int kImpactFrame = kAttackImpactFrameNum * kRapidOneAnimFrame;
 		constexpr int kAnimEndFrame = kAttackAnimNum * kRapidOneAnimFrame;
-		// ハンマーを地面にぶつけたときにカメラを揺らす
+		// ハンマーを地面にぶつけたとき
 		if (_frame % kAnimEndFrame == kImpactFrame)
 		{
+			// 攻撃判定を有効化
+			_pAttackCollider->SetPosToBox(_pos - kFallBallAttackColliderOffset);
+			_pAttackCollider->SetIsEnabled(true);
+			// カメラを揺らす
 			_pCamera->Shake(kCameraShakeFrame, kCameraShakePowerWeak);
+			// ボール落下エリアをランダムで設定
 			_fBArea = GetRand(kFBAreaNum - 1);
+		}
+		// 攻撃判定を無効化
+		if (_frame % kAnimEndFrame == kImpactFrame + kHammerAttackColliderDurationFrame)
+		{
+			_pAttackCollider->SetIsEnabled(false);
 		}
 		// 一定間隔で落下ボールを発射
 		for (int i = 0; i < kFBNum; i++)
