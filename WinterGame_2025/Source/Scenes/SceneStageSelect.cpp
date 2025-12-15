@@ -65,7 +65,10 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 		};
 
 	// 最後のステージを選択している場合、右に存在しない次のステージが見えるのを防ぐ
-	if (_selectIndex == static_cast<int>(SelectableStages::Num) - 2)
+	const bool isSelectLast = (_selectIndex == static_cast<int>(SelectableStages::Num) - 2);
+	const bool isSelectPenultimate = (_selectIndex == static_cast<int>(SelectableStages::Num) - 3);
+	if (isSelectLast ||
+		isSelectPenultimate && !manager.GetSaveData().isReleasedSecretStage)
 	{
 		_isUIMoveRight = false;
 		_frame = -kUIControllInterval;
@@ -181,10 +184,14 @@ void SceneStageSelect::Draw()
 	float progress = abs(static_cast<float>(_frame) / kUIControllInterval);
 	int posX = _frame * kUIMoveScale;
 	int sidePosX = kUIControllInterval * kUIMoveScale;
-	if (_isUIMoveRight)
+	if (_isUIMoveRight)		// UIが右に移動するとき
 	{
+		// 最初のステージ以外を選択中
 		const bool isSelectExceptFirst = (_selectIndex > 0);
+		// 最後のステージ以外を選択中
 		const bool isSelectExceptLast = (_selectIndex < _stageList.size() - 2);
+		// 最後のステージの一つ手前を選択中
+		const bool isSelectPenultimate = (_selectIndex == _stageList.size() - 3);
 
 		if (isSelectExceptFirst)
 		{
@@ -192,22 +199,46 @@ void SceneStageSelect::Draw()
 		}
 		if (isSelectExceptLast)
 		{
-			DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向で消えるUI
+			if (isSelectPenultimate)
+			{
+				if (_manager.GetSaveData().isReleasedSecretStage)
+				{
+					DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向で消えるUI
+				}
+			}
+			else
+			{
+				DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向で消えるUI
+			}
 		}
 		DrawRotaGraph(screenW / 2 - sidePosX + posX, screenH / 2, kUIDrawScaleHalf + progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から真ん中に向かうUI
 	}
-	else
+	else	// 左に移動するとき
 	{
-		const bool isSelectExceptLast = (_selectIndex < _stageList.size() - 1);
+		// 最初のステージ以外を選択中
 		const bool isSelectExceptFirst = (_selectIndex > 1);
+		// 最後のステージ以外を選択中
+		const bool isSelectExceptLast = (_selectIndex < _stageList.size() - 1);
+		// 最後のステージの一つ手前を選択中
+		const bool isSelectPenultimate = (_selectIndex == _stageList.size() - 2);
 
-		if (isSelectExceptLast)
-		{
-			DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から現れるUI
-		}
 		if (isSelectExceptFirst)
 		{
 			DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向で消えるUI
+		}
+		if (isSelectExceptLast)
+		{
+			if (isSelectPenultimate)	// 隠しステージの前のステージを選択中の時
+			{							// 隠しステージが解放されている場合のみUIを描画
+				if (_manager.GetSaveData().isReleasedSecretStage)
+				{
+					DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から現れるUI
+				}
+			}
+			else	// 隠しステージの前のステージ以外を選択中の時は普通に描画
+			{
+				DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から現れるUI
+			}
 		}
 		DrawRotaGraph(screenW / 2 + sidePosX + posX, screenH / 2, kUIDrawScaleHalf + progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から真ん中に向かうUI
 	}
@@ -222,7 +253,19 @@ void SceneStageSelect::Draw()
 		{
 			DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
 			DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
-			DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+
+			const bool isSelectPenultimate = (_selectIndex == static_cast<int>(SelectableStages::Num) - 3);	// 隠しステージの一つ手前を選択中かどうか
+			if (isSelectPenultimate)	// 隠しステージの一つ手前を選択中の時
+			{	// 隠しステージが解放されている場合のみ右のステージ名を表示
+				if (_manager.GetSaveData().isReleasedSecretStage)
+				{
+					DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+				}
+			}
+			else
+			{
+				DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+			}
 		}
 		else if (_selectIndex == 0)	// 最初のステージを選択中のときは選択中と右のステージ名を表示
 		{
@@ -238,31 +281,32 @@ void SceneStageSelect::Draw()
 		// ハイスコアの描画
 		DrawFormatString(screenW / 2, 300, 0xffffff, "High Score : %d", _manager.GetSaveData().highScores[_selectIndex + 1]);
 
-		// 選択できないステージを表す赤い四角を描画
-		if (_selectIndex == _manager.GetSaveData().clearedStage)
-		{
-			DrawBox(screenW / 2 + 250 - 25,
-				screenH / 2 - 200,
-				screenW / 2+ 250 + 25,
-				screenH / 2 + 200,
-				0xff0000, true);
-		}
+
 		// 隠しステージが解放されていない場合、隠しステージの前のステージを選択中の時に青い四角を描画
 		if (!_manager.GetSaveData().isReleasedSecretStage &&
 			_selectIndex == static_cast<int>(SelectableStages::Num) - 3)	// 隠しステージの一つ手前 = Num - 3
 		{
 			DrawBox(screenW / 2 + 250 - 25,
 				screenH / 2 - 200,
-				screenW / 2 + 250 + 25,
+				screenW / 2 + 250 + 35,
 				screenH / 2 + 200,
 				0x0000ff, true);
 		}
+		// 選択できないステージを表す赤い四角を描画
+		if (_selectIndex == _manager.GetSaveData().clearedStage)
+		{
+			DrawBox(screenW / 2 + 250 - 25,
+				screenH / 2 - 200,
+				screenW / 2 + 250 + 25,
+				screenH / 2 + 200,
+				0xff0000, true);
+		}
 	}
 
-	DrawFormatString(0, 100, 0xffffff, "frame:%d", _frame);
 
 #ifdef _DEBUG
 	DrawString(0, 0, "SceneStageSelect",0xffffff);
 	DrawFormatString(0, 16, 0xffffff, "selectIndex:%d",_selectIndex);
+	DrawFormatString(0, 100, 0xffffff, "frame:%d", _frame);
 #endif
 }
