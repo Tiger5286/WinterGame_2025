@@ -167,5 +167,6 @@ struct SaveDataHeader
 struct SaveData
 {
 	int clearedStage = 0;
+	bool isReleasedSecretStage = false;
 	std::array<int, static_cast<int>(SelectableStages::Num)> highScores = {0};
 };
