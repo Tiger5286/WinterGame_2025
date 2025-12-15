@@ -6,7 +6,7 @@ namespace
 {
 	constexpr int kFadeTime = 45;
 	constexpr int kCircleGraphSize = 1024;
-	constexpr float kCircleScale = 2.5f;
+	constexpr float kCircleScale = 4.0f;
 }
 
 Fade::Fade() :
@@ -72,8 +72,6 @@ void Fade::Draw()
 		DrawBox(GlobalConstants::kScreenWidth, GlobalConstants::kScreenHeight, CircleDrawLeft, CircleDrawBottom, 0x000000, true);	// âÊñ âEâ∫Ç©ÇÁä€ÇÃç∂â∫
 		DrawRotaGraph(_circlePos.x, _circlePos.y, (1 - fadeProgress) * kCircleScale, 0.0, _fadeCircleH, true);
 	}
-
-	//DrawFormatString(100, 100, 0xffffff, "%.2f", fadeProgress);
 }
 
 void Fade::StartFadeOut()
