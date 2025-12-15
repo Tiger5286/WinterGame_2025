@@ -298,7 +298,7 @@ void SceneMain::LoadStage(Stages stage)
 		_pStage->LoadData("data/Stages/TutorialStage.fmf");
 		break;
 	case Stages::Stage1:
-		_pStage->LoadData("data/Stages/template.fmf");
+		_pStage->LoadData("data/Stages/Stage1.fmf");
 		break;
 	case Stages::Boss1:
 		_pStage->LoadData("data/Stages/Boss1Stage.fmf");
