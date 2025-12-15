@@ -63,6 +63,7 @@ void DebugScene::Update(Input& input)
 	{
 		_manager._saveData.clearedStage = static_cast<int>(Stages::None);
 		_manager._saveData.highScores.fill(0);
+		_manager._saveData.isReleasedSecretStage = false;
 
 		_manager._pDataManager->DeleteSaveData();
 		printfDx("Delete SaveData\n");
