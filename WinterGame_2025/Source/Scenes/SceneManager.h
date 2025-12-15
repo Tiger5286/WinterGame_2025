@@ -126,6 +126,11 @@ public:
 	/// <returns>ハイスコアを更新したらtrue</returns>
 	bool CheckHighScore(int score, SelectableStages clearedStage);
 
+	/// <summary>
+	/// 隠しステージを解放済みにする
+	/// </summary>
+	void ReleaseSecretStage() { _saveData.isReleasedSecretStage = true; }
+
 private:
 	std::list<std::shared_ptr<SceneBase>> _pScenes;
 	std::shared_ptr<Fade> _pFade;
