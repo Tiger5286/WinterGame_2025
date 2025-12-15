@@ -207,7 +207,15 @@ void Player::Update(Map& map)
 	if (!_isDashing && _invincibleFrame < kDamageAnimEndFrame)	// ダッシュ中でなく、被弾アニメーション中でなければ
 	{
 		// 移動速度制限処理
+#ifdef _DEBUG
+		// 飛行モードなら速度制限をかけない
+		if (!_isCanFly)
+		{
+			MoveSpeedLimit();
+		}
+#else
 		MoveSpeedLimit();
+#endif
 	}
 
 	// 移動抵抗処理
@@ -272,15 +280,19 @@ void Player::Update(Map& map)
 		}
 		if (_input.IsPressed("down"))
 		{
-			_vel.y = 10.0f;
+			_vel.y = -1.0f;
 		}
 		if (_input.IsPressed("left"))
 		{
-			_vel.x = -10.0f;
+			_vel.x = -20.0f;
 		}
-		if (_input.IsPressed("right"))
+		else if (_input.IsPressed("right"))
 		{
-			_vel.x = 10.0f;
+			_vel.x = 20.0f;
+		}
+		else
+		{
+			_vel.x = 0.0f;
 		}
 	}
 
