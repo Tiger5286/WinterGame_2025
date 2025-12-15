@@ -22,6 +22,8 @@ private:
 	int _frame;
 	bool _isUIMoveRight = true;
 	int _bgOffsetX = 0;
+	// 隠しステージ開放に使う右入力カウント
+	int _inputRightCount = 0;
 
 	int _selectIndex;	// 現在選択中のインデックス
 	std::vector<std::string> _stageList;	// ステージリスト

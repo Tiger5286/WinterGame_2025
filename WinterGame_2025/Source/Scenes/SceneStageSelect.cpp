@@ -112,6 +112,14 @@ void SceneStageSelect::Update(Input& input)
 						_isUIMoveRight = false;
 						_frame = 0;
 					}
+					else	// 隠しステージが解放されていない場合、右入力カウントを増やす
+					{
+						_inputRightCount++;
+						if (_inputRightCount >= 15)	// 15回右入力したら隠しステージ解放
+						{
+							_manager.ReleaseSecretStage();
+						}
+					}
 				}
 				else // 通常のステージ移動
 				{
@@ -179,7 +187,7 @@ void SceneStageSelect::Draw()
 		{
 			DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から現れるUI
 		}
-		if (_selectIndex < _stageList.size() - 1 - 1)
+		if (_selectIndex < _stageList.size() - 2)
 		{
 			DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向で消えるUI
 		}
