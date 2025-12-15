@@ -99,14 +99,9 @@ void SceneStageSelect::Update(Input& input)
 	{
 		if (input.IsTriggered("right"))
 		{
-			// クリアしたステージ番号を反転したもの
-			int clearedStageRev = static_cast<int>(SelectableStages::Num) - 1 - _manager.GetSaveData().clearedStage;
-			if (clearedStageRev <= 0)	// 0になると最後のステージの次まで選べてしまうので0なら1にする
-			{
-				clearedStageRev = 1;
-			}
-			// 総ステージ数-反転ステージ番号=クリアしたステージ番号
-			if (_selectIndex < _stageList.size() - clearedStageRev)
+			// 最後のステージ以外を選択中の時のみ右に移動可能
+			if (_selectIndex < _stageList.size() - 1 &&
+				_selectIndex < _manager.GetSaveData().clearedStage)	// クリア済みステージの次までしか移動できないようにする
 			{
 				_selectIndex++;
 				_isUIMoveRight = false;
