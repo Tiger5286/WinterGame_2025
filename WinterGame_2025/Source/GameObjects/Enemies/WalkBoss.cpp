@@ -289,6 +289,7 @@ void WalkBoss::Update(Map& map)
 
 void WalkBoss::Draw(Vector2 offset)
 {
+	BaseDraw(offset);
 	if (_state == WalkBossState::Death)	// €–S‚Ì‰‰o•`‰æ
 	{
 		if (_frame < kDeathFrame)

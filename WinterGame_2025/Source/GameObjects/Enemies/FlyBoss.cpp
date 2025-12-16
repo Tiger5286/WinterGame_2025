@@ -306,6 +306,8 @@ void FlyBoss::CheckIsOnLeft()
 
 void FlyBoss::Draw(Vector2 offset)
 {
+	BaseDraw(offset);
+
 	if (_state == FlyBossState::Death)	// €–S‚Ì‰‰o•`‰æ
 	{
 		if (_frame < kDeathFrame)

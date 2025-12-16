@@ -135,6 +135,8 @@ void JumpEnemy::Update(Map& map)
 
 void JumpEnemy::Draw(Vector2 offset)
 {
+	BaseDraw(offset);
+
 	if (_damageFrame > 0)
 	{
 		SetDrawBright(255, 64, 64);	// ƒ_ƒ[ƒW‚ðŽó‚¯‚Ä‚¢‚éŠÔ‚ÍÔ‚­‚È‚é

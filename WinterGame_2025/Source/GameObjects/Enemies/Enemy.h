@@ -25,6 +25,7 @@ public:
 	/// 状況関係なく毎フレーム呼ばれる更新処理(画面外に行っても呼ばれ続ける)
 	/// </summary>
 	virtual void UpdateAnytime();
+	void BaseDraw(const Vector2& offset);
 	virtual void Draw(Vector2 offset) override = 0;
 
 	virtual EnemyType GetEnemyType() const = 0;
@@ -35,12 +36,15 @@ public:
 	int GetScore() const { return _kScore; }
 	void SetIsHitChargeShot(bool isHit) { _isHitChargeShot = isHit; }
 	bool GetIsHitChargeShot()const { return _isHitChargeShot; }
+	const Vector2& GetDrawPos() const { return _pos + _drawOffset; }
 protected:
 	void BaseUpdate();
 
 protected:
 	int _hp;
 	const int _kScore;
+	
+	Vector2 _drawOffset;
 
 	int _damageFrame;
 	bool _isHitChargeShot;

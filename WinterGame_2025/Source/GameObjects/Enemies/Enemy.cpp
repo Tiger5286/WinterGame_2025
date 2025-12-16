@@ -28,6 +28,11 @@ void Enemy::UpdateAnytime()
 {
 }
 
+void Enemy::BaseDraw(const Vector2& offset)
+{
+	_drawOffset = offset;
+}
+
 void Enemy::TakeDamage(int damage,Bullet& bullet)
 {
 	// ƒ_ƒ[ƒW‚ğó‚¯‚é

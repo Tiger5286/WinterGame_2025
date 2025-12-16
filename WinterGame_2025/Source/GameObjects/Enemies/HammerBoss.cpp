@@ -227,6 +227,8 @@ void HammerBoss::Update(Map& map)
 
 void HammerBoss::Draw(Vector2 offset)
 {
+	BaseDraw(offset);
+
 	Vector2 drawPos(_pos.x - offset.x, _pos.y - offset.y - kGraphSize.y / 2 * kDrawScale);
 	if (_state == HammerBossState::Death)
 	{

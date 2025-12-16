@@ -127,6 +127,7 @@ void WalkEnemy::Update(Map& map)
 
 void WalkEnemy::Draw(Vector2 offset)
 {
+	BaseDraw(offset);
 	if (_damageFrame > 0)
 	{
 		SetDrawBright(kDamageColorR, kDamageColorB, kDamageColorB);
