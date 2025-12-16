@@ -178,7 +178,7 @@ void SceneMain::Update(Input& input)
 	_pEffectManager->Update();
 
 	// HPUI更新
-	_pHPUI->Update(_pPlayer->GetHp());
+	_pHPUI->Update();
 	if (_pBossHPUI != nullptr)
 	{
 		if (_pEnemyManager->GetEnemies().empty())
@@ -351,7 +351,7 @@ void SceneMain::LoadStage(Stages stage)
 	_pBulletManager->SetPlayer(_pPlayer);	// プレイヤー情報を弾マネージャーに渡す
 
 	// HPUI
-	_pHPUI = std::make_shared<HPUI>(_graphHandles[static_cast<int>(Graphs::HpUI)], _pPlayer->GetMaxHp());
+	_pHPUI = std::make_shared<HPUI>(_graphHandles[static_cast<int>(Graphs::HpUI)], _pPlayer->GetMaxHp(),_pPlayer->GetHpRef());
 
 	// 背景
 	_pBg = std::make_shared<Bg>(_graphHandles[static_cast<int>(Graphs::Bg)], _graphHandles[static_cast<int>(Graphs::SubBg)]);

@@ -24,9 +24,10 @@ namespace
 	constexpr int kMaxBarLength = kBarRight - kBarLeft;
 }
 
-HPUI::HPUI(int handle,int playerMaxHp) :
+HPUI::HPUI(int handle,const int playerMaxHp,const int& playerHp) :
 	_handle(handle),
 	_playerMaxHp(playerMaxHp),
+	_playerHp(playerHp),
 	_barLength(kMaxBarLength),
 	_drawBarLength(kMaxBarLength),
 	_alpha(255)
@@ -41,10 +42,10 @@ void HPUI::Init()
 {
 }
 
-void HPUI::Update(int playerHP)
+void HPUI::Update()
 {
 	// プレイヤーのhpからバーの長さを出す
-	_barLength = static_cast<float>(playerHP) / static_cast<float>(_playerMaxHp) * kMaxBarLength;
+	_barLength = static_cast<float>(_playerHp) / static_cast<float>(_playerMaxHp) * kMaxBarLength;
 	// バーの長さを徐々に変える
 	if (_drawBarLength > _barLength)
 	{
