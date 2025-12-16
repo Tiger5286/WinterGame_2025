@@ -431,6 +431,15 @@ int Player::GetMaxHp()
 	return kMaxHp;
 }
 
+void Player::Heal(int healAmount)
+{
+	_hp += healAmount;
+	if (_hp > kMaxHp)
+	{
+		_hp = kMaxHp;
+	}
+}
+
 void Player::Jump()
 {
 	if (_input.IsPressed("jump") && _isGround)

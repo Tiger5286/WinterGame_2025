@@ -103,7 +103,8 @@ void Item::GetItem()
 		//printfDx("大コインを取得しました\n");
 		break;
 	case ItemType::HealthItem:
-		//printfDx("体力回復アイテムを取得しました\n");
+		_pPlayer->Heal(1);
+		//printfDx("回復アイテムを取得しました\n");
 		break;
 	default:
 		assert(false && "不正なItemTypeが指定されました");

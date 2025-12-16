@@ -31,6 +31,11 @@ public:
 	bool GetIsAlive() const { return _isAlive; }
 	int GetHp() { return _hp; }
 	int GetMaxHp();
+	/// <summary>
+	/// ƒvƒŒƒCƒ„[‚ğ‰ñ•œ‚³‚¹‚é
+	/// </summary>
+	/// <param name="healAmount">‰ñ•œ—Ê</param>
+	void Heal(int healAmount);
 
 private:
 	void Jump();
