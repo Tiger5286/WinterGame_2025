@@ -75,12 +75,13 @@ void HPUI::Draw()
 	bool isEnemyNear = false;
 	for (const auto& enemy : _pEnemies)
 	{
-		//Vector2 enemyPos = enemy->GetPos();
-		//if (enemyPos.y < kFrameBottom + kLowAlphaDis && enemyPos.x < kFrameRight + kLowAlphaDis)
-		//{
-		//	isEnemyNear = true;
-		//	break;
-		//}
+		Vector2 pos = enemy->GetDrawPos();
+		if (pos.x < kDrawPosX + (kGraphSizeW * kDrawScale) / 2 + kLowAlphaDis &&
+			pos.y < kDrawPosY + (kGraphSizeH * kDrawScale) / 2 + kLowAlphaDis)
+		{
+			isEnemyNear = true;
+			break;
+		}
 	}
 	// “§–¾“x‚ðlerp‚Å‚¢‚¢Š´‚¶‚É•Ï‚¦‚é
 	if (isPlayerNear || isEnemyNear)
