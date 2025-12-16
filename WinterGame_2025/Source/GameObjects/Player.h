@@ -31,6 +31,7 @@ public:
 	bool GetIsAlive() const { return _isAlive; }
 	int GetHp() { return _hp; }
 	int GetMaxHp();
+	const int& GetHpRef() { return _hp; }
 	/// <summary>
 	/// ƒvƒŒƒCƒ„[‚ğ‰ñ•œ‚³‚¹‚é
 	/// </summary>
