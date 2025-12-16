@@ -7,22 +7,29 @@
 
 namespace
 {
-	constexpr int kFrameLeft = 160;
-	constexpr int kFrameTop = 90;
-	constexpr int kFrameRight = 520;
-	constexpr int kFrameBottom = 170;
+	// UI画像の情報
+	constexpr int kGraphSizeW = 1300;
+	constexpr int kGraphSizeH = 500;
+	// UIのバーの情報
+	constexpr int kBarL = 335;
+	constexpr int kBarR = 1160;
+	constexpr int kBarT = 187;
+	constexpr int kBarB = 318;
+	// UIの描画情報
+	constexpr float kDrawScale = 0.4f;
+	constexpr int kDrawPosX = 300;
+	constexpr int kDrawPosY = 130;
+	constexpr int kDrawPosL = kDrawPosX - (kGraphSizeW * kDrawScale) / 2;
+	constexpr int kDrawPosT = kDrawPosY - (kGraphSizeH * kDrawScale) / 2;
+	// バーの描画情報
+	constexpr int kDrawBarL = kDrawPosL + (kBarL * kDrawScale);
+	constexpr int kDrawBarR = kDrawPosL + (kBarR * kDrawScale);
+	constexpr int kDrawBarT = kDrawPosT + (kBarT * kDrawScale);
+	constexpr int kDrawBarB = kDrawPosT + (kBarB * kDrawScale) + 1;	// 隙間を埋めるために1足す
+	constexpr int kMaxBarLength = kDrawBarR - kDrawBarL;
 
-	constexpr int kBarLeft = kFrameLeft + 10;
-	constexpr int kBarTop = kFrameTop + 10;
-	constexpr int kBarRight = kFrameRight - 10;
-	constexpr int kBarBottom = kFrameBottom - 10;
-
-	constexpr int kPosX = 300;
-	constexpr int kPosY = 130;
-
-	constexpr int kLowAlphaDis = 150;
-
-	constexpr int kMaxBarLength = kBarRight - kBarLeft;
+	// 透明になる領域を余分に確保する量
+	constexpr int kLowAlphaDis = 100;
 }
 
 HPUI::HPUI(int handle,const int playerMaxHp, const Player& player, const std::vector<std::shared_ptr<Enemy>>& pEnemies) :
@@ -62,17 +69,18 @@ void HPUI::Update()
 void HPUI::Draw()
 {
 	// プレイヤーがUIの近くにいるときは透明にする
-	bool isPlayerNear = _player.GetDrawPos().y < kFrameBottom + kLowAlphaDis && _player.GetDrawPos().x < kFrameRight + kLowAlphaDis;
+	bool isPlayerNear = _player.GetDrawPos().x < kDrawPosX + (kGraphSizeW * kDrawScale) / 2 + kLowAlphaDis &&
+						_player.GetDrawPos().y < kDrawPosY + (kGraphSizeH * kDrawScale) / 2 + kLowAlphaDis;
 	// 敵がUIの近くにいるときは透明にする
 	bool isEnemyNear = false;
 	for (const auto& enemy : _pEnemies)
 	{
-		Vector2 enemyPos = enemy->GetPos();
-		if (enemyPos.y < kFrameBottom + kLowAlphaDis && enemyPos.x < kFrameRight + kLowAlphaDis)
-		{
-			isEnemyNear = true;
-			break;
-		}
+		//Vector2 enemyPos = enemy->GetPos();
+		//if (enemyPos.y < kFrameBottom + kLowAlphaDis && enemyPos.x < kFrameRight + kLowAlphaDis)
+		//{
+		//	isEnemyNear = true;
+		//	break;
+		//}
 	}
 	// 透明度をlerpでいい感じに変える
 	if (isPlayerNear || isEnemyNear)
@@ -85,15 +93,15 @@ void HPUI::Draw()
 	}
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, _alpha);
 
-	DrawBox(kBarLeft + _drawBarLength, kBarTop, kBarRight, kBarBottom, 0x000000, true);	// HPないとこの黒
-	DrawBox(kBarLeft + _barLength, kBarTop, kBarLeft + _drawBarLength, kBarBottom, 0xff0000, true);	// HP減る量の赤
-	DrawBox(kBarLeft, kBarTop, kBarLeft + _barLength, kBarBottom, 0xffff00, true);	// HPあるとこの黄色
+	DrawBox(kDrawBarL, kDrawBarT, kDrawBarR, kDrawBarB, 0x000000, true);	// HPないとこの黒
+	DrawBox(kDrawBarL + _barLength, kDrawBarT, kDrawBarL + _drawBarLength, kDrawBarB, 0xff0000, true);	// HP減る量の赤
+	DrawBox(kDrawBarL, kDrawBarT, kDrawBarL + _barLength, kDrawBarB, 0xffff00, true);	// HPあるとこの黄色
 	// HPが増えているとき
 	if (_barLength > _drawBarLength)
 	{
-		DrawBox(kBarLeft + _drawBarLength, kBarTop, kBarLeft + _barLength, kBarBottom, 0x00ff00, true);	// HP増える量の緑
+		DrawBox(kDrawBarL + _drawBarLength, kDrawBarT, kDrawBarL + _barLength, kDrawBarB, 0x00ff00, true);	// HP増える量の緑
 	}
 
-	DrawRotaGraph(kPosX, kPosY, 0.4, 0.0, _handle, true);	// 枠
+	DrawRotaGraph(kDrawPosX, kDrawPosY, kDrawScale, 0.0, _handle, true);	// 枠
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
