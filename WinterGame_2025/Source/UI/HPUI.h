@@ -4,21 +4,24 @@
 #include <memory>
 
 class Enemy;
+class Player;
 
 class HPUI
 {
 public:
-	HPUI(int handle,const int playerMaxHp,const int& playerHp);
+	HPUI(int handle,const int playerMaxHp,const Player& player,const std::vector<std::shared_ptr<Enemy>>& pEnemies);
 	~HPUI();
 
 	void Init();
 	void Update();
-	void Draw(Vector2 drawPlayerPos,const std::vector<std::shared_ptr<Enemy>>& pEnemys);
+	void Draw();
 private:
 	int _handle;
 	const int _playerMaxHp;
-	const int& _playerHp;
 	int _barLength;
 	int _drawBarLength;
 	int _alpha;
+
+	const Player& _player;
+	const std::vector<std::shared_ptr<Enemy>>& _pEnemies;
 };

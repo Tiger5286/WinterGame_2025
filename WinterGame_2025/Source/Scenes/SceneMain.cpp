@@ -269,7 +269,7 @@ void SceneMain::Draw()
 	_pPlayer->Draw(_pCamera->GetDrawOffset());
 
 	// UIの描画
-	_pHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(), _pEnemyManager->GetEnemies());
+	_pHPUI->Draw();
 	if (_pBossHPUI != nullptr)
 	{
 		_pBossHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(), _pEnemyManager->GetEnemies());
@@ -350,9 +350,6 @@ void SceneMain::LoadStage(Stages stage)
 	_pPlayer->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());		// プレイヤーの位置を設定]
 	_pBulletManager->SetPlayer(_pPlayer);	// プレイヤー情報を弾マネージャーに渡す
 
-	// HPUI
-	_pHPUI = std::make_shared<HPUI>(_graphHandles[static_cast<int>(Graphs::HpUI)], _pPlayer->GetMaxHp(),_pPlayer->GetHpRef());
-
 	// 背景
 	_pBg = std::make_shared<Bg>(_graphHandles[static_cast<int>(Graphs::Bg)], _graphHandles[static_cast<int>(Graphs::SubBg)]);
 
@@ -367,6 +364,11 @@ void SceneMain::LoadStage(Stages stage)
 	// 敵
 	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera, _pGimmickManager, _pEffectManager, *_pBulletManager, *this, _manager);
 	_pEnemyManager->LoadEnemies(_pStage->GetObjectData(), _pStage->GetMapSize());// 敵の生成
+
+	// HPUI
+	_pHPUI = std::make_shared<HPUI>(_graphHandles[static_cast<int>(Graphs::HpUI)], _pPlayer->GetMaxHp(), *_pPlayer, _pEnemyManager->GetEnemies());
+
+	// ボスHPUI
 	if (stage == Stages::Boss1 || 
 		stage == Stages::Boss2 ||
 		stage == Stages::Boss3 ||

@@ -2,6 +2,7 @@
 #include "Dxlib.h"
 #include <cmath>
 
+#include "../GameObjects/Player.h"
 #include "../GameObjects/Enemies/Enemy.h"
 
 namespace
@@ -24,13 +25,14 @@ namespace
 	constexpr int kMaxBarLength = kBarRight - kBarLeft;
 }
 
-HPUI::HPUI(int handle,const int playerMaxHp,const int& playerHp) :
+HPUI::HPUI(int handle,const int playerMaxHp, const Player& player, const std::vector<std::shared_ptr<Enemy>>& pEnemies) :
 	_handle(handle),
 	_playerMaxHp(playerMaxHp),
-	_playerHp(playerHp),
 	_barLength(kMaxBarLength),
 	_drawBarLength(kMaxBarLength),
-	_alpha(255)
+	_alpha(255),
+	_player(player),
+	_pEnemies(pEnemies)
 {
 }
 
@@ -45,7 +47,7 @@ void HPUI::Init()
 void HPUI::Update()
 {
 	// プレイヤーのhpからバーの長さを出す
-	_barLength = static_cast<float>(_playerHp) / static_cast<float>(_playerMaxHp) * kMaxBarLength;
+	_barLength = static_cast<float>(_player.GetHp()) / static_cast<float>(_playerMaxHp) * kMaxBarLength;
 	// バーの長さを徐々に変える
 	if (_drawBarLength > _barLength)
 	{
@@ -57,15 +59,13 @@ void HPUI::Update()
 	}
 }
 
-void HPUI::Draw(Vector2 drawPlayerPos,const std::vector<std::shared_ptr<Enemy>>& pEnemys)
+void HPUI::Draw()
 {
-
-
 	// プレイヤーがUIの近くにいるときは透明にする
-	bool isPlayerNear = drawPlayerPos.y < kFrameBottom + kLowAlphaDis && drawPlayerPos.x < kFrameRight + kLowAlphaDis;
+	bool isPlayerNear = _player.GetDrawPos().y < kFrameBottom + kLowAlphaDis && _player.GetDrawPos().x < kFrameRight + kLowAlphaDis;
 	// 敵がUIの近くにいるときは透明にする
 	bool isEnemyNear = false;
-	for (const auto& enemy : pEnemys)
+	for (const auto& enemy : _pEnemies)
 	{
 		Vector2 enemyPos = enemy->GetPos();
 		if (enemyPos.y < kFrameBottom + kLowAlphaDis && enemyPos.x < kFrameRight + kLowAlphaDis)
