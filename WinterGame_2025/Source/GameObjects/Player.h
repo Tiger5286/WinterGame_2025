@@ -29,9 +29,10 @@ public:
 
 	void TakeDamage();	// ダメージを受ける
 	bool GetIsAlive() const { return _isAlive; }
-	int GetHp() { return _hp; }
-	int GetMaxHp();
-	const int& GetHpRef() { return _hp; }
+	int GetHp() const { return _hp; }
+	int GetMaxHp() const;
+	const int& GetHpRef() const { return _hp; }
+	const Vector2& GetDrawPos() const;
 	/// <summary>
 	/// プレイヤーを回復させる
 	/// </summary>
@@ -95,6 +96,7 @@ private:
 	int _hp;
 	bool _isAlive;
 	Vector2 _prevVel;
+	Vector2 _drawOffset;
 
 	// ジャンプ関連変数
 	int _jumpFrame;		// ジャンプ長押し時間

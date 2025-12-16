@@ -308,6 +308,7 @@ void Player::Update(Map& map)
 
 void Player::Draw(Vector2 offset)
 {
+	_drawOffset = offset;
 	// エフェクトの描画
 	DrawEffect();
 
@@ -426,9 +427,14 @@ void Player::TakeDamage()
 	}
 }
 
-int Player::GetMaxHp()
+int Player::GetMaxHp() const
 {
 	return kMaxHp;
+}
+
+const Vector2& Player::GetDrawPos() const
+{
+	return _pos - _drawOffset;
 }
 
 void Player::Heal(int healAmount)
