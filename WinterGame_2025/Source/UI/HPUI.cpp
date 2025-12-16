@@ -45,8 +45,15 @@ void HPUI::Update(int playerHP)
 {
 	// プレイヤーのhpからバーの長さを出す
 	_barLength = static_cast<float>(playerHP) / static_cast<float>(_playerMaxHp) * kMaxBarLength;
-	// lerpでいい感じに減らす
-	_drawBarLength = std::lerp(_drawBarLength, _barLength, 0.05f);
+	// バーの長さを徐々に変える
+	if (_drawBarLength > _barLength)
+	{
+		_drawBarLength--;
+	}
+	else if (_drawBarLength < _barLength)
+	{
+		_drawBarLength++;
+	}
 }
 
 void HPUI::Draw(Vector2 drawPlayerPos,const std::vector<std::shared_ptr<Enemy>>& pEnemys)
@@ -76,10 +83,16 @@ void HPUI::Draw(Vector2 drawPlayerPos,const std::vector<std::shared_ptr<Enemy>>&
 		_alpha = std::lerp(_alpha, 255, 0.2f);
 	}
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, _alpha);
-	//DrawBox(FRAME_LEFT, FRAME_TOP, FRAME_RIGHT, FRAME_BOTTOM, 0x888888, true);	// 枠
+
 	DrawBox(kBarLeft + _drawBarLength, kBarTop, kBarRight, kBarBottom, 0x000000, true);	// HPないとこの黒
 	DrawBox(kBarLeft + _barLength, kBarTop, kBarLeft + _drawBarLength, kBarBottom, 0xff0000, true);	// HP減る量の赤
 	DrawBox(kBarLeft, kBarTop, kBarLeft + _barLength, kBarBottom, 0xffff00, true);	// HPあるとこの黄色
-	DrawRotaGraph(kPosX, kPosY, 0.4, 0.0, _handle, true);
+	// HPが増えているとき
+	if (_barLength > _drawBarLength)
+	{
+		DrawBox(kBarLeft + _drawBarLength, kBarTop, kBarLeft + _barLength, kBarBottom, 0x00ff00, true);	// HP増える量の緑
+	}
+
+	DrawRotaGraph(kPosX, kPosY, 0.4, 0.0, _handle, true);	// 枠
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
