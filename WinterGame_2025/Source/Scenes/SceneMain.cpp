@@ -181,14 +181,7 @@ void SceneMain::Update(Input& input)
 	_pHPUI->Update();
 	if (_pBossHPUI != nullptr)
 	{
-		if (_pEnemyManager->GetEnemies().empty())
-		{
-			_pBossHPUI->Update(0);	// 敵がいなくなったらHP0にする
-		}
-		else
-		{
-			_pBossHPUI->Update(_pEnemyManager->GetTotalBossHp());
-		}
+		_pBossHPUI->Update();
 	}
 
 	// ゴール判定
@@ -272,7 +265,7 @@ void SceneMain::Draw()
 	_pHPUI->Draw();
 	if (_pBossHPUI != nullptr)
 	{
-		_pBossHPUI->Draw(_pPlayer->GetPos() - _pCamera->GetDrawOffset(), _pEnemyManager->GetEnemies());
+		_pBossHPUI->Draw();
 	}
 
 #ifdef _DEBUG
@@ -374,7 +367,7 @@ void SceneMain::LoadStage(Stages stage)
 		stage == Stages::Boss3 ||
 		stage == Stages::SecretBoss)	// ボスステージならボスHPUIの生成
 	{
-		_pBossHPUI = std::make_shared<BossHPUI>(_graphHandles[static_cast<int>(Graphs::BossHpUI)], _pEnemyManager->GetTotalBossHp());
+		_pBossHPUI = std::make_shared<BossHPUI>(_graphHandles[static_cast<int>(Graphs::BossHpUI)], *_pPlayer,_pEnemyManager);
 	}
 
 	// ゴール旗を生成

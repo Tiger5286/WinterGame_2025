@@ -2,28 +2,44 @@
 #include <cmath>
 #include "DxLib.h"
 #include "../GameObjects/Enemies/Enemy.h"
+#include "../GameObjects/Player.h"
+#include "../Systems/EnemyManager.h"
 
 namespace
 {
-	constexpr int kBarLeft = 975;
-	constexpr int kBarTop = 100;
-	constexpr int kBarRight = 1770;
-	constexpr int kBarBottom = 160;
+	// UI画像の情報
+	constexpr int kGraphSizeW = 2400;
+	constexpr int kGraphSizeH = 500;
+	// バーの情報
+	constexpr int kBarL = 136;
+	constexpr int kBarT = 189;
+	constexpr int kBarR = 2094;
+	constexpr int kBarB = 314;
+	// UIの描画情報
+	constexpr float kDrawScale = 0.4f;
+	constexpr int kDrawPosX = 1400;
+	constexpr int kDrawPosY = 130;
+	constexpr int kDrawPosL = kDrawPosX - (kGraphSizeW * kDrawScale) / 2;
+	constexpr int kDrawPosT = kDrawPosY - (kGraphSizeH * kDrawScale) / 2;
+	// バーの描画情報
+	constexpr int kDrawBarL = kDrawPosL + (kBarL * kDrawScale);
+	constexpr int kDrawBarR = kDrawPosL + (kBarR * kDrawScale);
+	constexpr int kDrawBarT = kDrawPosT + (kBarT * kDrawScale);
+	constexpr int kDrawBarB = kDrawPosT + (kBarB * kDrawScale) + 1;	// 隙間を埋めるために1足す
+	constexpr int kBarLength = kDrawBarR - kDrawBarL;
 
-	constexpr int kPosX = 1400;
-	constexpr int kPosY = 130;
-
-	constexpr int kLowAlphaDis = 150;
-
-	constexpr int kMaxBarLength = kBarRight - kBarLeft;
+	// 透明になる領域を余分に確保する量
+	constexpr int kLowAlphaDis = 100;
 }
 
-BossHPUI::BossHPUI(int handle, int bossMaxHp) :
+BossHPUI::BossHPUI(int handle, Player& player, const std::shared_ptr<EnemyManager> pEnemyManager) :
 	_handle(handle),
-	_bossMaxHp(bossMaxHp),
+	_bossMaxHp(pEnemyManager->GetTotalBossHp()),
 	_barLength(0),
 	_drawBarLength(0),
-	_alpha(255)
+	_alpha(255),
+	_player(player),
+	_pEnemyManager(pEnemyManager)
 {
 }
 
@@ -35,24 +51,26 @@ void BossHPUI::Init()
 {
 }
 
-void BossHPUI::Update(int bossHp)
+void BossHPUI::Update()
 {
 	// ボスのhpからバーの長さを出す
-	_barLength = static_cast<float>(bossHp) / static_cast<float>(_bossMaxHp) * (kBarRight - kBarLeft);
+	_barLength = static_cast<float>(_pEnemyManager->GetTotalBossHp()) / static_cast<float>(_bossMaxHp) * kBarLength;
 	// lerpでいい感じに減らす
 	_drawBarLength = std::lerp(_drawBarLength, _barLength, 0.05f);
 }
 
-void BossHPUI::Draw(Vector2 drawPlayerPos, const std::vector<std::shared_ptr<Enemy>>& pEnemys)
+void BossHPUI::Draw()
 {
 	// プレイヤーがUIの近くにいるときは透明にする
-	bool isPlayerNear = drawPlayerPos.y < kBarBottom + kLowAlphaDis && drawPlayerPos.x < kBarRight + kLowAlphaDis;
+	bool isPlayerNear = _player.GetDrawPos().y < kDrawBarB + kLowAlphaDis &&
+						_player.GetDrawPos().x > kDrawBarL - kLowAlphaDis;
 	// 敵がUIの近くにいるときは透明にする
 	bool isEnemyNear = false;
-	for (const auto& enemy : pEnemys)
+	for (const auto& enemy : _pEnemyManager->GetEnemies())
 	{
-		Vector2 enemyPos = enemy->GetPos();
-		if (enemyPos.y < kBarBottom + kLowAlphaDis && enemyPos.x < kBarRight + kLowAlphaDis)
+		Vector2 enemyPos = enemy->GetDrawPos();
+		if (enemyPos.y < kDrawBarB + kLowAlphaDis &&
+			enemyPos.x > kDrawBarL - kLowAlphaDis)
 		{
 			isEnemyNear = true;
 			break;
@@ -68,10 +86,9 @@ void BossHPUI::Draw(Vector2 drawPlayerPos, const std::vector<std::shared_ptr<Ene
 		_alpha = std::lerp(_alpha, 255, 0.2f);
 	}
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, _alpha);
-	//DrawBox(FRAME_LEFT, FRAME_TOP, FRAME_RIGHT, FRAME_BOTTOM, 0x888888, true);	// 枠
-	DrawBox(kBarLeft + _drawBarLength, kBarTop, kBarRight, kBarBottom, 0x000000, true);	// HPないとこの黒
-	DrawBox(kBarLeft + _barLength, kBarTop, kBarLeft + _drawBarLength, kBarBottom, 0xff0000, true);	// HP減る量の赤
-	DrawBox(kBarLeft, kBarTop, kBarLeft + _barLength, kBarBottom, 0xffff00, true);	// HPあるとこの黄色
-	DrawRotaGraph(kPosX, kPosY, 0.4, 0.0, _handle, true);
+	DrawBox(kDrawBarL + _drawBarLength, kDrawBarT, kDrawBarR, kDrawBarB, 0x000000, true);	// HPないとこの黒
+	DrawBox(kDrawBarL + _barLength, kDrawBarT, kDrawBarL + _drawBarLength, kDrawBarB, 0xff0000, true);	// HP減る量の赤
+	DrawBox(kDrawBarL, kDrawBarT, kDrawBarL + _barLength, kDrawBarB, 0xffff00, true);	// HPあるとこの黄色
+	DrawRotaGraph(kDrawPosX, kDrawPosY, kDrawScale, 0.0, _handle, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
