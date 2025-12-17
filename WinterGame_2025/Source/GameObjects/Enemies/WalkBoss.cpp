@@ -18,7 +18,7 @@ namespace
 	// 当たり判定
 	const Vector2 kColliderSize = { 130,150 };
 	// 体力
-	constexpr int kMaxHp = 100;
+	constexpr int kMaxHp = 70;
 	constexpr int kScore = 10000;
 
 	// アニメーション関連
@@ -52,9 +52,9 @@ namespace
 	const Vector2 kAngle270Offset = { -45,35 };
 
 	// 行動関係
-	constexpr int kIdleFrame = 60;	// 待機時間
+	constexpr int kIdleFrame = 90;	// 待機時間
 
-	constexpr int kStunFrame = 120;	// スタン時間
+	constexpr int kStunFrame = 150;	// スタン時間
 	constexpr float kStunVelY = 10.0f;
 	constexpr float kStunVelX = 5.0f;
 
