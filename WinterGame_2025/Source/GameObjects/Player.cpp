@@ -434,7 +434,7 @@ int Player::GetMaxHp() const
 
 const Vector2& Player::GetDrawPos() const
 {
-	return _pos - _drawOffset;
+	return GetColliderPos() - _drawOffset;
 }
 
 void Player::Heal(int healAmount)

@@ -61,7 +61,7 @@ public:
 
 	std::shared_ptr<Collider> GetCollider() { return _pCollider; }
 
-	Vector2 GetColliderPos();
+	Vector2 GetColliderPos() const;
 
 protected:
 	void Gravity();

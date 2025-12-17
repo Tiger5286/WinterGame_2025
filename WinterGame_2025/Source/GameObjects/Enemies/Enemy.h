@@ -36,7 +36,7 @@ public:
 	int GetScore() const { return _kScore; }
 	void SetIsHitChargeShot(bool isHit) { _isHitChargeShot = isHit; }
 	bool GetIsHitChargeShot()const { return _isHitChargeShot; }
-	const Vector2& GetDrawPos() const { return _pos + _drawOffset; }
+	const Vector2& GetDrawPos() const;
 protected:
 	void BaseUpdate();
 

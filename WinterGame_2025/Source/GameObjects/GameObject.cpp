@@ -91,7 +91,7 @@ Vector2 GameObject::ChipPosToGamePos(Vector2 mapChipPos)
 }
 
 
-Vector2 GameObject::GetColliderPos()
+Vector2 GameObject::GetColliderPos() const
 {
 	return _pCollider->GetPos();
 }

@@ -55,6 +55,11 @@ bool Enemy::GetIsAlive() const
 	return _hp > 0;
 }
 
+const Vector2& Enemy::GetDrawPos() const
+{
+	return GetColliderPos() + _drawOffset;
+}
+
 void Enemy::BaseUpdate()
 {
 	if (_damageFrame > 0)
