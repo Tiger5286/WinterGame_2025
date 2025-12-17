@@ -6,7 +6,7 @@
 enum class WalkEnemyState
 {
 	Idle,
-	Move
+	Move,
 };
 
 class WalkEnemy : public Enemy
@@ -30,6 +30,7 @@ private:
 private:
 	int _handle;
 	bool _isTurn;
+	int _frame = 0;
 	//bool _isHitChargeShot;
 	WalkEnemyState _state;
 	Animation _idleAnim;

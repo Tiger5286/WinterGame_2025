@@ -4,6 +4,7 @@
 #include "../Bullet.h"
 #include "../Player.h"
 #include "../../Systems/Map.h"
+#include"../../Systems/EffectManager.h"
 #include "../../Game.h"
 
 namespace
@@ -114,6 +115,15 @@ void WalkEnemy::Update(Map& map)
 	if (hitDir.left)	// 左に当たったら右向きにする
 	{
 		_isTurn = false;
+	}
+	// 移動状態かつ地面にいるとき
+	if (_state == WalkEnemyState::Move && _vel.y == 0.0f)
+	{
+		_frame++;
+		if (_frame % 20 == 0)
+		{
+			_pEffectManager->Create(_pos, EffectType::SmallDust);
+		}
 	}
 
 	// プレイヤーに当たったらダメージを与える
