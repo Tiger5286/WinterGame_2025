@@ -32,6 +32,8 @@ namespace
 
 	constexpr int kOneAnimFrame = 6;
 
+	constexpr int kWalkEffectInterval = 20;
+
 	// HP
 	constexpr int kMaxHp = 3;
 	// スコア
@@ -117,11 +119,11 @@ void WalkEnemy::Update(Map& map)
 		_isTurn = false;
 	}
 	// 移動状態かつ地面にいるとき
-	if (_state == WalkEnemyState::Move && _vel.y == 0.0f)
+	if (_state == WalkEnemyState::Move && hitDir.down)
 	{
 		_frame++;
-		if (_frame % 20 == 0)
-		{
+		if (_frame % kWalkEffectInterval == 0)
+		{	// 埃エフェクトを出す
 			_pEffectManager->Create(_pos, EffectType::SmallDust);
 		}
 	}
