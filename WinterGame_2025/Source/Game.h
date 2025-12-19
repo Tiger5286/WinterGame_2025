@@ -43,7 +43,7 @@ enum class ObjectData : int
 	Coin,
 	BigCoin,
 	HealthItem,
-	Blank0,
+	Spike,
 	Blank1,
 	ClearFlag,
 	DownLaser2,
