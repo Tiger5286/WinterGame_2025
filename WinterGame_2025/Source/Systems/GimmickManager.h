@@ -32,6 +32,7 @@ public:
 
 private:
 	int _laserH = -1;
+	int _spikeH = -1;
 
 	std::shared_ptr<Player> _pPlayer;
 	std::vector<std::shared_ptr<Gimmick>> _pGimmicks;

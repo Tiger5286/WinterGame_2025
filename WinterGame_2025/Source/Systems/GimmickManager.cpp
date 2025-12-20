@@ -4,12 +4,15 @@
 #include <cassert>
 
 #include "../GameObjects/Laser.h"
+#include "../GameObjects/Spike.h"
 
 GimmickManager::GimmickManager(std::shared_ptr<Player> pPlayer):
 	_pPlayer(pPlayer)
 {
 	_laserH = LoadGraph("data/Gimmicks/Laser.png");
 	assert(_laserH != -1);
+	_spikeH = LoadGraph("data/Gimmicks/Spike.png");
+	assert(_spikeH != -1);
 }
 
 GimmickManager::~GimmickManager()
@@ -52,6 +55,10 @@ void GimmickManager::LoadGimmicks(const std::vector<uint16_t>& objectData, Size 
 			{
 				int length = objectData[index] - 14;
 				_pGimmicks.push_back(std::make_shared<Laser>(pos, _pPlayer, _laserH, length, false));
+			}
+			else if (objectData[index] == static_cast<int>(ObjectData::Spike))
+			{
+				_pGimmicks.push_back(std::make_shared<Spike>(pos, _pPlayer, _spikeH));
 			}
 		}
 	}
