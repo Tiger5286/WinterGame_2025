@@ -56,7 +56,7 @@ void Laser::Init()
 
 void Laser::Update(Map& map)
 {
-	printfDx("Laser::Update(Map& map) is called. Please use Laser::Update() instead.\n");
+	printfDx("Laser::Update(Map& map)が呼ばれています。Laser::Update()を使用してください。\n");
 }
 
 void Laser::Update()
