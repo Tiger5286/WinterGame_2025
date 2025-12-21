@@ -9,6 +9,7 @@
 class Map;
 class Camera;
 class Enemy;
+class Gimmick;
 class Player;
 
 class FallBall;
@@ -19,7 +20,7 @@ public:
 	BulletManager(Vector2 mapSize);
 	~BulletManager();
 
-	void Update(Map& map, Vector2 cameraPos, std::vector<std::shared_ptr<Enemy>> pEnemys);
+	void Update(Map& map, Vector2 cameraPos, std::vector<std::shared_ptr<Enemy>> pEnemys, std::vector<std::shared_ptr<Gimmick>> pGimmicks);
 	void Draw(Vector2 offset);
 
 	void Shot(BulletType type, Vector2 shotPos, bool isTurn);

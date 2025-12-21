@@ -4,6 +4,7 @@
 #include "../Game.h"
 #include "Enemies/Enemy.h"
 #include "../Systems/Map.h"
+#include "Spike.h"
 
 namespace
 {
@@ -52,7 +53,7 @@ void Bullet::Update(Map& map)
 	printfDx("Bullet::Update(Map& map)が呼ばれました。Bullet::Update(Map& map, Vector2 cameraPos)を使用してください。\n");
 }
 
-void Bullet::Update(Map& map,Vector2 cameraPos, std::vector<std::shared_ptr<Enemy>> pEnemys)
+void Bullet::Update(Map& map,Vector2 cameraPos, std::vector<std::shared_ptr<Enemy>> pEnemys, std::vector<std::shared_ptr<Gimmick>> pGimmicks)
 {
 	// 移動処理
 	if (_isTurn)
@@ -120,6 +121,17 @@ void Bullet::Update(Map& map,Vector2 cameraPos, std::vector<std::shared_ptr<Enem
 		else if (_type == BulletType::ChargeShot)
 		{	// チャージショットが当たっていない時に当たったフラグを消す
 			enemy->SetIsHitChargeShot(false);
+		}
+	}
+	// 弾とギミックの当たり判定
+	for (auto& gimmick : pGimmicks)
+	{
+		if (gimmick->GetType() == GimmickType::Spike)
+		{
+			if (_pCollider->CheckCollision(gimmick->GetCollider()))	// ギミックと当たっているかチェック
+			{
+				Hit();	// 反射させる
+			}
 		}
 	}
 

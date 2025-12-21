@@ -4,6 +4,7 @@
 #include <vector>
 
 class Enemy;
+class Gimmick;
 
 enum class BulletType
 {
@@ -19,7 +20,7 @@ public:
 
 	void Init() override;
 	void Update(Map& map) override;
-	void Update(Map& map, Vector2 cameraPos, std::vector<std::shared_ptr<Enemy>> pEnemys);
+	void Update(Map& map, Vector2 cameraPos, std::vector<std::shared_ptr<Enemy>> pEnemys, std::vector<std::shared_ptr<Gimmick>> pGimmicks);
 	void Draw(Vector2 offset) override;
 
 	void Shot(BulletType type, Vector2 shotPos, bool isTurn);
@@ -40,7 +41,7 @@ private:
 	Animation _chargeShotAnim;
 	Animation _chargeShotImpactAnim;
 
-	std::vector<std::shared_ptr<Enemy>> _pEnemys;
+	//std::vector<std::shared_ptr<Enemy>> _pEnemys;
 
 	BulletType _type;
 	bool _isReflected = false;

@@ -36,13 +36,13 @@ BulletManager::~BulletManager()
 	DeleteGraph(_fallBallH);
 }
 
-void BulletManager::Update(Map& map, Vector2 cameraPos, std::vector<std::shared_ptr<Enemy>> pEnemies)
+void BulletManager::Update(Map& map, Vector2 cameraPos, std::vector<std::shared_ptr<Enemy>> pEnemies, std::vector<std::shared_ptr<Gimmick>> pGimmicks)
 {
 	for (auto& bullet : _pBullets)
 	{
 		if (bullet->GetAlive())
 		{
-			bullet->Update(map, cameraPos, pEnemies);
+			bullet->Update(map, cameraPos, pEnemies, pGimmicks);
 		}
 	}
 

@@ -169,7 +169,7 @@ void SceneMain::Update(Input& input)
 	_pGimmickManager->Update();
 
 	// ’e§Œä
-	_pBulletManager->Update(*_pMap, _pCamera->GetPos(), _pEnemyManager->GetEnemies());
+	_pBulletManager->Update(*_pMap, _pCamera->GetPos(), _pEnemyManager->GetEnemies(),_pGimmickManager->GetGimmicks());
 
 	// ƒAƒCƒeƒ€§Œä
 	_pItemManager->Update();
