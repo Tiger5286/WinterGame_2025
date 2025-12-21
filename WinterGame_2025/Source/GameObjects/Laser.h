@@ -13,6 +13,8 @@ public:
 	void Update(Map& map) override;
 	void Update() override;
 	void Draw(Vector2 offset) override;
+
+	GimmickType GetType() const override { return GimmickType::Laser; }
 private:
 	int _handle;
 	int _laserLength;

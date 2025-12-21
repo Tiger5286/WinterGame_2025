@@ -24,6 +24,8 @@ public:
 	/// <param name="size">マップのサイズ</param>
 	void LoadGimmicks(const std::vector<uint16_t>& objectData, Size size);
 
+	std::vector<std::shared_ptr<Gimmick>> GetGimmicks() const { return _pGimmicks; }
+
 	/// <summary>
 	/// ボス用のレーザを追加する
 	/// </summary>
