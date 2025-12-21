@@ -303,7 +303,7 @@ void SceneMain::LoadStage(Stages stage)
 		_pStage->LoadData("data/Stages/Boss2Stage.fmf");
 		break;
 	case Stages::Stage3:
-		_pStage->LoadData("data/Stages/template.fmf");
+		_pStage->LoadData("data/Stages/Stage3.fmf");
 		break;
 	case Stages::Boss3:
 		_pStage->LoadData("data/Stages/Boss3Stage.fmf");
