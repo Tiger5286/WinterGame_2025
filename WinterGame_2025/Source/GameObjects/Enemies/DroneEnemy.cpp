@@ -61,7 +61,7 @@ DroneEnemy::~DroneEnemy()
 void DroneEnemy::Init()
 {
 	_firstPosY = _pos.y;
-	_frame = kFirstFrame;	// 出現してから攻撃可能になるまでの時間を確保
+	_frame = kFirstFrame * 2;	// 出現してから攻撃可能になるまでの時間を確保
 }
 
 void DroneEnemy::Update(Map& map)
