@@ -6,6 +6,7 @@
 #include "SceneStageSelect.h"
 #include "SceneMain.h"
 #include "../Game.h"
+#include "../Application.h"
 #include <cassert>
 #include <string>
 #include <cmath>
@@ -98,7 +99,7 @@ void SceneTitle::Update(Input& input)
 			printfDx("オプションは未実装です\n");
 			break;
 		case MenuItems::Exit:	// 終了
-			// 今から実装
+			Application::GetInstance().RequestExit();
 			break;
 		}
 	}
