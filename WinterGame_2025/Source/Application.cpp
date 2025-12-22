@@ -51,7 +51,7 @@ void Application::Run()
 	sceneManager.ChangeScene(std::make_shared<SceneTitle>(sceneManager));
 #endif
 
-	while (ProcessMessage() != -1)
+	while (ProcessMessage() != -1 && !_isRequestExit)
 	{
 		auto frameStartTime = GetNowHiPerformanceCount(); // フレーム開始時間を取得
 		ClearDrawScreen(); // 画面をクリア

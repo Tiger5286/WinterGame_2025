@@ -9,6 +9,8 @@ private:
 	Application();
 	Application(const Application& app) = delete;
 	void operator=(const Application& app) = delete;
+
+	bool _isRequestExit = false;
 public:
 	~Application();
 	static Application& GetInstance();
@@ -29,5 +31,10 @@ public:
 	/// アプリケーション終了処理
 	/// </summary>
 	void Terminate();
+
+	/// <summary>
+	/// アプリケーション終了をリクエストする
+	/// </summary>
+	void RequestExit() { _isRequestExit = true; }
 };
 
