@@ -110,7 +110,7 @@ public:
 	/// セーブデータを取得する
 	/// </summary>
 	/// <returns>セーブデータ</returns>
-	SaveData GetSaveData() { return _saveData; }
+	SaveData GetSaveData() const { return _saveData; }
 
 	/// <summary>
 	/// クリアしたステージが未クリアなら、クリア済みとして登録する
