@@ -216,8 +216,9 @@ void SceneMain::Update(Input& input)
 		}
 	}
 
+	// チュートリアルステージ用の更新処理
 	if (_nowStage == Stages::Tutorial)
-	{	// チュートリアルステージ用の更新処理
+	{	
 		if (TutorialUpdate())
 		{
 			return;	// チュートリアルシーンに切り替えたら以降の更新処理を行わない

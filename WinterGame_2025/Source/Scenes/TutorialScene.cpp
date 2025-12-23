@@ -2,7 +2,6 @@
 #include "SceneManager.h"
 #include "../Systems/Input.h"
 #include "Dxlib.h"
-#include <algorithm>
 
 TutorialScene::TutorialScene(SceneManager& manager, TutorialStep nowStep):
 	SceneBase(manager)
@@ -52,6 +51,7 @@ void TutorialScene::Init()
 
 void TutorialScene::Update(Input& input)
 {
+	_frame++;
 	if (input.IsTriggered("decision"))
 	{	// メインシーンへ切り替え
 		_manager.PopScene();
@@ -66,4 +66,10 @@ void TutorialScene::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	DrawString(400, 400, _tutorialText.c_str(), 0xffffff);
+	unsigned int color = 0xffff00;
+	if (_frame % 30 < 15)
+	{
+		color = 0xffffff;
+	}
+	DrawString(850, 570, "Aボタンで進む", color);
 }

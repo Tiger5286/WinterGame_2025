@@ -15,5 +15,6 @@ public:
 	void Draw() override;
 private:
 	std::string _tutorialText;
+	int _frame = 0;
 };
 
