@@ -373,8 +373,7 @@ void Player::Draw(Vector2 offset)
 	}
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
-
-	//DrawFormatString(_pos.x - offset.x - 20, _pos.y - offset.y - 120, 0xffffff, "hp:%d", _hp);
+	DrawFormatString(0, 230, 0xffffff, "x:%.2f y:%.2f", _pos.x, _pos.y);
 	if (_isCanFly)
 	{
 		DrawFormatString(_pos.x - offset.x - 20, _pos.y - offset.y - 120, 0xffffff, "canFly");
