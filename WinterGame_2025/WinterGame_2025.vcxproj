@@ -193,6 +193,7 @@
     <ClCompile Include="Source\GameObjects\Enemies\WalkEnemy.cpp" />
     <ClCompile Include="Source\Systems\Stage.cpp" />
     <ClCompile Include="Source\GameObjects\Spike.cpp" />
+    <ClCompile Include="Source\Scenes\TutorialScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GameObjects\Effects\ExplosionUpward.h" />
@@ -249,6 +250,7 @@
     <ClInclude Include="Source\GameObjects\Enemies\WalkEnemy.h" />
     <ClInclude Include="Source\Systems\Stage.h" />
     <ClInclude Include="Source\GameObjects\Spike.h" />
+    <ClInclude Include="Source\Scenes\TutorialScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

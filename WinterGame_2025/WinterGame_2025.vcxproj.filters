@@ -142,6 +142,7 @@
     <ClCompile Include="Source\GameObjects\Effects\ExplosionFloor.cpp" />
     <ClCompile Include="Source\GameObjects\Effects\ExplosionUpward.cpp" />
     <ClCompile Include="Source\GameObjects\Spike.cpp" />
+    <ClCompile Include="Source\Scenes\TutorialScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GameObjects\Bullet.h">
@@ -258,5 +259,6 @@
     <ClInclude Include="Source\GameObjects\Effects\ExplosionFloor.h" />
     <ClInclude Include="Source\GameObjects\Effects\ExplosionUpward.h" />
     <ClInclude Include="Source\GameObjects\Spike.h" />
+    <ClInclude Include="Source\Scenes\TutorialScene.h" />
   </ItemGroup>
 </Project>

@@ -14,6 +14,7 @@
 #include "SceneClear.h"
 #include "SceneGameOver.h"
 #include "ScenePause.h"
+#include "TutorialScene.h"
 
 #include "../GameObjects/Player.h"
 
@@ -192,7 +193,6 @@ void SceneMain::Update(Input& input)
 			StageClear();
 		}
 	}
-
 	if (_nowStage == Stages::Boss1 || 
 		_nowStage == Stages::Boss2 ||
 		_nowStage == Stages::Boss3 ||
@@ -213,6 +213,14 @@ void SceneMain::Update(Input& input)
 			_manager.SetFadeCirclePos(_pPlayer->GetPos() - _pCamera->GetDrawOffset());
 			_manager.StartFadeIn(FadeState::CircleFadeIn);
 			_isClearFading = false;
+		}
+	}
+
+	if (_nowStage == Stages::Tutorial)
+	{	// チュートリアルステージ用の更新処理
+		if (TutorialUpdate())
+		{
+			return;	// チュートリアルシーンに切り替えたら以降の更新処理を行わない
 		}
 	}
 
@@ -405,4 +413,90 @@ void SceneMain::StageClear()
 		printfDx("SceneMain::StageClearで未知のステージがクリアされました\n");
 	}
 	return;
+}
+
+bool SceneMain::TutorialUpdate()
+{
+	bool ans = false;
+	const auto& playerPos = _pPlayer->GetPos();
+	switch (_nowTutorialStep)
+	{
+	case TutorialStep::None:
+		TriggeredTutorial();
+		ans = true;
+		break;
+	case TutorialStep::Move:
+		TriggeredTutorial();
+		ans = true;
+		break;
+	case TutorialStep::Shot:
+		if (playerPos.x > 1300)
+		{
+			TriggeredTutorial();
+			ans = true;
+		}
+		break;
+	case TutorialStep::Jump:
+		if (playerPos.x > 1800)
+		{
+			TriggeredTutorial();
+			ans = true;
+		}
+		break;
+	case TutorialStep::ChargeShot:
+		if (playerPos.x > 2600)
+		{
+			TriggeredTutorial();
+			ans = true;
+		}
+		break;
+	case TutorialStep::Dash:
+		if (playerPos.x > 4100)
+		{
+			TriggeredTutorial();
+			ans = true;
+		}
+		break;
+	case TutorialStep::WallJump:
+		if ((playerPos.x > 4200 && playerPos.x < 4800 && playerPos.y > 1800) ||
+			playerPos.x > 5900)
+		{
+			TriggeredTutorial();
+			ans = true;
+		}
+		break;
+	case TutorialStep::DashInvincible:
+		if (playerPos.x > 5200 && playerPos.y > 1700)
+		{
+			TriggeredTutorial();
+			ans = true;
+		}
+		break;
+	case TutorialStep::JumpAndDash:
+		if (playerPos.x > 6300)
+		{
+			TriggeredTutorial();
+			ans = true;
+		}
+		break;
+	case TutorialStep::Complete:
+		if (playerPos.x > 7600)
+		{
+			TriggeredTutorial();
+			ans = true;
+		}
+		break;
+	}
+	return ans;
+}
+
+void SceneMain::TriggeredTutorial()
+{
+	// 現在のチュートリアルステップに応じてチュートリアルシーンを呼び出す
+	_manager.PushScene(std::make_shared<TutorialScene>(_manager, _nowTutorialStep));
+	// 次のチュートリアルステップへ進める
+	if (_nowTutorialStep != TutorialStep::End)
+	{
+		_nowTutorialStep = static_cast<TutorialStep>(static_cast<int>(_nowTutorialStep) + 1);
+	}
 }

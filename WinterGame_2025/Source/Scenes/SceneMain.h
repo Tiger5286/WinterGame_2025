@@ -30,6 +30,21 @@ class ItemManager;
 class BulletManager;
 class EffectManager;
 
+enum class TutorialStep
+{
+	None,
+	Move,
+	Shot,
+	Jump,
+	ChargeShot,
+	Dash,
+	DashInvincible,
+	WallJump,
+	JumpAndDash,
+	Complete,
+	End
+};
+
 class SceneMain : public SceneBase
 {
 public:
@@ -58,6 +73,18 @@ private:
 	/// ステージをクリアしたときの処理
 	/// </summary>
 	void StageClear();
+
+	/// <summary>
+	/// チュートリアルステージ用の更新処理
+	/// </summary>
+	/// <returns>チュートリアルシーンを生成したかどうか</returns>
+	bool TutorialUpdate();
+
+	/// <summary>
+	/// チュートリアルシーンを呼び出す
+	/// </summary>
+	/// <returns>チュートリアルシーンを生成したかどうか</returns>
+	void TriggeredTutorial();
 
 private:
 	/*画像ハンドル*/
@@ -89,5 +116,8 @@ private:
 	std::shared_ptr<ItemManager> _pItemManager;
 	std::shared_ptr<BulletManager> _pBulletManager;
 	std::shared_ptr<EffectManager> _pEffectManager;
+
+	// チュートリアル用
+	TutorialStep _nowTutorialStep = TutorialStep::None;
 };
 
