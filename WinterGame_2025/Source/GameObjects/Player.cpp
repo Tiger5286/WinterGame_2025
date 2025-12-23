@@ -145,6 +145,7 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 		afterimage.whiteHandle = _playerWhiteH;
 	}
 
+	// アニメーションの初期化
 	_idleAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Idle), kFrameSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
 	_moveAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Move), kFrameSize, kMoveAnimNum, kMoveOneAnimFrame, kDrawScale);
 	_damageAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Damage), kFrameSize, kDamageAnimNum, kOneAnimFrame, kDrawScale);
@@ -154,6 +155,7 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_slideAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Slide), 0, kFrameSize, kDrawScale);
 	_deathAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Death), kFrameSize, kDeathAnimNum, kDeathOneAnimFrame, kDrawScale, false);
 
+	// マズルフラッシュアニメーションは終了状態で初期化する(最初に再生されるのを防ぐため)
 	_shotFlashAnim.Init(_shotH, 0, kShotFlashGraphSize, kShotAnimNum, kFlashOneAnimFrame, kDrawScale,false);
 	_shotFlashAnim.SetEnd();
 	_chargeShotFlashAnim.Init(_chargeShotH, 0, kChargeShotFlashGraphSize, kChargeShotAnimNum, kChargeShotFlashOneAnimFrame, kDrawScale,false);
