@@ -4,6 +4,7 @@
 #include "../Systems/Fade.h"
 #include "Dxlib.h"
 #include "../Systems/DataManager.h"
+#include "../Systems/SoundManager.h"
 
 SceneManager::SceneManager():
 	_pFade(std::make_shared<Fade>()),
@@ -14,10 +15,12 @@ SceneManager::SceneManager():
 	_pDataManager = std::make_shared<DataManager>();
 	_pDataManager->Load();
 	_saveData = _pDataManager->GetSaveData();
+	SoundManager::GetInstance().LoadVolumeData(_saveData);
 }
 
 SceneManager::~SceneManager()
 {
+	SoundManager::GetInstance().SaveVolumeData(_saveData);
 	_pDataManager->SetSaveData(_saveData);
 	_pDataManager->Save();
 }
