@@ -60,6 +60,7 @@ void Application::Run()
 
 		input.Update();
 		sceneManager.Update(input);
+		SoundManager::GetInstance().Update();
 		sceneManager.Draw();
 
 		// escƒL[‚ÅI—¹

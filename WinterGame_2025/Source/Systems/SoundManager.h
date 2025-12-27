@@ -8,11 +8,28 @@ enum class SoundType
 	SE
 };
 
+enum class SoundFadeState
+{
+	None,
+	FadeIn,
+	FadeOut
+};
+
+struct SoundInfo
+{
+	int handle = -1;
+	SoundType type = SoundType::SE;
+	SoundFadeState fadeState = SoundFadeState::None;
+	int fadeFrame = 0;
+};
+
 class SoundManager
 {
 public:
 	static SoundManager& GetInstance();
 	~SoundManager();
+
+	void Update();
 
 	/// <summary>
 	/// 音声ファイルを読み込み、登録する
@@ -27,7 +44,15 @@ public:
 	/// </summary>
 	/// <param name="soundName">登録した名前</param>
 	/// <param name="isLoop">ループするかどうか</param>
-	void PlaySoundGame(const std::string& soundName, bool isLoop = false);	// PlaySoundにしたかったけど何かと被ってエラー吐くので仕方なくPlaySoundGameに
+	/// <param name="isFade">再生開始時に音がフェードインするかどうか</param>
+	void PlaySoundGame(const std::string& soundName, bool isLoop = false, bool isFade = false);	// PlaySoundにしたかったけど何かと被ってエラー吐くので仕方なくPlaySoundGameに
+
+	/// <summary>
+	/// 再生中の音を停止する
+	/// </summary>
+	/// <param name="soundName">停止する音</param>
+	/// <param name="isFade">音がフェードアウトするかどうか</param>
+	void StopSound(const std::string& soundName, bool isFade = false);
 
 	/// <summary>
 	/// 読み込んだ音声ファイルを全て開放し、登録を解除する
@@ -50,8 +75,8 @@ private:
 	SoundManager(const SoundManager& sm) = delete;
 	void operator=(const SoundManager& sm) = delete;
 
-	// 音声ファイルマップ <音声名, <音声ハンドル, 音の種類>>
-	std::map<std::string, std::pair<int,SoundType>> _soundMap;
+	// 音声ファイルマップ
+	std::map<std::string, SoundInfo> _soundMap;
 
 	// 音量(0~255)
 	int _bgmVolume = 255;
