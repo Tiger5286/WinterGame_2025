@@ -6,6 +6,7 @@
 #include "Dxlib.h"
 #include "DebugScene.h"
 #include "../Game.h"
+#include "../Systems/SoundManager.h"
 #include <cassert>
 
 namespace
@@ -73,12 +74,16 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 		_isUIMoveRight = false;
 		_frame = -kUIControllInterval;
 	}
+
+	SoundManager::GetInstance().LoadSound("StageSelectBGM", "data/Sounds/BGM/StageSelectBGM.ogg", SoundType::BGM);
+	SoundManager::GetInstance().PlaySoundGame("StageSelectBGM", true, true);
 }
 
 SceneStageSelect::~SceneStageSelect()
 {
 	DeleteGraph(_bgHandle);
 	DeleteGraph(_stageUIHandle);
+	SoundManager::GetInstance().DeleteSound("StageSelectBGM");
 }
 
 void SceneStageSelect::Init()
