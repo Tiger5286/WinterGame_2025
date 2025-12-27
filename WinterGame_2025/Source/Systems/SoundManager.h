@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <string>
+#include "../Game.h"
 
 enum class SoundType
 {
@@ -65,6 +66,10 @@ public:
 	/// <param name="type">調整する音の種類</param>
 	/// <param name="volume">音量</param>
 	void ChangeVolume(SoundType type, int volume);
+
+	// セーブ、ロード関数
+	void SaveVolumeData(SaveData& data) const;
+	void LoadVolumeData(const SaveData& data);
 
 	// 音量取得関数
 	int GetBGMVolume() const { return _bgmVolume; }

@@ -114,6 +114,20 @@ void SoundManager::ChangeVolume(SoundType type, int volume)
 	}
 }
 
+void SoundManager::SaveVolumeData(SaveData& data) const
+{
+	data.bgmVolume = _bgmVolume;
+	data.seVolume = _seVolume;
+}
+
+void SoundManager::LoadVolumeData(const SaveData& data)
+{
+	_bgmVolume = data.bgmVolume;
+	_seVolume = data.seVolume;
+	ChangeVolume(SoundType::BGM, _bgmVolume);
+	ChangeVolume(SoundType::SE, _seVolume);
+}
+
 SoundManager& SoundManager::GetInstance()
 {
 	static SoundManager instance;
