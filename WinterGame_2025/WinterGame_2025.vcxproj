@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Systems\SoundManager.cpp" />
     <ClCompile Include="Source\GameObjects\Effects\ExplosionUpward.cpp" />
     <ClCompile Include="Source\GameObjects\Effects\ExplosionFloor.cpp" />
     <ClCompile Include="Source\GameObjects\Enemies\HammerBoss.cpp" />
@@ -196,6 +197,7 @@
     <ClCompile Include="Source\Scenes\TutorialScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Systems\SoundManager.h" />
     <ClInclude Include="Source\GameObjects\Effects\ExplosionUpward.h" />
     <ClInclude Include="Source\GameObjects\Effects\ExplosionFloor.h" />
     <ClInclude Include="Source\GameObjects\Enemies\HammerBoss.h" />

@@ -143,6 +143,7 @@
     <ClCompile Include="Source\GameObjects\Effects\ExplosionUpward.cpp" />
     <ClCompile Include="Source\GameObjects\Spike.cpp" />
     <ClCompile Include="Source\Scenes\TutorialScene.cpp" />
+    <ClCompile Include="Source\Systems\SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GameObjects\Bullet.h">
@@ -260,5 +261,6 @@
     <ClInclude Include="Source\GameObjects\Effects\ExplosionUpward.h" />
     <ClInclude Include="Source\GameObjects\Spike.h" />
     <ClInclude Include="Source\Scenes\TutorialScene.h" />
+    <ClInclude Include="Source\Systems\SoundManager.h" />
   </ItemGroup>
 </Project>

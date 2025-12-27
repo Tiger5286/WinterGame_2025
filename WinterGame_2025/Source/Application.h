@@ -1,5 +1,7 @@
 #pragma once
 
+class SoundManager;
+
 /// <summary>
 /// アプリケーション全体を管理するシングルトンクラス
 /// </summary>
@@ -11,6 +13,7 @@ private:
 	void operator=(const Application& app) = delete;
 
 	bool _isRequestExit = false;
+	SoundManager& _soundManager;
 public:
 	~Application();
 	static Application& GetInstance();

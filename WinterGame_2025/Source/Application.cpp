@@ -1,13 +1,15 @@
 #include "Application.h"
 #include "DxLib.h"
 #include "Game.h"
+#include "Systems/SoundManager.h"
 #include "Systems/input.h"
 #include "Scenes/SceneManager.h"
 #include "Scenes/SceneTitle.h"
 #include "Scenes/DebugScene.h"
 #include <Windows.h>
 
-Application::Application()
+Application::Application():
+	_soundManager(SoundManager::GetInstance())
 {
 }
 
