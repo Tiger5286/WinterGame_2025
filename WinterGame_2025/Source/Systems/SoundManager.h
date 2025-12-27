@@ -56,6 +56,11 @@ public:
 	void StopSound(const std::string& soundName, bool isFade = false);
 
 	/// <summary>
+	/// すべての再生中の音を停止する
+	/// </summary>
+	void StopSoundAll(bool isFade = false);
+
+	/// <summary>
 	/// 読み込んだ音声ファイルを全て開放し、登録を解除する
 	/// </summary>
 	void DeleteSoundAll();

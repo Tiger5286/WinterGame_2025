@@ -34,6 +34,7 @@
 #include "../Systems/ItemManager.h"
 #include "../Systems/BulletManager.h"
 #include "../Systems/EffectManager.h"
+#include "../Systems/SoundManager.h"
 
 namespace
 {
@@ -90,6 +91,17 @@ SceneMain::SceneMain(SceneManager& manager, Stages stage,int score) :
 		assert(_graphHandles.back() != -1);
 	}
 
+	auto& soundManager = SoundManager::GetInstance();
+	switch (stage)
+	{
+	case Stages::Tutorial:
+		soundManager.LoadSound("StageBgm", "data/Sounds/BGM/TutorialBGM.ogg", SoundType::BGM);
+		break;
+	default:
+		soundManager.LoadSound("StageBgm", "data/Sounds/BGM/StageBGM.ogg", SoundType::BGM);
+		soundManager.LoadSound("BossBgm", "data/Sounds/BGM/BossBGM.ogg", SoundType::BGM);
+	}
+
 	/*ステージのロードと生成*/
 	LoadStage(stage);
 
@@ -115,6 +127,7 @@ SceneMain::~SceneMain()
 	{
 		DeleteGraph(handle);
 	}
+	SoundManager::GetInstance().StopSoundAll(true);
 }
 
 void SceneMain::Init()
@@ -382,6 +395,23 @@ void SceneMain::LoadStage(Stages stage)
 	// ゴール旗を生成
 	_pClearFlag = std::make_shared<ClearFlag>(Vector2(-10,-10), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
 	_pClearFlag->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());
+
+	// BGM再生
+	if (stage == Stages::Tutorial ||
+		stage == Stages::Stage1 ||
+		stage == Stages::Stage2 ||
+		stage == Stages::Stage3 ||
+		stage == Stages::SecretStage)
+	{
+		SoundManager::GetInstance().PlaySoundGame("StageBgm", true, true);
+	}
+	else if (stage == Stages::Boss1 ||
+			 stage == Stages::Boss2 ||
+			 stage == Stages::Boss3 ||
+			 stage == Stages::SecretBoss)
+	{
+		SoundManager::GetInstance().PlaySoundGame("BossBgm", true, true);
+	}
 }
 
 void SceneMain::StageClear()

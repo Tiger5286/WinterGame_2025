@@ -86,6 +86,18 @@ void SoundManager::StopSound(const std::string& soundName, bool isFade)
 	}
 }
 
+void SoundManager::StopSoundAll(bool isFade)
+{
+	for (auto& pair : _soundMap)
+	{
+		pair.second.fadeState = SoundFadeState::FadeOut;
+		if (!isFade)
+		{
+			pair.second.fadeFrame = 0;
+		}
+	}
+}
+
 void SoundManager::DeleteSoundAll()
 {
 	for (const auto& pair : _soundMap)
