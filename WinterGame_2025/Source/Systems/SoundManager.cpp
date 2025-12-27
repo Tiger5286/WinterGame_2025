@@ -15,6 +15,7 @@ void SoundManager::LoadSound(const std::string& soundName, const std::string& fi
 	int soundHandle = LoadSoundMem(filePath.c_str());
 	_soundMap[soundName].first = soundHandle;
 	_soundMap[soundName].second = type;
+	ChangeVolumeSoundMem(type == SoundType::BGM ? _bgmVolume : _seVolume, soundHandle);
 }
 
 void SoundManager::PlaySoundGame(const std::string& soundName, bool isLoop)
