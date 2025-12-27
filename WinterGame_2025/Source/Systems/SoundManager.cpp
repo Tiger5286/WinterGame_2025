@@ -32,10 +32,25 @@ void SoundManager::DeleteSoundAll()
 	_soundMap.clear();
 }
 
-void SoundManager::ChangeSoundVolume(const std::string& soundName, int volume)
+void SoundManager::ChangeVolume(SoundType type, int volume)
 {
-	int handle = _soundMap[soundName].first;
-	ChangeVolumeSoundMem(volume, handle);
+	switch (type)
+	{
+	case SoundType::BGM:
+		_bgmVolume = volume;
+		break;
+	case SoundType::SE:
+		_seVolume = volume;
+		break;
+	}
+
+	for (const auto& pair : _soundMap)
+	{
+		if (pair.second.second == type)
+		{
+			ChangeVolumeSoundMem(volume, pair.second.first);
+		}
+	}
 }
 
 SoundManager& SoundManager::GetInstance()

@@ -34,13 +34,27 @@ public:
 	/// </summary>
 	void DeleteSoundAll();
 
-	void ChangeSoundVolume(const std::string& soundName, int volume);
+	/// <summary>
+	/// 音量を調整する
+	/// </summary>
+	/// <param name="type">調整する音の種類</param>
+	/// <param name="volume">音量</param>
+	void ChangeVolume(SoundType type, int volume);
+
+	// 音量取得関数
+	int GetBGMVolume() const { return _bgmVolume; }
+	int GetSEVolume() const { return _seVolume; }
 
 private:
 	SoundManager();
 	SoundManager(const SoundManager& sm) = delete;
 	void operator=(const SoundManager& sm) = delete;
 
+	// 音声ファイルマップ <音声名, <音声ハンドル, 音の種類>>
 	std::map<std::string, std::pair<int,SoundType>> _soundMap;
+
+	// 音量(0~255)
+	int _bgmVolume = 255;
+	int _seVolume = 255;
 };
 
