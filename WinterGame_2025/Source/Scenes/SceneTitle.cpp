@@ -5,6 +5,7 @@
 #include "DebugScene.h"
 #include "SceneStageSelect.h"
 #include "SceneMain.h"
+#include "SceneOption.h"
 #include "../Game.h"
 #include "../Application.h"
 #include "../Systems/SoundManager.h"
@@ -111,8 +112,7 @@ void SceneTitle::Update(Input& input)
 			}
 			return;
 		case MenuItems::Option:	// オプション
-			// 現状オプションは未実装
-			printfDx("オプションは未実装です\n");
+			_manager.PushScene(std::make_shared<SceneOption>(_manager));
 			break;
 		case MenuItems::Exit:	// 終了
 			Application::GetInstance().RequestExit();
