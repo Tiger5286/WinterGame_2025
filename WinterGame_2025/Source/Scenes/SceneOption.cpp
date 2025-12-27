@@ -2,6 +2,7 @@
 #include "../Game.h"
 #include "Dxlib.h"
 #include "../Systems/Input.h"
+#include "../Systems/SoundManager.h"
 #include "SceneManager.h"
 
 namespace
@@ -18,6 +19,7 @@ namespace
 SceneOption::SceneOption(SceneManager& manager):
 	SceneBase(manager)
 {
+	_bgmVolume = SoundManager::GetInstance().GetBGMVolume();
 }
 
 SceneOption::~SceneOption()
@@ -34,6 +36,24 @@ void SceneOption::Update(Input& input)
 	{
 		_manager.PopScene();
 	}
+	if (input.IsPressed("left"))
+	{
+		_bgmVolume -= 2;
+		if (_bgmVolume < 0)
+		{
+			_bgmVolume = 0;
+		}
+		SoundManager::GetInstance().ChangeVolume(SoundType::BGM, _bgmVolume);
+	}
+	if (input.IsPressed("right"))
+	{
+		_bgmVolume += 2;
+		if (_bgmVolume > 255)
+		{
+			_bgmVolume = 255;
+		}
+		SoundManager::GetInstance().ChangeVolume(SoundType::BGM, _bgmVolume);
+	}
 }
 
 void SceneOption::Draw()
@@ -46,4 +66,8 @@ void SceneOption::Draw()
 	// 音量バー
 	DrawLine(GlobalConstants::kScreenWidth / 2 - kSoundVolumeBarWidth / 2, GlobalConstants::kScreenHeight / 2,
 		GlobalConstants::kScreenWidth / 2 + kSoundVolumeBarWidth / 2, GlobalConstants::kScreenHeight / 2, 0xffffff, 3);
+	// 音量バーの現在値
+	DrawCircle(GlobalConstants::kScreenWidth / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
+		GlobalConstants::kScreenHeight / 2, 10, 0xff0000, true);
+
 }
