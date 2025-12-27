@@ -1,5 +1,6 @@
 #include "ScenePause.h"
 #include "SceneManager.h"
+#include "SceneOption.h"
 #include "../Systems/Input.h"
 #include "Dxlib.h"
 #include "../Game.h"
@@ -14,12 +15,17 @@ ScenePause::ScenePause(SceneManager& manager,Stages playingStage) :
 	_menuList =
 	{
 		"ゲームに戻る",
+		"オプション",
 		"ステージセレクトに戻る"
 	};
 
 	// 各メニュー項目の実行内容
 	_execTable["ゲームに戻る"] = [this]() {
 		_manager.PopScene();
+		return;
+		};
+	_execTable["オプション"] = [this]() {
+		_manager.PushScene(std::make_shared<SceneOption>(_manager));
 		return;
 		};
 	_execTable["ステージセレクトに戻る"] = [this]() {
