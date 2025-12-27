@@ -13,7 +13,12 @@ namespace
 	constexpr int kWindowWidth = GlobalConstants::kScreenWidth / 2;
 	constexpr int kWindowHeight = GlobalConstants::kScreenHeight / 2;
 
+	// 音量バーの幅と太さ
 	constexpr int kSoundVolumeBarWidth = 500;
+	constexpr int kSoundVolumeBarThickness = 3;
+	// 現在の音量を表す円
+	constexpr int kSoundVolumeCircleRadius = 10;
+	constexpr int kSoundVolumeCircleOutlineRadius = 12;
 }
 
 SceneOption::SceneOption(SceneManager& manager):
@@ -65,9 +70,11 @@ void SceneOption::Draw()
 
 	// 音量バー
 	DrawLine(GlobalConstants::kScreenWidth / 2 - kSoundVolumeBarWidth / 2, GlobalConstants::kScreenHeight / 2,
-		GlobalConstants::kScreenWidth / 2 + kSoundVolumeBarWidth / 2, GlobalConstants::kScreenHeight / 2, 0xffffff, 3);
+		GlobalConstants::kScreenWidth / 2 + kSoundVolumeBarWidth / 2, GlobalConstants::kScreenHeight / 2, 0xffffff, kSoundVolumeBarThickness);
 	// 音量バーの現在値
 	DrawCircle(GlobalConstants::kScreenWidth / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
-		GlobalConstants::kScreenHeight / 2, 10, 0xff0000, true);
+		GlobalConstants::kScreenHeight / 2, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
+	DrawCircle(GlobalConstants::kScreenWidth / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
+		GlobalConstants::kScreenHeight / 2, kSoundVolumeCircleRadius, 0xff0000, true);
 
 }
