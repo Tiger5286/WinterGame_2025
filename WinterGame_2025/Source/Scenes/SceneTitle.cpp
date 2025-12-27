@@ -7,6 +7,7 @@
 #include "SceneMain.h"
 #include "../Game.h"
 #include "../Application.h"
+#include "../Systems/SoundManager.h"
 #include <cassert>
 #include <string>
 #include <cmath>
@@ -50,6 +51,9 @@ SceneTitle::SceneTitle(SceneManager& manager):
 	}
 
 	_fontHandle = CreateFontToHandle(GlobalConstants::kMainFontName, 64, -1, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);
+
+	SoundManager::GetInstance().LoadSound("TitleBGM", "data/Sounds/TitleBGM.ogg",SoundType::BGM);
+	SoundManager::GetInstance().PlaySoundGame("TitleBGM", true);
 }
 
 SceneTitle::~SceneTitle()
@@ -62,6 +66,8 @@ SceneTitle::~SceneTitle()
 	}
 
 	DeleteFontToHandle(_fontHandle);
+
+	SoundManager::GetInstance().DeleteSoundAll();
 }
 
 void SceneTitle::Init()
