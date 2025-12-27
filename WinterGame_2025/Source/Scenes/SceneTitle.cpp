@@ -54,7 +54,7 @@ SceneTitle::SceneTitle(SceneManager& manager):
 	_fontHandle = CreateFontToHandle(GlobalConstants::kMainFontName, 64, -1, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);
 
 	SoundManager::GetInstance().LoadSound("TitleBGM", "data/Sounds/TitleBGM.ogg",SoundType::BGM);
-	SoundManager::GetInstance().PlaySoundGame("TitleBGM", true);
+	SoundManager::GetInstance().PlaySoundGame("TitleBGM", true,true);
 }
 
 SceneTitle::~SceneTitle()
@@ -101,6 +101,7 @@ void SceneTitle::Update(Input& input)
 		switch (static_cast<MenuItems>(_selectIndex))
 		{
 		case MenuItems::Start:	// スタート
+			SoundManager::GetInstance().StopSound("TitleBGM", true);	// BGM停止
 			// 全てのステージが未クリアなら直接シーンメインへ
 			if (_manager.GetSaveData().clearedStage == static_cast<int>(Stages::None))
 			{
