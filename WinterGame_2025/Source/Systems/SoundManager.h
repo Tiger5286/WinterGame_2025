@@ -61,6 +61,12 @@ public:
 	void DeleteSoundAll();
 
 	/// <summary>
+	/// 読み込んだ音声ファイルを開放し、登録を解除する
+	/// </summary>
+	/// <param name="soundName">解放する音の登録名</param>
+	void DeleteSound(const std::string& soundName);
+
+	/// <summary>
 	/// 音量を調整する
 	/// </summary>
 	/// <param name="type">調整する音の種類</param>

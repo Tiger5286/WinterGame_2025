@@ -1,5 +1,6 @@
 #include "SoundManager.h"
 #include "Dxlib.h"
+#include <cassert>
 
 namespace
 {
@@ -59,6 +60,7 @@ void SoundManager::Update()
 void SoundManager::LoadSound(const std::string& soundName, const std::string& filePath, SoundType type)
 {
 	int soundHandle = LoadSoundMem(filePath.c_str());
+	assert(soundHandle != -1 && "サウンドを正しくロードできませんでした。");
 	_soundMap[soundName].handle = soundHandle;
 	_soundMap[soundName].type = type;
 	ChangeVolumeSoundMem(type == SoundType::BGM ? _bgmVolume : _seVolume, soundHandle);
@@ -91,6 +93,12 @@ void SoundManager::DeleteSoundAll()
 		DeleteSoundMem(pair.second.handle);
 	}
 	_soundMap.clear();
+}
+
+void SoundManager::DeleteSound(const std::string& soundName)
+{
+	DeleteSoundMem(_soundMap[soundName].handle);
+	_soundMap.erase(soundName);
 }
 
 void SoundManager::ChangeVolume(SoundType type, int volume)
