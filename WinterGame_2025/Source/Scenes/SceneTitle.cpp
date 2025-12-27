@@ -13,7 +13,17 @@
 
 namespace
 {
-	constexpr int kTitleOffsetY = -200;
+	// タイトルUI関連
+	constexpr int kTitlePosY = GlobalConstants::kScreenHeight / 2 - 200;
+	constexpr float kTitleSinRate = 0.02f;
+	constexpr float kTitleSinScale = 15.0f;
+
+	// メニューUI関連
+	constexpr int kUiPosYTop = GlobalConstants::kScreenHeight / 2 + 170;
+	constexpr int kUiPosYInterval = 130;
+	constexpr float kUiScaleUnselected = 0.8f;
+	constexpr float kUiSinRate = 0.05f;
+	constexpr float kUiSinScale = 0.05f;
 }
 
 enum class MenuItems
@@ -122,27 +132,24 @@ void SceneTitle::Draw()
 	DrawExtendGraph(0, 0, screenW, screenH, _bgHandle, false);
 
 	// タイトル描画
-	float sin = sinf(_frame * 0.02f);
-	DrawRotaGraph(screenW / 2, (screenH / 2 + sin * 15) + kTitleOffsetY, 1.0, 0.0, _titleHandle, true);
+	float sin = sinf(_frame * kTitleSinRate);
+	DrawRotaGraph(screenW / 2, (sin * kTitleSinScale) + kTitlePosY, 1.0, 0.0, _titleHandle, true);
 	
 	// メニュー描画
 	for (int i = 0; i < static_cast<int>(MenuItems::Num); i++)
 	{
-		int y = screenH / 2 + 170 + i * 130;
+		int y = kUiPosYTop + i * kUiPosYInterval;
 		// 未選択のメニューは暗く、小さく表示
-		float scale = 0.8f;
+		float scale = kUiScaleUnselected;
 		SetDrawBright(128, 128, 128);
-		if (_selectIndex == i)	// 選択中のメニューは明るく、大きく表示
+		if (_selectIndex == i)	// 選択中のメニュー
 		{
-			scale = 1.0f;
-			SetDrawBright(255, 255, 255);
+			scale = 1.0f + kUiSinScale * sinf(_frame * kUiSinRate);	// 選択中のメニューを少し拡大縮小させる
+			SetDrawBright(255, 255, 255);	// 選択中のメニューは明るく表示
 		}
 		DrawRotaGraph(screenW / 2, y, scale, 0.0, _menuHandles[i], true);
 		SetDrawBright(255, 255, 255);	// 明るさを元に戻す
 	}
-	//DrawRotaGraph(screenW / 2, screenH - 400, 1.0, 0.0, _startButtonH, true);
-	//DrawRotaGraph(screenW / 2, screenH - 275, 1.0, 0.0, _optionButtonH, true);
-	//DrawRotaGraph(screenW / 2, screenH - 150, 1.0, 0.0, _exitButtonH, true);
 
 #ifdef _DEBUG
 	DrawString(0, 0, "SceneTitle", 0xffffff);
