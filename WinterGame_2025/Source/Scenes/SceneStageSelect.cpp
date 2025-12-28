@@ -148,12 +148,14 @@ void SceneStageSelect::Update(Input& input)
 		}
 		if (input.IsTriggered("decision"))
 		{
+			SoundManager::GetInstance().StopSound("StageSelectBGM", true);
 			auto& stageName = _stageList[_selectIndex];
 			_execTable[stageName]();
 			return;
 		}
 		if (input.IsTriggered("back"))
 		{
+			SoundManager::GetInstance().StopSound("StageSelectBGM", true);
 			_manager.ChangeSceneWithFade(std::make_shared<SceneTitle>(_manager), FadeState::NormalFadeIn);
 			return;
 		}
