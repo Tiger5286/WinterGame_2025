@@ -1,6 +1,7 @@
 #include "SceneGameOver.h"
 #include "Dxlib.h"
 #include "../Systems/Input.h"
+#include "../Systems/SoundManager.h"
 #include "../Game.h"
 
 #include "SceneManager.h"
@@ -20,12 +21,16 @@ SceneGameOver::SceneGameOver(SceneManager& manager,Stages playedStage,int score)
 	_gameOverHandle = LoadGraph("data/UI/GameOver.png");
 	assert(_gameOverHandle != -1);
 
+	SoundManager::GetInstance().LoadSound("GameOverBgm", "data/Sounds/BGM/GameOverBGM.ogg", SoundType::BGM);
+	SoundManager::GetInstance().PlaySoundGame("GameOverBgm", true, true);
 }
 
 SceneGameOver::~SceneGameOver()
 {
 	DeleteGraph(_bgHandle);
 	DeleteGraph(_gameOverHandle);
+
+	SoundManager::GetInstance().DeleteSound("GameOverBgm");
 }
 
 void SceneGameOver::Init()
@@ -40,6 +45,7 @@ void SceneGameOver::Update(Input& input)
 	}
 	if (input.IsTriggered("decision"))
 	{
+		SoundManager::GetInstance().StopSound("GameOverBgm", true);
 		if (_isSelectRestart)
 		{
 			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _playedStage,_score),FadeState::CircleFadeIn);

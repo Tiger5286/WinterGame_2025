@@ -1,5 +1,6 @@
 #include "SceneClear.h"
 #include "../Systems/Input.h"
+#include "../Systems/SoundManager.h"
 #include "Dxlib.h"
 #include "SceneManager.h"
 #include "SceneStageSelect.h"
@@ -22,12 +23,19 @@ SceneClear::SceneClear(SceneManager& manager,int score, Stages clearStage):
 	_isUpdateScore = manager.CheckHighScore(score, selectableStage);
 	// クリア済みステージ登録
 	manager.CheckClearedStage(selectableStage);
+
+	// BGM再生
+	SoundManager::GetInstance().LoadSound("ClearBgm", "data/Sounds/BGM/ClearBGM.ogg", SoundType::BGM);
+	SoundManager::GetInstance().PlaySoundGame("ClearBgm", true, true);
 }
 
 SceneClear::~SceneClear()
 {
 	DeleteGraph(_bgHandle);
 	DeleteGraph(_clearLogoHandle);
+
+	// bgmを解放
+	SoundManager::GetInstance().DeleteSound("ClearBgm");
 }
 
 void SceneClear::Init()
@@ -41,6 +49,7 @@ void SceneClear::Update(Input& input)
 		// スコア表示が最後まで行っていたらステージセレクトへ戻る
 		if (_score == 0 || static_cast<int>(_dispScore) == _score - 1)
 		{
+			SoundManager::GetInstance().StopSound("ClearBgm", true);
 			_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager, _clearStage));
 		}
 		else	// スコア表示が最後まで行っていなかったら最後まで進める
