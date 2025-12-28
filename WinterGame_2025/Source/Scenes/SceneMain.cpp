@@ -396,6 +396,8 @@ void SceneMain::LoadStage(Stages stage)
 	_pClearFlag = std::make_shared<ClearFlag>(Vector2(-10,-10), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
 	_pClearFlag->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());
 
+	// Ä¶’†‚Ì‰¹‚ğ~‚ß‚é
+	SoundManager::GetInstance().StopSoundAll(true);
 	// BGMÄ¶
 	if (stage == Stages::Tutorial ||
 		stage == Stages::Stage1 ||
