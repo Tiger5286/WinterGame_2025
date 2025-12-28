@@ -77,7 +77,16 @@ void SoundManager::PlaySoundGame(const std::string& soundName, bool isLoop, bool
 	int handle = _soundMap[soundName].handle;
 	PlaySoundMem(handle, isLoop ? DX_PLAYTYPE_LOOP : DX_PLAYTYPE_BACK);	// ループするかどうかを決める
 	// フェードして再生するならフェード状態をフェードインにする
-	if (isFade) _soundMap[soundName].fadeState = SoundFadeState::FadeIn;
+	if (isFade)
+	{
+		_soundMap[soundName].fadeState = SoundFadeState::FadeIn;
+		_soundMap[soundName].fadeFrame = 0;
+	}
+	else	// フェードしないなら即再生
+	{
+		_soundMap[soundName].fadeState = SoundFadeState::None;
+		_soundMap[soundName].fadeFrame = kFadeFrame;
+	}
 }
 
 void SoundManager::StopSound(const std::string& soundName, bool isFade)
