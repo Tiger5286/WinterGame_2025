@@ -91,16 +91,17 @@ SceneMain::SceneMain(SceneManager& manager, Stages stage,int score) :
 		assert(_graphHandles.back() != -1);
 	}
 
+	// bgmをロード
 	auto& soundManager = SoundManager::GetInstance();
-	switch (stage)
+	switch (stage)	// ステージに応じてロードするbgmを変える
 	{
 	case Stages::Tutorial:
 		soundManager.LoadSound("StageBgm", "data/Sounds/BGM/TutorialBGM.ogg", SoundType::BGM);
 		break;
 	default:
 		soundManager.LoadSound("StageBgm", "data/Sounds/BGM/StageBGM.ogg", SoundType::BGM);
-		soundManager.LoadSound("BossBgm", "data/Sounds/BGM/BossBGM.ogg", SoundType::BGM);
 	}
+	soundManager.LoadSound("BossBgm", "data/Sounds/BGM/BossBGM.ogg", SoundType::BGM);
 
 	/*ステージのロードと生成*/
 	LoadStage(stage);
@@ -127,7 +128,9 @@ SceneMain::~SceneMain()
 	{
 		DeleteGraph(handle);
 	}
-	SoundManager::GetInstance().StopSoundAll(true);
+	// bgmを解放
+	SoundManager::GetInstance().DeleteSound("StageBgm");
+	SoundManager::GetInstance().DeleteSound("BossBgm");
 }
 
 void SceneMain::Init()
@@ -395,9 +398,7 @@ void SceneMain::LoadStage(Stages stage)
 	// ゴール旗を生成
 	_pClearFlag = std::make_shared<ClearFlag>(Vector2(-10,-10), _pPlayer, _graphHandles[static_cast<int>(Graphs::ClearFlag)]);
 	_pClearFlag->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());
-
-	// 再生中の音を止める
-	SoundManager::GetInstance().StopSoundAll(true);
+	
 	// BGM再生
 	if (stage == Stages::Tutorial ||
 		stage == Stages::Stage1 ||
@@ -412,6 +413,7 @@ void SceneMain::LoadStage(Stages stage)
 			 stage == Stages::Boss3 ||
 			 stage == Stages::SecretBoss)
 	{
+		// ステージbgmを停止する
 		SoundManager::GetInstance().PlaySoundGame("BossBgm", true, true);
 	}
 }
@@ -431,6 +433,7 @@ void SceneMain::StageClear()
 	// 通常ステージならフェードアウトして次のボスステージへ
 	if (isNormalStage)
 	{
+		SoundManager::GetInstance().StopSound("StageBgm", true);
 		if (!_isClearFading)
 		{
 			_isClearFading = true;
@@ -439,6 +442,9 @@ void SceneMain::StageClear()
 	}
 	else if (isBossStage || _nowStage == Stages::Tutorial)	// ボスステージ、またはチュートリアルならクリアシーンへ
 	{
+		// bgmを停止する
+		SoundManager::GetInstance().StopSound("StageBgm", true);
+		SoundManager::GetInstance().StopSound("BossBgm", true);
 		_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager, _score, _nowStage), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
 	}
 	else
