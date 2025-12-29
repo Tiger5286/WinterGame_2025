@@ -11,6 +11,14 @@ public:
 	void Update(Input& input) override;
 	void Draw() override;
 private:
+	void UpdateBgmVolume(Input& input);
+	void UpdateSeVolume(Input& input);
+	void UpdateBack(Input& input);
+
+private:
+	int _selectIndex = 0;
+
 	int _bgmVolume;
+	int _seVolume;
 };
 

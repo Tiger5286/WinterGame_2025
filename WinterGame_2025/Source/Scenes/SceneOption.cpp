@@ -5,6 +5,15 @@
 #include "../Systems/SoundManager.h"
 #include "SceneManager.h"
 
+enum class OptionMenu
+{
+	BgmVolume,
+	SeVolume,
+	Back,
+
+	Num
+};
+
 namespace
 {
 	// ウィンドウサイズと位置
@@ -24,11 +33,16 @@ namespace
 SceneOption::SceneOption(SceneManager& manager):
 	SceneBase(manager)
 {
+	// 音量を取得
 	_bgmVolume = SoundManager::GetInstance().GetBGMVolume();
+	_seVolume = SoundManager::GetInstance().GetSEVolume();
+	// 効果音確認用の音をロード
+	SoundManager::GetInstance().LoadSound("TestSound", "data/Sounds/Player/PlayerShot.mp3", SoundType::SE);
 }
 
 SceneOption::~SceneOption()
 {
+	SoundManager::GetInstance().DeleteSound("TestSound");
 }
 
 void SceneOption::Init()
@@ -37,10 +51,83 @@ void SceneOption::Init()
 
 void SceneOption::Update(Input& input)
 {
+	// 上下ボタンで選択しているインデックスの変更
+	if (input.IsTriggered("down"))
+	{
+		_selectIndex++;
+		if (_selectIndex >= static_cast<int>(OptionMenu::Num))
+		{
+			_selectIndex = 0;
+		}
+	}
+	if (input.IsTriggered("up"))
+	{
+		_selectIndex--;
+		if (_selectIndex < 0)
+		{
+			_selectIndex = static_cast<int>(OptionMenu::Num) - 1;
+		}
+	}
+	// 選択されているインデックスに応じた処理を実行
+	switch (static_cast<OptionMenu>(_selectIndex))
+	{
+	case OptionMenu::BgmVolume:
+		UpdateBgmVolume(input);
+		break;
+	case OptionMenu::SeVolume:
+		UpdateSeVolume(input);
+		break;
+	case OptionMenu::Back:
+		UpdateBack(input);
+		break;
+	}
+
+	// 戻るボタンを押して戻る
 	if (input.IsTriggered("back"))
 	{
 		_manager.PopScene();
 	}
+}
+
+void SceneOption::Draw()
+{
+	constexpr int screenW = GlobalConstants::kScreenWidth;
+	constexpr int screenH = GlobalConstants::kScreenHeight;
+
+	// 半透明黒背景
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+	DrawBox(kWindowLeft, kWindowTop, kWindowLeft + kWindowWidth, kWindowTop + kWindowHeight, 0x000000, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	// bgm音量バー
+	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 - 50,
+		screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 - 50, 0xffffff, kSoundVolumeBarThickness);
+	// bgm音量バーの現在値
+	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
+		screenH / 2 - 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
+	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
+		screenH / 2 - 50, kSoundVolumeCircleRadius, 0xff0000, true);
+
+	// se音量バー
+	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 + 50,
+		screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 + 50, 0xffffff, kSoundVolumeBarThickness);
+	// se音量バーの現在値
+	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth,
+		screenH / 2 + 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
+	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth,
+		screenH / 2 + 50, kSoundVolumeCircleRadius, 0xff0000, true);
+
+	// 戻る
+	DrawString(screenW / 2, screenH / 2 + 150, "戻る", 0xffffff);
+
+#ifdef _DEBUG
+	DrawFormatString(kWindowLeft, kWindowTop, 0xffffff, "_selectIndex:%d", _selectIndex);
+#endif
+}
+
+void SceneOption::UpdateBgmVolume(Input& input)
+{
+	// 左右入力で音量を調整
 	if (input.IsPressed("left"))
 	{
 		_bgmVolume -= 2;
@@ -61,20 +148,41 @@ void SceneOption::Update(Input& input)
 	}
 }
 
-void SceneOption::Draw()
+void SceneOption::UpdateSeVolume(Input& input)
 {
-	// 半透明黒背景
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	DrawBox(kWindowLeft, kWindowTop, kWindowLeft + kWindowWidth, kWindowTop + kWindowHeight, 0x000000, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	// 左右入力で音量を調整
+	if (input.IsPressed("left"))
+	{
+		_seVolume -= 2;
+		if (_seVolume < 0)
+		{
+			_seVolume = 0;
+		}
+		SoundManager::GetInstance().ChangeVolume(SoundType::SE, _seVolume);
+	}
+	if (input.IsReleased("left"))
+	{
+		SoundManager::GetInstance().PlaySoundGame("TestSound");
+	}
+	if (input.IsPressed("right"))
+	{
+		_seVolume += 2;
+		if (_seVolume > 255)
+		{
+			_seVolume = 255;
+		}
+		SoundManager::GetInstance().ChangeVolume(SoundType::SE, _seVolume);
+	}
+	if (input.IsReleased("right"))
+	{
+		SoundManager::GetInstance().PlaySoundGame("TestSound");
+	}
+}
 
-	// 音量バー
-	DrawLine(GlobalConstants::kScreenWidth / 2 - kSoundVolumeBarWidth / 2, GlobalConstants::kScreenHeight / 2,
-		GlobalConstants::kScreenWidth / 2 + kSoundVolumeBarWidth / 2, GlobalConstants::kScreenHeight / 2, 0xffffff, kSoundVolumeBarThickness);
-	// 音量バーの現在値
-	DrawCircle(GlobalConstants::kScreenWidth / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
-		GlobalConstants::kScreenHeight / 2, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
-	DrawCircle(GlobalConstants::kScreenWidth / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
-		GlobalConstants::kScreenHeight / 2, kSoundVolumeCircleRadius, 0xff0000, true);
-
+void SceneOption::UpdateBack(Input& input)
+{
+	if (input.IsTriggered("decision"))
+	{
+		_manager.PopScene();
+	}
 }
