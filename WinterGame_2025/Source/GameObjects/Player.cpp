@@ -8,6 +8,7 @@
 #include "../Game.h"
 #include "../Systems/BulletManager.h"
 #include "../Systems/EffectManager.h"
+#include "../Systems/SoundManager.h"
 
 namespace
 {
@@ -163,10 +164,16 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_ChargeParticleAnim.Init(_chargeParticleH, 0, kChargeParticleFrameSize, kChargeParticleAnimNum, kOneAnimFrame, kDrawScale);
 
 	_nowAnim = _idleAnim;
+
+	// 音ロード
+	SoundManager::GetInstance().LoadSound("Shot", "data/Sounds/Player/PlayerShot.mp3", SoundType::SE);
+	SoundManager::GetInstance().LoadSound("ChargeShot", "data/Sounds/Player/PlayerChargeShot.mp3", SoundType::SE);
 }
 
 Player::~Player()
 {
+	SoundManager::GetInstance().DeleteSound("Shot");
+	SoundManager::GetInstance().DeleteSound("ChargeShot");
 }
 
 void Player::Init()
@@ -618,6 +625,7 @@ void Player::Shot()
 	{	
 		_bulletManager.Shot(BulletType::NormalShot, _shotPos, _isTurn);
 		_shotFlashAnim.SetFirst();
+		SoundManager::GetInstance().PlaySoundGame("Shot");
 	}
 }
 
@@ -633,11 +641,13 @@ void Player::ChargeShot()
 		{	// チャージが完了しているならチャージショットを発射
 			_bulletManager.Shot(BulletType::ChargeShot, _shotPos, _isTurn);
 			_chargeShotFlashAnim.SetFirst();
+			SoundManager::GetInstance().PlaySoundGame("ChargeShot");
 		}
 		else if (_chargeFrame > kChargeEffectTime)
 		{	// チャージが未完了なら通常弾を発射
 			_bulletManager.Shot(BulletType::NormalShot, _shotPos, _isTurn);
 			_shotFlashAnim.SetFirst();
+			SoundManager::GetInstance().PlaySoundGame("Shot");
 		}
 		_chargeFrame = 0;
 	}
