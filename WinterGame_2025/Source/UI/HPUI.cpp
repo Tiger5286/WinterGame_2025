@@ -41,6 +41,10 @@ HPUI::HPUI(int handle,const int playerMaxHp, const Player& player, const std::ve
 	_player(player),
 	_pEnemies(pEnemies)
 {
+	// プレイヤーのhpからバーの長さを出す
+	_barLength = static_cast<float>(_player.GetHp()) / static_cast<float>(_playerMaxHp) * kMaxBarLength;
+	// 表示バーの長さを現在のプレイヤーのhpと同じにする
+	_drawBarLength = _barLength;
 }
 
 HPUI::~HPUI()

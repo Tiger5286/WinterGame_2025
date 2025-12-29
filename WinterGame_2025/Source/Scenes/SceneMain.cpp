@@ -225,7 +225,7 @@ void SceneMain::Update(Input& input)
 	{	// フェードアウトが完了したら次のステージをロードしてフェードイン開始
 		if (_manager.GetFadeState() == FadeState::NoFade)
 		{
-			LoadStage(static_cast<Stages>(static_cast<int>(_nowStage) + 1));
+			LoadStage(static_cast<Stages>(static_cast<int>(_nowStage) + 1),_pPlayer->GetHp());
 			_manager.SetFadeCirclePos(_pPlayer->GetPos() - _pCamera->GetDrawOffset());
 			_manager.StartFadeIn(FadeState::CircleFadeIn);
 			_isClearFading = false;
@@ -300,7 +300,7 @@ void SceneMain::Draw()
 #endif // _DEBUG
 }
 
-void SceneMain::LoadStage(Stages stage)
+void SceneMain::LoadStage(Stages stage, int playerHp)
 {
 	// 現在のステージを設定
 	_nowStage = stage;
@@ -364,8 +364,8 @@ void SceneMain::LoadStage(Stages stage)
 	_pBulletManager = std::make_shared<BulletManager>(mapSize);
 
 	// プレイヤー
-	_pPlayer = std::make_shared<Player>(_graphHandles[static_cast<int>(Graphs::Player)], _graphHandles[static_cast<int>(Graphs::PlayerWhite)], _graphHandles[static_cast<int>(Graphs::ChargeParticle)], _graphHandles[static_cast<int>(Graphs::PlayerShot)], _graphHandles[static_cast<int>(Graphs::ChargeShot)], *_pBulletManager,*_pEffectManager);
-	_pPlayer->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());		// プレイヤーの位置を設定]
+	_pPlayer = std::make_shared<Player>(_graphHandles[static_cast<int>(Graphs::Player)], _graphHandles[static_cast<int>(Graphs::PlayerWhite)], _graphHandles[static_cast<int>(Graphs::ChargeParticle)], _graphHandles[static_cast<int>(Graphs::PlayerShot)], _graphHandles[static_cast<int>(Graphs::ChargeShot)], *_pBulletManager,*_pEffectManager,playerHp);
+	_pPlayer->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());		// プレイヤーの位置を設定
 	_pBulletManager->SetPlayer(_pPlayer);	// プレイヤー情報を弾マネージャーに渡す
 
 	// 背景

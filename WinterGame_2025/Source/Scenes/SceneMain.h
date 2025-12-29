@@ -59,7 +59,7 @@ public:
 	/// ステージを読み込む
 	/// </summary>
 	/// <param name="stage">読み込むステージ</param>
-	void LoadStage(Stages stage);
+	void LoadStage(Stages stage,int playerHp = 5);
 
 	/// <summary>
 	/// スコアを加算する

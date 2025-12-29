@@ -110,13 +110,13 @@ enum class PlayerAnimType : int
 	Fall = 8
 };
 
-Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH, BulletManager& bulletManager,EffectManager& effectManager):
+Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH, BulletManager& bulletManager,EffectManager& effectManager, int firstHp):
 	_playerH(playerH),
 	_playerWhiteH(playerWhiteH),
 	_chargeParticleH(chargeParticleH),
 	_shotH(shotH),
 	_chargeShotH(chargeShotH),
-	_hp(kMaxHp),
+	_hp(firstHp),
 	_isAlive(true),
 	_jumpFrame(0),
 	_isJumping(false),

@@ -12,7 +12,7 @@ class EffectManager;
 class Player : public GameObject
 {
 public:
-	Player(int playerH,int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH, BulletManager& bulletManager,EffectManager& effectManager);
+	Player(int playerH,int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH, BulletManager& bulletManager,EffectManager& effectManager,int firstHp = 5);
 	~Player();
 
 	void Init() override;
