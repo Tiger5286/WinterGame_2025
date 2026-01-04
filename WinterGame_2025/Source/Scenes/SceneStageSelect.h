@@ -18,6 +18,7 @@ public:
 private:
 	int _bgHandle = -1;
 	int _stageUIHandle = -1;
+	std::vector<int> _stageUIHandles;
 
 	int _frame;
 	// UI‚ª‚Ç‚Á‚¿‚ÉˆÚ“®‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO

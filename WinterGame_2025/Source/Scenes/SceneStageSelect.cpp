@@ -26,6 +26,18 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 	_stageUIHandle = LoadGraph("data/UI/StageUI.png");
 	assert(_stageUIHandle != -1);
 
+	std::vector<std::string> stageUIFileNames;
+	stageUIFileNames.push_back("data/UI/TutorialStageUI.png");
+	stageUIFileNames.push_back("data/UI/Stage1UI.png");
+	stageUIFileNames.push_back("data/UI/Stage2UI.png");
+	stageUIFileNames.push_back("data/UI/Stage3UI.png");
+	stageUIFileNames.push_back("data/UI/SecretStageUI.png");
+	for (auto& fileName : stageUIFileNames)
+	{
+		_stageUIHandles.push_back(LoadGraph(fileName.c_str()));
+		assert(_stageUIHandles.back() != -1);
+	}
+
 	auto selectableStage = StageToSelectableStage(playedStage);
 
 	// 選択位置をプレイしたステージに合わせる
@@ -308,6 +320,8 @@ void SceneStageSelect::Draw()
 				screenH / 2 + 200,
 				0xff0000, true);
 		}
+
+		DrawRotaGraph(screenW / 2, screenH / 2, kUIDrawScale, 0.0, _stageUIHandles[_selectIndex], true);
 	}
 
 
