@@ -111,27 +111,6 @@ void SceneOption::Draw()
 		_drawFuncs[i](_selectIndex);
 	}
 
-	//// bgm音量バー
-	//DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 - 50,
-	//	screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 - 50, 0xffffff, kSoundVolumeBarThickness);
-	//// bgm音量バーの現在値
-	//DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
-	//	screenH / 2 - 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
-	//DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
-	//	screenH / 2 - 50, kSoundVolumeCircleRadius, 0xff0000, true);
-
-	//// se音量バー
-	//DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 + 50,
-	//	screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 + 50, 0xffffff, kSoundVolumeBarThickness);
-	//// se音量バーの現在値
-	//DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth,
-	//	screenH / 2 + 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
-	//DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth,
-	//	screenH / 2 + 50, kSoundVolumeCircleRadius, 0xff0000, true);
-
-	// 戻る
-	//DrawString(screenW / 2, screenH / 2 + 150, "戻る", 0xffffff);
-
 #ifdef _DEBUG
 	DrawFormatString(kWindowLeft, kWindowTop, 0xffffff, "_selectIndex:%d", _selectIndex);
 #endif
@@ -215,6 +194,8 @@ void SceneOption::DrawBgmVolume(int nowIndex)
 		screenH / 2 - 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
 	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
 		screenH / 2 - 50, kSoundVolumeCircleRadius, color, true);
+	// テキスト
+	DrawString(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 - 82, "BGM", 0xffffff);
 }
 
 void SceneOption::DrawSeVolume(int nowIndex)
@@ -233,6 +214,8 @@ void SceneOption::DrawSeVolume(int nowIndex)
 		screenH / 2 + 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
 	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth,
 		screenH / 2 + 50, kSoundVolumeCircleRadius, color, true);
+	// テキスト
+	DrawString(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 + 18, "SE", 0xffffff);
 }
 
 void SceneOption::DrawBack(int nowIndex)
