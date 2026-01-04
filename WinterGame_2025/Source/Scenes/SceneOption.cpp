@@ -5,15 +5,6 @@
 #include "../Systems/SoundManager.h"
 #include "SceneManager.h"
 
-enum class OptionMenu
-{
-	BgmVolume,
-	SeVolume,
-	Back,
-
-	Num
-};
-
 namespace
 {
 	// ウィンドウサイズと位置
@@ -33,6 +24,21 @@ namespace
 SceneOption::SceneOption(SceneManager& manager):
 	SceneBase(manager)
 {
+	constexpr int screenW = GlobalConstants::kScreenWidth;
+	constexpr int screenH = GlobalConstants::kScreenHeight;
+
+	// 関数リストの初期化
+	_drawFuncs.resize(static_cast<int>(OptionMenu::Num));
+	_drawFuncs[static_cast<int>(OptionMenu::BgmVolume)] = [this](int nowIndex) {
+		DrawBgmVolume(nowIndex);
+		};
+	_drawFuncs[static_cast<int>(OptionMenu::SeVolume)] = [this](int nowIndex) {
+		DrawSeVolume(nowIndex);
+		};
+	_drawFuncs[static_cast<int>(OptionMenu::Back)] = [this](int nowIndex) {
+		DrawBack(nowIndex);
+		};
+
 	// 音量を取得
 	_bgmVolume = SoundManager::GetInstance().GetBGMVolume();
 	_seVolume = SoundManager::GetInstance().GetSEVolume();
@@ -99,26 +105,32 @@ void SceneOption::Draw()
 	DrawBox(kWindowLeft, kWindowTop, kWindowLeft + kWindowWidth, kWindowTop + kWindowHeight, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	// bgm音量バー
-	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 - 50,
-		screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 - 50, 0xffffff, kSoundVolumeBarThickness);
-	// bgm音量バーの現在値
-	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
-		screenH / 2 - 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
-	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
-		screenH / 2 - 50, kSoundVolumeCircleRadius, 0xff0000, true);
+	// それぞれの要素の描画
+	for (int i = 0; i < static_cast<int>(OptionMenu::Num); i++)
+	{
+		_drawFuncs[i](_selectIndex);
+	}
 
-	// se音量バー
-	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 + 50,
-		screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 + 50, 0xffffff, kSoundVolumeBarThickness);
-	// se音量バーの現在値
-	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth,
-		screenH / 2 + 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
-	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth,
-		screenH / 2 + 50, kSoundVolumeCircleRadius, 0xff0000, true);
+	//// bgm音量バー
+	//DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 - 50,
+	//	screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 - 50, 0xffffff, kSoundVolumeBarThickness);
+	//// bgm音量バーの現在値
+	//DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
+	//	screenH / 2 - 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
+	//DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
+	//	screenH / 2 - 50, kSoundVolumeCircleRadius, 0xff0000, true);
+
+	//// se音量バー
+	//DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 + 50,
+	//	screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 + 50, 0xffffff, kSoundVolumeBarThickness);
+	//// se音量バーの現在値
+	//DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth,
+	//	screenH / 2 + 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
+	//DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth,
+	//	screenH / 2 + 50, kSoundVolumeCircleRadius, 0xff0000, true);
 
 	// 戻る
-	DrawString(screenW / 2, screenH / 2 + 150, "戻る", 0xffffff);
+	//DrawString(screenW / 2, screenH / 2 + 150, "戻る", 0xffffff);
 
 #ifdef _DEBUG
 	DrawFormatString(kWindowLeft, kWindowTop, 0xffffff, "_selectIndex:%d", _selectIndex);
@@ -185,4 +197,51 @@ void SceneOption::UpdateBack(Input& input)
 	{
 		_manager.PopScene();
 	}
+}
+
+void SceneOption::DrawBgmVolume(int nowIndex)
+{
+	constexpr int screenW = GlobalConstants::kScreenWidth;
+	constexpr int screenH = GlobalConstants::kScreenHeight;
+
+	unsigned int color = 0xff0000;
+	if (nowIndex == static_cast<int>(OptionMenu::BgmVolume)) color = 0x00ff00;
+
+	// bgm音量バー
+	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 - 50,
+		screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 - 50, 0xffffff, kSoundVolumeBarThickness);
+	// bgm音量バーの現在値
+	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
+		screenH / 2 - 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
+	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
+		screenH / 2 - 50, kSoundVolumeCircleRadius, color, true);
+}
+
+void SceneOption::DrawSeVolume(int nowIndex)
+{
+	constexpr int screenW = GlobalConstants::kScreenWidth;
+	constexpr int screenH = GlobalConstants::kScreenHeight;
+
+	unsigned int color = 0xff0000;
+	if (nowIndex == static_cast<int>(OptionMenu::SeVolume)) color = 0x00ff00;
+
+	// se音量バー
+	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 + 50,
+		screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 + 50, 0xffffff, kSoundVolumeBarThickness);
+	// se音量バーの現在値
+	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth,
+		screenH / 2 + 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
+	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth,
+		screenH / 2 + 50, kSoundVolumeCircleRadius, color, true);
+}
+
+void SceneOption::DrawBack(int nowIndex)
+{
+	constexpr int screenW = GlobalConstants::kScreenWidth;
+	constexpr int screenH = GlobalConstants::kScreenHeight;
+
+	unsigned int color = 0xffffff;
+	if (nowIndex == static_cast<int>(OptionMenu::Back)) color = 0x00ff00;
+
+	DrawString(screenW / 2, screenH / 2 + 150, "戻る", color);
 }
