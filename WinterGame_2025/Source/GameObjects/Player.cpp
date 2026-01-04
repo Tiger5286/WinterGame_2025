@@ -164,16 +164,10 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_ChargeParticleAnim.Init(_chargeParticleH, 0, kChargeParticleFrameSize, kChargeParticleAnimNum, kOneAnimFrame, kDrawScale);
 
 	_nowAnim = _idleAnim;
-
-	// âπÉçÅ[Éh
-	SoundManager::GetInstance().LoadSound("Shot", "data/Sounds/Player/PlayerShot.mp3", SoundType::SE);
-	SoundManager::GetInstance().LoadSound("ChargeShot", "data/Sounds/Player/PlayerChargeShot.mp3", SoundType::SE);
 }
 
 Player::~Player()
 {
-	SoundManager::GetInstance().DeleteSound("Shot");
-	SoundManager::GetInstance().DeleteSound("ChargeShot");
 }
 
 void Player::Init()

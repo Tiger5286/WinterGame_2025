@@ -102,6 +102,9 @@ SceneMain::SceneMain(SceneManager& manager, Stages stage,int score) :
 		soundManager.LoadSound("StageBgm", "data/Sounds/BGM/StageBGM.ogg", SoundType::BGM);
 	}
 	soundManager.LoadSound("BossBgm", "data/Sounds/BGM/BossBGM.ogg", SoundType::BGM);
+	// 効果音をロード
+	SoundManager::GetInstance().LoadSound("Shot", "data/Sounds/Player/PlayerShot.mp3", SoundType::SE);
+	SoundManager::GetInstance().LoadSound("ChargeShot", "data/Sounds/Player/PlayerChargeShot.mp3", SoundType::SE);
 
 	/*ステージのロードと生成*/
 	LoadStage(stage);
@@ -131,6 +134,9 @@ SceneMain::~SceneMain()
 	// bgmを解放
 	SoundManager::GetInstance().DeleteSound("StageBgm");
 	SoundManager::GetInstance().DeleteSound("BossBgm");
+	// 効果音を解放
+	SoundManager::GetInstance().DeleteSound("Shot");
+	SoundManager::GetInstance().DeleteSound("ChargeShot");
 }
 
 void SceneMain::Init()
