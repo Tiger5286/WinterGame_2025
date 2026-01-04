@@ -17,7 +17,7 @@ public:
 	void Draw() override;
 private:
 	int _bgHandle = -1;
-	int _stageUIHandle = -1;
+	int _emptyStageUIHandle = -1;
 	std::vector<int> _stageUIHandles;
 
 	int _frame;

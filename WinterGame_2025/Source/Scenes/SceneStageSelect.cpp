@@ -23,8 +23,8 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 {
 	_bgHandle = LoadGraph("data/map/bg.png");
 	assert(_bgHandle != -1);
-	_stageUIHandle = LoadGraph("data/UI/StageUI.png");
-	assert(_stageUIHandle != -1);
+	_emptyStageUIHandle = LoadGraph("data/UI/StageUI.png");
+	assert(_emptyStageUIHandle != -1);
 
 	std::vector<std::string> stageUIFileNames;
 	stageUIFileNames.push_back("data/UI/TutorialStageUI.png");
@@ -94,7 +94,7 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 SceneStageSelect::~SceneStageSelect()
 {
 	DeleteGraph(_bgHandle);
-	DeleteGraph(_stageUIHandle);
+	DeleteGraph(_emptyStageUIHandle);
 	SoundManager::GetInstance().DeleteSound("StageSelectBGM");
 }
 
@@ -214,7 +214,7 @@ void SceneStageSelect::Draw()
 
 		if (isSelectExceptFirst)
 		{
-			DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から現れるUI
+			DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から現れるUI
 		}
 		if (isSelectExceptLast)
 		{
@@ -222,15 +222,15 @@ void SceneStageSelect::Draw()
 			{
 				if (_manager.GetSaveData().isReleasedSecretStage)
 				{
-					DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向で消えるUI
+					DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向で消えるUI
 				}
 			}
 			else
 			{
-				DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向で消えるUI
+				DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向で消えるUI
 			}
 		}
-		DrawRotaGraph(screenW / 2 - sidePosX + posX, screenH / 2, kUIDrawScaleHalf + progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から真ん中に向かうUI
+		DrawRotaGraph(screenW / 2 - sidePosX + posX, screenH / 2, kUIDrawScaleHalf + progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から真ん中に向かうUI
 	}
 	else	// 左に移動するとき
 	{
@@ -243,7 +243,7 @@ void SceneStageSelect::Draw()
 
 		if (isSelectExceptFirst)
 		{
-			DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向で消えるUI
+			DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向で消えるUI
 		}
 		if (isSelectExceptLast)
 		{
@@ -251,17 +251,17 @@ void SceneStageSelect::Draw()
 			{							// 隠しステージが解放されている場合のみUIを描画
 				if (_manager.GetSaveData().isReleasedSecretStage)
 				{
-					DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から現れるUI
+					DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から現れるUI
 				}
 			}
 			else	// 隠しステージの前のステージ以外を選択中の時は普通に描画
 			{
-				DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から現れるUI
+				DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から現れるUI
 			}
 		}
-		DrawRotaGraph(screenW / 2 + sidePosX + posX, screenH / 2, kUIDrawScaleHalf + progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 進行方向の反対から真ん中に向かうUI
+		DrawRotaGraph(screenW / 2 + sidePosX + posX, screenH / 2, kUIDrawScaleHalf + progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から真ん中に向かうUI
 	}
-	DrawRotaGraph(screenW / 2 + posX, screenH / 2, kUIDrawScale - progress * kUIDrawScaleHalf, 0.0, _stageUIHandle, true);	// 真ん中から進行方向に向かうUI
+	DrawRotaGraph(screenW / 2 + posX, screenH / 2, kUIDrawScale - progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 真ん中から進行方向に向かうUI
 	
 
 	// UI移動中は描画しない
