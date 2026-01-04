@@ -21,11 +21,13 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 	SceneBase(manager),
 	_frame(kUIControllInterval)
 {
+	// 画像のロード
 	_bgHandle = LoadGraph("data/map/bg.png");
 	assert(_bgHandle != -1);
 	_emptyStageUIHandle = LoadGraph("data/UI/StageUI.png");
 	assert(_emptyStageUIHandle != -1);
 
+	// ステージUIの画像ロード
 	std::vector<std::string> stageUIFileNames;
 	stageUIFileNames.push_back("data/UI/TutorialStageUI.png");
 	stageUIFileNames.push_back("data/UI/Stage1UI.png");
@@ -36,6 +38,19 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 	{
 		_stageUIHandles.push_back(LoadGraph(fileName.c_str()));
 		assert(_stageUIHandles.back() != -1);
+	}
+
+	// ステージ名画像ロード
+	std::vector<std::string> stageNameFileNames;
+	stageNameFileNames.push_back("data/UI/TutorialStageName.png");
+	stageNameFileNames.push_back("data/UI/Stage1Name.png");
+	stageNameFileNames.push_back("data/UI/Stage2Name.png");
+	stageNameFileNames.push_back("data/UI/Stage3Name.png");
+	stageNameFileNames.push_back("data/UI/SecretStageName.png");
+	for (auto& fileName : stageNameFileNames)
+	{
+		_stageNameHandles.push_back(LoadGraph(fileName.c_str()));
+		assert(_stageNameHandles.back() != -1);
 	}
 
 	auto selectableStage = StageToSelectableStage(playedStage);
@@ -270,31 +285,31 @@ void SceneStageSelect::Draw()
 		// ステージ名の描画
 		if (_selectIndex > 0 && _selectIndex < _stageList.size() - 1)		// 最初のステージと最後のステージ以外を選択中の時は選択中、左、右のステージ名を表示
 		{
-			DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
-			DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
+			//DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
+			//DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
 
 			const bool isSelectPenultimate = (_selectIndex == static_cast<int>(SelectableStages::Num) - 3);	// 隠しステージの一つ手前を選択中かどうか
 			if (isSelectPenultimate)	// 隠しステージの一つ手前を選択中の時
 			{	// 隠しステージが解放されている場合のみ右のステージ名を表示
 				if (_manager.GetSaveData().isReleasedSecretStage)
 				{
-					DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+					//DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
 				}
 			}
 			else
 			{
-				DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+				//DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
 			}
 		}
 		else if (_selectIndex == 0)	// 最初のステージを選択中のときは選択中と右のステージ名を表示
 		{
-			DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
-			DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+			//DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
+			//DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
 		}
 		else if (_selectIndex == _stageList.size() - 1)	// 最後のステージを選択中のときは選択中と左のステージ名を表示
 		{
-			DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
-			DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
+			//DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
+			//DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
 		}
 
 		// ハイスコアの描画
@@ -321,7 +336,10 @@ void SceneStageSelect::Draw()
 				0xff0000, true);
 		}
 
+		// ステージアイコンの描画
 		DrawRotaGraph(screenW / 2, screenH / 2, kUIDrawScale, 0.0, _stageUIHandles[_selectIndex], true);
+		// ステージ名の描画
+		DrawRotaGraph(screenW / 2, screenH / 2-250, 0.7, 0.0, _stageNameHandles[_selectIndex], true);
 	}
 
 
