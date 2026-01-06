@@ -21,5 +21,6 @@ private:
 	std::map<std::string, std::function<void()>> _execTable;	// メニュー名と実行関数の対応表
 
 	int _tempFontHandle = -1;
+	int _numberTextHandle = -1;
 };
 

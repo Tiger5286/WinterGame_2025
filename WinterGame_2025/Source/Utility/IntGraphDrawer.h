@@ -5,11 +5,9 @@ public:
 	IntGraphDrawer();
 	~IntGraphDrawer();
 
-	void Draw(int value);
+	void Draw(int x,int y, float scale, int handle, int value);
 private:
 	int CountDigits(int value);
-
-private:
-	int _handle;
+	int PickOutDigit(int value, int digit);
 };
 

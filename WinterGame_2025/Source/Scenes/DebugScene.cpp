@@ -9,6 +9,8 @@
 #include "SceneStageSelect.h"
 #include <cassert>
 
+#include "../Utility/IntGraphDrawer.h"
+
 DebugScene::DebugScene(SceneManager& manager):
 	SceneBase(manager),
 	_selectIndex(0)
@@ -30,11 +32,14 @@ DebugScene::DebugScene(SceneManager& manager):
 
 	_tempFontHandle = CreateFontToHandle(GlobalConstants::kMainFontName, 48, -1, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);
 	assert(_tempFontHandle != -1);
+	_numberTextHandle = LoadGraph("data/UI/NumberText.png");
+	assert(_numberTextHandle != -1);
 }
 
 DebugScene::~DebugScene()
 {
 	DeleteFontToHandle(_tempFontHandle);
+	DeleteGraph(_numberTextHandle);
 }
 
 void DebugScene::Init()
@@ -77,6 +82,7 @@ void DebugScene::Update(Input& input)
 
 void DebugScene::Draw()
 {
+	// ”wŒi‚Ì•`‰æ
 	DrawBox(0, 0, 1920, 1080, 0x444444, true);
 
 	DrawString(0, 0, "DebugScene", 0xffffff);
@@ -93,4 +99,7 @@ void DebugScene::Draw()
 	}
 
 	DrawStringToHandle(300, 300, "ƒeƒXƒg—p•¶Žš—ñ‚Å‚·", 0x000000, _tempFontHandle, 0xffffff);
+
+	IntGraphDrawer temp;
+	temp.Draw(100, 700, 0.8f, _numberTextHandle, 9358484);
 }
