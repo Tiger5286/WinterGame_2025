@@ -345,7 +345,16 @@ void SceneStageSelect::Draw()
 		//}
 
 		// ステージアイコンの描画
-		DrawRotaGraph(screenW / 2, screenH / 2, kUIDrawScale, 0.0, _stageUIHandles[_selectIndex], true);
+		if (_selectIndex == _manager.GetSaveData().clearedStage)
+		{
+			// 未クリアのステージアイコン
+			DrawRotaGraph(screenW / 2, screenH / 2, kUIDrawScale, 0.0, _stageShadowUIHandles[_selectIndex], true);
+		}
+		else
+		{
+			// 通常のステージアイコン
+			DrawRotaGraph(screenW / 2, screenH / 2, kUIDrawScale, 0.0, _stageUIHandles[_selectIndex], true);
+		}
 		// ステージ名の描画
 		DrawRotaGraph(screenW / 2, screenH / 2 - 250, 0.7, 0.0, _stageNameHandles[_selectIndex], true);
 		// ハイスコアの描画
