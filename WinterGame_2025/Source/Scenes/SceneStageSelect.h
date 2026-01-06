@@ -19,7 +19,10 @@ private:
 	int _bgHandle = -1;
 	int _emptyStageUIHandle = -1;
 	std::vector<int> _stageUIHandles;
+	std::vector<int> _stageShadowUIHandles;
 	std::vector<int> _stageNameHandles;
+	int _numberGraphHandle = -1;
+	int _highScoreTextHandle = -1;
 
 	int _frame;
 	// UI‚ª‚Ç‚Á‚¿‚ÉˆÚ“®‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO

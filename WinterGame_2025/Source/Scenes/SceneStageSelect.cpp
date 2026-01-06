@@ -7,6 +7,7 @@
 #include "DebugScene.h"
 #include "../Game.h"
 #include "../Systems/SoundManager.h"
+#include "../Utility/IntGraphDrawer.h"
 #include <cassert>
 
 namespace
@@ -40,6 +41,20 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 		assert(_stageUIHandles.back() != -1);
 	}
 
+	// ステージ影UI画像ロード
+	std::vector<std::string> stageShadowUIFileNames;
+	stageShadowUIFileNames.push_back("None");
+	stageShadowUIFileNames.push_back("data/UI/Stage1ShadowUI.png");
+	stageShadowUIFileNames.push_back("data/UI/Stage2ShadowUI.png");
+	stageShadowUIFileNames.push_back("data/UI/Stage3ShadowUI.png");
+	stageShadowUIFileNames.push_back("data/UI/SecretStageShadowUI.png");
+	for (auto& fileName : stageShadowUIFileNames)
+	{
+		_stageShadowUIHandles.push_back(LoadGraph(fileName.c_str()));
+		if (_stageShadowUIHandles.size() == 1) continue;	// 最初の要素はNoneなのでスキップ
+		assert(_stageShadowUIHandles.back() != -1);
+	}
+
 	// ステージ名画像ロード
 	std::vector<std::string> stageNameFileNames;
 	stageNameFileNames.push_back("data/UI/TutorialStageName.png");
@@ -52,6 +67,11 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 		_stageNameHandles.push_back(LoadGraph(fileName.c_str()));
 		assert(_stageNameHandles.back() != -1);
 	}
+
+	// 数字画像のロード
+	_numberGraphHandle = LoadGraph("data/UI/NumberText.png");
+	// ハイスコアのテキスト画像ロード
+	_highScoreTextHandle = LoadGraph("data/UI/HighScoreText.png");
 
 	auto selectableStage = StageToSelectableStage(playedStage);
 
@@ -102,14 +122,26 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 		_frame = -kUIControllInterval;
 	}
 
+	// bgmのロードと再生
 	SoundManager::GetInstance().LoadSound("StageSelectBGM", "data/Sounds/BGM/StageSelectBGM.ogg", SoundType::BGM);
 	SoundManager::GetInstance().PlaySoundGame("StageSelectBGM", true, true);
 }
 
 SceneStageSelect::~SceneStageSelect()
 {
+	// リソースの解放
 	DeleteGraph(_bgHandle);
 	DeleteGraph(_emptyStageUIHandle);
+	DeleteGraph(_numberGraphHandle);
+	DeleteGraph(_highScoreTextHandle);
+	for (auto& handle : _stageUIHandles)
+	{
+		DeleteGraph(handle);
+	}
+	for (auto& handle : _stageNameHandles)
+	{
+		DeleteGraph(handle);
+	}
 	SoundManager::GetInstance().DeleteSound("StageSelectBGM");
 }
 
@@ -282,39 +314,46 @@ void SceneStageSelect::Draw()
 	// UI移動中は描画しない
 	if (_frame == kUIControllInterval || _frame == -kUIControllInterval)
 	{
+		//// ステージ名の描画
+		//if (_selectIndex > 0 && _selectIndex < _stageList.size() - 1)		// 最初のステージと最後のステージ以外を選択中の時は選択中、左、右のステージ名を表示
+		//{
+		//	//DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
+		//	//DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
+		//
+		//	const bool isSelectPenultimate = (_selectIndex == static_cast<int>(SelectableStages::Num) - 3);	// 隠しステージの一つ手前を選択中かどうか
+		//	if (isSelectPenultimate)	// 隠しステージの一つ手前を選択中の時
+		//	{	// 隠しステージが解放されている場合のみ右のステージ名を表示
+		//		if (_manager.GetSaveData().isReleasedSecretStage)
+		//		{
+		//			//DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+		//		}
+		//	}
+		//	else
+		//	{
+		//		//DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+		//	}
+		//}
+		//else if (_selectIndex == 0)	// 最初のステージを選択中のときは選択中と右のステージ名を表示
+		//{
+		//	//DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
+		//	//DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
+		//}
+		//else if (_selectIndex == _stageList.size() - 1)	// 最後のステージを選択中のときは選択中と左のステージ名を表示
+		//{
+		//	//DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
+		//	//DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
+		//}
+
+		// ステージアイコンの描画
+		DrawRotaGraph(screenW / 2, screenH / 2, kUIDrawScale, 0.0, _stageUIHandles[_selectIndex], true);
 		// ステージ名の描画
-		if (_selectIndex > 0 && _selectIndex < _stageList.size() - 1)		// 最初のステージと最後のステージ以外を選択中の時は選択中、左、右のステージ名を表示
-		{
-			//DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
-			//DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
-
-			const bool isSelectPenultimate = (_selectIndex == static_cast<int>(SelectableStages::Num) - 3);	// 隠しステージの一つ手前を選択中かどうか
-			if (isSelectPenultimate)	// 隠しステージの一つ手前を選択中の時
-			{	// 隠しステージが解放されている場合のみ右のステージ名を表示
-				if (_manager.GetSaveData().isReleasedSecretStage)
-				{
-					//DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
-				}
-			}
-			else
-			{
-				//DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
-			}
-		}
-		else if (_selectIndex == 0)	// 最初のステージを選択中のときは選択中と右のステージ名を表示
-		{
-			//DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
-			//DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
-		}
-		else if (_selectIndex == _stageList.size() - 1)	// 最後のステージを選択中のときは選択中と左のステージ名を表示
-		{
-			//DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
-			//DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
-		}
-
+		DrawRotaGraph(screenW / 2, screenH / 2 - 250, 0.7, 0.0, _stageNameHandles[_selectIndex], true);
 		// ハイスコアの描画
-		DrawFormatString(screenW / 2, 300, 0xffffff, "High Score : %d", _manager.GetSaveData().highScores[_selectIndex + 1]);
-
+		DrawRotaGraph(screenW / 2 - 100, screenH / 2 + 250, 0.5, 0.0, _highScoreTextHandle, true);
+		IntGraphDrawer temp;
+		temp.Draw(screenW / 2+20, screenH / 2 + 220,0.5f,
+			_numberGraphHandle, _manager.GetSaveData().highScores[_selectIndex + 1]);
+		//DrawFormatString(screenW / 2, 300, 0xffffff, "High Score : %d", _manager.GetSaveData().highScores[_selectIndex + 1]);
 
 		// 隠しステージが解放されていない場合、隠しステージの前のステージを選択中の時に青い四角を描画
 		if (!_manager.GetSaveData().isReleasedSecretStage &&
@@ -335,11 +374,6 @@ void SceneStageSelect::Draw()
 				screenH / 2 + 200,
 				0xff0000, true);
 		}
-
-		// ステージアイコンの描画
-		DrawRotaGraph(screenW / 2, screenH / 2, kUIDrawScale, 0.0, _stageUIHandles[_selectIndex], true);
-		// ステージ名の描画
-		DrawRotaGraph(screenW / 2, screenH / 2-250, 0.7, 0.0, _stageNameHandles[_selectIndex], true);
 	}
 
 
