@@ -26,6 +26,9 @@ namespace
 	constexpr float kUiScaleUnselected = 0.8f;
 	constexpr float kUiSinRate = 0.05f;
 	constexpr float kUiSinScale = 0.05f;
+
+	// スタート選択後の待機フレーム数
+	constexpr int kStartWaitFrame = 20;
 }
 
 enum class MenuItems
@@ -101,8 +104,8 @@ void SceneTitle::Update(Input& input)
 		switch (static_cast<MenuItems>(_selectIndex))
 		{
 		case MenuItems::Start:	// スタート
-			OnTriggeredStart();
-			return;
+			_isTriggeredStart = true;
+			break;
 		case MenuItems::Option:	// オプション
 			// オプションシーンをプッシュ
 			_manager.PushScene(std::make_shared<SceneOption>(_manager));
@@ -114,6 +117,15 @@ void SceneTitle::Update(Input& input)
 		}
 	}
 
+	// スタートが選択されてから実行される処理
+	if (_isTriggeredStart)
+	{
+		_frameCount++;
+		if (_frameCount > kStartWaitFrame)
+		{
+			OnTriggeredStart();
+		}
+	}
 
 #ifdef _DEBUG
 	if (input.IsTriggered("select"))
@@ -146,9 +158,14 @@ void SceneTitle::Draw()
 		{
 			scale = 1.0f + kUiSinScale * sinf(_frame * kUiSinRate);	// 選択中のメニューを少し拡大縮小させる
 			SetDrawBright(255, 255, 255);	// 選択中のメニューは明るく表示
+			if (_frameCount % 4 >= 2)
+			{
+				SetDrawBlendMode(DX_BLENDMODE_ADD, 0);	// 選択中のメニューを点滅させる
+			}
 		}
 		DrawRotaGraph(screenW / 2, y, scale, 0.0, _menuHandles[i], true);
 		SetDrawBright(255, 255, 255);	// 明るさを元に戻す
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);	// ブレンドモードを元に戻す
 	}
 
 #ifdef _DEBUG

@@ -12,7 +12,7 @@ public:
 	void Draw() override;
 private:
 	/// <summary>
-	/// ゲームスタートが選択されたときの処理
+	/// 
 	/// </summary>
 	void OnTriggeredStart();
 
@@ -30,5 +30,10 @@ private:
 
 	// 選択中のメニューインデックス
 	int _selectIndex = 0;
+
+	// スタートボタンが押されたかどうか
+	bool _isTriggeredStart = false;
+	// フレームカウント
+	int _frameCount = 0;
 };
 
