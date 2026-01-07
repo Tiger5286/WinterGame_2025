@@ -120,10 +120,12 @@ void SceneTitle::Update(Input& input)
 	// スタートが選択されてから実行される処理
 	if (_isTriggeredStart)
 	{
+		// 少し待機してからシーン遷移
 		_frameCount++;
 		if (_frameCount > kStartWaitFrame)
 		{
 			OnTriggeredStart();
+			return;
 		}
 	}
 
@@ -158,6 +160,7 @@ void SceneTitle::Draw()
 		{
 			scale = 1.0f + kUiSinScale * sinf(_frame * kUiSinRate);	// 選択中のメニューを少し拡大縮小させる
 			SetDrawBright(255, 255, 255);	// 選択中のメニューは明るく表示
+			// 選択確定後は点滅させる
 			if (_frameCount % 4 >= 2)
 			{
 				SetDrawBlendMode(DX_BLENDMODE_ADD, 0);	// 選択中のメニューを点滅させる
