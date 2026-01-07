@@ -11,6 +11,12 @@ public:
 	void Update(Input& input) override;
 	void Draw() override;
 private:
+	/// <summary>
+	/// ゲームスタートが選択されたときの処理
+	/// </summary>
+	void OnTriggeredStart();
+
+private:
 	int _frame = 0;
 	// 画像ハンドル
 	int _bgHandle = -1;

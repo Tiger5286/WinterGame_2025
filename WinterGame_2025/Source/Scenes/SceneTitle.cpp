@@ -101,21 +101,14 @@ void SceneTitle::Update(Input& input)
 		switch (static_cast<MenuItems>(_selectIndex))
 		{
 		case MenuItems::Start:	// スタート
-			SoundManager::GetInstance().StopSound("TitleBGM", true);	// BGM停止
-			// 全てのステージが未クリアなら直接シーンメインへ
-			if (_manager.GetSaveData().clearedStage == static_cast<int>(Stages::None))
-			{
-				_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Tutorial), FadeState::CircleFadeIn, FadeState::NormalFadeOut);
-			}
-			else	// そうでないならステージセレクトへ
-			{
-				_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager));
-			}
+			OnTriggeredStart();
 			return;
 		case MenuItems::Option:	// オプション
+			// オプションシーンをプッシュ
 			_manager.PushScene(std::make_shared<SceneOption>(_manager));
 			break;
 		case MenuItems::Exit:	// 終了
+			// アプリケーション終了をリクエスト
 			Application::GetInstance().RequestExit();
 			break;
 		}
@@ -161,4 +154,18 @@ void SceneTitle::Draw()
 #ifdef _DEBUG
 	DrawString(0, 0, "SceneTitle", 0xffffff);
 #endif
+}
+
+void SceneTitle::OnTriggeredStart()
+{
+	SoundManager::GetInstance().StopSound("TitleBGM", true);	// BGM停止
+	// 全てのステージが未クリアなら直接シーンメインへ
+	if (_manager.GetSaveData().clearedStage == static_cast<int>(Stages::None))
+	{
+		_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, Stages::Tutorial), FadeState::CircleFadeIn, FadeState::NormalFadeOut);
+	}
+	else	// そうでないならステージセレクトへ
+	{
+		_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager));
+	}
 }
