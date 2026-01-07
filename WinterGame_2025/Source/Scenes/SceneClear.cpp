@@ -24,7 +24,7 @@ SceneClear::SceneClear(SceneManager& manager,int score, Stages clearStage):
 	assert(_numberTextHandle != -1);
 	_updateHighScoreHandle = LoadGraph("data/UI/UpdateHighScoreText.png");
 	assert(_updateHighScoreHandle != -1);
-	_backTextHandle = LoadGraph("data/UI/BackToStageSelectText.png");
+	_backTextHandle = LoadGraph("data/UI/BackToStageSelectTextWithAButton.png");
 	assert(_backTextHandle != -1);
 
 	// ハイスコア更新
@@ -103,7 +103,6 @@ void SceneClear::Draw()
 	// ハイスコアを更新していたらそのメッセージを表示
 	if (_isUpdateScore)
 	{
-		DrawString(screenW / 2, 150, "High score update!", 0xffffff);
 		DrawRotaGraph(screenW / 2 + 300, 150, 0.8, 0.2, _updateHighScoreHandle, true);
 	}
 
