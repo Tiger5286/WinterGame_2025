@@ -43,7 +43,7 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 
 	// ステージ影UI画像ロード
 	std::vector<std::string> stageShadowUIFileNames;
-	stageShadowUIFileNames.push_back("None");
+	stageShadowUIFileNames.push_back("data/UI/TutorialStageShadowUI.png");
 	stageShadowUIFileNames.push_back("data/UI/Stage1ShadowUI.png");
 	stageShadowUIFileNames.push_back("data/UI/Stage2ShadowUI.png");
 	stageShadowUIFileNames.push_back("data/UI/Stage3ShadowUI.png");
@@ -51,7 +51,6 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 	for (auto& fileName : stageShadowUIFileNames)
 	{
 		_stageShadowUIHandles.push_back(LoadGraph(fileName.c_str()));
-		if (_stageShadowUIHandles.size() == 1) continue;	// 最初の要素はNoneなのでスキップ
 		assert(_stageShadowUIHandles.back() != -1);
 	}
 
