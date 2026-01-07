@@ -20,6 +20,10 @@ SceneGameOver::SceneGameOver(SceneManager& manager,Stages playedStage,int score)
 	assert(_bgHandle != -1);
 	_gameOverHandle = LoadGraph("data/UI/GameOver.png");
 	assert(_gameOverHandle != -1);
+	_restartTextHandle = LoadGraph("data/UI/RestartText.png");
+	assert(_restartTextHandle != -1);
+	_backTextHandle = LoadGraph("data/UI/BackToStageSelectText.png");
+	assert(_backTextHandle != -1);
 
 	SoundManager::GetInstance().LoadSound("GameOverBgm", "data/Sounds/BGM/GameOverBGM.ogg", SoundType::BGM);
 	SoundManager::GetInstance().PlaySoundGame("GameOverBgm", true, true);
@@ -29,6 +33,8 @@ SceneGameOver::~SceneGameOver()
 {
 	DeleteGraph(_bgHandle);
 	DeleteGraph(_gameOverHandle);
+	DeleteGraph(_restartTextHandle);
+	DeleteGraph(_backTextHandle);
 
 	SoundManager::GetInstance().DeleteSound("GameOverBgm");
 }
@@ -68,10 +74,16 @@ void SceneGameOver::Draw()
 
 	if (_isSelectRestart)
 	{
-		DrawString(screenW / 2, screenH / 2 + 300, "-> Restart\nBack to Stage Select",0xffffff);
+		DrawRotaGraph(screenW / 2, screenH / 2 + 300, 0.6, 0.0, _restartTextHandle, true);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+		DrawRotaGraph(screenW / 2, screenH / 2 + 400, 0.4, 0.0, _backTextHandle, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 	else
 	{
-		DrawString(screenW / 2, screenH / 2 + 300, "Restart\n-> Back to Stage Select", 0xffffff);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+		DrawRotaGraph(screenW / 2, screenH / 2 + 300, 0.4, 0.0, _restartTextHandle, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		DrawRotaGraph(screenW / 2, screenH / 2 + 400, 0.6, 0.0, _backTextHandle, true);
 	}
 }

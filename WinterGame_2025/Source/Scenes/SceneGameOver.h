@@ -17,6 +17,9 @@ private:
 	int _bgHandle = -1;
 	int _gameOverHandle = -1;
 
+	int _restartTextHandle = -1;
+	int _backTextHandle = -1;
+
 	int _score;
 	bool _isSelectRestart;
 
