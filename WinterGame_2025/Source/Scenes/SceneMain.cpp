@@ -351,7 +351,7 @@ void SceneMain::LoadStage(Stages stage, int playerHp)
 		_pStage->LoadData("data/Stages/Boss3Stage.fmf");
 		break;
 	case Stages::SecretStage:
-		_pStage->LoadData("data/Stages/template.fmf");
+		_pStage->LoadData("data/Stages/SecretStage.fmf");
 		break;
 	case Stages::SecretBoss:
 		_pStage->LoadData("data/Stages/SecretBossStage.fmf");
