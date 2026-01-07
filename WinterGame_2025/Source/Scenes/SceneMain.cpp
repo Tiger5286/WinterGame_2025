@@ -8,6 +8,7 @@
 
 #include "../Utility/Collider.h"
 #include "../Systems/Stage.h"
+#include "../Utility/IntGraphDrawer.h"
 
 #include "SceneManager.h"
 #include "DebugScene.h"
@@ -52,6 +53,8 @@ namespace
 		BossHpUI,
 		Bg,
 		SubBg,
+		ScoreText,
+		NumberText,
 
 		Num
 	};
@@ -70,6 +73,8 @@ namespace
 		"data/UI/BossHpBar.png",
 		"data/Map/Bg.png",
 		"data/Map/subBg.png",
+		"data/UI/ScoreText.png",
+		"data/UI/NumberText.png"
 	};
 
 	// Graphsで定義した画像数とkGraphFileNamesで定義したファイル名の要素数が一致していなかったらエラー
@@ -298,6 +303,12 @@ void SceneMain::Draw()
 	{
 		_pBossHPUI->Draw();
 	}
+
+	// スコアの描画
+	DrawRotaGraph(130, 250, 0.4, 0.0, _graphHandles[static_cast<int>(Graphs::ScoreText)], true);
+	IntGraphDrawer drawer;
+	drawer.Draw(210, 225, 0.4, _graphHandles[static_cast<int>(Graphs::NumberText)], _score);
+
 
 #ifdef _DEBUG
 	DrawString(0,0,"SceneMain",0xffffff);
