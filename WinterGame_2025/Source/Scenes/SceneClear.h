@@ -15,6 +15,12 @@ private:
 	int _bgHandle = -1;
 	int _clearLogoHandle = -1;
 
+	int _scoreTextHandle = -1;
+	int _numberTextHandle = -1;
+
+	int _updateHighScoreHandle = -1;
+	int _backTextHandle = -1;
+
 	const int _score;
 	float _dispScore = 0.0f;
 	bool _isUpdateScore = false;
