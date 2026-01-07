@@ -29,7 +29,7 @@ bool Application::Init()
 #ifdef _DEBUG
 	ChangeWindowMode(true);
 #endif
-	SetMainWindowText("ゲーム名"); // ウインドウのタイトルを設定
+	SetMainWindowText("ブルロボ"); // ウインドウのタイトルを設定
 	SetGraphMode(GlobalConstants::kScreenWidth, GlobalConstants::kScreenHeight, GlobalConstants::kColorBitNum); // 画面サイズと色数を設定
 	if (DxLib_Init() == -1)
 	{
