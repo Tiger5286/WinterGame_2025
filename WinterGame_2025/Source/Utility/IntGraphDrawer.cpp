@@ -17,12 +17,17 @@ IntGraphDrawer::~IntGraphDrawer()
 
 void IntGraphDrawer::Draw(int x, int y, float scale, int handle, int value)
 {
+	// 桁数を計算
 	int digits = CountDigits(value);
+	// 各桁を描画
 	for (int i = 0; i < digits; i++)
 	{
+		// 今描画する桁の数値を取り出す
 		int nowDigit = digits - i;
+		// 取り出した桁の数値を取得
 		int digitValue = PickOutDigit(value, nowDigit);
 
+		// 描画
 		DrawRectRotaGraph(x + (kGraphSize / 2) * scale + i * (kGraphSize * scale),
 			y + (kGraphSize / 2) * scale,
 			0 + digitValue*kGraphSize, 0,
