@@ -42,6 +42,10 @@ SceneClear::~SceneClear()
 {
 	DeleteGraph(_bgHandle);
 	DeleteGraph(_clearLogoHandle);
+	DeleteGraph(_scoreTextHandle);
+	DeleteGraph(_numberTextHandle);
+	DeleteGraph(_updateHighScoreHandle);
+	DeleteGraph(_backTextHandle);
 
 	// bgm‚ð‰ð•ú
 	SoundManager::GetInstance().DeleteSound("ClearBgm");
