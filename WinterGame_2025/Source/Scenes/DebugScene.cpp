@@ -21,7 +21,7 @@ DebugScene::DebugScene(SceneManager& manager):
 		"SceneStageSelect"
 	};
 	_execTable["SceneMain"] = [this]() {
-		_manager.ChangeScene(std::make_shared<SceneMain>(_manager,Stages::Boss1),FadeState::CircleFadeIn);
+		_manager.ChangeScene(std::make_shared<SceneMain>(_manager,Stages::SecretStage),FadeState::CircleFadeIn);
 		};
 	_execTable["SceneTitle"] = [this]() {
 		_manager.ChangeScene(std::make_shared<SceneTitle>(_manager));
