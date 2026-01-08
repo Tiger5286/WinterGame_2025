@@ -40,8 +40,8 @@ namespace
 	constexpr int kScore = 300;
 }
 
-JumpEnemy::JumpEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle) :
-	Enemy(kHp, kScore, pPlayer,pEffectManager,sceneManager),
+JumpEnemy::JumpEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager,ItemManager& itemManager, SceneManager& sceneManager, int handle) :
+	Enemy(kHp, kScore, pPlayer,pEffectManager,itemManager,sceneManager),
 	_handle(handle),
 	_attackCooltime(0),
 	_attackFrame(0),
