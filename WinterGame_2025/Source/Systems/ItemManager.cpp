@@ -87,3 +87,9 @@ void ItemManager::LoadItems(const std::vector<uint16_t>& objectData, Size size)
 		}
 	}
 }
+
+void ItemManager::SummonHealthItem(const Vector2& summonPos)
+{
+	const auto& pos = GameObject::GamePosToChipPos(summonPos);
+	_pItems.push_back(std::make_shared<Item>(pos, ItemType::HealthItem, _pPlayer, _healthItemH));
+}

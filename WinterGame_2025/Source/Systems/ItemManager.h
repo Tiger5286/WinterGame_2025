@@ -18,6 +18,7 @@ public:
 	void Draw(Vector2 offset);
 
 	void LoadItems(const std::vector<uint16_t>& objectData,Size size);
+	void SummonHealthItem(const Vector2& summonPos);
 
 private:
 	int _coinH = -1;
