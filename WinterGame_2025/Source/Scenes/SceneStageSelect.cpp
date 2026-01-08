@@ -249,6 +249,7 @@ void SceneStageSelect::Draw()
 	float progress = abs(static_cast<float>(_frame) / kUIControllInterval);
 	int posX = _frame * kUIMoveScale;
 	int sidePosX = kUIControllInterval * kUIMoveScale;
+	SetDrawBright(128, 128, 128);	// 移動中のUIは暗く表示
 	if (_isUIMoveRight)		// UIが右に移動するとき
 	{
 		// 最初のステージ以外を選択中
@@ -308,7 +309,7 @@ void SceneStageSelect::Draw()
 		DrawRotaGraph(screenW / 2 + sidePosX + posX, screenH / 2, kUIDrawScaleHalf + progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から真ん中に向かうUI
 	}
 	DrawRotaGraph(screenW / 2 + posX, screenH / 2, kUIDrawScale - progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 真ん中から進行方向に向かうUI
-	
+	SetDrawBright(255, 255, 255);	// 明るさを元に戻す
 
 	// UI移動中は描画しない
 	if (_frame == kUIControllInterval || _frame == -kUIControllInterval)
@@ -344,6 +345,7 @@ void SceneStageSelect::Draw()
 		//}
 
 		// ステージアイコンの描画
+		// 選択中のステージアイコン
 		if (_selectIndex == _manager.GetSaveData().clearedStage)
 		{
 			// 未クリアのステージアイコン
@@ -354,6 +356,48 @@ void SceneStageSelect::Draw()
 			// 通常のステージアイコン
 			DrawRotaGraph(screenW / 2, screenH / 2, kUIDrawScale, 0.0, _stageUIHandles[_selectIndex], true);
 		}
+		// 左右のステージアイコンは暗く表示
+		SetDrawBright(128, 128, 128);
+		// 左のステージアイコン
+		if (_selectIndex != 0)	// 一番左以外を選択中
+		{
+			DrawRotaGraph(screenW / 2 - kUIControllInterval * kUIMoveScale, screenH / 2, kUIDrawScaleHalf, 0.0, _stageUIHandles[_selectIndex - 1], true);
+		}
+		// 右のステージアイコン
+		if (_manager.GetSaveData().isReleasedSecretStage)	// 隠しステージを解放している場合
+		{
+			if (_selectIndex != static_cast<int>(SelectableStages::SecretStage) - 1)	// 一番右以外を選択中
+			{
+				// クリアしていないステージアイコンは未クリア用を使う
+				if (_selectIndex + 1 >= _manager.GetSaveData().clearedStage)
+				{
+					DrawRotaGraph(screenW / 2 + kUIControllInterval * kUIMoveScale, screenH / 2, kUIDrawScaleHalf, 0.0, _stageShadowUIHandles[_selectIndex + 1], true);
+				}
+				else
+				{
+					DrawRotaGraph(screenW / 2 + kUIControllInterval * kUIMoveScale, screenH / 2, kUIDrawScaleHalf, 0.0, _stageUIHandles[_selectIndex + 1], true);
+				}
+			}
+		}
+		else	// 隠しステージを解放していない場合
+		{
+			if (_selectIndex != static_cast<int>(SelectableStages::Stage3) - 1)	// 一番右以外を選択中
+			{
+				// クリアしていないステージアイコンは未クリア用を使う
+				if (_selectIndex + 1 >= _manager.GetSaveData().clearedStage)
+				{
+					DrawRotaGraph(screenW / 2 + kUIControllInterval * kUIMoveScale, screenH / 2, kUIDrawScaleHalf, 0.0, _stageShadowUIHandles[_selectIndex + 1], true);
+				}
+				else
+				{
+					DrawRotaGraph(screenW / 2 + kUIControllInterval * kUIMoveScale, screenH / 2, kUIDrawScaleHalf, 0.0, _stageUIHandles[_selectIndex + 1], true);
+				}
+			}
+		}
+
+		// 明るさを元に戻す
+		SetDrawBright(255, 255, 255);
+
 		// ステージ名の描画
 		DrawRotaGraph(screenW / 2, screenH / 2 - 250, 0.7, 0.0, _stageNameHandles[_selectIndex], true);
 		// ハイスコアの描画
