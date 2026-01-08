@@ -19,7 +19,7 @@ enum class WalkBossState
 class WalkBoss : public Enemy
 {
 public:
-	WalkBoss(Vector2 firstPos,std::shared_ptr<Player>pPlayer,std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser,SceneManager& sceneManager, int handle,int barrierH);
+	WalkBoss(Vector2 firstPos,std::shared_ptr<Player>pPlayer,std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser,ItemManager& itemManager,SceneManager& sceneManager, int handle,int barrierH);
 	~WalkBoss();
 
 	void Init() override;

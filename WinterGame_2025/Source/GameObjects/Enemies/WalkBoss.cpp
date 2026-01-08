@@ -73,8 +73,9 @@ namespace
 	constexpr int kAliveTimeBeforeDeath = 210;
 }
 
-WalkBoss::WalkBoss(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser,SceneManager& sceneManager, int handle,int barrierH) :
-	Enemy(kMaxHp, kScore, pPlayer,pEffectManager,sceneManager),
+WalkBoss::WalkBoss(Vector2 firstPos,std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, std::shared_ptr<Camera> pCamera, std::shared_ptr<Gimmick> pLaser,
+				   ItemManager& itemManager,SceneManager& sceneManager, int handle,int barrierH) :
+	Enemy(kMaxHp, kScore, pPlayer,pEffectManager,itemManager,sceneManager),
 	_handle(handle),
 	_barrierH(barrierH),
 	_isTurn(true),
