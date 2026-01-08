@@ -51,6 +51,13 @@ public:
 	/// <returns>ゲーム内座標</returns>
 	static Vector2 ChipPosToGamePos(Vector2 mapChipPos);
 
+	/// <summary>
+	/// ゲーム内座標をマップチップ座標に変換する
+	/// </summary>
+	/// <param name="pos">ゲーム内座標</param>
+	/// <returns>マップチップ座標</returns>
+	static Vector2 GamePosToChipPos(const Vector2& pos);
+
 	void SetPos(Vector2 pos) { _pos = pos; }
 	Vector2 GetPos() { return _pos; }
 

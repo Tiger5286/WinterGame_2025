@@ -90,6 +90,14 @@ Vector2 GameObject::ChipPosToGamePos(Vector2 mapChipPos)
 	return ans;
 }
 
+Vector2 GameObject::GamePosToChipPos(const Vector2& pos)
+{
+	Vector2 ans;
+	ans.x = pos.x / (kMapChipSize * kDrawScale);
+	ans.y = pos.y / (kMapChipSize * kDrawScale);
+	return ans;
+}
+
 
 Vector2 GameObject::GetColliderPos() const
 {
