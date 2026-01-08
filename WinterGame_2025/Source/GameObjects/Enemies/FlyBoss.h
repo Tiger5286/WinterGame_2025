@@ -19,7 +19,7 @@ class FlyBoss :
     public Enemy
 {
 public:
-    FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, EnemyManager& enemyManager,BulletManager& bulletManager, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle, int barrierH);
+    FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, EnemyManager& enemyManager,BulletManager& bulletManager, std::shared_ptr<EffectManager> pEffectManager, ItemManager& itemManager, SceneManager& sceneManager, int handle, int barrierH);
     ~FlyBoss();
 
     void Init() override;

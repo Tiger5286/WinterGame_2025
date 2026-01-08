@@ -71,8 +71,8 @@ namespace
 	constexpr int kAliveTimeBeforeDeath = 210;
 }
 
-FlyBoss::FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, EnemyManager& enemyManager, BulletManager& bulletManager, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle,int barrierH) :
-	Enemy(kHp, kScore, pPlayer, pEffectManager, sceneManager),
+FlyBoss::FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<Camera> pCamera, EnemyManager& enemyManager, BulletManager& bulletManager, std::shared_ptr<EffectManager> pEffectManager, ItemManager& itemManager, SceneManager& sceneManager, int handle,int barrierH) :
+	Enemy(kHp, kScore, pPlayer, pEffectManager, itemManager,sceneManager),
 	_handle(handle),
 	_barrierH(barrierH),
 	_pCamera(pCamera),
