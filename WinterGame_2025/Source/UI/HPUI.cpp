@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "../GameObjects/Player.h"
+#include "../Systems/Map.h"
 #include "../GameObjects/Enemies/Enemy.h"
 
 namespace
@@ -30,14 +31,18 @@ namespace
 
 	// 透明になる領域を余分に確保する量
 	constexpr int kLowAlphaDis = 100;
+
+	// プレイヤーの落下判定の余白
+	constexpr int kPlayerFallDeathHeightMargin = 100;
 }
 
-HPUI::HPUI(int handle,const int playerMaxHp, const Player& player, const std::vector<std::shared_ptr<Enemy>>& pEnemies) :
+HPUI::HPUI(int handle,const int playerMaxHp, const Player& player, const Map& map, const std::vector<std::shared_ptr<Enemy>>& pEnemies) :
 	_handle(handle),
 	_playerMaxHp(playerMaxHp),
 	_barLength(kMaxBarLength),
 	_drawBarLength(kMaxBarLength),
 	_alpha(255),
+	_map(map),
 	_player(player),
 	_pEnemies(pEnemies)
 {
@@ -49,16 +54,24 @@ HPUI::HPUI(int handle,const int playerMaxHp, const Player& player, const std::ve
 
 HPUI::~HPUI()
 {
+	// 実装しない
 }
 
 void HPUI::Init()
 {
+	// 実装しない
 }
 
 void HPUI::Update()
 {
 	// プレイヤーのhpからバーの長さを出す
 	_barLength = static_cast<float>(_player.GetHp()) / static_cast<float>(_playerMaxHp) * kMaxBarLength;
+	// もしプレイヤーが画面外に落下していたら一気にHPを消す
+	if (_player.GetColliderPos().y > _map.GetStageSize().y + kPlayerFallDeathHeightMargin)
+	{
+		_drawBarLength = 0;
+	}
+
 	// バーの長さを徐々に変える
 	if (_drawBarLength > _barLength)
 	{

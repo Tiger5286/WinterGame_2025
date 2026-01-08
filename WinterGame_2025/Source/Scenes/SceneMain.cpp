@@ -401,7 +401,7 @@ void SceneMain::LoadStage(Stages stage, int playerHp)
 	_pEnemyManager->LoadEnemies(_pStage->GetObjectData(), _pStage->GetMapSize());// “G‚Ì¶¬
 
 	// HPUI
-	_pHPUI = std::make_shared<HPUI>(_graphHandles[static_cast<int>(Graphs::HpUI)], _pPlayer->GetMaxHp(), *_pPlayer, _pEnemyManager->GetEnemies());
+	_pHPUI = std::make_shared<HPUI>(_graphHandles[static_cast<int>(Graphs::HpUI)], _pPlayer->GetMaxHp(), *_pPlayer, *_pMap, _pEnemyManager->GetEnemies());
 
 	// ƒ{ƒXHPUI
 	if (stage == Stages::Boss1 || 

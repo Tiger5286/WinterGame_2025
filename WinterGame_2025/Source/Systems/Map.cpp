@@ -118,7 +118,7 @@ int Map::GetStageWidth() const
 	return _mapSize.w * kDrawChipSize;
 }
 
-Vector2 Map::GetStageSize()
+Vector2 Map::GetStageSize() const
 {
 	//return Vector2(_chipNumX * kChipSize * kDrawScale, _chipNumY * kChipSize * kDrawScale);
 	return Vector2(_mapSize.w * kDrawChipSize, _mapSize.h * kDrawChipSize);
