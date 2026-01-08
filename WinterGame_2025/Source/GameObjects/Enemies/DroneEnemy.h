@@ -14,7 +14,7 @@ class DroneEnemy :
     public Enemy
 {
 public:
-    DroneEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer,std::shared_ptr<Camera> pCamera, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle);
+    DroneEnemy(Vector2 firstPos,std::shared_ptr<Player> pPlayer,std::shared_ptr<Camera> pCamera, std::shared_ptr<EffectManager> pEffectManager, ItemManager& itemManager, SceneManager& sceneManager, int handle);
     ~DroneEnemy();
 
     void Init() override;
