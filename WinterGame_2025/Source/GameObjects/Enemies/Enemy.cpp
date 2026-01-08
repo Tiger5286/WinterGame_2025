@@ -9,9 +9,10 @@ namespace
 	constexpr int kDamageFrameMax = 5;
 }
 
-Enemy::Enemy(int hp,int score, std::shared_ptr<Player> pPlayer,std::shared_ptr<EffectManager> pEffectManager,SceneManager& sceneManager) :
+Enemy::Enemy(int hp, int score, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, ItemManager& itemManager, SceneManager& sceneManager) :
 	_hp(hp),
 	_kScore(score),
+	_itemManager(itemManager),
 	_sceneManager(sceneManager),
 	_damageFrame(0),
 	_isHitChargeShot(false),

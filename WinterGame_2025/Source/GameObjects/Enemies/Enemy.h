@@ -10,13 +10,14 @@ enum class EnemyType
 
 class Player;
 class EffectManager;
+class ItemManager;
 class SceneManager;
 class Bullet;
 
 class Enemy : public GameObject
 {
 public:
-	Enemy(int hp, int score, std::shared_ptr<Player> pPlayer,std::shared_ptr<EffectManager> pEffectManager,SceneManager& sceneManager);
+	Enemy(int hp, int score, std::shared_ptr<Player> pPlayer,std::shared_ptr<EffectManager> pEffectManager,ItemManager& itemManager,SceneManager& sceneManager);
 	virtual ~Enemy();
 
 	virtual void Init() override = 0;
@@ -50,6 +51,7 @@ protected:
 	bool _isHitChargeShot;
 	std::shared_ptr<EffectManager> _pEffectManager;
 	std::shared_ptr<Player> _pPlayer;
+	ItemManager& _itemManager;
 	SceneManager& _sceneManager;
 };
 
