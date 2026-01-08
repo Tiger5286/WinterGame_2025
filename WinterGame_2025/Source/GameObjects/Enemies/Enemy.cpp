@@ -3,10 +3,19 @@
 #include "../../Utility/Collider.h"
 #include "../../Scenes/SceneManager.h"
 #include "../Bullet.h"
+#include "../Player.h"
+#include "../../Systems/ItemManager.h"
+#include "Dxlib.h"
 
 namespace
 {
 	constexpr int kDamageFrameMax = 5;
+
+	// プレイヤーのHPがこれ以下なら回復アイテムを出す
+	constexpr int kSummonItemPlayerHp = 2;
+
+	// 回復アイテムを落とす確率(これ分の1)
+	constexpr int kSummonItemProbability = 10;
 }
 
 Enemy::Enemy(int hp, int score, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, ItemManager& itemManager, SceneManager& sceneManager) :
@@ -39,10 +48,17 @@ void Enemy::TakeDamage(int damage,Bullet& bullet)
 	// ダメージを受ける
 	_hp -= damage;
 	_damageFrame = kDamageFrameMax;
-	// 死んだらエフェクトを出す
+	// 死んだら
 	if (_hp <= 0)
 	{
+		// エフェクトを出す
 		_pEffectManager->Create(GetColliderPos(), EffectType::Explosion);
+		// プレイヤーのHPが2以下の時1/10の確率で回復を落とす
+		if (_pPlayer->GetHp() <= kSummonItemPlayerHp && !GetRand(kSummonItemProbability - 1))	// 0から数えるため 1/10 = 0~9
+		{
+			// 回復アイテムを出す
+			_itemManager.SummonHealthItem(_pCollider->GetPos());
+		}
 	}
 	// 通常弾なら消す
 	if (bullet.GetType() == BulletType::NormalShot)
