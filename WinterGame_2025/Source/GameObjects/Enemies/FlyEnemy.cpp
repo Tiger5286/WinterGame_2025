@@ -28,8 +28,8 @@ namespace
 	constexpr int kScore = 200;
 }
 
-FlyEnemy::FlyEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, SceneManager& sceneManager, int handle, FlyEnemyState state):
-	Enemy(kHp, kScore,pPlayer,pEffectManager,sceneManager),
+FlyEnemy::FlyEnemy(Vector2 chipPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, ItemManager& itemManager, SceneManager& sceneManager, int handle, FlyEnemyState state):
+	Enemy(kHp, kScore,pPlayer,pEffectManager,itemManager,sceneManager),
 	_handle(handle),
 	_state(state),
 	_angle(0.0f)
