@@ -68,8 +68,8 @@ namespace
 	constexpr int kAliveTimeBeforeDeath = 210;
 }
 
-HammerBoss::HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, BulletManager& bulletManager, std::shared_ptr<Camera> pCamera, SceneManager& sceneManager, int handle,int _barrierH) :
-	Enemy(kHp, kScore, pPlayer, pEffectManager, sceneManager),
+HammerBoss::HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, BulletManager& bulletManager, std::shared_ptr<Camera> pCamera,ItemManager& itemManager, SceneManager& sceneManager, int handle,int _barrierH) :
+	Enemy(kHp, kScore, pPlayer, pEffectManager,itemManager, sceneManager),
 	_handle(handle),
 	_barrierH(_barrierH),
 	_pCamera(pCamera),

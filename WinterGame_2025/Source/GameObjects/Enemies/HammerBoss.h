@@ -16,7 +16,7 @@ class HammerBoss :
     public Enemy
 {
 public:
-    HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, BulletManager& bulletManager, std::shared_ptr<Camera> pCamera, SceneManager& sceneManager, int handle,int barrierH);
+    HammerBoss(Vector2 firstPos, std::shared_ptr<Player> pPlayer, std::shared_ptr<EffectManager> pEffectManager, BulletManager& bulletManager, std::shared_ptr<Camera> pCamera, ItemManager& itemManager,SceneManager& sceneManager, int handle,int barrierH);
     ~HammerBoss();
 
     void Init() override;
