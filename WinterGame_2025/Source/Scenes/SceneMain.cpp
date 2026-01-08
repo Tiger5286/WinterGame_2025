@@ -397,7 +397,7 @@ void SceneMain::LoadStage(Stages stage, int playerHp)
 	_pItemManager->LoadItems(_pStage->GetObjectData(), _pStage->GetMapSize());	// ƒAƒCƒeƒ€‚Ì¶¬
 
 	// “G
-	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera, _pGimmickManager, _pEffectManager, *_pBulletManager, *this, _manager);
+	_pEnemyManager = std::make_shared<EnemyManager>(_pPlayer, _pMap, _pCamera, _pGimmickManager, _pEffectManager, *_pItemManager, *_pBulletManager, *this, _manager);
 	_pEnemyManager->LoadEnemies(_pStage->GetObjectData(), _pStage->GetMapSize());// “G‚Ì¶¬
 
 	// HPUI

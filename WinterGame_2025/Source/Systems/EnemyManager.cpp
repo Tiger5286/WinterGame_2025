@@ -22,14 +22,17 @@ EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer,
 	std::shared_ptr<Camera> pCamera,
 	std::shared_ptr<GimmickManager> pGimmickManager,
 	std::shared_ptr<EffectManager> pEffectManager,
+	ItemManager& itemManager,
 	BulletManager& bulletManager,
 	SceneMain& sceneMain,
 	SceneManager& sceneManager):
+
 	_pPlayer(pPlayer),
 	_pMap(pMap),
 	_pCamera(pCamera),
 	_pGimmickManager(pGimmickManager),
 	_pEffectManager(pEffectManager),
+	_itemManager(itemManager),
 	_bulletManager(bulletManager),
 	_sceneMain(sceneMain),
 	_sceneManager(sceneManager)
