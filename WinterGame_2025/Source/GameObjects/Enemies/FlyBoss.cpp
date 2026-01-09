@@ -81,7 +81,7 @@ FlyBoss::FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<C
 {
 	_nowAnim.Init(_handle, 0, Vector2(kGraphSize, kGraphSize), kAnimNum, kOneAnimFrame, kDrawScale);
 	_pos = ChipPosToGamePos(pos);
-	_pCollider = std::make_shared<CircleCollider>(_pos, kColliderRadius);
+	_pCollider = std::make_shared<CircleCollider>(_pos, static_cast<float>(kColliderRadius));
 
 	_barrierAnim.Init(_barrierH, 0, Vector2(kBarrierGraphSize, kBarrierGraphSize), kBarrierAnimNum, kBarrierOneAnimFrame, kBarrierDrawScale);
 }

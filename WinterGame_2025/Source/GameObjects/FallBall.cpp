@@ -20,7 +20,7 @@ FallBall::FallBall(std::shared_ptr<Player> pPlayer, Vector2 mapSize, int handle)
 	_kMapSize(mapSize)
 {
 	_nowAnim.Init(_handle, 0, Vector2(kGraphSize, kGraphSize), kAnimNum, kOneAnimFrame, kDrawScale);
-	_pCollider = std::make_shared<CircleCollider>(_pos, kColliderRadius);
+	_pCollider = std::make_shared<CircleCollider>(_pos, static_cast<float>(kColliderRadius));
 }
 
 FallBall::~FallBall()
