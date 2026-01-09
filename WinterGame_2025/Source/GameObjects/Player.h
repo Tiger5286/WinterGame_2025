@@ -32,7 +32,7 @@ public:
 	int GetHp() const { return _hp; }
 	int GetMaxHp() const;
 	const int& GetHpRef() const { return _hp; }
-	const Vector2& GetDrawPos() const;
+	Vector2 GetDrawPos() const;
 	/// <summary>
 	/// ƒvƒŒƒCƒ„[‚ğ‰ñ•œ‚³‚¹‚é
 	/// </summary>

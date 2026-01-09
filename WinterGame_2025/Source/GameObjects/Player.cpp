@@ -434,7 +434,7 @@ int Player::GetMaxHp() const
 	return kMaxHp;
 }
 
-const Vector2& Player::GetDrawPos() const
+Vector2 Player::GetDrawPos() const
 {
 	return GetColliderPos() - _drawOffset;
 }
