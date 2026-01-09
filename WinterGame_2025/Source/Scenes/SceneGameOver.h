@@ -14,15 +14,19 @@ public:
 	void Update(Input& input);
 	void Draw();
 private:
-	int _bgHandle = -1;
-	int _gameOverHandle = -1;
+	/*画像ハンドル*/
+	int _bgHandle = -1;	// 背景
+	int _gameOverHandle = -1;	// ロゴ
+	
+	int _restartTextHandle = -1;	// 再挑戦テキストハンドル
+	int _backTextHandle = -1;	// 戻るテキストハンドル
 
-	int _restartTextHandle = -1;
-	int _backTextHandle = -1;
+	int _score;	// スコア保存用
+	bool _isSelectRestart;	// どっちを選択しているかフラグ
 
-	int _score;
-	bool _isSelectRestart;
+	// 汎用フレームカウント
+	int _frame = 0;
 
-	Stages _playedStage;
+	Stages _playedStage;	// ステージ保存用
 };
 

@@ -10,6 +10,17 @@
 
 #include <cassert>
 
+namespace
+{
+	constexpr float kGameOverGraphScale = 0.7f;
+
+	constexpr float kSelectMenuScale = 0.6f;
+	constexpr float kUnselectMenuScale = 0.4f;
+
+	constexpr int kRestartTextY = GlobalConstants::kScreenHeight / 2 + 300;
+	constexpr int kBackTextY = GlobalConstants::kScreenHeight / 2 + 400;
+}
+
 SceneGameOver::SceneGameOver(SceneManager& manager,Stages playedStage,int score):
 	SceneBase(manager),
 	_isSelectRestart(true),
@@ -45,14 +56,16 @@ void SceneGameOver::Init()
 
 void SceneGameOver::Update(Input& input)
 {
+	// 上下を押して選択しているメニューを変える
 	if (input.IsTriggered("up") || input.IsTriggered("down"))
 	{
 		_isSelectRestart = !_isSelectRestart;
 	}
+	// 決定ボタンを押したとき
 	if (input.IsTriggered("decision"))
 	{
 		SoundManager::GetInstance().StopSound("GameOverBgm", true);
-		if (_isSelectRestart)
+		if (_isSelectRestart)	// リスタートを押したとき
 		{
 			if (IsBossStage(_playedStage))
 			{
@@ -68,7 +81,7 @@ void SceneGameOver::Update(Input& input)
 			}
 			
 		}
-		else
+		else	// 戻るを押したとき
 		{
 			auto selectableStage = StageToSelectableStage(_playedStage);
 			_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager, _playedStage));
@@ -81,21 +94,28 @@ void SceneGameOver::Draw()
 	constexpr int screenW = GlobalConstants::kScreenWidth;
 	constexpr int screenH = GlobalConstants::kScreenHeight;
 
+	// 背景の描画
 	DrawExtendGraph(0, 0, screenW, screenH, _bgHandle, false);
-	DrawRotaGraph(screenW / 2, screenH / 2, 0.7, 0.0, _gameOverHandle, true);
+	// ロゴの描画
+	DrawRotaGraph(screenW / 2, screenH / 2, kGameOverGraphScale, 0.0, _gameOverHandle, true);
 
+	// メニューの描画
 	if (_isSelectRestart)
 	{
-		DrawRotaGraph(screenW / 2, screenH / 2 + 300, 0.6, 0.0, _restartTextHandle, true);
+		// 上
+		DrawRotaGraph(screenW / 2, kRestartTextY, kSelectMenuScale, 0.0, _restartTextHandle, true);
+		// 下
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-		DrawRotaGraph(screenW / 2, screenH / 2 + 400, 0.4, 0.0, _backTextHandle, true);
+		DrawRotaGraph(screenW / 2, kBackTextY, kUnselectMenuScale, 0.0, _backTextHandle, true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 	else
 	{
+		// 上
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-		DrawRotaGraph(screenW / 2, screenH / 2 + 300, 0.4, 0.0, _restartTextHandle, true);
+		DrawRotaGraph(screenW / 2, kRestartTextY, kUnselectMenuScale, 0.0, _restartTextHandle, true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-		DrawRotaGraph(screenW / 2, screenH / 2 + 400, 0.6, 0.0, _backTextHandle, true);
+		// 下
+		DrawRotaGraph(screenW / 2, kBackTextY, kSelectMenuScale, 0.0, _backTextHandle, true);
 	}
 }
