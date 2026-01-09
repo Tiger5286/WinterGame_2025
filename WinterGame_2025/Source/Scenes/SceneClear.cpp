@@ -29,9 +29,12 @@ namespace
 	constexpr int kHighScoreTextY = 150;
 	constexpr float kHighScoreTextScale = 0.8f;
 	constexpr float kHighScoreTextAngle = 0.2f;
+	constexpr float kHighScoreTextSinValue = 0.1f;
+	constexpr float kHighScoreTextSinScale = 0.3f;
 	// 戻るテキスト画像の位置とスケール
 	constexpr int kBackTextY = GlobalConstants::kScreenHeight / 2 + 350;
 	constexpr float kBackTextScale = 0.5f;
+	constexpr float kBackTextSinAlphaScale = 0.1f;	// 点滅に使うsinのスケール
 }
 
 SceneClear::SceneClear(SceneManager& manager,int score, Stages clearStage):
@@ -135,11 +138,18 @@ void SceneClear::Draw()
 	// ハイスコアを更新していたらそのメッセージを表示
 	if (_isUpdateScore)
 	{
-		DrawRotaGraph(kHighScoreTextX, kHighScoreTextY, kHighScoreTextScale, kHighScoreTextAngle, _updateHighScoreHandle, true);
+		
+		float sinScale = (sinf(_frame * kHighScoreTextSinValue) + 1) / 2;	// sinの値を-1~1 -> 0 ~ 1に加工
+		sinScale *= kHighScoreTextSinScale;	// 表示したい大きさにスケーリング
+		DrawRotaGraph(kHighScoreTextX, kHighScoreTextY, kHighScoreTextScale + sinScale, kHighScoreTextAngle, _updateHighScoreHandle, true);
 	}
 
 	// ステージセレクトへ戻るの描画
+	// 透明度をsinで変える
+	float sinAlpha = sinf(_frame * kBackTextSinAlphaScale) * 255 / 2;
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, sinAlpha + 255 / 2);
 	DrawRotaGraph(screenW / 2, kBackTextY, kBackTextScale, 0.0, _backTextHandle, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 #ifdef _DEBUG
 	DrawString(0, 0, "SceneClear", 0xffffff);
