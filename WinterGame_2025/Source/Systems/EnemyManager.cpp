@@ -83,8 +83,19 @@ void EnemyManager::Update()
 			// 敵が死んだとき
 			if (!enemy->GetIsAlive())
 			{
-				_sceneMain.AddScore(enemy->GetScore());	// スコア加算
-				//_pEffectManager->Create(enemy->GetColliderPos(), EffectType::Explosion);	// エフェクト生成
+				// ボスステージだったら
+				if (IsBossStage(_sceneMain.GetNowStage()))
+				{
+					if (enemy->GetEnemyType() == EnemyType::Boss)
+					{	// ボスステージならボスのみスコア加算
+						_sceneMain.AddScore(enemy->GetScore());
+					}
+				}
+				else	// 通常ステージなら
+				{
+					_sceneMain.AddScore(enemy->GetScore());	// スコア加算
+				}
+				
 			}
 		}
 	}

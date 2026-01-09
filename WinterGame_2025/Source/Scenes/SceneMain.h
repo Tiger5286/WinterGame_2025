@@ -67,6 +67,8 @@ public:
 	/// <param name="score">â¡éZÇ∑ÇÈÉXÉRÉA</param>
 	void AddScore(int score) { _score += score; }
 
+	const Stages& GetNowStage() const { return _nowStage; }
+
 private:
 
 	/// <summary>
