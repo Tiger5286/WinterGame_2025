@@ -19,6 +19,8 @@ namespace
 
 	constexpr int kRestartTextY = GlobalConstants::kScreenHeight / 2 + 300;
 	constexpr int kBackTextY = GlobalConstants::kScreenHeight / 2 + 400;
+
+	constexpr float kMenuSinScale = 0.05f;
 }
 
 SceneGameOver::SceneGameOver(SceneManager& manager,Stages playedStage,int score):
@@ -56,6 +58,7 @@ void SceneGameOver::Init()
 
 void SceneGameOver::Update(Input& input)
 {
+	_frame++;
 	// 上下を押して選択しているメニューを変える
 	if (input.IsTriggered("up") || input.IsTriggered("down"))
 	{
@@ -100,10 +103,11 @@ void SceneGameOver::Draw()
 	DrawRotaGraph(screenW / 2, screenH / 2, kGameOverGraphScale, 0.0, _gameOverHandle, true);
 
 	// メニューの描画
+	float sinScale = sinf(_frame * kMenuSinScale) * kMenuSinScale;
 	if (_isSelectRestart)
 	{
 		// 上
-		DrawRotaGraph(screenW / 2, kRestartTextY, kSelectMenuScale, 0.0, _restartTextHandle, true);
+		DrawRotaGraph(screenW / 2, kRestartTextY, kSelectMenuScale + sinScale, 0.0, _restartTextHandle, true);
 		// 下
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 		DrawRotaGraph(screenW / 2, kBackTextY, kUnselectMenuScale, 0.0, _backTextHandle, true);
@@ -116,6 +120,6 @@ void SceneGameOver::Draw()
 		DrawRotaGraph(screenW / 2, kRestartTextY, kUnselectMenuScale, 0.0, _restartTextHandle, true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		// 下
-		DrawRotaGraph(screenW / 2, kBackTextY, kSelectMenuScale, 0.0, _backTextHandle, true);
+		DrawRotaGraph(screenW / 2, kBackTextY, kSelectMenuScale + sinScale, 0.0, _backTextHandle, true);
 	}
 }
