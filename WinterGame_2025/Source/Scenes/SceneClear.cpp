@@ -94,14 +94,13 @@ void SceneClear::Draw()
 	// 描画用スコアの計算
 	_dispScore = std::lerp(_dispScore, static_cast<float>(_score), 0.02f);
 	// 描画用スコアを描画
-	IntGraphDrawer drawer;
 	if (_score != 0)
 	{
-		drawer.Draw(screenW / 2 - 30,screenH / 2 + 160,0.7,_numberTextHandle, static_cast<int>(_dispScore) + 1);// なぜか_score-1で止まるので+1して補正
+		IntGraphDrawer::Draw(screenW / 2 - 30,screenH / 2 + 160,0.7,_numberTextHandle, static_cast<int>(_dispScore) + 1);// なぜか_score-1で止まるので+1して補正
 	}
 	else
 	{
-		drawer.Draw(screenW / 2 - 30, screenH / 2 + 160, 0.7, _numberTextHandle, static_cast<int>(_dispScore));// スコアが0のときに+1するとダメなのでそのまま表示
+		IntGraphDrawer::Draw(screenW / 2 - 30, screenH / 2 + 160, 0.7, _numberTextHandle, static_cast<int>(_dispScore));// スコアが0のときに+1するとダメなのでそのまま表示
 	}
 	
 	// ハイスコアを更新していたらそのメッセージを表示

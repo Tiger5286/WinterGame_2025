@@ -100,6 +100,5 @@ void DebugScene::Draw()
 
 	DrawStringToHandle(300, 300, "テスト用文字列です", 0x000000, _tempFontHandle, 0xffffff);
 
-	IntGraphDrawer temp;
-	temp.Draw(100, 700, 0.8f, _numberTextHandle, 9358484);
+	IntGraphDrawer::Draw(100, 700, 0.8f, _numberTextHandle, 9358484);
 }

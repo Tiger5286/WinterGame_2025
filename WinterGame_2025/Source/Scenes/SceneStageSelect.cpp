@@ -402,8 +402,7 @@ void SceneStageSelect::Draw()
 		DrawRotaGraph(screenW / 2, screenH / 2 - 250, 0.7, 0.0, _stageNameHandles[_selectIndex], true);
 		// ハイスコアの描画
 		DrawRotaGraph(screenW / 2 - 100, screenH / 2 + 250, 0.5, 0.0, _highScoreTextHandle, true);
-		IntGraphDrawer temp;
-		temp.Draw(screenW / 2+20, screenH / 2 + 220,0.5f,
+		IntGraphDrawer::Draw(screenW / 2 + 20, screenH / 2 + 220, 0.5f,
 			_numberGraphHandle, _manager.GetSaveData().highScores[_selectIndex + 1]);
 		//DrawFormatString(screenW / 2, 300, 0xffffff, "High Score : %d", _manager.GetSaveData().highScores[_selectIndex + 1]);
 
