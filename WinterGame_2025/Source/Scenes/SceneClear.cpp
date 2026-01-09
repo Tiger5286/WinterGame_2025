@@ -9,6 +9,31 @@
 #include "../Utility/IntGraphDrawer.h"
 #include <cassert>
 
+namespace
+{
+	// クリアロゴ画像の位置とスケール
+	constexpr int kClearLogoY = GlobalConstants::kScreenHeight / 2 - 100;
+	constexpr float kClearLogoScale = 0.75f;
+	// スコアテキスト画像の位置とスケール
+	constexpr int kScoreTextX = GlobalConstants::kScreenWidth / 2 - 170;
+	constexpr int kScoreTextY = GlobalConstants::kScreenHeight / 2 + 200;
+	constexpr float kScoreTextScale = 0.7f;
+	// スコアのカウントアップに使うLerpの値
+	constexpr float kScoreCountUpLerp = 0.02f;
+	// スコアの位置とスケール
+	constexpr int kScoreX = GlobalConstants::kScreenWidth / 2 - 30;
+	constexpr int kScoreY = GlobalConstants::kScreenHeight / 2 + 160;
+	constexpr float kScoreScale = 0.7f;
+	// ハイスコア更新画像の位置とスケールと角度
+	constexpr int kHighScoreTextX = GlobalConstants::kScreenWidth / 2 + 300;
+	constexpr int kHighScoreTextY = 150;
+	constexpr float kHighScoreTextScale = 0.8f;
+	constexpr float kHighScoreTextAngle = 0.2f;
+	// 戻るテキスト画像の位置とスケール
+	constexpr int kBackTextY = GlobalConstants::kScreenHeight / 2 + 350;
+	constexpr float kBackTextScale = 0.5f;
+}
+
 SceneClear::SceneClear(SceneManager& manager,int score, Stages clearStage):
 	SceneBase(manager),
 	_score(score),
@@ -57,6 +82,10 @@ void SceneClear::Init()
 
 void SceneClear::Update(Input& input)
 {
+	// フレームカウントを加算
+	_frame++;
+
+	// 決定を押したとき
 	if (input.IsTriggered("decision"))
 	{
 		// スコア表示が最後まで行っていたらステージセレクトへ戻る
@@ -87,30 +116,30 @@ void SceneClear::Draw()
 	// 背景の描画
 	DrawExtendGraph(0, 0, screenW, screenH, _bgHandle, false);
 	// クリア文字画像の描画
-	DrawRotaGraph(screenW / 2, screenH / 2 - 100, 0.75, 0.0, _clearLogoHandle, true);
+	DrawRotaGraph(screenW / 2, kClearLogoY, kClearLogoScale, 0.0, _clearLogoHandle, true);
 	// スコア文字画像の描画
-	DrawRotaGraph(screenW / 2 - 170, screenH / 2 + 200, 0.7, 0.0, _scoreTextHandle, true);
+	DrawRotaGraph(kScoreTextX, kScoreTextY, kScoreTextScale, 0.0, _scoreTextHandle, true);
 
 	// 描画用スコアの計算
-	_dispScore = std::lerp(_dispScore, static_cast<float>(_score), 0.02f);
+	_dispScore = std::lerp(_dispScore, static_cast<float>(_score), kScoreCountUpLerp);
 	// 描画用スコアを描画
 	if (_score != 0)
 	{
-		IntGraphDrawer::Draw(screenW / 2 - 30,screenH / 2 + 160,0.7f,_numberTextHandle, static_cast<int>(_dispScore) + 1);// なぜか_score-1で止まるので+1して補正
+		IntGraphDrawer::Draw(kScoreX, kScoreY, kScoreScale,_numberTextHandle, static_cast<int>(_dispScore) + 1);// なぜか_score-1で止まるので+1して補正
 	}
 	else
 	{
-		IntGraphDrawer::Draw(screenW / 2 - 30, screenH / 2 + 160, 0.7f, _numberTextHandle, static_cast<int>(_dispScore));// スコアが0のときに+1するとダメなのでそのまま表示
+		IntGraphDrawer::Draw(kScoreX, kScoreY, kScoreScale, _numberTextHandle, static_cast<int>(_dispScore));// スコアが0のときに+1するとダメなのでそのまま表示
 	}
 	
 	// ハイスコアを更新していたらそのメッセージを表示
 	if (_isUpdateScore)
 	{
-		DrawRotaGraph(screenW / 2 + 300, 150, 0.8, 0.2, _updateHighScoreHandle, true);
+		DrawRotaGraph(kHighScoreTextX, kHighScoreTextY, kHighScoreTextScale, kHighScoreTextAngle, _updateHighScoreHandle, true);
 	}
 
 	// ステージセレクトへ戻るの描画
-	DrawRotaGraph(screenW / 2, screenH / 2 + 350, 0.5, 0.0, _backTextHandle, true);
+	DrawRotaGraph(screenW / 2, kBackTextY, kBackTextScale, 0.0, _backTextHandle, true);
 
 #ifdef _DEBUG
 	DrawString(0, 0, "SceneClear", 0xffffff);
