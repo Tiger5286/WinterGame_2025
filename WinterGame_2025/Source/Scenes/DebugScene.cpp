@@ -7,6 +7,9 @@
 #include "SceneMain.h"
 #include "SceneTitle.h"
 #include "SceneStageSelect.h"
+#include "SceneClear.h"
+#include "SceneGameOver.h"
+
 #include <cassert>
 
 #include "../Utility/IntGraphDrawer.h"
@@ -18,7 +21,9 @@ DebugScene::DebugScene(SceneManager& manager):
 	_menuList = {
 		"SceneMain",
 		"SceneTitle",
-		"SceneStageSelect"
+		"SceneStageSelect",
+		"SceneClear",
+		"SceneGameOver"
 	};
 	_execTable["SceneMain"] = [this]() {
 		_manager.ChangeScene(std::make_shared<SceneMain>(_manager,Stages::SecretStage),FadeState::CircleFadeIn);
@@ -28,6 +33,12 @@ DebugScene::DebugScene(SceneManager& manager):
 		};
 	_execTable["SceneStageSelect"] = [this]() {
 		_manager.ChangeScene(std::make_shared<SceneStageSelect>(_manager));
+		};
+	_execTable["SceneClear"] = [this]() {
+		_manager.ChangeScene(std::make_shared<SceneClear>(_manager, 12345, Stages::Tutorial));
+		};
+	_execTable["SceneGameOver"] = [this]() {
+		_manager.ChangeScene(std::make_shared<SceneGameOver>(_manager, Stages::Tutorial, 0));
 		};
 
 	_tempFontHandle = CreateFontToHandle(GlobalConstants::kMainFontName, 48, -1, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);
