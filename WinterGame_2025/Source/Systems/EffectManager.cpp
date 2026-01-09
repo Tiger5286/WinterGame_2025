@@ -6,7 +6,7 @@
 #include "../GameObjects/Effects/Explosion.h"
 #include "../GameObjects/Effects/ItemGet.h"
 #include "../GameObjects/Effects/SmallDust.h"
-#include "../GameObjects/Effects/BigDust.h",
+#include "../GameObjects/Effects/BigDust.h"
 #include "../GameObjects/Effects/ExplosionFloor.h"
 #include "../GameObjects/Effects/ExplosionUpward.h"
 
