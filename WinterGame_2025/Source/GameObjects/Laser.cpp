@@ -6,20 +6,23 @@
 
 namespace
 {
+	// 描画関連
 	constexpr int kGraphSize = 16;
 	constexpr float kDrawScale = 3.0f;
-
 	Vector2 kFrameSize = { kGraphSize,kGraphSize };
-
 	constexpr int kHalfDrawSize = static_cast<int>((kGraphSize * kDrawScale) / 2);
+
+	// 当たり判定関連
 	constexpr int kColliderW = 24;
 
+	// アニメーション関連
 	constexpr int kLauncherAnimIndex = 0;
 	constexpr int kLaserAnimIndex = 1;
 	constexpr int kImpactAnimIndex = 2;
 	constexpr int kAnimNum = 4;
 	constexpr int kOneAnimFrame = 6;
 
+	// 向き関連
 	constexpr float kAngle180 = DX_PI_F;
 }
 
@@ -29,15 +32,19 @@ Laser::Laser(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, int l
 	_laserLength(laserLength),
 	_isDownward(isDownward)
 {
+	// 初期位置設定
 	_pos = ChipPosToGamePos(chipPos);
-	_pCollider = std::make_shared<BoxCollider>(_pos, Vector2(24.0f, static_cast<float>(_laserLength * GlobalConstants::kDrawChipSize)));
+	// 当たり判定生成
+	_pCollider = std::make_shared<BoxCollider>(_pos, Vector2(static_cast<float>(kColliderW), static_cast<float>(_laserLength * GlobalConstants::kDrawChipSize)));
+	// 当たり判定位置調整
 	float laserOffsetY = static_cast<float>(_laserLength) / 2 * GlobalConstants::kDrawChipSize - GlobalConstants::kDrawChipSizeHalf;
 	_isDownward ? _pCollider->SetPos(Vector2(_pos.x, _pos.y + laserOffsetY)) : _pCollider->SetPos(Vector2(_pos.x, _pos.y - laserOffsetY));
-	
 
+	// アニメーション初期化
 	_launcherAnim.Init(_handle, kLauncherAnimIndex, kFrameSize, kAnimNum, kOneAnimFrame, kDrawScale);
 	_laserAnim.Init(_handle, kLaserAnimIndex, kFrameSize, kAnimNum, kOneAnimFrame, kDrawScale);
 	_impactAnim.Init(_handle, kImpactAnimIndex, kFrameSize, kAnimNum, kOneAnimFrame, kDrawScale);
+	// 向き調整
 	if (!_isDownward)
 	{
 		_launcherAnim.SetRotate(kAngle180);
@@ -48,10 +55,12 @@ Laser::Laser(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, int l
 
 Laser::~Laser()
 {
+	// 何もしない
 }
 
 void Laser::Init()
 {
+	// 何もしない
 }
 
 void Laser::Update(Map& map)
@@ -67,9 +76,6 @@ void Laser::Update()
 		_pPlayer->TakeDamage();
 	}
 
-	float laserOffsetY = static_cast<float>(_laserLength) / 2 * GlobalConstants::kDrawChipSize - GlobalConstants::kDrawChipSizeHalf;
-	_isDownward ? _pCollider->SetPos(Vector2(_pos.x, _pos.y + laserOffsetY)) : _pCollider->SetPos(Vector2(_pos.x, _pos.y - laserOffsetY));
-
 	// アニメーション更新
 	_launcherAnim.Update();
 	_laserAnim.Update();
@@ -82,7 +88,6 @@ void Laser::Draw(Vector2 offset)
 	// レーザーを描画
 	for (int i = 0; i < _laserLength; i++)	// レーザーの長さ分ループ
 	{
-		//drawPos.y = GRAPH_SIZE * DRAW_SCALE * i;
 		Vector2 tempDrawPos = drawPos;
 		_isDownward ? tempDrawPos.y += kGraphSize * kDrawScale * i : tempDrawPos.y -= kGraphSize * kDrawScale * i;
 		if (i == 0)	// レーザーの発射口部分

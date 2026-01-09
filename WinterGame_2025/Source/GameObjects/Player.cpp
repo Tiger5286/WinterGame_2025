@@ -87,6 +87,8 @@ namespace
 	// 射撃関連
 	constexpr int kChargeEffectTime = 30;		// チャージエフェクトが出始める時間
 	constexpr int kChargeTimeMax = 90;	// 最大チャージ時間
+	constexpr int kShotFlashOffset = 30;	// マズルフラッシュの表示位置オフセットX
+	constexpr int kChargeShotFlashOffset = 20;	// チャージショットのマズルフラッシュの表示位置オフセットX
 
 	// 体力
 	constexpr int kMaxHp = 5;
@@ -342,8 +344,6 @@ void Player::Draw(Vector2 offset)
 	SetDrawBright(255, 255, 255);	// 元の色に戻す
 
 	// マズルフラッシュの描画
-	constexpr int shotFlashOffset = 30;
-	constexpr int chargeShotFlashOffset = 20;
 	Vector2 flashPos = _shotPos;
 	int temp = 0;
 	if (_isTurn)
@@ -354,9 +354,9 @@ void Player::Draw(Vector2 offset)
 	{
 		temp = 1;
 	}
-	flashPos.x += shotFlashOffset * temp;
+	flashPos.x += kShotFlashOffset * temp;
 	_shotFlashAnim.Draw(flashPos - offset, _isTurn);
-	flashPos.x += chargeShotFlashOffset * temp;
+	flashPos.x += kChargeShotFlashOffset * temp;
 	_chargeShotFlashAnim.Draw(flashPos - offset, _isTurn);
 
 	// チャージエフェクトを描画

@@ -27,6 +27,8 @@ namespace
 	constexpr int kCoinScore = 100;
 	constexpr int kBigCoinScore = 1000;
 	constexpr int kHealthItemScore = 300;
+
+	constexpr int kPlayerHealAmount = 1;
 }
 
 Item::Item(Vector2 mapChipFirstPos, ItemType type, std::shared_ptr<Player> pPlayer,int handle):
@@ -64,23 +66,27 @@ Item::Item(Vector2 mapChipFirstPos, ItemType type, std::shared_ptr<Player> pPlay
 
 Item::~Item()
 {
+	// 何もしない
 }
 
 void Item::Init()
 {
+	// 何もしない
 }
 
 void Item::Update(Map& map)
 {
-	printfDx("Item::Update(Map& map)が呼ばれました\n");
+	printfDx("Item::Update(Map& map)が呼ばれました。Item::Update()を使用してください。\n");
 }
 
 void Item::Update()
 {
+	// プレイヤーに当たったら取得処理
 	if (_pCollider->CheckCollision(_pPlayer->GetCollider()))
 	{
 		GetItem();
 	}
+	// アニメーション更新
 	_nowAnim.Update();
 }
 
@@ -103,7 +109,7 @@ void Item::GetItem()
 		//printfDx("大コインを取得しました\n");
 		break;
 	case ItemType::HealthItem:
-		_pPlayer->Heal(1);
+		_pPlayer->Heal(kPlayerHealAmount);
 		//printfDx("回復アイテムを取得しました\n");
 		break;
 	default:

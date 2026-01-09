@@ -4,6 +4,11 @@
 #include "Player.h"
 #include "DxLib.h"
 
+namespace
+{
+	constexpr float kDrawScale = 3.0f;
+}
+
 ClearFlag::ClearFlag(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle) :
 	_handle(handle),
 	_pPlayer(pPlayer)
@@ -14,19 +19,22 @@ ClearFlag::ClearFlag(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handl
 
 ClearFlag::~ClearFlag()
 {
+	// ‰½‚à‚µ‚È‚¢
 }
 
 void ClearFlag::Init()
 {
+	// ‰½‚à‚µ‚È‚¢
 }
 
 void ClearFlag::Update(Map& map)
 {
+	// ‰½‚à‚µ‚È‚¢
 }
 
 void ClearFlag::Draw(Vector2 cameraOffset)
 {
-	DrawRotaGraph(static_cast<int>(_pos.x - cameraOffset.x), static_cast<int>(_pos.y - cameraOffset.y), 3.0f, 0.0f, _handle, true);
+	DrawRotaGraph(static_cast<int>(_pos.x - cameraOffset.x), static_cast<int>(_pos.y - cameraOffset.y), kDrawScale, 0.0, _handle, true);
 #ifdef _DEBUG
 	_pCollider->Draw(cameraOffset);
 #endif // _DEBUG

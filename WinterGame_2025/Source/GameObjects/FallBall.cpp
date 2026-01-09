@@ -5,13 +5,21 @@
 
 namespace
 {
+	// 描画関連
 	constexpr int kGraphSize = 16;
 	constexpr float kDrawScale = 4.5f;
-
+	// アニメーション関連
 	constexpr int kAnimNum = 4;
 	constexpr int kOneAnimFrame = 6;
-
+	// 当たり判定
 	constexpr int kColliderRadius = 30;
+	// このフレーム経過後に跳ねる
+	constexpr int kAfterBounceFrame = 30;
+	// 跳ねる力
+	constexpr float kBouncePower = 15.0f;
+
+	// 落下判定の余白
+	constexpr int kFallMargin = 100;
 }
 
 FallBall::FallBall(std::shared_ptr<Player> pPlayer, Vector2 mapSize, int handle):
@@ -25,23 +33,25 @@ FallBall::FallBall(std::shared_ptr<Player> pPlayer, Vector2 mapSize, int handle)
 
 FallBall::~FallBall()
 {
+	// 何もしない
 }
 
 void FallBall::Init()
 {
+	// 何もしない
 }
 
 void FallBall::Update(Map& map)
 {
 	Gravity();
-	_frame++;	// 30フレーム経過後のみ跳ねるようにする
-	if (!_isBounced && _frame > 30)
+	_frame++;	// 指定したフレーム経過後のみ跳ねるようにする
+	if (!_isBounced && _frame > kAfterBounceFrame)
 	{
 		HitDirection hitDir = MapCollision(map);
 		if (hitDir.down)
 		{
 			_isBounced = true;
-			_vel.y = -15.0f;
+			_vel.y = -kBouncePower;
 			_pCollider->SetIsEnabled(false);
 		}
 	}
@@ -63,7 +73,7 @@ void FallBall::Update(Map& map)
 	}
 
 	// 画面外に出たら消える
-	if (_pos.y > _kMapSize.y + 100.0f)
+	if (_pos.y > _kMapSize.y + kFallMargin)
 	{
 		_isAlive = false;
 	}

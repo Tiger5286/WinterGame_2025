@@ -5,19 +5,25 @@
 
 namespace
 {
+	// 重力加速度
 	const Vector2 kGravity = { 0.0f,1.0f };
+	// 最大落下速度
 	constexpr float kMaxFallSpeed = 15.0f;
+	// マップチップの1辺の長さ
 	constexpr int kMapChipSize = 16;
+	// 描画スケール
 	constexpr float kDrawScale = 3.0f;
 }
 
 GameObject::GameObject():
 	_isGround(false)
 {
+	// 何もしない
 }
 
 GameObject::~GameObject()
 {
+	// 何もしない
 }
 
 
@@ -35,13 +41,13 @@ HitDirection GameObject::MapCollision(Map& map)
 		if (dist.x > 0)
 		{
 			//	プレイヤーは当たったマップチップの右側にいる
-			_pos.x = hitChipPos.x + _pCollider->GetSize().x / 2 + (16 * kDrawScale) / 2;
+			_pos.x = hitChipPos.x + _pCollider->GetSize().x / 2 + (kMapChipSize * kDrawScale) / 2;
 			ans.left = true;
 		}
 		else
 		{
 			//	プレイヤーは当たったマップチップの左側にいる
-			_pos.x = hitChipPos.x - _pCollider->GetSize().x / 2 - (16 * kDrawScale) / 2;
+			_pos.x = hitChipPos.x - _pCollider->GetSize().x / 2 - (kMapChipSize * kDrawScale) / 2;
 			ans.right = true;
 		}
 		_vel.x = 0.0f;
@@ -57,13 +63,13 @@ HitDirection GameObject::MapCollision(Map& map)
 		if (dist.y > 0)
 		{
 			//	プレイヤーは当たったマップチップの下側にいる
-			_pos.y = hitChipPos.y + _pCollider->GetSize().y + (16 * kDrawScale) / 2;
+			_pos.y = hitChipPos.y + _pCollider->GetSize().y + (kMapChipSize * kDrawScale) / 2;
 			ans.up = true;
 		}
 		else
 		{
 			//	プレイヤーは当たったマップチップの上側にいる
-			_pos.y = hitChipPos.y - (16 * kDrawScale) / 2;
+			_pos.y = hitChipPos.y - (kMapChipSize * kDrawScale) / 2;
 			ans.down = true;
 			_isGround = true;
 		}

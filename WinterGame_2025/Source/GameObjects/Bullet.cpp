@@ -42,10 +42,12 @@ Bullet::Bullet(int shotH, int chargeShotH):
 
 Bullet::~Bullet()
 {
+	// ‰½‚à‚µ‚È‚¢
 }
 
 void Bullet::Init()
 {
+	// ‰½‚à‚µ‚È‚¢
 }
 
 void Bullet::Update(Map& map)
