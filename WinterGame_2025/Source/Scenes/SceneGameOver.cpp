@@ -54,7 +54,19 @@ void SceneGameOver::Update(Input& input)
 		SoundManager::GetInstance().StopSound("GameOverBgm", true);
 		if (_isSelectRestart)
 		{
-			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _playedStage,_score),FadeState::CircleFadeIn);
+			if (IsBossStage(_playedStage))
+			{
+				// ボスステージならスコアを引き継ぐ
+				_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _playedStage, _score), FadeState::CircleFadeIn);
+				return;
+			}
+			else
+			{
+				// それ以外のステージならスコアは0に戻す
+				_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _playedStage, 0), FadeState::CircleFadeIn);
+				return;
+			}
+			
 		}
 		else
 		{

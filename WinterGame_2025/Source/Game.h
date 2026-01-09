@@ -157,6 +157,11 @@ static Stages SelectableStageToStage(SelectableStages stage)
 	}
 }
 
+static bool IsBossStage(Stages stage)
+{
+	return stage == Stages::Boss1 || stage == Stages::Boss2 || stage == Stages::Boss3 || stage == Stages::SecretBoss;
+}
+
 struct SaveDataHeader
 {
 	char signature[4];	// "sdat"
