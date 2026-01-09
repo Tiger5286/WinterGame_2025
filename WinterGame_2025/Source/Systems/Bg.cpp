@@ -37,10 +37,10 @@ void Bg::Draw(Vector2 drawOffset)
 
 void Bg::DrawBg(Vector2 drawOffset)
 {
-	int drawIndexX = (drawOffset.x / kScrollDecayBg) / GlobalConstants::kScreenWidth;
-	int drawIndexY = (drawOffset.y / kScrollDecayBg) / GlobalConstants::kScreenHeight;
-	int x = drawOffset.x / kScrollDecayBg;
-	int y = drawOffset.y / kScrollDecayBg;
+	int drawIndexX = static_cast<int>((drawOffset.x / kScrollDecayBg) / GlobalConstants::kScreenWidth);
+	int drawIndexY = static_cast<int>((drawOffset.y / kScrollDecayBg) / GlobalConstants::kScreenHeight);
+	int x = static_cast<int>(drawOffset.x / kScrollDecayBg);
+	int y = static_cast<int>(drawOffset.y / kScrollDecayBg);
 
 	DrawExtendGraph((drawIndexX + 0) * GlobalConstants::kScreenWidth - x,
 		(drawIndexY + 0) * GlobalConstants::kScreenHeight - y,
@@ -66,10 +66,10 @@ void Bg::DrawBg(Vector2 drawOffset)
 
 void Bg::DrawSubBg(Vector2 drawOffset)
 {
-	int drawIndexX = (drawOffset.x / kScrollDecaySubBg) / GlobalConstants::kScreenWidth;
-	int drawIndexY = (drawOffset.y / kScrollDecaySubBg) / GlobalConstants::kScreenHeight;
-	int x = drawOffset.x / kScrollDecaySubBg;
-	int y = drawOffset.y / kScrollDecaySubBg;
+	int drawIndexX = static_cast<int>((drawOffset.x / kScrollDecaySubBg) / GlobalConstants::kScreenWidth);
+	int drawIndexY = static_cast<int>((drawOffset.y / kScrollDecaySubBg) / GlobalConstants::kScreenHeight);
+	int x = static_cast<int>(drawOffset.x / kScrollDecaySubBg);
+	int y = static_cast<int>(drawOffset.y / kScrollDecaySubBg);
 
 	DrawExtendGraph((drawIndexX + 0) * GlobalConstants::kScreenWidth - x,
 		(drawIndexY + 0) * GlobalConstants::kScreenHeight - y,

@@ -20,13 +20,13 @@ namespace
 	constexpr float kDrawScale = 0.4f;
 	constexpr int kDrawPosX = 300;
 	constexpr int kDrawPosY = 130;
-	constexpr int kDrawPosL = kDrawPosX - (kGraphSizeW * kDrawScale) / 2;
-	constexpr int kDrawPosT = kDrawPosY - (kGraphSizeH * kDrawScale) / 2;
+	constexpr int kDrawPosL = static_cast<int>(kDrawPosX - (kGraphSizeW * kDrawScale) / 2);
+	constexpr int kDrawPosT = static_cast<int>(kDrawPosY - (kGraphSizeH * kDrawScale) / 2);
 	// バーの描画情報
-	constexpr int kDrawBarL = kDrawPosL + (kBarL * kDrawScale);
-	constexpr int kDrawBarR = kDrawPosL + (kBarR * kDrawScale);
-	constexpr int kDrawBarT = kDrawPosT + (kBarT * kDrawScale);
-	constexpr int kDrawBarB = kDrawPosT + (kBarB * kDrawScale) + 1;	// 隙間を埋めるために1足す
+	constexpr int kDrawBarL = static_cast<int>(kDrawPosL + (kBarL * kDrawScale));
+	constexpr int kDrawBarR = static_cast<int>(kDrawPosL + (kBarR * kDrawScale));
+	constexpr int kDrawBarT = static_cast<int>(kDrawPosT + (kBarT * kDrawScale));
+	constexpr int kDrawBarB = static_cast<int>(kDrawPosT + (kBarB * kDrawScale)) + 1;	// 隙間を埋めるために1足す
 	constexpr int kMaxBarLength = kDrawBarR - kDrawBarL;
 
 	// 透明になる領域を余分に確保する量
@@ -47,7 +47,7 @@ HPUI::HPUI(int handle,const int playerMaxHp, const Player& player, const Map& ma
 	_pEnemies(pEnemies)
 {
 	// プレイヤーのhpからバーの長さを出す
-	_barLength = static_cast<float>(_player.GetHp()) / static_cast<float>(_playerMaxHp) * kMaxBarLength;
+	_barLength = static_cast<int>(static_cast<float>(_player.GetHp()) / static_cast<float>(_playerMaxHp) * kMaxBarLength);
 	// 表示バーの長さを現在のプレイヤーのhpと同じにする
 	_drawBarLength = _barLength;
 }
@@ -65,7 +65,7 @@ void HPUI::Init()
 void HPUI::Update()
 {
 	// プレイヤーのhpからバーの長さを出す
-	_barLength = static_cast<float>(_player.GetHp()) / static_cast<float>(_playerMaxHp) * kMaxBarLength;
+	_barLength = static_cast<int>(static_cast<float>(_player.GetHp()) / static_cast<float>(_playerMaxHp) * kMaxBarLength);
 	// もしプレイヤーが画面外に落下していたら一気にHPを消す
 	if (_player.GetColliderPos().y > _map.GetStageSize().y + kPlayerFallDeathHeightMargin)
 	{
@@ -103,11 +103,11 @@ void HPUI::Draw()
 	// 透明度をlerpでいい感じに変える
 	if (isPlayerNear || isEnemyNear)
 	{
-		_alpha = std::lerp(_alpha, 64, 0.2f);
+		_alpha = static_cast<int>(std::lerp(_alpha, 64, 0.2f));
 	}
 	else
 	{
-		_alpha = std::lerp(_alpha, 255, 0.2f);
+		_alpha = static_cast<int>(std::lerp(_alpha, 255, 0.2f));
 	}
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, _alpha);
 

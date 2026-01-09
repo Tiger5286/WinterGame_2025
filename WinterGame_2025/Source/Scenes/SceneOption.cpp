@@ -190,10 +190,10 @@ void SceneOption::DrawBgmVolume(int nowIndex)
 	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 - 50,
 		screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 - 50, 0xffffff, kSoundVolumeBarThickness);
 	// bgm音量バーの現在値
-	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
-		screenH / 2 - 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
-	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth,
-		screenH / 2 - 50, kSoundVolumeCircleRadius, color, true);
+	DrawCircle(static_cast<int>(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth),
+		static_cast<int>(screenH / 2 - 50), kSoundVolumeCircleOutlineRadius, 0xffffff, true);
+	DrawCircle(static_cast<int>(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth),
+		static_cast<int>(screenH / 2 - 50), kSoundVolumeCircleRadius, color, true);
 	// テキスト
 	DrawString(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 - 82, "BGM", 0xffffff);
 }
@@ -210,10 +210,10 @@ void SceneOption::DrawSeVolume(int nowIndex)
 	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 + 50,
 		screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 + 50, 0xffffff, kSoundVolumeBarThickness);
 	// se音量バーの現在値
-	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth,
-		screenH / 2 + 50, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
-	DrawCircle(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth,
-		screenH / 2 + 50, kSoundVolumeCircleRadius, color, true);
+	DrawCircle(static_cast<int>(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth),
+		static_cast<int>(screenH / 2 + 50), kSoundVolumeCircleOutlineRadius, 0xffffff, true);
+	DrawCircle(static_cast<int>(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth),
+		static_cast<int>(screenH / 2 + 50), kSoundVolumeCircleRadius, color, true);
 	// テキスト
 	DrawString(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 + 18, "SE", 0xffffff);
 }

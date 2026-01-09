@@ -28,8 +28,8 @@ void IntGraphDrawer::Draw(int x, int y, float scale, int handle, int value)
 		int digitValue = PickOutDigit(value, nowDigit);
 
 		// •`‰æ
-		DrawRectRotaGraph(x + (kGraphSize / 2) * scale + i * (kGraphSize * scale),
-			y + (kGraphSize / 2) * scale,
+		DrawRectRotaGraph(static_cast<int>(x + (kGraphSize / 2) * scale + i * (kGraphSize * scale)),
+			static_cast<int>(y + (kGraphSize / 2) * scale),
 			0 + digitValue*kGraphSize, 0,
 			kGraphSize, kGraphSize,
 			scale, 0.0, handle, true);

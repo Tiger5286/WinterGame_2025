@@ -189,12 +189,12 @@ void HammerBoss::Update(Map& map)
 		for (int i = 0; i < kFBNum; i++)
 		{
 			// ボールの落ちてくる位置で最も左側のX座標
-			float fallPosXLeft = kFBPosRimitRight / kFBAreaNum * _fBArea + kFBPosRimitLeft;
+			float fallPosXLeft = static_cast<float>(kFBPosRimitRight / kFBAreaNum * _fBArea + kFBPosRimitLeft);
 			// ボールの落ちてくる位置で最も右側のX座標
-			float fallPosXRight = kFBPosRimitRight / kFBAreaNum * _fBArea + kFBPosRimitLeft + kFBPosRimitRight / kFBAreaNum;
+			float fallPosXRight = static_cast<float>(kFBPosRimitRight / kFBAreaNum * _fBArea + kFBPosRimitLeft + kFBPosRimitRight / kFBAreaNum);
 
 			// left ~ right の範囲でランダムに落下位置を決定
-			auto fallPosX = fallPosXLeft + GetRand(fallPosXRight - fallPosXLeft);
+			auto fallPosX = fallPosXLeft + GetRand(static_cast<int>(fallPosXRight - fallPosXLeft));
 			if (_frame % kAnimEndFrame == kImpactFrame + i * kFBIntervalFrame) _bulletManager.ShotFallBall({ static_cast<float>(fallPosX), 0.0f });
 		}
 
@@ -245,8 +245,8 @@ void HammerBoss::Draw(Vector2 offset)
 			if (_frame % kDeathFrickerFrame == 0)
 			{
 				Vector2 explosionPosGap;
-				explosionPosGap.x = GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis;
-				explosionPosGap.y = GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis;
+				explosionPosGap.x = static_cast<float>(GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis);
+				explosionPosGap.y = static_cast<float>(GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis);
 				_pEffectManager->Create(GetColliderPos() + explosionPosGap, EffectType::ExplosionSmall);
 			}
 		}
@@ -270,7 +270,7 @@ void HammerBoss::Draw(Vector2 offset)
 			_drawBarrierFrame--;
 		}
 		float progress = static_cast<float>(_drawBarrierFrame) / kDrawBarrierMaxFrame;
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, progress * 128);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(progress * 128));
 		_barrierAnim.Draw(GetColliderPos() - offset, false);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}

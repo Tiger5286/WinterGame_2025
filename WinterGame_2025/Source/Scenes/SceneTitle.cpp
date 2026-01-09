@@ -147,7 +147,7 @@ void SceneTitle::Draw()
 
 	// タイトル描画
 	float sin = sinf(_frame * kTitleSinRate);
-	DrawRotaGraph(screenW / 2, (sin * kTitleSinScale) + kTitlePosY, 1.0, 0.0, _titleHandle, true);
+	DrawRotaGraph(screenW / 2, static_cast<int>(sin * kTitleSinScale) + kTitlePosY, 1.0, 0.0, _titleHandle, true);
 	
 	// メニュー描画
 	for (int i = 0; i < static_cast<int>(MenuItems::Num); i++)

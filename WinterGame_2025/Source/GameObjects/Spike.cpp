@@ -46,7 +46,7 @@ void Spike::Draw(Vector2 offset)
 {
 	_frame++;
 	bool isTurn = _frame % (kTurnInterval * 2) < kTurnInterval;
-	DrawRotaGraph(_pos.x - offset.x, _pos.y - offset.y,
+	DrawRotaGraph(static_cast<int>(_pos.x - offset.x), static_cast<int>(_pos.y - offset.y),
 	kDrawScale, 0.0, _handle, true, isTurn);
 	
 #ifdef _DEBUG

@@ -306,7 +306,7 @@ void SceneMain::Draw()
 
 	// ÉXÉRÉAÇÃï`âÊ
 	DrawRotaGraph(130, 250, 0.4, 0.0, _graphHandles[static_cast<int>(Graphs::ScoreText)], true);
-	IntGraphDrawer::Draw(210, 225, 0.4, _graphHandles[static_cast<int>(Graphs::NumberText)], _score);
+	IntGraphDrawer::Draw(210, 225, 0.4f, _graphHandles[static_cast<int>(Graphs::NumberText)], _score);
 
 
 #ifdef _DEBUG

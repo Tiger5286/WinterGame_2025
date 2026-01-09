@@ -44,9 +44,9 @@ bool BoxCollider::CheckCollision(const std::shared_ptr<Collider> other) const
 void BoxCollider::Draw(Vector2 offset) const
 {
 	if (!_isEnabled) return;	// –³Œø‚È‚ç•`‰æ‚µ‚È‚¢
-	DrawBox(_pos.x - _size.x / 2 - offset.x,
-		_pos.y - _size.y / 2 - offset.y,
-		_pos.x + _size.x / 2 - offset.x,
-		_pos.y + _size.y / 2 - offset.y,
+	DrawBox(static_cast<int>(_pos.x - _size.x / 2 - offset.x),
+		static_cast<int>(_pos.y - _size.y / 2 - offset.y),
+		static_cast<int>(_pos.x + _size.x / 2 - offset.x),
+		static_cast<int>(_pos.y + _size.y / 2 - offset.y),
 		0xff0000, false);
 }

@@ -47,7 +47,7 @@ void ScenePause::Update(Input& input)
 	if (input.IsTriggered("up"))
 	{
 		// ƒƒjƒ…[‚Ì‘I‘ğˆ‚ğã‚ÉˆÚ“®
-		_selectIndex = (_selectIndex + _menuList.size() - 1) % _menuList.size();
+		_selectIndex = (_selectIndex + _menuList.size() - 1) % static_cast<int>(_menuList.size());
 	}
 	if (input.IsTriggered("down"))
 	{

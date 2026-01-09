@@ -50,7 +50,7 @@ void DebugScene::Update(Input& input)
 {
 	if (input.IsTriggered("up"))
 	{
-		_selectIndex = (_selectIndex + _menuList.size() - 1) % _menuList.size();
+		_selectIndex = (_selectIndex + _menuList.size() - 1) % static_cast<int>(_menuList.size());
 	}
 	if (input.IsTriggered("down"))
 	{

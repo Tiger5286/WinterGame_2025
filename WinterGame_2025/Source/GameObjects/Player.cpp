@@ -379,7 +379,7 @@ void Player::Draw(Vector2 offset)
 	DrawFormatString(0, 230, 0xffffff, "x:%.2f y:%.2f", _pos.x, _pos.y);
 	if (_isCanFly)
 	{
-		DrawFormatString(_pos.x - offset.x - 20, _pos.y - offset.y - 120, 0xffffff, "canFly");
+		DrawFormatString(static_cast<int>(_pos.x - offset.x) - 20, static_cast<int>(_pos.y - offset.y) - 120, 0xffffff, "canFly");
 	}
 #endif // _DEBUG
 }
@@ -400,8 +400,8 @@ void Player::InitPosFromStage(const std::vector<uint16_t>& objectData, const Siz
 			if (objectData[index] == static_cast<int>(ObjectData::PlayerSpawn))
 			{
 				// スポーン地点に移動する
-				_pos.x = w * GlobalConstants::kDrawChipSize + GlobalConstants::kDrawChipSizeHalf;
-				_pos.y = h * GlobalConstants::kDrawChipSize + GlobalConstants::kDrawChipSize;
+				_pos.x = static_cast<float>(w * GlobalConstants::kDrawChipSize + GlobalConstants::kDrawChipSizeHalf);
+				_pos.y = static_cast<float>(h * GlobalConstants::kDrawChipSize + GlobalConstants::kDrawChipSize);
 				return;
 			}
 		}
@@ -792,7 +792,7 @@ void Player::PlayerAfterimage::Draw(Vector2 offset)
 	SetDrawBright(kAfterimageColorR, kAfterimageColorG, kAfterimageColorB);	// 残像の色を設定
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(alpha));	// 透明度を設定
 
-	DrawRectRotaGraph(pos.x - offset.x, pos.y - kGraphCutH / 2 * kDrawScale - offset.y,	// 残像本体を描画
+	DrawRectRotaGraph(static_cast<int>(pos.x - offset.x), static_cast<int>(pos.y - kGraphCutH / 2 * kDrawScale - offset.y),	// 残像本体を描画
 		kGraphCutW * kDashGraphIndexX, kGraphCutH * kDashGraphIndexY,
 		kGraphCutW, kGraphCutH,
 		kDrawScale, 0.0f, handle, true, isTurn);

@@ -150,7 +150,7 @@ void DroneEnemy::Draw(Vector2 offset)
 	SetDrawBright(255, 255, 255);	// F‚ðŒ³‚É–ß‚·
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
-	DrawFormatString(_pos.x - offset.x, _pos.y - offset.y - 50, 0xffffff, "%d", _frame);
-	DrawCircle(_pos.x - offset.x, _pos.y - offset.y, kAttackLength, 0x0000ff, false);
+	DrawFormatString(static_cast<int>(_pos.x - offset.x), static_cast<int>(_pos.y - offset.y - 50), 0xffffff, "%d", _frame);
+	DrawCircle(static_cast<int>(_pos.x - offset.x), static_cast<int>(_pos.y - offset.y), static_cast<int>(kAttackLength), 0x0000ff, false);
 #endif
 }

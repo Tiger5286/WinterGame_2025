@@ -18,7 +18,7 @@ namespace
 
 	// “®‚«ŠÖŒW
 	constexpr float kWaveHeight = 20.0f;
-	constexpr float kAccel = 0.05;
+	constexpr float kAccel = 0.05f;
 	constexpr float kMaxMoveSpeed = 2.5f;
 
 	// hp

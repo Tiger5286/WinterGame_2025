@@ -11,7 +11,7 @@ namespace
 
 	Vector2 kFrameSize = { kGraphSize,kGraphSize };
 
-	constexpr int kHalfDrawSize = (kGraphSize * kDrawScale) / 2;
+	constexpr int kHalfDrawSize = static_cast<int>((kGraphSize * kDrawScale) / 2);
 	constexpr int kColliderW = 24;
 
 	constexpr int kLauncherAnimIndex = 0;
@@ -30,7 +30,7 @@ Laser::Laser(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, int l
 	_isDownward(isDownward)
 {
 	_pos = ChipPosToGamePos(chipPos);
-	_pCollider = std::make_shared<BoxCollider>(_pos, Vector2(24, _laserLength * GlobalConstants::kDrawChipSize));
+	_pCollider = std::make_shared<BoxCollider>(_pos, Vector2(24.0f, static_cast<float>(_laserLength * GlobalConstants::kDrawChipSize)));
 	float laserOffsetY = static_cast<float>(_laserLength) / 2 * GlobalConstants::kDrawChipSize - GlobalConstants::kDrawChipSizeHalf;
 	_isDownward ? _pCollider->SetPos(Vector2(_pos.x, _pos.y + laserOffsetY)) : _pCollider->SetPos(Vector2(_pos.x, _pos.y - laserOffsetY));
 	

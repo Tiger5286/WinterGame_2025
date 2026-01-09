@@ -67,7 +67,7 @@ void SceneClear::Update(Input& input)
 		}
 		else	// スコア表示が最後まで行っていなかったら最後まで進める
 		{
-			_dispScore = _score - 1;	// スコア表示を最後まで進める
+			_dispScore = static_cast<float>(_score - 1);	// スコア表示を最後まで進める
 		}
 	}
 
@@ -96,11 +96,11 @@ void SceneClear::Draw()
 	// 描画用スコアを描画
 	if (_score != 0)
 	{
-		IntGraphDrawer::Draw(screenW / 2 - 30,screenH / 2 + 160,0.7,_numberTextHandle, static_cast<int>(_dispScore) + 1);// なぜか_score-1で止まるので+1して補正
+		IntGraphDrawer::Draw(screenW / 2 - 30,screenH / 2 + 160,0.7f,_numberTextHandle, static_cast<int>(_dispScore) + 1);// なぜか_score-1で止まるので+1して補正
 	}
 	else
 	{
-		IntGraphDrawer::Draw(screenW / 2 - 30, screenH / 2 + 160, 0.7, _numberTextHandle, static_cast<int>(_dispScore));// スコアが0のときに+1するとダメなのでそのまま表示
+		IntGraphDrawer::Draw(screenW / 2 - 30, screenH / 2 + 160, 0.7f, _numberTextHandle, static_cast<int>(_dispScore));// スコアが0のときに+1するとダメなのでそのまま表示
 	}
 	
 	// ハイスコアを更新していたらそのメッセージを表示

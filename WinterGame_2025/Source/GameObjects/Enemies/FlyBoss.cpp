@@ -32,7 +32,7 @@ namespace
 
 	// ìÆÇ´ÇÃêßå‰ä÷òA
 	// ècóhÇÍä÷òA
-	constexpr float kSinAngleIncrement = 0.03;
+	constexpr float kSinAngleIncrement = 0.03f;
 	constexpr int kSinAngleScale = 40;
 	// IdleèÛë‘ä÷òA
 	constexpr int kIdleWaitFrame = 60;
@@ -322,8 +322,8 @@ void FlyBoss::Draw(Vector2 offset)
 			if (_frame % kDeathFrickerFrame == 0)
 			{
 				Vector2 explosionPosGap;
-				explosionPosGap.x = GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis;
-				explosionPosGap.y = GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis;
+				explosionPosGap.x = static_cast<float>(GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis);
+				explosionPosGap.y = static_cast<float>(GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis);
 				_pEffectManager->Create(GetColliderPos() + explosionPosGap, EffectType::ExplosionSmall);
 			}
 		}
@@ -348,7 +348,7 @@ void FlyBoss::Draw(Vector2 offset)
 			_drawBarrierFrame--;
 		}
 		float progress = static_cast<float>(_drawBarrierFrame) / kDrawBarrierMaxFrame;
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, progress * 128);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(progress * 128));
 		_barrierAnim.Draw(GetColliderPos() - offset, false);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}

@@ -53,7 +53,7 @@ void SoundManager::Update()
 			}
 			// フレームカウントに応じて音量を調整
 			int targetVolume = pair.second.type == SoundType::BGM ? _bgmVolume : _seVolume;
-			int newVolume = pair.second.fadeFrame / static_cast<float>(kFadeFrame) * targetVolume;
+			int newVolume = static_cast<int>(pair.second.fadeFrame / static_cast<float>(kFadeFrame) * targetVolume);
 			if (pair.second.fadeState == SoundFadeState::None) newVolume = targetVolume;
 			ChangeVolumeSoundMem(newVolume, pair.second.handle);
 		}

@@ -32,7 +32,7 @@ Map::~Map()
 
 void Map::Draw(Vector2 offset)
 {
-	constexpr int drawChipSize = kChipSize * kDrawScale;
+	constexpr int drawChipSize = static_cast<int>(kChipSize * kDrawScale);
 	constexpr int drawChipSizeHalf = drawChipSize / 2;
 
 	// マップチップの描画
@@ -46,8 +46,8 @@ void Map::Draw(Vector2 offset)
 			if (chipNo == 0) continue;
 
 			// 描画位置を計算
-			int DrawPosX = w * drawChipSize + drawChipSizeHalf - offset.x;
-			int DrawPosY = h * drawChipSize + drawChipSizeHalf - offset.y;
+			int DrawPosX = static_cast<int>(w * drawChipSize + drawChipSizeHalf - offset.x);
+			int DrawPosY = static_cast<int>(h * drawChipSize + drawChipSizeHalf - offset.y);
 
 			// 描画するチップの画像内位置を計算
 			int srcX = kChipSize * (chipNo % kGraphChipNumX);
@@ -115,7 +115,7 @@ bool Map::IsCollision(std::shared_ptr<Collider> pCollider, Vector2& hitChipPos)
 int Map::GetStageWidth() const
 {
 	//return _chipNumX * kChipSize * kDrawScale;
-	return _mapSize.w * kDrawChipSize;
+	return static_cast<int>(_mapSize.w * kDrawChipSize);
 }
 
 Vector2 Map::GetStageSize() const

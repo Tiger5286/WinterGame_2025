@@ -28,7 +28,7 @@ namespace
 
 	// 当たり判定
 	constexpr int kColliderW = 35 * 3;
-	constexpr int kColliderH = 32.5f * 3;
+	constexpr int kColliderH = static_cast <int>(32.5f * 3);
 
 	// プレイヤーに攻撃しようとする距離
 	constexpr float kAttackDis = 600.0f;
@@ -145,8 +145,8 @@ void JumpEnemy::Draw(Vector2 offset)
 	SetDrawBright(255, 255, 255);	// 明るさリセット
 #ifdef _DEBUG
 	// プレイヤーを検知する範囲を表示
-	DrawLine(_pos.x - kAttackDis - offset.x, 0, _pos.x - kAttackDis - offset.x, 1080, 0x0000ff);
-	DrawLine(_pos.x + kAttackDis - offset.x, 0, _pos.x + kAttackDis - offset.x, 1080, 0x0000ff);
+	DrawLine(static_cast<int>(_pos.x - kAttackDis - offset.x), 0, static_cast<int>(_pos.x - kAttackDis - offset.x), 1080, 0x0000ff);
+	DrawLine(static_cast<int>(_pos.x + kAttackDis - offset.x), 0, static_cast<int>(_pos.x + kAttackDis - offset.x), 1080, 0x0000ff);
 	// 当たり判定を表示
 	_pCollider->Draw(offset);
 #endif

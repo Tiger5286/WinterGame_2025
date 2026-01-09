@@ -56,21 +56,21 @@ void Fade::Draw()
 	if (_state == FadeState::NormalFadeOut || _state == FadeState::NormalFadeIn)
 	{
 		float alpha = fadeProgress * 255;
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(alpha));
 		DrawBox(0, 0, GlobalConstants::kScreenWidth, GlobalConstants::kScreenHeight, 0x000000, true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 	else if (_state == FadeState::CircleFadeOut || _state == FadeState::CircleFadeIn)	// 円形フェードの描画
 	{
-		int CircleDrawTop = _circlePos.y - kCircleGraphSize / 2 * (1 - fadeProgress) * kCircleScale + 1;	// +1と-1は境界線のちらつきを防ぐため
-		int CircleDrawBottom = _circlePos.y + kCircleGraphSize / 2 * (1 - fadeProgress) * kCircleScale - 1;
-		int CircleDrawLeft = _circlePos.x - kCircleGraphSize / 2 * (1 - fadeProgress) * kCircleScale + 1;
-		int CircleDrawRight = _circlePos.x + kCircleGraphSize / 2 * (1 - fadeProgress) * kCircleScale - 1;
+		int CircleDrawTop = static_cast<int>(_circlePos.y - kCircleGraphSize / 2 * (1 - fadeProgress) * kCircleScale) + 1;	// +1と-1は境界線のちらつきを防ぐため
+		int CircleDrawBottom = static_cast<int>(_circlePos.y + kCircleGraphSize / 2 * (1 - fadeProgress) * kCircleScale) - 1;
+		int CircleDrawLeft = static_cast<int>(_circlePos.x - kCircleGraphSize / 2 * (1 - fadeProgress) * kCircleScale) + 1;
+		int CircleDrawRight = static_cast<int>(_circlePos.x + kCircleGraphSize / 2 * (1 - fadeProgress) * kCircleScale) - 1;
 		DrawBox(0, 0, CircleDrawRight, CircleDrawTop, 0x000000, true);	// 画面左上から丸の右上
 		DrawBox(0,GlobalConstants::kScreenHeight,CircleDrawLeft,CircleDrawTop, 0x000000, true);	// 画面右下から丸の左上
 		DrawBox(GlobalConstants::kScreenWidth, 0, CircleDrawRight, CircleDrawBottom, 0x000000, true);	// 画面右上から丸の右下
 		DrawBox(GlobalConstants::kScreenWidth, GlobalConstants::kScreenHeight, CircleDrawLeft, CircleDrawBottom, 0x000000, true);	// 画面右下から丸の左下
-		DrawRotaGraph(_circlePos.x, _circlePos.y, (1 - fadeProgress) * kCircleScale, 0.0, _fadeCircleH, true);
+		DrawRotaGraph(static_cast<int>(_circlePos.x), static_cast<int>(_circlePos.y), (1 - fadeProgress) * kCircleScale, 0.0, _fadeCircleH, true);
 	}
 }
 

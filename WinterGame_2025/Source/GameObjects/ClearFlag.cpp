@@ -26,7 +26,7 @@ void ClearFlag::Update(Map& map)
 
 void ClearFlag::Draw(Vector2 cameraOffset)
 {
-	DrawRotaGraph(_pos.x - cameraOffset.x, _pos.y - cameraOffset.y, 3.0f, 0.0f, _handle, true);
+	DrawRotaGraph(static_cast<int>(_pos.x - cameraOffset.x), static_cast<int>(_pos.y - cameraOffset.y), 3.0f, 0.0f, _handle, true);
 #ifdef _DEBUG
 	_pCollider->Draw(cameraOffset);
 #endif // _DEBUG
@@ -42,7 +42,7 @@ void ClearFlag::InitPosFromStage(std::vector<uint16_t>& objectData, Size mapSize
 			auto data = static_cast<ObjectData>(objectData[index]);
 			if (data == ObjectData::ClearFlag)
 			{
-				_pos = ChipPosToGamePos(Vector2(w, h));
+				_pos = ChipPosToGamePos(Vector2(static_cast<float>(w), static_cast<float>(h)));
 				_pCollider->SetPos(_pos);
 				return;
 			}
