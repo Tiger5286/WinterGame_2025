@@ -8,8 +8,7 @@
 #include "Scenes/DebugScene.h"
 #include <Windows.h>
 
-Application::Application():
-	_soundManager(SoundManager::GetInstance())
+Application::Application()
 {
 }
 
@@ -47,6 +46,7 @@ void Application::Run()
 
 	Input input;
 	SceneManager sceneManager;
+	SoundManager::GetInstance();
 #ifdef _DEBUG
 	sceneManager.ChangeScene(std::make_shared<DebugScene>(sceneManager));
 #else

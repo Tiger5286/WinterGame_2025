@@ -13,7 +13,6 @@ private:
 	void operator=(const Application& app) = delete;
 
 	bool _isRequestExit = false;
-	SoundManager& _soundManager;
 public:
 	~Application();
 	static Application& GetInstance();
