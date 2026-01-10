@@ -89,6 +89,7 @@ void SceneTitle::Update(Input& input)
 		{
 			_selectIndex = static_cast<int>(MenuItems::Num) - 1;
 		}
+		SoundManager::GetInstance().PlaySoundGame("Select");
 	}
 	if (input.IsTriggered("down"))
 	{
@@ -97,9 +98,11 @@ void SceneTitle::Update(Input& input)
 		{
 			_selectIndex = 0;
 		}
+		SoundManager::GetInstance().PlaySoundGame("Select");
 	}
 	if (input.IsTriggered("decision"))
 	{
+		SoundManager::GetInstance().PlaySoundGame("Decision");
 		// ƒƒjƒ…[‚²‚Æ‚Ìˆ—
 		switch (static_cast<MenuItems>(_selectIndex))
 		{
