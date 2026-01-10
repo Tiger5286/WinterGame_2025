@@ -177,6 +177,7 @@ void SceneStageSelect::Update(Input& input)
 						_selectIndex++;
 						_isUIMoveRight = false;
 						_frame = 0;
+						SoundManager::GetInstance().PlaySoundGame("Select");
 					}
 					else	// 隠しステージが解放されていない場合、右入力カウントを増やす
 					{
@@ -185,6 +186,7 @@ void SceneStageSelect::Update(Input& input)
 						{
 							_manager.ReleaseSecretStage();
 						}
+						SoundManager::GetInstance().PlaySoundGame("Beep");
 					}
 				}
 				else // 通常のステージ移動
@@ -192,7 +194,12 @@ void SceneStageSelect::Update(Input& input)
 					_selectIndex++;
 					_isUIMoveRight = false;
 					_frame = 0;
+					SoundManager::GetInstance().PlaySoundGame("Select");
 				}
+			}
+			else
+			{
+				SoundManager::GetInstance().PlaySoundGame("Beep");
 			}
 		}
 		if (input.IsTriggered("left"))
@@ -202,11 +209,17 @@ void SceneStageSelect::Update(Input& input)
 				_selectIndex--;
 				_isUIMoveRight = true;
 				_frame = 0;
+				SoundManager::GetInstance().PlaySoundGame("Select");
+			}
+			else
+			{
+				SoundManager::GetInstance().PlaySoundGame("Beep");
 			}
 		}
 		if (input.IsTriggered("decision"))
 		{
 			SoundManager::GetInstance().StopSound("StageSelectBGM", true);
+			SoundManager::GetInstance().PlaySoundGame("Decision");
 			auto& stageName = _stageList[_selectIndex];
 			_execTable[stageName]();
 			return;
@@ -214,6 +227,7 @@ void SceneStageSelect::Update(Input& input)
 		if (input.IsTriggered("back"))
 		{
 			SoundManager::GetInstance().StopSound("StageSelectBGM", true);
+			SoundManager::GetInstance().PlaySoundGame("Cancel");
 			_manager.ChangeSceneWithFade(std::make_shared<SceneTitle>(_manager), FadeState::NormalFadeIn);
 			return;
 		}
