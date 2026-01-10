@@ -453,6 +453,7 @@ void Player::Jump()
 	if (_input.IsPressed("jump") && _isGround)
 	{	// ジャンプが入力され、かつ接地しているならジャンプ中
 		_isJumping = true;
+		SoundManager::GetInstance().PlaySoundGame("Jump");
 	}
 
 	if (_input.IsPressed("jump") && _isJumping)
@@ -628,6 +629,14 @@ void Player::ChargeShot()
 	if (_input.IsPressed("shot"))
 	{	// チャージする
 		_chargeFrame++;
+		if (_chargeFrame == kChargeEffectTime)
+		{
+			SoundManager::GetInstance().PlaySoundGame("Charge");
+		}
+		if (_chargeFrame == kChargeTimeMax)
+		{
+			SoundManager::GetInstance().PlaySoundGame("Charged");
+		}
 	}
 	else
 	{	
@@ -659,6 +668,7 @@ void Player::Dash()
 		_isTurnDashing = _isTurn;
 		_isDashing = true;
 		_dashCoolTime = kDashCoolTime;
+		SoundManager::GetInstance().PlaySoundGame("Dash");
 	}
 	if (_isDashing)
 	{	// ダッシュ本体の処理

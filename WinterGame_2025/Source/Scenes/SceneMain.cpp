@@ -108,9 +108,14 @@ SceneMain::SceneMain(SceneManager& manager, Stages stage,int score) :
 	}
 	soundManager.LoadSound("BossBgm", "data/Sounds/BGM/BossBGM.ogg", SoundType::BGM);
 
-	// 効果音をロード
+	/*効果音のロード*/
+	// プレイヤー
 	SoundManager::GetInstance().LoadSound("Shot", "data/Sounds/Player/PlayerShot.mp3", SoundType::SE);
 	SoundManager::GetInstance().LoadSound("ChargeShot", "data/Sounds/Player/PlayerChargeShot.mp3", SoundType::SE);
+	SoundManager::GetInstance().LoadSound("Dash", "data/Sounds/Player/Dash.mp3", SoundType::SE);
+	SoundManager::GetInstance().LoadSound("Jump", "data/Sounds/Player/Jump.mp3", SoundType::SE);
+	SoundManager::GetInstance().LoadSound("Charge", "data/Sounds/Player/Charge.mp3", SoundType::SE);
+	SoundManager::GetInstance().LoadSound("Charged", "data/Sounds/Player/Charged.mp3", SoundType::SE);
 
 	/*ステージのロードと生成*/
 	LoadStage(stage);
