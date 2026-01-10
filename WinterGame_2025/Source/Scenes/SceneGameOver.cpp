@@ -62,12 +62,14 @@ void SceneGameOver::Update(Input& input)
 	// 上下を押して選択しているメニューを変える
 	if (input.IsTriggered("up") || input.IsTriggered("down"))
 	{
+		SoundManager::GetInstance().PlaySoundGame("Select");
 		_isSelectRestart = !_isSelectRestart;
 	}
 	// 決定ボタンを押したとき
 	if (input.IsTriggered("decision"))
 	{
 		SoundManager::GetInstance().StopSound("GameOverBgm", true);
+		SoundManager::GetInstance().PlaySoundGame("Decision");
 		if (_isSelectRestart)	// リスタートを押したとき
 		{
 			if (IsBossStage(_playedStage))

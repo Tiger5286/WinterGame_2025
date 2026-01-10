@@ -95,6 +95,7 @@ void SceneClear::Update(Input& input)
 		if (_score == 0 || static_cast<int>(_dispScore) == _score - 1)
 		{
 			SoundManager::GetInstance().StopSound("ClearBgm", true);
+			SoundManager::GetInstance().PlaySoundGame("Decision");
 			_manager.ChangeSceneWithFade(std::make_shared<SceneStageSelect>(_manager, _clearStage));
 		}
 		else	// スコア表示が最後まで行っていなかったら最後まで進める
