@@ -3,6 +3,7 @@
 #include "Dxlib.h"
 #include "SceneManager.h"
 #include "../Systems/DataManager.h"
+#include "../Systems/SoundManager.h"
 
 #include "SceneMain.h"
 #include "SceneTitle.h"
@@ -45,6 +46,8 @@ DebugScene::DebugScene(SceneManager& manager):
 	assert(_tempFontHandle != -1);
 	_numberTextHandle = LoadGraph("data/UI/NumberText.png");
 	assert(_numberTextHandle != -1);
+
+	SoundManager::GetInstance().StopSoundAll();
 }
 
 DebugScene::~DebugScene()
