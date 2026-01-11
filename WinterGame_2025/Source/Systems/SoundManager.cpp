@@ -32,6 +32,9 @@ SoundManager::SoundManager()
 	LoadSound("Jump", "data/Sounds/Player/Jump.mp3", SoundType::SE);
 	LoadSound("Charge", "data/Sounds/Player/Charge.mp3", SoundType::SE);
 	LoadSound("Charged", "data/Sounds/Player/Charged.mp3", SoundType::SE);
+	LoadSound("WallJump", "data/Sounds/Player/WallJump.mp3", SoundType::SE);
+	LoadSound("DashRecharge", "data/Sounds/Player/DashRecharge.mp3", SoundType::SE);
+	LoadSound("Damage", "data/Sounds/Player/Damage.mp3", SoundType::SE);
 }
 
 SoundManager::~SoundManager()

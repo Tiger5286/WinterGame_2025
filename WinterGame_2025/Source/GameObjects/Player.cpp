@@ -418,6 +418,7 @@ void Player::TakeDamage()
 		_isFrickering = false;	// 点滅フラグをリセット
 		_vel.y = -kKnockbackPowerY;	// 上方向に吹き飛ぶ
 		_chargeFrame = 0;	// チャージフレームをリセット
+		SoundManager::GetInstance().PlaySoundGame("Damage");
 		if (_isTurn)	// ダメージを受けた方向と逆に吹き飛ぶ
 		{
 			_vel.x = kKnockbackPowerX;
@@ -541,12 +542,14 @@ void Player::Slide()
 			_vel.y = kJumpPower;
 			_vel.x = kWallJumpPowerX;
 			_isSlide = false;
+			SoundManager::GetInstance().PlaySoundGame("WallJump");
 		}
 		else if (_input.IsTriggered("jump") && _hitDir.right)
 		{	// 壁ジャンプ(右壁)
 			_vel.y = kJumpPower;
 			_vel.x = -kWallJumpPowerX;
 			_isSlide = false;
+			SoundManager::GetInstance().PlaySoundGame("WallJump");
 		}
 	}
 }
@@ -662,6 +665,10 @@ void Player::Dash()
 	if (_dashCoolTime > 0)
 	{
 		_dashCoolTime--;
+	}
+	if (_dashCoolTime == 1)
+	{
+		SoundManager::GetInstance().PlaySoundGame("DashRecharge");
 	}
 	if (_input.IsTriggered("dash") && _dashCoolTime == 0)
 	{	// ダッシュが入力され、かつクールタイムが終わっているなら
