@@ -144,7 +144,7 @@ void SceneClear::Draw()
 	// ステージセレクトへ戻るの描画
 	// 透明度をsinで変える
 	float sinAlpha = sinf(_frame * kBackTextSinAlphaScale) * 255 / 2;
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, sinAlpha + 255 / 2);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(sinAlpha + 255 / 2));
 	DrawRotaGraph(screenW / 2, kBackTextY, kBackTextScale, 0.0, _backTextHandle, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
