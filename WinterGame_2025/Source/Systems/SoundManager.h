@@ -53,17 +53,6 @@ public:
 	void StopSoundAll(bool isFade = false);
 
 	/// <summary>
-	/// 読み込んだ音声ファイルを全て開放し、登録を解除する
-	/// </summary>
-	void DeleteSoundAll();
-
-	/// <summary>
-	/// 読み込んだ音声ファイルを開放し、登録を解除する
-	/// </summary>
-	/// <param name="soundName">解放する音の登録名</param>
-	void DeleteSound(const std::string& soundName);
-
-	/// <summary>
 	/// 音量を調整する
 	/// </summary>
 	/// <param name="type">調整する音の種類</param>
@@ -90,6 +79,17 @@ private:
 	///	<param name="filePath">ファイル名</param>
 	/// <param name="type">音の種類</param>
 	void LoadSound(const std::string& soundName, const std::string& filePath, SoundType type);
+
+	/// <summary>
+	/// 読み込んだ音声ファイルを全て開放し、登録を解除する
+	/// </summary>
+	void DeleteSoundAll();
+
+	/// <summary>
+	/// 読み込んだ音声ファイルを開放し、登録を解除する
+	/// </summary>
+	/// <param name="soundName">解放する音の登録名</param>
+	void DeleteSound(const std::string& soundName);
 
 	// 音声ファイルマップ
 	std::map<std::string, SoundInfo> _soundMap;
