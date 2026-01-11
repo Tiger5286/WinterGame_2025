@@ -163,7 +163,7 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	_shotFlashAnim.SetEnd();
 	_chargeShotFlashAnim.Init(_chargeShotH, 0, kChargeShotFlashGraphSize, kChargeShotAnimNum, kChargeShotFlashOneAnimFrame, kDrawScale,false);
 	_chargeShotFlashAnim.SetEnd();
-	_ChargeParticleAnim.Init(_chargeParticleH, 0, kChargeParticleFrameSize, kChargeParticleAnimNum, kOneAnimFrame, kDrawScale);
+	_chargeParticleAnim.Init(_chargeParticleH, 0, kChargeParticleFrameSize, kChargeParticleAnimNum, kOneAnimFrame, kDrawScale);
 
 	_nowAnim = _idleAnim;
 }
@@ -362,7 +362,7 @@ void Player::Draw(Vector2 offset)
 	// チャージエフェクトを描画
 	if (_chargeFrame > kChargeEffectTime)
 	{
-		_ChargeParticleAnim.Draw(drawPos, true);
+		_chargeParticleAnim.Draw(drawPos, true);
 	}
 	// チャージが完了したら白フィルターを点滅させる
 	if (_chargeFrame >= kChargeTimeMax)
@@ -725,7 +725,7 @@ void Player::UpdateAnim()
 		ChangeAnim(_idleAnim);
 	}
 	_nowAnim.Update();	// アニメーション更新
-	_ChargeParticleAnim.Update(); // チャージパーティクルアニメーション更新
+	_chargeParticleAnim.Update(); // チャージパーティクルアニメーション更新
 	_shotFlashAnim.Update();
 	_chargeShotFlashAnim.Update();
 }

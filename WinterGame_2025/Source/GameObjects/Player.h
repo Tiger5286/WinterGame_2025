@@ -90,7 +90,7 @@ private:
 
 	Animation _shotFlashAnim;
 	Animation _chargeShotFlashAnim;
-	Animation _ChargeParticleAnim;
+	Animation _chargeParticleAnim;
 
 	int _frame = 0;
 	int _hp;
