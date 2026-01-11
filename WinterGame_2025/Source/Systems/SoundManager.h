@@ -33,14 +33,6 @@ public:
 	void Update();
 
 	/// <summary>
-	/// 音声ファイルを読み込み、登録する
-	/// </summary>
-	/// <param name="soundName">登録する名前</param>
-	/// <param name="filePath">ファイル名</param>
-	/// <param name="type">音の種類</param>
-	void LoadSound(const std::string& soundName, const std::string& filePath,SoundType type);
-
-	/// <summary>
 	/// 読み込んだ音声ファイルを再生する
 	/// </summary>
 	/// <param name="soundName">登録した名前</param>
@@ -90,6 +82,14 @@ private:
 	SoundManager();
 	SoundManager(const SoundManager& sm) = delete;
 	void operator=(const SoundManager& sm) = delete;
+
+	/// <summary>
+	/// 音声ファイルを読み込み、登録する
+	/// </summary>
+	/// <param name="soundName">登録する名前</param>
+	///	<param name="filePath">ファイル名</param>
+	/// <param name="type">音の種類</param>
+	void LoadSound(const std::string& soundName, const std::string& filePath, SoundType type);
 
 	// 音声ファイルマップ
 	std::map<std::string, SoundInfo> _soundMap;

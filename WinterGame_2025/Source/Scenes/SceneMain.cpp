@@ -96,27 +96,6 @@ SceneMain::SceneMain(SceneManager& manager, Stages stage,int score) :
 		assert(_graphHandles.back() != -1);
 	}
 
-	// bgmをロード
-	auto& soundManager = SoundManager::GetInstance();
-	switch (stage)	// ステージに応じてロードするbgmを変える
-	{
-	case Stages::Tutorial:
-		soundManager.LoadSound("StageBgm", "data/Sounds/BGM/TutorialBGM.ogg", SoundType::BGM);
-		break;
-	default:
-		soundManager.LoadSound("StageBgm", "data/Sounds/BGM/StageBGM.ogg", SoundType::BGM);
-	}
-	soundManager.LoadSound("BossBgm", "data/Sounds/BGM/BossBGM.ogg", SoundType::BGM);
-
-	/*効果音のロード*/
-	// プレイヤー
-	SoundManager::GetInstance().LoadSound("Shot", "data/Sounds/Player/PlayerShot.mp3", SoundType::SE);
-	SoundManager::GetInstance().LoadSound("ChargeShot", "data/Sounds/Player/PlayerChargeShot.mp3", SoundType::SE);
-	SoundManager::GetInstance().LoadSound("Dash", "data/Sounds/Player/Dash.mp3", SoundType::SE);
-	SoundManager::GetInstance().LoadSound("Jump", "data/Sounds/Player/Jump.mp3", SoundType::SE);
-	SoundManager::GetInstance().LoadSound("Charge", "data/Sounds/Player/Charge.mp3", SoundType::SE);
-	SoundManager::GetInstance().LoadSound("Charged", "data/Sounds/Player/Charged.mp3", SoundType::SE);
-
 	/*ステージのロードと生成*/
 	LoadStage(stage);
 
@@ -142,12 +121,6 @@ SceneMain::~SceneMain()
 	{
 		DeleteGraph(handle);
 	}
-	// bgmを解放
-	SoundManager::GetInstance().DeleteSound("StageBgm");
-	SoundManager::GetInstance().DeleteSound("BossBgm");
-	// 効果音を解放
-	SoundManager::GetInstance().DeleteSound("Shot");
-	SoundManager::GetInstance().DeleteSound("ChargeShot");
 }
 
 void SceneMain::Init()
@@ -422,8 +395,11 @@ void SceneMain::LoadStage(Stages stage, int playerHp)
 	_pClearFlag->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());
 	
 	// BGM再生
-	if (stage == Stages::Tutorial ||
-		stage == Stages::Stage1 ||
+	if (stage == Stages::Tutorial)
+	{
+		SoundManager::GetInstance().PlaySoundGame("TutorialBgm", true, true);
+	}
+	else if ( stage == Stages::Stage1 ||
 		stage == Stages::Stage2 ||
 		stage == Stages::Stage3 ||
 		stage == Stages::SecretStage)
@@ -435,7 +411,6 @@ void SceneMain::LoadStage(Stages stage, int playerHp)
 			 stage == Stages::Boss3 ||
 			 stage == Stages::SecretBoss)
 	{
-		// ステージbgmを停止する
 		SoundManager::GetInstance().PlaySoundGame("BossBgm", true, true);
 	}
 }
@@ -465,6 +440,7 @@ void SceneMain::StageClear()
 	else if (isBossStage || _nowStage == Stages::Tutorial)	// ボスステージ、またはチュートリアルならクリアシーンへ
 	{
 		// bgmを停止する
+		SoundManager::GetInstance().StopSound("TutorialBgm", true);
 		SoundManager::GetInstance().StopSound("StageBgm", true);
 		SoundManager::GetInstance().StopSound("BossBgm", true);
 		_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager, _score, _nowStage), FadeState::NormalFadeIn, FadeState::CircleFadeOut);

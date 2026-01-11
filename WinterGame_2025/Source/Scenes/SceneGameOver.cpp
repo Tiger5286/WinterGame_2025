@@ -38,7 +38,6 @@ SceneGameOver::SceneGameOver(SceneManager& manager,Stages playedStage,int score)
 	_backTextHandle = LoadGraph("data/UI/BackToStageSelectText.png");
 	assert(_backTextHandle != -1);
 
-	SoundManager::GetInstance().LoadSound("GameOverBgm", "data/Sounds/BGM/GameOverBGM.ogg", SoundType::BGM);
 	SoundManager::GetInstance().PlaySoundGame("GameOverBgm", true, true);
 }
 
@@ -48,8 +47,6 @@ SceneGameOver::~SceneGameOver()
 	DeleteGraph(_gameOverHandle);
 	DeleteGraph(_restartTextHandle);
 	DeleteGraph(_backTextHandle);
-
-	SoundManager::GetInstance().DeleteSound("GameOverBgm");
 }
 
 void SceneGameOver::Init()

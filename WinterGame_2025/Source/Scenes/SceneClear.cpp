@@ -62,7 +62,6 @@ SceneClear::SceneClear(SceneManager& manager,int score, Stages clearStage):
 	manager.CheckClearedStage(selectableStage);
 
 	// BGMÄ¶
-	SoundManager::GetInstance().LoadSound("ClearBgm", "data/Sounds/BGM/ClearBGM.ogg", SoundType::BGM);
 	SoundManager::GetInstance().PlaySoundGame("ClearBgm", true, true);
 }
 
@@ -74,9 +73,6 @@ SceneClear::~SceneClear()
 	DeleteGraph(_numberTextHandle);
 	DeleteGraph(_updateHighScoreHandle);
 	DeleteGraph(_backTextHandle);
-
-	// bgm‚ğ‰ğ•ú
-	SoundManager::GetInstance().DeleteSound("ClearBgm");
 }
 
 void SceneClear::Init()

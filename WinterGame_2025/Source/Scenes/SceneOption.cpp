@@ -42,13 +42,10 @@ SceneOption::SceneOption(SceneManager& manager):
 	// 音量を取得
 	_bgmVolume = SoundManager::GetInstance().GetBGMVolume();
 	_seVolume = SoundManager::GetInstance().GetSEVolume();
-	// 効果音確認用の音をロード
-	SoundManager::GetInstance().LoadSound("TestSound", "data/Sounds/Player/PlayerShot.mp3", SoundType::SE);
 }
 
 SceneOption::~SceneOption()
 {
-	SoundManager::GetInstance().DeleteSound("TestSound");
 }
 
 void SceneOption::Init()
@@ -153,7 +150,7 @@ void SceneOption::UpdateSeVolume(Input& input)
 	}
 	if (input.IsReleased("left"))
 	{
-		SoundManager::GetInstance().PlaySoundGame("TestSound");
+		SoundManager::GetInstance().PlaySoundGame("Shot");
 	}
 	if (input.IsPressed("right"))
 	{
@@ -166,7 +163,7 @@ void SceneOption::UpdateSeVolume(Input& input)
 	}
 	if (input.IsReleased("right"))
 	{
-		SoundManager::GetInstance().PlaySoundGame("TestSound");
+		SoundManager::GetInstance().PlaySoundGame("Shot");
 	}
 }
 

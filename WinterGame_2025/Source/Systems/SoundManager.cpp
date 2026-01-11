@@ -10,11 +10,28 @@ namespace
 
 SoundManager::SoundManager()
 {
-	// ゲーム全体で使う音をロード
+	// bgmをロード
+	LoadSound("TitleBGM", "data/Sounds/BGM/TitleBGM.ogg", SoundType::BGM);
+	LoadSound("StageSelectBGM", "data/Sounds/BGM/StageSelectBGM.ogg", SoundType::BGM);
+	LoadSound("TutorialBgm", "data/Sounds/BGM/TutorialBGM.ogg", SoundType::BGM);
+	LoadSound("StageBgm", "data/Sounds/BGM/StageBGM.ogg", SoundType::BGM);
+	LoadSound("BossBgm", "data/Sounds/BGM/BossBGM.ogg", SoundType::BGM);
+	LoadSound("ClearBgm", "data/Sounds/BGM/ClearBGM.ogg", SoundType::BGM);
+	LoadSound("GameOverBgm", "data/Sounds/BGM/GameOverBGM.ogg", SoundType::BGM);
+
+	// システム効果音をロード
 	LoadSound("Select", "data/Sounds/System/Select.mp3", SoundType::SE);
 	LoadSound("Decision", "data/Sounds/System/Decision.mp3", SoundType::SE);
 	LoadSound("Cancel", "data/Sounds/System/Cancel.mp3", SoundType::SE);
 	LoadSound("Beep", "data/Sounds/System/Beep.mp3", SoundType::SE);
+
+	// プレイヤーの効果音
+	LoadSound("Shot", "data/Sounds/Player/PlayerShot.mp3", SoundType::SE);
+	LoadSound("ChargeShot", "data/Sounds/Player/PlayerChargeShot.mp3", SoundType::SE);
+	LoadSound("Dash", "data/Sounds/Player/Dash.mp3", SoundType::SE);
+	LoadSound("Jump", "data/Sounds/Player/Jump.mp3", SoundType::SE);
+	LoadSound("Charge", "data/Sounds/Player/Charge.mp3", SoundType::SE);
+	LoadSound("Charged", "data/Sounds/Player/Charged.mp3", SoundType::SE);
 }
 
 SoundManager::~SoundManager()

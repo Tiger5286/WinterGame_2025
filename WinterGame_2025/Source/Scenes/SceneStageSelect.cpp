@@ -121,8 +121,7 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 		_frame = -kUIControllInterval;
 	}
 
-	// bgm‚Ìƒ[ƒh‚ÆÄ¶
-	SoundManager::GetInstance().LoadSound("StageSelectBGM", "data/Sounds/BGM/StageSelectBGM.ogg", SoundType::BGM);
+	// bgmÄ¶
 	SoundManager::GetInstance().PlaySoundGame("StageSelectBGM", true, true);
 }
 
@@ -141,7 +140,6 @@ SceneStageSelect::~SceneStageSelect()
 	{
 		DeleteGraph(handle);
 	}
-	SoundManager::GetInstance().DeleteSound("StageSelectBGM");
 }
 
 void SceneStageSelect::Init()
