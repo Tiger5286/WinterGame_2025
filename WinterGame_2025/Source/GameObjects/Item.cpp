@@ -1,6 +1,7 @@
 #include "Item.h"
 #include "../Utility/CircleCollider.h"
 #include "../Systems/Animation.h"
+#include "../Systems/SoundManager.h"
 #include "Player.h"
 #include "Dxlib.h"
 #include <cassert>
@@ -103,14 +104,14 @@ void Item::GetItem()
 	switch (_type)
 	{
 	case ItemType::Coin:
-		//printfDx("コインを取得しました\n");
+		SoundManager::GetInstance().PlaySoundGame("Coin");
 		break;
 	case ItemType::BigCoin:
-		//printfDx("大コインを取得しました\n");
+		
 		break;
 	case ItemType::HealthItem:
 		_pPlayer->Heal(kPlayerHealAmount);
-		//printfDx("回復アイテムを取得しました\n");
+		
 		break;
 	default:
 		assert(false && "不正なItemTypeが指定されました");
