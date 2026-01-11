@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "SceneOption.h"
 #include "../Systems/Input.h"
+#include "../Systems/SoundManager.h"
 #include "Dxlib.h"
 #include "../Game.h"
 
@@ -29,6 +30,7 @@ ScenePause::ScenePause(SceneManager& manager,Stages playingStage) :
 		return;
 		};
 	_execTable["ステージセレクトに戻る"] = [this]() {
+		SoundManager::GetInstance().StopSoundAll(true);
 		_manager.ResetSceneWithFade(std::make_shared<SceneStageSelect>(_manager, _playingStage));
 		return;
 		};
