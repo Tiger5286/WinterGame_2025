@@ -38,6 +38,8 @@ SoundManager::SoundManager()
 
 	// ƒAƒCƒeƒ€‚ÌŒø‰Ê‰¹
 	LoadSound("Coin", "data/Sounds/Item/Coin.mp3", SoundType::SE);
+	LoadSound("BigCoin", "data/Sounds/Item/BigCoin.mp3", SoundType::SE);
+	LoadSound("Heal", "data/Sounds/Item/Heal.mp3", SoundType::SE);
 }
 
 SoundManager::~SoundManager()

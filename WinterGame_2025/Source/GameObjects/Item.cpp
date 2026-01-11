@@ -107,11 +107,11 @@ void Item::GetItem()
 		SoundManager::GetInstance().PlaySoundGame("Coin");
 		break;
 	case ItemType::BigCoin:
-		
+		SoundManager::GetInstance().PlaySoundGame("BigCoin");
 		break;
 	case ItemType::HealthItem:
 		_pPlayer->Heal(kPlayerHealAmount);
-		
+		SoundManager::GetInstance().PlaySoundGame("Heal");
 		break;
 	default:
 		assert(false && "•s³‚ÈItemType‚ªw’è‚³‚ê‚Ü‚µ‚½");
