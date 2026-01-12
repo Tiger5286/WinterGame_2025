@@ -5,6 +5,7 @@
 #include "../Bullet.h"
 #include "../Player.h"
 #include "../../Systems/ItemManager.h"
+#include "../../Systems/SoundManager.h"
 #include "Dxlib.h"
 
 namespace
@@ -48,6 +49,7 @@ void Enemy::TakeDamage(int damage,Bullet& bullet)
 	// ƒ_ƒ[ƒW‚ğó‚¯‚é
 	_hp -= damage;
 	_damageFrame = kDamageFrameMax;
+	SoundManager::GetInstance().PlaySoundGame("EnemyDamage");
 	// €‚ñ‚¾‚ç
 	if (_hp <= 0)
 	{
