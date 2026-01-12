@@ -151,10 +151,13 @@ void SceneMain::Update(Input& input)
 		// 全てのステージが未クリアなら再度チュートリアルステージを再生
 		if (_manager.GetSaveData().clearedStage == static_cast<int>(Stages::None))
 		{
+			SoundManager::GetInstance().StopSound("TutorialBgm", true);
 			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _nowStage), FadeState::CircleFadeIn, FadeState::CircleFadeOut);
 		}
 		else	// そうでないならゲームオーバーへ
 		{
+			SoundManager::GetInstance().StopSound("StageBgm", true);
+			SoundManager::GetInstance().StopSound("BossBgm", true);
 			_manager.ChangeSceneWithFade(std::make_shared<SceneGameOver>(_manager, _nowStage,_score), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
 		}
 		return;
