@@ -11,26 +11,29 @@
 
 namespace
 {
-	// 黒塗りの端が画面端からどれくらい離れているか
-	constexpr int kBlackBoxMargin = 150;
-
+	// ウィンドウの端が画面端からどれくらい離れているか
+	constexpr int kWindowMargin = 150;
 
 	// フォントサイズ
 	constexpr int kFontSize = 64;
 
 	// テキストのY座標
 	constexpr int kPauseTextY = 200;
-	constexpr int kMenuStartY = 450;
+	constexpr int kMenuStartY = 400;
 	// メニュー間のY座標の間隔
-	constexpr int kMenuMarginY = 30;
+	constexpr int kMenuMarginY = 40;
 }
 
 ScenePause::ScenePause(SceneManager& manager,Stages playingStage) :
 	SceneBase(manager),
 	_playingStage(playingStage)
 {
+	// フォントの生成
 	_fontHandle = CreateFontToHandle("廻想体 ネクスト UP B", kFontSize, -1);
 	assert(_fontHandle != -1 && "フォントの生成に失敗しました");
+	// 画像のロード
+	_bgHandle = LoadGraph("data/UI/PauseBg.png");
+	assert(_bgHandle != -1 && "背景画像のロードに失敗しました");
 
 	// メニュー項目
 	_menuList =
@@ -94,9 +97,11 @@ void ScenePause::Draw()
 	const int screenH = GlobalConstants::kScreenHeight;
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);	// 半透明にする
-	DrawBox(kBlackBoxMargin, kBlackBoxMargin, screenW - kBlackBoxMargin, screenH - kBlackBoxMargin, 0x000000, true);	// 黒い四角を描画
+	DrawBox(0,0, screenW, screenH, 0x000000, true);	// 黒い四角を描画
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);	// ブレンドモードを元に戻す
-	DrawBox(kBlackBoxMargin, kBlackBoxMargin, screenW - kBlackBoxMargin, screenH - kBlackBoxMargin, 0xffffff, false,5);	// 黒い四角を描画
+	//DrawBox(kBlackBoxMargin, kBlackBoxMargin, screenW - kBlackBoxMargin, screenH - kBlackBoxMargin, 0xffffff, false,5);	// 黒い四角を描画
+
+	DrawExtendGraph(kWindowMargin, kWindowMargin, screenW - kWindowMargin, screenH - kWindowMargin, _bgHandle, true);
 
 	std::string pauseText = "ポーズ";
 	int pauseTextWidth = GetDrawStringWidthToHandle(pauseText.c_str(), pauseText.length(), _fontHandle);

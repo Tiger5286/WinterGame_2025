@@ -34,6 +34,7 @@ private:
 
 private:
 	int _fontHandle = -1;
+	int _bgHandle = -1;
 
 	int _selectIndex = 0;
 	std::vector<std::function<void(int nowIndex)>> _drawFuncs;

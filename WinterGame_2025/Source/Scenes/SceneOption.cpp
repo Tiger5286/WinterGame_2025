@@ -8,14 +8,19 @@
 
 namespace
 {
+	// ウィンドウの端が画面端からどれくらい離れているか
+	constexpr int kWindowMargin = 150;
+
 	// フォントサイズ
 	constexpr int kFontSize = 48;
 
+	constexpr int kOptionTextY = 210;
+
 	// ウィンドウサイズと位置
-	constexpr int kWindowLeft = GlobalConstants::kScreenWidth / 4;
-	constexpr int kWindowTop = GlobalConstants::kScreenHeight / 4;
-	constexpr int kWindowWidth = GlobalConstants::kScreenWidth / 2;
-	constexpr int kWindowHeight = GlobalConstants::kScreenHeight / 2;
+	//constexpr int kWindowLeft = GlobalConstants::kScreenWidth / 4;
+	//constexpr int kWindowTop = GlobalConstants::kScreenHeight / 4;
+	//constexpr int kWindowWidth = GlobalConstants::kScreenWidth / 2;
+	//constexpr int kWindowHeight = GlobalConstants::kScreenHeight / 2;
 
 	// 音量バーの幅と太さ
 	constexpr int kSoundVolumeBarWidth = 500;
@@ -40,6 +45,8 @@ SceneOption::SceneOption(SceneManager& manager):
 
 	_fontHandle = CreateFontToHandle("廻想体 ネクスト UP B", kFontSize, -1);
 	assert(_fontHandle != -1 && "フォントの生成に失敗しました");
+	_bgHandle = LoadGraph("data/UI/pauseBg.png");
+	assert(_fontHandle != -1 && "背景画像の読み込みに失敗しました");
 
 	// 関数リストの初期化
 	_drawFuncs.resize(static_cast<int>(OptionMenu::Num));
@@ -112,12 +119,18 @@ void SceneOption::Draw()
 	constexpr int screenW = GlobalConstants::kScreenWidth;
 	constexpr int screenH = GlobalConstants::kScreenHeight;
 
-	// 半透明黒背景
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	DrawBox(kWindowLeft, kWindowTop, kWindowLeft + kWindowWidth, kWindowTop + kWindowHeight, 0x000000, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	// 枠
-	DrawBox(kWindowLeft, kWindowTop, kWindowLeft + kWindowWidth, kWindowTop + kWindowHeight, 0xffffff, false,5);
+	//// 半透明黒背景
+	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+	//DrawBox(kWindowLeft, kWindowTop, kWindowLeft + kWindowWidth, kWindowTop + kWindowHeight, 0x000000, true);
+	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//// 枠
+	//DrawBox(kWindowLeft, kWindowTop, kWindowLeft + kWindowWidth, kWindowTop + kWindowHeight, 0xffffff, false,5);
+	// 背景画像
+	DrawExtendGraph(kWindowMargin, kWindowMargin, screenW - kWindowMargin, screenH - kWindowMargin, _bgHandle, true);
+
+	std::string optionText = "オプション";
+	int width = GetDrawStringWidthToHandle(optionText.c_str(), optionText.length(), _fontHandle);
+	DrawStringToHandle(screenW / 2 - width / 2, kOptionTextY, optionText.c_str(), 0xffffff, _fontHandle);
 
 	// それぞれの要素の描画
 	for (int i = 0; i < static_cast<int>(OptionMenu::Num); i++)
@@ -126,7 +139,7 @@ void SceneOption::Draw()
 	}
 
 #ifdef _DEBUG
-	DrawFormatString(kWindowLeft, kWindowTop, 0xffffff, "_selectIndex:%d", _selectIndex);
+	DrawFormatString(400, 300, 0xffffff, "_selectIndex:%d", _selectIndex);
 #endif
 }
 

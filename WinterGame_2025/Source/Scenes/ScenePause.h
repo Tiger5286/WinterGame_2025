@@ -20,6 +20,8 @@ public:
 private:
 	// フォントハンドル
     int _fontHandle = -1;
+    // 背景の画像ハンドル
+    int _bgHandle = -1;
 
 	Stages _playingStage;    // ポーズ画面に入る前のステージ情報
     int _selectIndex = 0;
