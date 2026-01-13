@@ -21,10 +21,10 @@ namespace
 	constexpr float kTitleSinScale = 15.0f;
 
 	// ÉÅÉjÉÖÅ[UIä÷òA
-	constexpr int kUiPosYTop = GlobalConstants::kScreenHeight / 2 + 170;
-	constexpr int kUiPosYInterval = 130;
+	constexpr int kUiPosYTop = GlobalConstants::kScreenHeight / 2 + 150;
+	constexpr int kUiPosYInterval = 150;
 	constexpr float kUiScaleSelected = 0.5f;
-	constexpr float kUiScaleUnselected = 0.3f;
+	constexpr float kUiScaleUnselected = 0.4f;
 	constexpr float kUiSinRate = 0.05f;
 	constexpr float kUiSinScale = 0.05f;
 
