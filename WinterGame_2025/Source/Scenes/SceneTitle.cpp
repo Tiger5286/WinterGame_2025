@@ -23,7 +23,8 @@ namespace
 	// メニューUI関連
 	constexpr int kUiPosYTop = GlobalConstants::kScreenHeight / 2 + 170;
 	constexpr int kUiPosYInterval = 130;
-	constexpr float kUiScaleUnselected = 0.8f;
+	constexpr float kUiScaleSelected = 0.5f;
+	constexpr float kUiScaleUnselected = 0.3f;
 	constexpr float kUiSinRate = 0.05f;
 	constexpr float kUiSinScale = 0.05f;
 
@@ -158,7 +159,7 @@ void SceneTitle::Draw()
 		SetDrawBright(128, 128, 128);
 		if (_selectIndex == i)	// 選択中のメニュー
 		{
-			scale = 1.0f + kUiSinScale * sinf(_frame * kUiSinRate);	// 選択中のメニューを少し拡大縮小させる
+			scale = kUiScaleSelected + kUiSinScale * sinf(_frame * kUiSinRate);	// 選択中のメニューを少し拡大縮小させる
 			SetDrawBright(255, 255, 255);	// 選択中のメニューは明るく表示
 			// 選択確定後は点滅させる
 			if (_frameCount % 4 >= 2)
