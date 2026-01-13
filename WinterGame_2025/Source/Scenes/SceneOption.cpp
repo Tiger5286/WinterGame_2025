@@ -4,9 +4,12 @@
 #include "../Systems/Input.h"
 #include "../Systems/SoundManager.h"
 #include "SceneManager.h"
+#include <cassert>
 
 namespace
 {
+	constexpr int kFontSize = 48;
+
 	// ウィンドウサイズと位置
 	constexpr int kWindowLeft = GlobalConstants::kScreenWidth / 4;
 	constexpr int kWindowTop = GlobalConstants::kScreenHeight / 4;
@@ -27,6 +30,9 @@ SceneOption::SceneOption(SceneManager& manager):
 	constexpr int screenW = GlobalConstants::kScreenWidth;
 	constexpr int screenH = GlobalConstants::kScreenHeight;
 
+	_fontHandle = CreateFontToHandle("廻想体 ネクスト UP B", kFontSize, -1);
+	assert(_fontHandle != -1 && "フォントの生成に失敗しました");
+
 	// 関数リストの初期化
 	_drawFuncs.resize(static_cast<int>(OptionMenu::Num));
 	_drawFuncs[static_cast<int>(OptionMenu::BgmVolume)] = [this](int nowIndex) {
@@ -46,6 +52,7 @@ SceneOption::SceneOption(SceneManager& manager):
 
 SceneOption::~SceneOption()
 {
+	DeleteFontToHandle(_fontHandle);
 }
 
 void SceneOption::Init()
@@ -101,6 +108,8 @@ void SceneOption::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	DrawBox(kWindowLeft, kWindowTop, kWindowLeft + kWindowWidth, kWindowTop + kWindowHeight, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	// 枠
+	DrawBox(kWindowLeft, kWindowTop, kWindowLeft + kWindowWidth, kWindowTop + kWindowHeight, 0xffffff, false,5);
 
 	// それぞれの要素の描画
 	for (int i = 0; i < static_cast<int>(OptionMenu::Num); i++)
@@ -181,7 +190,9 @@ void SceneOption::DrawBgmVolume(int nowIndex)
 	constexpr int screenH = GlobalConstants::kScreenHeight;
 
 	unsigned int color = 0xff0000;
+	unsigned int textColor = 0xffffff;
 	if (nowIndex == static_cast<int>(OptionMenu::BgmVolume)) color = 0x00ff00;
+	if (nowIndex == static_cast<int>(OptionMenu::BgmVolume)) textColor = 0x00ff00;
 
 	// bgm音量バー
 	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 - 50,
@@ -192,7 +203,7 @@ void SceneOption::DrawBgmVolume(int nowIndex)
 	DrawCircle(static_cast<int>(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth),
 		static_cast<int>(screenH / 2 - 50), kSoundVolumeCircleRadius, color, true);
 	// テキスト
-	DrawString(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 - 82, "BGM", 0xffffff);
+	DrawFormatStringToHandle(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 - 50 - kFontSize - 10, textColor, _fontHandle, "BGM:%d", static_cast<int>(_bgmVolume / 255.0f * 100));
 }
 
 void SceneOption::DrawSeVolume(int nowIndex)
@@ -201,7 +212,9 @@ void SceneOption::DrawSeVolume(int nowIndex)
 	constexpr int screenH = GlobalConstants::kScreenHeight;
 
 	unsigned int color = 0xff0000;
+	unsigned int textColor = 0xffffff;
 	if (nowIndex == static_cast<int>(OptionMenu::SeVolume)) color = 0x00ff00;
+	if (nowIndex == static_cast<int>(OptionMenu::SeVolume)) textColor = 0x00ff00;
 
 	// se音量バー
 	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 + 50,
@@ -212,7 +225,7 @@ void SceneOption::DrawSeVolume(int nowIndex)
 	DrawCircle(static_cast<int>(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth),
 		static_cast<int>(screenH / 2 + 50), kSoundVolumeCircleRadius, color, true);
 	// テキスト
-	DrawString(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 + 18, "SE", 0xffffff);
+	DrawFormatStringToHandle(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 + 50 - kFontSize - 10, textColor,_fontHandle, "SE :%d", static_cast<int>(_seVolume / 255.0f * 100));
 }
 
 void SceneOption::DrawBack(int nowIndex)
@@ -223,5 +236,7 @@ void SceneOption::DrawBack(int nowIndex)
 	unsigned int color = 0xffffff;
 	if (nowIndex == static_cast<int>(OptionMenu::Back)) color = 0x00ff00;
 
-	DrawString(screenW / 2, screenH / 2 + 150, "戻る", color);
+	std::string backText = "戻る";
+	int width = GetDrawStringWidthToHandle(backText.c_str(), backText.length(),_fontHandle);
+	DrawStringToHandle(screenW / 2 - width / 2, screenH / 2 + 150, backText.c_str(), color,_fontHandle);
 }
