@@ -5,6 +5,7 @@
 #include "../../Systems/Camera.h"
 #include "../../Systems/EffectManager.h"
 #include "../../Systems/BulletManager.h"
+#include "../../Systems/SoundManager.h"
 #include "../Player.h"
 
 namespace
@@ -288,12 +289,14 @@ void HammerBoss::TakeDamage(int damage, Bullet& bullet)
 		if (bullet.GetType() == BulletType::NormalShot)
 		{
 			_drawBarrierFrame = kDrawBarrierMaxFrame;
+			SoundManager::GetInstance().PlaySoundGame("Barrier");
 			bullet.Reflect();
 		}
 		else if (bullet.GetType() == BulletType::ChargeShot)
 		{
 			_hp -= damage;
 			_damageFrame = 5;
+			SoundManager::GetInstance().PlaySoundGame("EnemyDamage");
 			bullet.Hit();
 		}
 		

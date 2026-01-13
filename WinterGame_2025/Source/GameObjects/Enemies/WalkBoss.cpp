@@ -6,6 +6,7 @@
 #include "../../Systems/Camera.h"
 #include "../Gimmick.h"
 #include "../../Systems/EffectManager.h"
+#include "../../Systems/SoundManager.h"
 #include "../../Scenes/SceneManager.h"
 #include "../../Scenes/SceneClear.h"
 #include "../Bullet.h"
@@ -357,12 +358,14 @@ void WalkBoss::TakeDamage(int damage,Bullet& bullet)
 			if (bullet.GetType() == BulletType::NormalShot)
 			{
 				_drawBarrierFrame = kDrawBarrierMaxFrame;
+				SoundManager::GetInstance().PlaySoundGame("Barrier");
 				bullet.Reflect();
 			}
 			else if (bullet.GetType() == BulletType::ChargeShot)
 			{
 				_hp -= damage;
 				_damageFrame = 5;
+				SoundManager::GetInstance().PlaySoundGame("EnemyDamage");
 				bullet.Hit();
 			}
 		}
@@ -370,6 +373,7 @@ void WalkBoss::TakeDamage(int damage,Bullet& bullet)
 		{
 			_hp -= damage;
 			_damageFrame = 5;
+			SoundManager::GetInstance().PlaySoundGame("EnemyDamage");
 			bullet.Hit();
 		}
 		if (_hp <= 0)

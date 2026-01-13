@@ -5,6 +5,7 @@
 #include "../../Systems/EnemyManager.h"
 #include "../../Systems/EffectManager.h"
 #include "../../Systems/BulletManager.h"
+#include "../../Systems/SoundManager.h"
 #include "DroneEnemy.h"
 #include "../../Game.h"
 #include "../Player.h"
@@ -370,12 +371,14 @@ void FlyBoss::TakeDamage(int damage,Bullet& bullet)
 			if (bullet.GetType() == BulletType::NormalShot)
 			{
 				_drawBarrierFrame = kDrawBarrierMaxFrame;
+				SoundManager::GetInstance().PlaySoundGame("Barrier");
 				bullet.Reflect();
 			}
 			else if (bullet.GetType() == BulletType::ChargeShot)
 			{
 				_hp -= damage;
 				_damageFrame = 5;
+				SoundManager::GetInstance().PlaySoundGame("EnemyDamage");
 				bullet.Hit();
 			}
 		}
@@ -383,6 +386,7 @@ void FlyBoss::TakeDamage(int damage,Bullet& bullet)
 		{
 			_hp -= damage;
 			_damageFrame = 5;
+			SoundManager::GetInstance().PlaySoundGame("EnemyDamage");
 			// í èÌíeÇ»ÇÁè¡Ç∑
 			if (bullet.GetType() == BulletType::NormalShot)
 			{
