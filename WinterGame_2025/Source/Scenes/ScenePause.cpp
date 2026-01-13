@@ -8,10 +8,28 @@
 
 #include "SceneStageSelect.h"
 
+namespace
+{
+	// 黒塗りの端が画面端からどれくらい離れているか
+	constexpr int kBlackBoxMargin = 150;
+
+
+	// フォントサイズ
+	constexpr int kFontSize = 64;
+
+	// テキストのY座標
+	constexpr int kPauseTextY = 200;
+	constexpr int kMenuStartY = 450;
+	// メニュー間のY座標の間隔
+	constexpr int kMenuMarginY = 30;
+}
+
 ScenePause::ScenePause(SceneManager& manager,Stages playingStage) :
 	SceneBase(manager),
 	_playingStage(playingStage)
 {
+	_fontHandle = CreateFontToHandle("廻想体 ネクスト UP B", kFontSize, -1);
+
 	// メニュー項目
 	_menuList =
 	{
@@ -38,6 +56,7 @@ ScenePause::ScenePause(SceneManager& manager,Stages playingStage) :
 
 ScenePause::~ScenePause()
 {
+	DeleteFontToHandle(_fontHandle);
 }
 
 void ScenePause::Init()
@@ -74,19 +93,23 @@ void ScenePause::Draw()
 	const int screenH = GlobalConstants::kScreenHeight;
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);	// 半透明にする
-	DrawBox(0, 0, screenW, screenH, 0x000000, true);	// 黒い四角を描画
+	DrawBox(kBlackBoxMargin, kBlackBoxMargin, screenW - kBlackBoxMargin, screenH - kBlackBoxMargin, 0x000000, true);	// 黒い四角を描画
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);	// ブレンドモードを元に戻す
+	DrawBox(kBlackBoxMargin, kBlackBoxMargin, screenW - kBlackBoxMargin, screenH - kBlackBoxMargin, 0xffffff, false,5);	// 黒い四角を描画
 
-	DrawString(screenW / 2, 200, "pause", 0xffffff);
+	std::string pauseText = "ポーズ";
+	int pauseTextWidth = GetDrawStringWidthToHandle(pauseText.c_str(), pauseText.length(), _fontHandle);
+	DrawStringToHandle(screenW / 2 - pauseTextWidth / 2, kPauseTextY, pauseText.c_str(), 0xffffff, _fontHandle);
 
 	for (int i = 0; i < _menuList.size(); i++)
 	{
+		int menuTextWidth = GetDrawStringWidthToHandle(_menuList[i].c_str(), _menuList[i].length(), _fontHandle);
 		unsigned int color = 0xffffff;
 		if (i == _selectIndex)
 		{
 			color = 0x00ff00;	// 選択中のメニューは緑色にする
-			DrawString(screenW / 2 - 20, 400 + i * 30, "→", color);
+			DrawStringToHandle(screenW / 2 - menuTextWidth / 2 - kFontSize, kMenuStartY + i * (kFontSize + kMenuMarginY), "→", color, _fontHandle);
 		}
-		DrawString(screenW / 2, 400 + i * 30, _menuList[i].c_str(), color);
+		DrawStringToHandle(screenW / 2 - menuTextWidth / 2, kMenuStartY + i * (kFontSize + kMenuMarginY), _menuList[i].c_str(), color, _fontHandle);
 	}
 }
