@@ -96,6 +96,7 @@ namespace
 	// 演出関連
 	constexpr int kWalkDustInterval = 15;	// 歩行時の埃エフェクトの間隔
 	constexpr int kSlideDustInterval = 10;	// 壁ずり落ち時の埃エフェクトの間隔
+	constexpr int kWalkSoundInterval = 16;	// 歩行時の足音の間隔
 }
 
 // アニメーション種類
@@ -260,6 +261,14 @@ void Player::Update(Map& map)
 
 	// 画面外に出ないようにする
 	MoveAreaLimit(map);
+
+	// 足音
+	if (_walkSoundFrame % kWalkSoundInterval == 1 &&
+		abs(_vel.x) != 0.0f &&
+		_isGround)
+	{
+		SoundManager::GetInstance().PlaySoundGame("Walk");
+	}
 
 	// 残像の更新
 	UpdateAfterimage();
@@ -482,16 +491,20 @@ void Player::Jump()
 void Player::Move()
 {
 	// 左右移動の入力処理
+	bool isInputMove = false;
 	if (_input.IsPressed("right"))
 	{
 		_vel.x += kMoveSpeed;
+		isInputMove = true;
 		if (!_isDashing) _isTurn = false;
 	}
 	if (_input.IsPressed("left"))
 	{
 		_vel.x -= kMoveSpeed;
+		isInputMove = true;
 		if (!_isDashing) _isTurn = true;
 	}
+	isInputMove ? _walkSoundFrame++ : _walkSoundFrame = 0;
 }
 
 void Player::Slide()

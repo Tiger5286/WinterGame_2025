@@ -107,6 +107,8 @@ private:
 
 	bool _isSlide;	// 壁スライド状態かどうか
 
+	int _walkSoundFrame = 0; // 歩行音再生用フレームカウント
+
 	// ダメージ関連変数
 	bool _isCanControll; // プレイヤー操作可能フラグ
 	int _invincibleFrame; // 無敵時間
