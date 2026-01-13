@@ -62,7 +62,7 @@ namespace
 
 	constexpr int kOutOfScreenMargin = 100;
 
-	constexpr int kHp = 30;
+	constexpr int kHp = 40;
 	constexpr int kScore = 10000;
 
 	// ‰‰oŠÖ˜A

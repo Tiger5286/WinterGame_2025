@@ -19,7 +19,7 @@ namespace
 	// 当たり判定
 	const Vector2 kColliderSize = { 130,150 };
 	// 体力
-	constexpr int kMaxHp = 70;
+	constexpr int kMaxHp = 60;
 	constexpr int kScore = 10000;
 
 	// アニメーション関連
