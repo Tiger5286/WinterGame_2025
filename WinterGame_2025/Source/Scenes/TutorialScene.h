@@ -14,6 +14,8 @@ public:
 	void Update(Input& input) override;
 	void Draw() override;
 private:
+	int _fontHandle = -1;
+
 	std::string _tutorialText;
 	int _frame = 0;
 };

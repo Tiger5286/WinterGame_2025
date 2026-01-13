@@ -2,10 +2,19 @@
 #include "SceneManager.h"
 #include "../Systems/Input.h"
 #include "Dxlib.h"
+#include <cassert>
+
+namespace
+{
+	constexpr int kFontSize = 32;
+}
 
 TutorialScene::TutorialScene(SceneManager& manager, TutorialStep nowStep):
 	SceneBase(manager)
 {
+	_fontHandle = CreateFontToHandle("廻想体 ネクスト UP B", kFontSize, -1);
+	assert(_fontHandle != -1 && "フォントの生成に失敗しました");
+
 	switch (nowStep)
 	{
 	case TutorialStep::None:
@@ -65,11 +74,11 @@ void TutorialScene::Draw()
 	DrawBox(380, 380, 1000, 600, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	DrawString(400, 400, _tutorialText.c_str(), 0xffffff);
+	DrawStringToHandle(400, 400, _tutorialText.c_str(), 0xffffff,_fontHandle);
 	unsigned int color = 0xffff00;
 	if (_frame % 30 < 15)
 	{
 		color = 0xffffff;
 	}
-	DrawString(850, 570, "Aボタンで進む", color);
+	DrawStringToHandle(850, 570, "Aボタンで進む", color,_fontHandle);
 }
