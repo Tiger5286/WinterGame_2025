@@ -8,6 +8,7 @@
 
 namespace
 {
+	// フォントサイズ
 	constexpr int kFontSize = 48;
 
 	// ウィンドウサイズと位置
@@ -22,6 +23,13 @@ namespace
 	// 現在の音量を表す円
 	constexpr int kSoundVolumeCircleRadius = 10;
 	constexpr int kSoundVolumeCircleOutlineRadius = 12;
+	// メニューの高さ
+	constexpr int kBgmY = GlobalConstants::kScreenHeight / 2 - 50;
+	constexpr int kSeY  = GlobalConstants::kScreenHeight / 2 + 50;
+	constexpr int kBackY = GlobalConstants::kScreenHeight / 2 + 150;
+
+	// 音量の調整できる速度
+	constexpr int kVolumeAdjustSpeed = 2;
 }
 
 SceneOption::SceneOption(SceneManager& manager):
@@ -127,7 +135,7 @@ void SceneOption::UpdateBgmVolume(Input& input)
 	// 左右入力で音量を調整
 	if (input.IsPressed("left"))
 	{
-		_bgmVolume -= 2;
+		_bgmVolume -= kVolumeAdjustSpeed;
 		if (_bgmVolume < 0)
 		{
 			_bgmVolume = 0;
@@ -136,7 +144,7 @@ void SceneOption::UpdateBgmVolume(Input& input)
 	}
 	if (input.IsPressed("right"))
 	{
-		_bgmVolume += 2;
+		_bgmVolume += kVolumeAdjustSpeed;
 		if (_bgmVolume > 255)
 		{
 			_bgmVolume = 255;
@@ -150,7 +158,7 @@ void SceneOption::UpdateSeVolume(Input& input)
 	// 左右入力で音量を調整
 	if (input.IsPressed("left"))
 	{
-		_seVolume -= 2;
+		_seVolume -= kVolumeAdjustSpeed;
 		if (_seVolume < 0)
 		{
 			_seVolume = 0;
@@ -163,7 +171,7 @@ void SceneOption::UpdateSeVolume(Input& input)
 	}
 	if (input.IsPressed("right"))
 	{
-		_seVolume += 2;
+		_seVolume += kVolumeAdjustSpeed;
 		if (_seVolume > 255)
 		{
 			_seVolume = 255;
@@ -195,15 +203,15 @@ void SceneOption::DrawBgmVolume(int nowIndex)
 	if (nowIndex == static_cast<int>(OptionMenu::BgmVolume)) textColor = 0x00ff00;
 
 	// bgm音量バー
-	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 - 50,
-		screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 - 50, 0xffffff, kSoundVolumeBarThickness);
+	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, kBgmY,
+		screenW / 2 + kSoundVolumeBarWidth / 2, kBgmY, 0xffffff, kSoundVolumeBarThickness);
 	// bgm音量バーの現在値
 	DrawCircle(static_cast<int>(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth),
-		static_cast<int>(screenH / 2 - 50), kSoundVolumeCircleOutlineRadius, 0xffffff, true);
+		kBgmY, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
 	DrawCircle(static_cast<int>(screenW / 2 - kSoundVolumeBarWidth / 2 + (_bgmVolume / 255.0f) * kSoundVolumeBarWidth),
-		static_cast<int>(screenH / 2 - 50), kSoundVolumeCircleRadius, color, true);
+		kBgmY, kSoundVolumeCircleRadius, color, true);
 	// テキスト
-	DrawFormatStringToHandle(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 - 50 - kFontSize - 10, textColor, _fontHandle, "BGM:%d", static_cast<int>(_bgmVolume / 255.0f * 100));
+	DrawFormatStringToHandle(screenW / 2 - kSoundVolumeBarWidth / 2, kBgmY - kFontSize - 10, textColor, _fontHandle, "BGM:%d", static_cast<int>(_bgmVolume / 255.0f * 100));
 }
 
 void SceneOption::DrawSeVolume(int nowIndex)
@@ -217,15 +225,15 @@ void SceneOption::DrawSeVolume(int nowIndex)
 	if (nowIndex == static_cast<int>(OptionMenu::SeVolume)) textColor = 0x00ff00;
 
 	// se音量バー
-	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 + 50,
-		screenW / 2 + kSoundVolumeBarWidth / 2, screenH / 2 + 50, 0xffffff, kSoundVolumeBarThickness);
+	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, kSeY,
+		screenW / 2 + kSoundVolumeBarWidth / 2, kSeY, 0xffffff, kSoundVolumeBarThickness);
 	// se音量バーの現在値
 	DrawCircle(static_cast<int>(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth),
-		static_cast<int>(screenH / 2 + 50), kSoundVolumeCircleOutlineRadius, 0xffffff, true);
+		kSeY, kSoundVolumeCircleOutlineRadius, 0xffffff, true);
 	DrawCircle(static_cast<int>(screenW / 2 - kSoundVolumeBarWidth / 2 + (_seVolume / 255.0f) * kSoundVolumeBarWidth),
-		static_cast<int>(screenH / 2 + 50), kSoundVolumeCircleRadius, color, true);
+		kSeY, kSoundVolumeCircleRadius, color, true);
 	// テキスト
-	DrawFormatStringToHandle(screenW / 2 - kSoundVolumeBarWidth / 2, screenH / 2 + 50 - kFontSize - 10, textColor,_fontHandle, "SE :%d", static_cast<int>(_seVolume / 255.0f * 100));
+	DrawFormatStringToHandle(screenW / 2 - kSoundVolumeBarWidth / 2, kSeY - kFontSize - 10, textColor,_fontHandle, "SE :%d", static_cast<int>(_seVolume / 255.0f * 100));
 }
 
 void SceneOption::DrawBack(int nowIndex)
@@ -238,5 +246,5 @@ void SceneOption::DrawBack(int nowIndex)
 
 	std::string backText = "戻る";
 	int width = GetDrawStringWidthToHandle(backText.c_str(), backText.length(),_fontHandle);
-	DrawStringToHandle(screenW / 2 - width / 2, screenH / 2 + 150, backText.c_str(), color,_fontHandle);
+	DrawStringToHandle(screenW / 2 - width / 2, kBackY, backText.c_str(), color,_fontHandle);
 }
