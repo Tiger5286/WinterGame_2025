@@ -82,8 +82,7 @@ void ScenePause::Update(Input& input)
 		// 選択中のメニュー項目を実行
 		_execTable[_menuList[_selectIndex]]();
 	}
-
-	if (input.IsTriggered("start"))
+	if (input.IsTriggered("back") && input.IsTriggered("start"))
 	{
 		_execTable["ゲームに戻る"]();
 	}
