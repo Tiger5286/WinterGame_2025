@@ -35,6 +35,7 @@ SoundManager::SoundManager()
 	LoadSound("WallJump", "data/Sounds/Player/WallJump.mp3", SoundType::SE);
 	LoadSound("DashRecharge", "data/Sounds/Player/DashRecharge.mp3", SoundType::SE);
 	LoadSound("Damage", "data/Sounds/Player/Damage.mp3", SoundType::SE);
+	LoadSound("Walk", "data/Sounds/Player/Walk.mp3", SoundType::SE);
 
 	// ƒAƒCƒeƒ€‚ÌŒø‰Ê‰¹
 	LoadSound("Coin", "data/Sounds/Item/Coin.mp3", SoundType::SE);
@@ -43,6 +44,8 @@ SoundManager::SoundManager()
 
 	// “G‚ÌŒø‰Ê‰¹
 	LoadSound("EnemyDamage", "data/Sounds/Enemy/EnemyDamage.mp3", SoundType::SE);
+	LoadSound("EnemyDeath", "data/Sounds/Enemy/EnemyDeath.mp3", SoundType::SE);
+	LoadSound("Barrier", "data/Sounds/Enemy/Barrier.mp3", SoundType::SE);
 }
 
 SoundManager::~SoundManager()
