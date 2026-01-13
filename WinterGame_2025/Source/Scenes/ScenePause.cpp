@@ -5,6 +5,7 @@
 #include "../Systems/SoundManager.h"
 #include "Dxlib.h"
 #include "../Game.h"
+#include <cassert>
 
 #include "SceneStageSelect.h"
 
@@ -29,6 +30,7 @@ ScenePause::ScenePause(SceneManager& manager,Stages playingStage) :
 	_playingStage(playingStage)
 {
 	_fontHandle = CreateFontToHandle("廻想体 ネクスト UP B", kFontSize, -1);
+	assert(_fontHandle != -1 && "フォントの生成に失敗しました");
 
 	// メニュー項目
 	_menuList =
