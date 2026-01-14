@@ -21,7 +21,7 @@ namespace
 	constexpr float kTitleSinScale = 15.0f;
 
 	// メニューUI関連
-	constexpr int kUiPosYTop = GlobalConstants::kScreenHeight / 2 + 150;
+	constexpr int kUiPosYTop = GlobalConstants::kScreenHeight / 2 + 100;
 	constexpr int kUiPosYInterval = 150;
 	constexpr float kUiScaleSelected = 0.5f;
 	constexpr float kUiScaleUnselected = 0.4f;
@@ -80,7 +80,7 @@ void SceneTitle::Update(Input& input)
 {
 	_frame++;
 
-	if (input.IsTriggered("up"))
+	if (input.IsTriggered("up") && !_isTriggeredStart)
 	{
 		_selectIndex--;
 		if (_selectIndex < 0)
@@ -89,7 +89,7 @@ void SceneTitle::Update(Input& input)
 		}
 		SoundManager::GetInstance().PlaySoundGame("Select");
 	}
-	if (input.IsTriggered("down"))
+	if (input.IsTriggered("down") && !_isTriggeredStart)
 	{
 		_selectIndex++;
 		if (_selectIndex > static_cast<int>(MenuItems::Num) - 1)
@@ -98,7 +98,7 @@ void SceneTitle::Update(Input& input)
 		}
 		SoundManager::GetInstance().PlaySoundGame("Select");
 	}
-	if (input.IsTriggered("decision"))
+	if (input.IsTriggered("decision") && !_isTriggeredStart)
 	{
 		SoundManager::GetInstance().PlaySoundGame("Decision");
 		// メニューごとの処理
