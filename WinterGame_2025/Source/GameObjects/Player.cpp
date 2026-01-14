@@ -102,8 +102,8 @@ namespace
 	enum class PlayerGraphs
 	{
 		Player,
-		WhitePlayer,
-		ChargeShotParticle,
+		PlayerWhite,
+		ChargeParticle,
 		Shot,
 		ChargeShot,
 
@@ -138,12 +138,7 @@ enum class PlayerAnimType : int
 	Fall = 8
 };
 
-Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH, BulletManager& bulletManager,EffectManager& effectManager, int firstHp):
-	_playerH(playerH),
-	_playerWhiteH(playerWhiteH),
-	_chargeParticleH(chargeParticleH),
-	_shotH(shotH),
-	_chargeShotH(chargeShotH),
+Player::Player(BulletManager& bulletManager,EffectManager& effectManager, int firstHp):
 	_hp(firstHp),
 	_isAlive(true),
 	_jumpFrame(0),
@@ -178,26 +173,26 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 	for (auto& afterimage : _playerAfterimage)
 	{
 		afterimage.frame = kAfterimageFrameMax + 1;
-		afterimage.handle = _playerH;
-		afterimage.whiteHandle = _playerWhiteH;
+		afterimage.handle = _graphHandles[static_cast<int>(PlayerGraphs::Player)];
+		afterimage.whiteHandle = _graphHandles[static_cast<int>(PlayerGraphs::PlayerWhite)];
 	}
 
 	// アニメーションの初期化
-	_idleAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Idle), kFrameSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
-	_moveAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Move), kFrameSize, kMoveAnimNum, kMoveOneAnimFrame, kDrawScale);
-	_damageAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Damage), kFrameSize, kDamageAnimNum, kOneAnimFrame, kDrawScale);
-	_jumpAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Jump), kFrameSize, 1, kOneAnimFrame, kDrawScale);
-	_fallAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Fall), 2, kFrameSize, kDrawScale);
-	_dashAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Dash), 1, kFrameSize, kDrawScale);
-	_slideAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Slide), 0, kFrameSize, kDrawScale);
-	_deathAnim.Init(_playerH, static_cast<int>(PlayerAnimType::Death), kFrameSize, kDeathAnimNum, kDeathOneAnimFrame, kDrawScale, false);
+	_idleAnim.Init(_graphHandles[static_cast<int>(PlayerGraphs::Player)], static_cast<int>(PlayerAnimType::Idle), kFrameSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
+	_moveAnim.Init(_graphHandles[static_cast<int>(PlayerGraphs::Player)], static_cast<int>(PlayerAnimType::Move), kFrameSize, kMoveAnimNum, kMoveOneAnimFrame, kDrawScale);
+	_damageAnim.Init(_graphHandles[static_cast<int>(PlayerGraphs::Player)], static_cast<int>(PlayerAnimType::Damage), kFrameSize, kDamageAnimNum, kOneAnimFrame, kDrawScale);
+	_jumpAnim.Init(_graphHandles[static_cast<int>(PlayerGraphs::Player)], static_cast<int>(PlayerAnimType::Jump), kFrameSize, 1, kOneAnimFrame, kDrawScale);
+	_fallAnim.Init(_graphHandles[static_cast<int>(PlayerGraphs::Player)], static_cast<int>(PlayerAnimType::Fall), 2, kFrameSize, kDrawScale);
+	_dashAnim.Init(_graphHandles[static_cast<int>(PlayerGraphs::Player)], static_cast<int>(PlayerAnimType::Dash), 1, kFrameSize, kDrawScale);
+	_slideAnim.Init(_graphHandles[static_cast<int>(PlayerGraphs::Player)], static_cast<int>(PlayerAnimType::Slide), 0, kFrameSize, kDrawScale);
+	_deathAnim.Init(_graphHandles[static_cast<int>(PlayerGraphs::Player)], static_cast<int>(PlayerAnimType::Death), kFrameSize, kDeathAnimNum, kDeathOneAnimFrame, kDrawScale, false);
 
 	// マズルフラッシュアニメーションは終了状態で初期化する(最初に再生されるのを防ぐため)
-	_shotFlashAnim.Init(_shotH, 0, kShotFlashGraphSize, kShotAnimNum, kFlashOneAnimFrame, kDrawScale,false);
+	_shotFlashAnim.Init(_graphHandles[static_cast<int>(PlayerGraphs::Shot)], 0, kShotFlashGraphSize, kShotAnimNum, kFlashOneAnimFrame, kDrawScale,false);
 	_shotFlashAnim.SetEnd();
-	_chargeShotFlashAnim.Init(_chargeShotH, 0, kChargeShotFlashGraphSize, kChargeShotAnimNum, kChargeShotFlashOneAnimFrame, kDrawScale,false);
+	_chargeShotFlashAnim.Init(_graphHandles[static_cast<int>(PlayerGraphs::ChargeShot)], 0, kChargeShotFlashGraphSize, kChargeShotAnimNum, kChargeShotFlashOneAnimFrame, kDrawScale,false);
 	_chargeShotFlashAnim.SetEnd();
-	_chargeParticleAnim.Init(_chargeParticleH, 0, kChargeParticleFrameSize, kChargeParticleAnimNum, kOneAnimFrame, kDrawScale);
+	_chargeParticleAnim.Init(_graphHandles[static_cast<int>(PlayerGraphs::ChargeParticle)], 0, kChargeParticleFrameSize, kChargeParticleAnimNum, kOneAnimFrame, kDrawScale);
 
 	_nowAnim = _idleAnim;
 }
@@ -412,7 +407,7 @@ void Player::Draw(Vector2 offset)
 		if (_chargeFrame % kFlickerInterval * 2 < kFlickerInterval)
 		{
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-			_nowAnim.Draw(_playerWhiteH, drawPos, _isTurn);
+			_nowAnim.Draw(_graphHandles[static_cast<int>(PlayerGraphs::PlayerWhite)], drawPos, _isTurn);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 	}

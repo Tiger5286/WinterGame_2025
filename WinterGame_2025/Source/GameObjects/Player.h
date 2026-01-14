@@ -12,7 +12,7 @@ class EffectManager;
 class Player : public GameObject
 {
 public:
-	Player(int playerH,int playerWhiteH, int chargeParticleH,int shotH,int chargeShotH, BulletManager& bulletManager,EffectManager& effectManager,int firstHp = 5);
+	Player(BulletManager& bulletManager,EffectManager& effectManager,int firstHp = 5);
 	~Player();
 
 	void Init() override;
@@ -72,11 +72,11 @@ private:
 	EffectManager& _effectManager;
 
 	// 画像ハンドル
-	int _playerH;
-	int _playerWhiteH;
-	int _chargeParticleH;	// チャージエフェクトの画像ハンドル
-	int _shotH;
-	int _chargeShotH;
+	//int _playerH;
+	//int _playerWhiteH;
+	//int _chargeParticleH;	// チャージエフェクトの画像ハンドル
+	//int _shotH;
+	//int _chargeShotH;
 	std::vector<int> _graphHandles;
 
 	// アニメーション
