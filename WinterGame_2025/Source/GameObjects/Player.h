@@ -77,6 +77,7 @@ private:
 	int _chargeParticleH;	// チャージエフェクトの画像ハンドル
 	int _shotH;
 	int _chargeShotH;
+	std::vector<int> _graphHandles;
 
 	// アニメーション
 	Animation _idleAnim;

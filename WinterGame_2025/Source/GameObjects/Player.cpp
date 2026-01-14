@@ -97,6 +97,30 @@ namespace
 	constexpr int kWalkDustInterval = 15;	// 歩行時の埃エフェクトの間隔
 	constexpr int kSlideDustInterval = 10;	// 壁ずり落ち時の埃エフェクトの間隔
 	constexpr int kWalkSoundInterval = 16;	// 歩行時の足音の間隔
+
+	// 画像リスト
+	enum class PlayerGraphs
+	{
+		Player,
+		WhitePlayer,
+		ChargeShotParticle,
+		Shot,
+		ChargeShot,
+
+		Num
+	};
+	// ロードする画像のファイル名
+	const std::string kGraphFileNames[] =
+	{
+		"data/Player/Player.png",
+		"data/Player/PlayerWhite.png",
+		"data/Player/ChargeParticle.png",
+		"data/Player/Shot.png",
+		"data/Player/ChargeShot.png"
+	};
+	// 画像の枚数とenumの数が一致しているか確認
+	constexpr int size = sizeof(kGraphFileNames) / sizeof(kGraphFileNames[0]);
+	static_assert(static_cast<int>(PlayerGraphs::Num) == size);
 }
 
 // アニメーション種類
@@ -140,7 +164,16 @@ Player::Player(int playerH, int playerWhiteH, int chargeParticleH,int shotH,int 
 #ifdef _DEBUG
 	_isCanFly = false;
 #endif
+	// 画像をロード
+	for (int i = 0; i < static_cast<int>(PlayerGraphs::Num); i++)
+	{
+		_graphHandles.push_back(LoadGraph(kGraphFileNames[i].c_str()));
+		assert(_graphHandles[i] != -1 && "プレイヤー画像の読み込みに失敗しました");
+	}
+
+	// 当たり判定の設定
 	_pCollider = std::make_shared<BoxCollider>(_pos,Vector2(kColliderW, kColliderH));
+	// 残像の初期化
 	_playerAfterimage.resize(kAfterimageNum);
 	for (auto& afterimage : _playerAfterimage)
 	{
