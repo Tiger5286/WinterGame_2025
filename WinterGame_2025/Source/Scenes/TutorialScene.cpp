@@ -18,34 +18,34 @@ TutorialScene::TutorialScene(SceneManager& manager, TutorialStep nowStep):
 	switch (nowStep)
 	{
 	case TutorialStep::None:
-		_tutorialText = "チュートリアルへようこそ！\n\nここでは基本操作を学びます。\n\nそれでは始めましょう！";
+		_tutorialText = "None";
 		break;
 	case TutorialStep::Move:
-		_tutorialText = "移動方法を学びましょう。\n\n十字ボタンの左右で移動します。";
+		_tutorialText = "チュートリアルへようこそ！\n\nまずは移動だ！";
 		break;
 	case TutorialStep::Shot:
-		_tutorialText = "射撃方法を学びましょう。\n\nXボタンで通常ショットを撃ちます。";
+		_tutorialText = "射撃して敵を倒せ！";
 		break;
 	case TutorialStep::Jump:
-		_tutorialText = "ジャンプ方法を学びましょう。\n\nAボタンでジャンプします。";
+		_tutorialText = "ジャンプで段差を乗り越えろ！";
 		break;
 	case TutorialStep::ChargeShot:
-		_tutorialText = "チャージショット方法を学びましょう。\n\nXボタンを長押しし、離すとチャージショットを撃ちます。";
+		_tutorialText = "チャージショットは敵を貫通する！";
 		break;
 	case TutorialStep::Dash:
-		_tutorialText = "ダッシュ方法を学びましょう。\n\nBボタンでダッシュします。\n\nダッシュ中は空中でも水平に移動することができます。";
+		_tutorialText = "ダッシュをすれば空中でも落ちずに進める！";
 		break;
 	case TutorialStep::WallJump:
-		_tutorialText = "壁ジャンプ方法を学びましょう。\n\n空中で壁に向かって移動すると壁張り付き状態になり、\n\nその状態でジャンプすることで壁ジャンプができます。";
+		_tutorialText = "壁ジャンプで高いところまで登れる！";
 		break;
 	case TutorialStep::DashInvincible:
-		_tutorialText = "ダッシュ無敵を学びましょう。\n\nダッシュ中はあらゆるダメージを受けません。\n\n敵の攻撃やギミックの回避に活用しましょう。";
+		_tutorialText = "ダッシュ中はダメージを受けない！";
 		break;
 	case TutorialStep::JumpAndDash:
-		_tutorialText = "ジャンプとダッシュの組み合わせを学びましょう。\n\nジャンプ中にダッシュをすることで、より遠くの足場まで移動できます。";
+		_tutorialText = "アクションを駆使して大穴を飛び越えろ！";
 		break;
 	case TutorialStep::Complete:
-		_tutorialText = "チュートリアルは以上です！\n\n頑張ってステージクリアを目指しましょう！";
+		_tutorialText = "赤い旗に触れればクリアだ！\n\n目指せ全ステージクリア！";
 		break;
 	}
 }
