@@ -74,20 +74,24 @@ void ScenePause::Update(Input& input)
 	{
 		// メニューの選択肢を上に移動
 		_selectIndex = (_selectIndex + _menuList.size() - 1) % static_cast<int>(_menuList.size());
+		SoundManager::GetInstance().PlaySoundGame("Select");
 	}
 	if (input.IsTriggered("down"))
 	{
 		// メニューの選択肢を下に移動
 		_selectIndex = (_selectIndex + 1) % _menuList.size();
+		SoundManager::GetInstance().PlaySoundGame("Select");
 	}
 	if (input.IsTriggered("decision"))
 	{
 		// 選択中のメニュー項目を実行
 		_execTable[_menuList[_selectIndex]]();
+		SoundManager::GetInstance().PlaySoundGame("Decision");
 	}
 	if (input.IsTriggered("back") && input.IsTriggered("start"))
 	{
 		_execTable["ゲームに戻る"]();
+		SoundManager::GetInstance().PlaySoundGame("Cancel");
 	}
 }
 

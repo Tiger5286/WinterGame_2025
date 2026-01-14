@@ -84,6 +84,7 @@ void SceneOption::Update(Input& input)
 		{
 			_selectIndex = 0;
 		}
+		SoundManager::GetInstance().PlaySoundGame("Select");
 	}
 	if (input.IsTriggered("up"))
 	{
@@ -92,6 +93,7 @@ void SceneOption::Update(Input& input)
 		{
 			_selectIndex = static_cast<int>(OptionMenu::Num) - 1;
 		}
+		SoundManager::GetInstance().PlaySoundGame("Select");
 	}
 	// 選択されているインデックスに応じた処理を実行
 	switch (static_cast<OptionMenu>(_selectIndex))
@@ -111,6 +113,7 @@ void SceneOption::Update(Input& input)
 	if (input.IsTriggered("back"))
 	{
 		_manager.PopScene();
+		SoundManager::GetInstance().PlaySoundGame("Cancel");
 	}
 }
 
@@ -202,6 +205,7 @@ void SceneOption::UpdateBack(Input& input)
 	if (input.IsTriggered("decision"))
 	{
 		_manager.PopScene();
+		SoundManager::GetInstance().PlaySoundGame("Cancel");
 	}
 }
 
