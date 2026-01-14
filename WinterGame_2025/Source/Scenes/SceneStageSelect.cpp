@@ -13,9 +13,20 @@
 namespace
 {
 	constexpr int kUIControllInterval = 10;
-	constexpr int kUIMoveScale = 40;
-	constexpr float kUIDrawScale = 0.5f;
+	constexpr int kUIMoveScale = 50;
+	constexpr float kUIDrawScale = 0.7f;
 	constexpr float kUIDrawScaleHalf = kUIDrawScale / 2;
+
+	constexpr int kStageNameY = GlobalConstants::kScreenHeight / 2 - 350;
+	constexpr float kStageNameScale = 1.0f;
+	
+	constexpr int kHighScoreTextX = GlobalConstants::kScreenWidth / 2 - 100;
+	constexpr int kHighScoreTextY = GlobalConstants::kScreenHeight / 2 + 325;
+	constexpr float kHighScoreTextScale = 0.6f;
+
+	constexpr int kHighScoreNumberX = GlobalConstants::kScreenWidth / 2 + 40;
+	constexpr int kHighScoreNumberY = GlobalConstants::kScreenHeight / 2 + 285;
+	constexpr float kHighScoreNumberScale = 0.6f;
 }
 
 SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
@@ -411,12 +422,11 @@ void SceneStageSelect::Draw()
 		SetDrawBright(255, 255, 255);
 
 		// ステージ名の描画
-		DrawRotaGraph(screenW / 2, screenH / 2 - 250, 0.7, 0.0, _stageNameHandles[_selectIndex], true);
+		DrawRotaGraph(screenW / 2, kStageNameY, kStageNameScale, 0.0, _stageNameHandles[_selectIndex], true);
 		// ハイスコアの描画
-		DrawRotaGraph(screenW / 2 - 100, screenH / 2 + 250, 0.5, 0.0, _highScoreTextHandle, true);
-		IntGraphDrawer::Draw(screenW / 2 + 20, screenH / 2 + 220, 0.5f,
+		DrawRotaGraph(kHighScoreTextX, kHighScoreTextY, kHighScoreTextScale, 0.0, _highScoreTextHandle, true);
+		IntGraphDrawer::Draw(kHighScoreNumberX, kHighScoreNumberY, kHighScoreNumberScale,
 			_numberGraphHandle, _manager.GetSaveData().highScores[_selectIndex + 1]);
-		//DrawFormatString(screenW / 2, 300, 0xffffff, "High Score : %d", _manager.GetSaveData().highScores[_selectIndex + 1]);
 
 		// 隠しステージが解放されていない場合、隠しステージの前のステージを選択中の時に青い四角を描画
 		if (!_manager.GetSaveData().isReleasedSecretStage &&
