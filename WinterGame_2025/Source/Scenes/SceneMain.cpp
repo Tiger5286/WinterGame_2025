@@ -42,11 +42,6 @@ namespace
 	// 画像リスト
 	enum class Graphs
 	{
-		Player,
-		PlayerWhite,
-		PlayerShot,
-		ChargeShot,
-		ChargeParticle,
 		MapChip,
 		ClearFlag,
 		HpUI,
@@ -62,11 +57,6 @@ namespace
 	// ロードする画像のファイル名
 	const std::string kGraphFileNames[] =
 	{
-		"data/Player/Player.png",
-		"data/Player/PlayerWhite.png",
-		"data/Player/Shot.png",
-		"data/Player/ChargeShot.png",
-		"data/Player/ChargeParticle.png",
 		"data/Map/MapChip.png",
 		"data/ClearFlag.png",
 		"data/UI/HpBar.png",
@@ -362,7 +352,7 @@ void SceneMain::LoadStage(Stages stage, int playerHp)
 	_pBulletManager = std::make_shared<BulletManager>(mapSize);
 
 	// プレイヤー
-	_pPlayer = std::make_shared<Player>(_graphHandles[static_cast<int>(Graphs::Player)], _graphHandles[static_cast<int>(Graphs::PlayerWhite)], _graphHandles[static_cast<int>(Graphs::ChargeParticle)], _graphHandles[static_cast<int>(Graphs::PlayerShot)], _graphHandles[static_cast<int>(Graphs::ChargeShot)], *_pBulletManager,*_pEffectManager,playerHp);
+	_pPlayer = std::make_shared<Player>(*_pBulletManager,*_pEffectManager,playerHp);
 	_pPlayer->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());		// プレイヤーの位置を設定
 	_pBulletManager->SetPlayer(_pPlayer);	// プレイヤー情報を弾マネージャーに渡す
 
