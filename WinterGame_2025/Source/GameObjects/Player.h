@@ -12,7 +12,6 @@ class TutorialUI;
 
 class Player : public GameObject
 {
-	friend class TutorialUI;
 public:
 	Player(BulletManager& bulletManager,EffectManager& effectManager, bool isTutorial,int firstHp = 5);
 	~Player();
@@ -35,6 +34,8 @@ public:
 	int GetMaxHp() const;
 	const int& GetHpRef() const { return _hp; }
 	Vector2 GetDrawPos() const;
+	int GetChargeFrame() const { return _chargeFrame; }
+	int GetDashCoolTime() const { return _dashCoolTime; }
 	/// <summary>
 	/// ƒvƒŒƒCƒ„[‚ğ‰ñ•œ‚³‚¹‚é
 	/// </summary>
