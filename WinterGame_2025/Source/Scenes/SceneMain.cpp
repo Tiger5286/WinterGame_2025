@@ -353,6 +353,7 @@ void SceneMain::LoadStage(Stages stage, int playerHp)
 
 	// プレイヤー
 	bool isTutorial = (stage == Stages::Tutorial);
+	if (isTutorial) playerHp = 4;
 	_pPlayer = std::make_shared<Player>(*_pBulletManager,*_pEffectManager,isTutorial,playerHp);
 	_pPlayer->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());		// プレイヤーの位置を設定
 	_pBulletManager->SetPlayer(_pPlayer);	// プレイヤー情報を弾マネージャーに渡す
@@ -450,6 +451,7 @@ bool SceneMain::TutorialUpdate()
 {
 	bool ans = false;
 	const auto& playerPos = _pPlayer->GetPos();
+	if (_nowTutorialStep == TutorialStep::None) _nowTutorialStep = TutorialStep::Move;
 	switch (_nowTutorialStep)
 	{
 	case TutorialStep::None:
