@@ -352,7 +352,8 @@ void SceneMain::LoadStage(Stages stage, int playerHp)
 	_pBulletManager = std::make_shared<BulletManager>(mapSize);
 
 	// プレイヤー
-	_pPlayer = std::make_shared<Player>(*_pBulletManager,*_pEffectManager,playerHp);
+	bool isTutorial = (stage == Stages::Tutorial);
+	_pPlayer = std::make_shared<Player>(*_pBulletManager,*_pEffectManager,isTutorial,playerHp);
 	_pPlayer->InitPosFromStage(_pStage->GetObjectData(), _pStage->GetMapSize());		// プレイヤーの位置を設定
 	_pBulletManager->SetPlayer(_pPlayer);	// プレイヤー情報を弾マネージャーに渡す
 

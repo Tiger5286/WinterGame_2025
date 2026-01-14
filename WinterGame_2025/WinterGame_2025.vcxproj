@@ -197,6 +197,7 @@
     <ClCompile Include="Source\Systems\Stage.cpp" />
     <ClCompile Include="Source\GameObjects\Spike.cpp" />
     <ClCompile Include="Source\Scenes\TutorialScene.cpp" />
+    <ClCompile Include="Source\UI\TutorialUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Utility\IntGraphDrawer.h" />
@@ -257,6 +258,7 @@
     <ClInclude Include="Source\Systems\Stage.h" />
     <ClInclude Include="Source\GameObjects\Spike.h" />
     <ClInclude Include="Source\Scenes\TutorialScene.h" />
+    <ClInclude Include="Source\UI\TutorialUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

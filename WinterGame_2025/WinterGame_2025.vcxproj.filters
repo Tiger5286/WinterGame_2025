@@ -146,6 +146,7 @@
     <ClCompile Include="Source\Systems\SoundManager.cpp" />
     <ClCompile Include="Source\Scenes\SceneOption.cpp" />
     <ClCompile Include="Source\Utility\IntGraphDrawer.cpp" />
+    <ClCompile Include="Source\UI\TutorialUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GameObjects\Bullet.h">
@@ -266,5 +267,6 @@
     <ClInclude Include="Source\Systems\SoundManager.h" />
     <ClInclude Include="Source\Scenes\SceneOption.h" />
     <ClInclude Include="Source\Utility\IntGraphDrawer.h" />
+    <ClInclude Include="Source\UI\TutorialUI.h" />
   </ItemGroup>
 </Project>

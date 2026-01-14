@@ -9,6 +9,7 @@
 #include "../Systems/BulletManager.h"
 #include "../Systems/EffectManager.h"
 #include "../Systems/SoundManager.h"
+#include "../UI/TutorialUI.h"
 
 namespace
 {
@@ -138,7 +139,7 @@ enum class PlayerAnimType : int
 	Fall = 8
 };
 
-Player::Player(BulletManager& bulletManager,EffectManager& effectManager, int firstHp):
+Player::Player(BulletManager& bulletManager,EffectManager& effectManager, bool isTutorial, int firstHp):
 	_hp(firstHp),
 	_isAlive(true),
 	_jumpFrame(0),
@@ -175,6 +176,11 @@ Player::Player(BulletManager& bulletManager,EffectManager& effectManager, int fi
 		afterimage.frame = kAfterimageFrameMax + 1;
 		afterimage.handle = _graphHandles[static_cast<int>(PlayerGraphs::Player)];
 		afterimage.whiteHandle = _graphHandles[static_cast<int>(PlayerGraphs::PlayerWhite)];
+	}
+
+	if (isTutorial)
+	{
+		_pTutorialUI = std::make_shared<TutorialUI>(*this);
 	}
 
 	// アニメーションの初期化
@@ -305,6 +311,12 @@ void Player::Update(Map& map)
 	// アニメーション処理
 	UpdateAnim();
 
+	// チュートリアルUIの更新
+	if (_pTutorialUI != nullptr)
+	{
+		_pTutorialUI->Update(_input);
+	}
+
 #ifdef _DEBUG
 	// 飛行モードの切り替え【デバッグ用】
 	if (CheckHitKey(KEY_INPUT_M))
@@ -412,6 +424,13 @@ void Player::Draw(Vector2 offset)
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 	}
+
+	// チュートリアルUIの描画
+	if (_pTutorialUI != nullptr)
+	{
+		_pTutorialUI->Draw(offset);
+	}
+
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
 	DrawFormatString(0, 230, 0xffffff, "x:%.2f y:%.2f", _pos.x, _pos.y);

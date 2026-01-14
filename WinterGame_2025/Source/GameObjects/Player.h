@@ -8,11 +8,13 @@ class Bullet;
 class Map;
 class BulletManager;
 class EffectManager;
+class TutorialUI;
 
 class Player : public GameObject
 {
+	friend class TutorialUI;
 public:
-	Player(BulletManager& bulletManager,EffectManager& effectManager,int firstHp = 5);
+	Player(BulletManager& bulletManager,EffectManager& effectManager, bool isTutorial,int firstHp = 5);
 	~Player();
 
 	void Init() override;
@@ -67,16 +69,11 @@ private:
 
 private:
 	Input _input;
-	//std::vector<std::shared_ptr<Bullet>> _pBullets;
 	BulletManager& _bulletManager;
 	EffectManager& _effectManager;
+	std::shared_ptr<TutorialUI> _pTutorialUI = nullptr;
 
 	// 画像ハンドル
-	//int _playerH;
-	//int _playerWhiteH;
-	//int _chargeParticleH;	// チャージエフェクトの画像ハンドル
-	//int _shotH;
-	//int _chargeShotH;
 	std::vector<int> _graphHandles;
 
 	// アニメーション
