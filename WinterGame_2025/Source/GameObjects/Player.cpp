@@ -212,6 +212,7 @@ void Player::Update(Map& map)
 	// 重力をかける
 	Gravity();
 
+	// 操作可能なら各種操作処理
 	if (_isCanControll)
 	{
 		// ジャンプ処理
