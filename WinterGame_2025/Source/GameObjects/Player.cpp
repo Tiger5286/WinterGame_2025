@@ -205,6 +205,10 @@ Player::Player(BulletManager& bulletManager,EffectManager& effectManager, bool i
 
 Player::~Player()
 {
+	for (const auto& handle : _graphHandles)
+	{
+		DeleteGraph(handle);
+	}
 }
 
 void Player::Init()
