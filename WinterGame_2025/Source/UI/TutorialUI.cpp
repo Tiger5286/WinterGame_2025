@@ -176,7 +176,6 @@ void TutorialUI::DrawDashGauge(const Vector2& drawPos)
 		0x000000, true);
 	// チャージ状況を取得しゲージの長さを計算
 	int nowGaugeLength = static_cast<int>((kDashCoolTime - _player.GetDashCoolTime()) / static_cast<float>(kDashCoolTime) * kGaugeLength);
-	DrawFormatString(drawPos.x, drawPos.y - 100, 0xffffff, "%d", _player.GetDashCoolTime());
 	// ゲージの長さの最大を越さないようにする
 	if (nowGaugeLength > kGaugeLength)
 	{
