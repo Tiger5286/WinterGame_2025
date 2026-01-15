@@ -337,36 +337,6 @@ void SceneStageSelect::Draw()
 	// UI移動中は描画しない
 	if (_frame == kUIControllInterval || _frame == -kUIControllInterval)
 	{
-		//// ステージ名の描画
-		//if (_selectIndex > 0 && _selectIndex < _stageList.size() - 1)		// 最初のステージと最後のステージ以外を選択中の時は選択中、左、右のステージ名を表示
-		//{
-		//	//DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
-		//	//DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
-		//
-		//	const bool isSelectPenultimate = (_selectIndex == static_cast<int>(SelectableStages::Num) - 3);	// 隠しステージの一つ手前を選択中かどうか
-		//	if (isSelectPenultimate)	// 隠しステージの一つ手前を選択中の時
-		//	{	// 隠しステージが解放されている場合のみ右のステージ名を表示
-		//		if (_manager.GetSaveData().isReleasedSecretStage)
-		//		{
-		//			//DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
-		//		}
-		//	}
-		//	else
-		//	{
-		//		//DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
-		//	}
-		//}
-		//else if (_selectIndex == 0)	// 最初のステージを選択中のときは選択中と右のステージ名を表示
-		//{
-		//	//DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
-		//	//DrawFormatString(screenW / 2 + 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex + 1].c_str());	// 右のステージ名を表示
-		//}
-		//else if (_selectIndex == _stageList.size() - 1)	// 最後のステージを選択中のときは選択中と左のステージ名を表示
-		//{
-		//	//DrawFormatString(screenW / 2 - 400, screenH / 2, 0x888888, "< %s >", _stageList[_selectIndex - 1].c_str());	// 左のステージ名を表示
-		//	//DrawFormatString(screenW / 2, screenH / 2, 0xffffff, "< %s >", _stageList[_selectIndex].c_str());		// 選択中のステージ名を表示
-		//}
-
 		// ステージアイコンの描画
 		// 選択中のステージアイコン
 		if (_selectIndex == _manager.GetSaveData().clearedStage)
