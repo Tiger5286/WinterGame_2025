@@ -457,34 +457,6 @@ void SceneStageSelect::Draw()
 		DrawRotaGraph(kHighScoreTextX, kHighScoreTextY, kHighScoreTextScale, 0.0, _highScoreTextHandle, true);
 		IntGraphDrawer::Draw(kHighScoreNumberX, kHighScoreNumberY, kHighScoreNumberScale,
 			_numberGraphHandle, _manager.GetSaveData().highScores[_selectIndex + 1]);
-
-#ifdef _DEBUG
-		//// 隠しステージが解放されていない場合、隠しステージの前のステージを選択中の時に青い四角を描画
-		//if (!_manager.GetSaveData().isReleasedSecretStage &&
-		//	_selectIndex == static_cast<int>(SelectableStages::Num) - 3)	// 隠しステージの一つ手前 = Num - 3
-		//{
-		//	DrawBox(screenW / 2 + 250 - 25,
-		//		screenH / 2 - 200,
-		//		screenW / 2 + 250 + 35,
-		//		screenH / 2 + 200,
-		//		0x0000ff, true);
-		//}
-		//// 選択できないステージを表す赤い四角を描画
-		//if (_selectIndex == _manager.GetSaveData().clearedStage)
-		//{
-		//	DrawBox(screenW / 2 + 250 - 25,
-		//		screenH / 2 - 200,
-		//		screenW / 2 + 250 + 25,
-		//		screenH / 2 + 200,
-		//		0xff0000, true);
-		//}
-
-		//DrawBox(screenW / 2 + 300 - 24 * 3 / 2,
-		//	0,
-		//	screenW / 2 + 300 + 24 * 3 / 2,
-		//	screenH,
-		//	0xff0000, true);
-#endif
 	}
 
 	// 隠しステージ解放時の演出描画
