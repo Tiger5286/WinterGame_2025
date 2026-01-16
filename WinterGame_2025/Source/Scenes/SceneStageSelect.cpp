@@ -13,21 +13,34 @@
 
 namespace
 {
-	constexpr int kUIControllInterval = 10;
+	// ステージアイコン関連定数
+	constexpr int kUIControllInterval = 10;	// ステージアイコンが移動する時間(操作の効かない時間)
 	constexpr int kUIMoveScale = 50;
 	constexpr float kUIDrawScale = 0.7f;
 	constexpr float kUIDrawScaleHalf = kUIDrawScale / 2;
-
+	// テキスト画像関連
+	// ステージ名
 	constexpr int kStageNameY = GlobalConstants::kScreenHeight / 2 - 350;
 	constexpr float kStageNameScale = 1.0f;
-	
+	// ハイスコア
 	constexpr int kHighScoreTextX = GlobalConstants::kScreenWidth / 2 - 100;
 	constexpr int kHighScoreTextY = GlobalConstants::kScreenHeight / 2 + 325;
 	constexpr float kHighScoreTextScale = 0.6f;
-
+	// ハイスコア(数字部分)
 	constexpr int kHighScoreNumberX = GlobalConstants::kScreenWidth / 2 + 40;
 	constexpr int kHighScoreNumberY = GlobalConstants::kScreenHeight / 2 + 285;
 	constexpr float kHighScoreNumberScale = 0.6f;
+
+	// 背景
+	// ステージアイコン選択時にどれだけ背景が動くか
+	constexpr int kDrawBgGap = 10;
+
+	// 隠しステージ関連
+	// 何回右入力したら解放されるか
+	constexpr int kRequiredNumberOfPress = 10;
+	constexpr int kReleaseFrame = 100;
+	constexpr int kExplosionInterval = 10;
+	constexpr int kExplosionPosAmplitude = 300;
 }
 
 SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
@@ -195,7 +208,7 @@ void SceneStageSelect::Update(Input& input)
 					else	// 隠しステージが解放されていない場合、右入力カウントを増やす
 					{
 						_inputRightCount++;
-						if (_inputRightCount >= 15)	// 15回右入力したら隠しステージ解放
+						if (_inputRightCount >= kRequiredNumberOfPress)	// n回右入力したら隠しステージ解放
 						{
 							_isNowReleasedSecretStage = true;
 						}
@@ -250,7 +263,7 @@ void SceneStageSelect::Update(Input& input)
 	if (_isNowReleasedSecretStage)
 	{
 		_releasedFrameCount++;
-		if (_releasedFrameCount > 100)
+		if (_releasedFrameCount > kReleaseFrame)
 		{
 			_isNowReleasedSecretStage = false;
 			_pEffectManager->Create(Vector2{ GlobalConstants::kScreenWidth / 2 + kUIControllInterval * kUIMoveScale, GlobalConstants::kScreenHeight / 2 }, EffectType::ExplosionHuge);
@@ -276,11 +289,11 @@ void SceneStageSelect::Draw()
 	// 背景
 	if (_frame < kUIControllInterval && _frame > 0)
 	{
-		_bgOffsetX += 10;
+		_bgOffsetX += kDrawBgGap;
 	}
 	if (_frame > -kUIControllInterval && _frame < 0)
 	{
-		_bgOffsetX -= 10;
+		_bgOffsetX -= kDrawBgGap;
 	}
 	DrawExtendGraph(-screenW + _bgOffsetX, 0, 0 + _bgOffsetX, screenH, _bgHandle, false);
 	DrawExtendGraph(0 + _bgOffsetX, 0, screenW + _bgOffsetX, screenH, _bgHandle, false);
@@ -416,6 +429,7 @@ void SceneStageSelect::Draw()
 		IntGraphDrawer::Draw(kHighScoreNumberX, kHighScoreNumberY, kHighScoreNumberScale,
 			_numberGraphHandle, _manager.GetSaveData().highScores[_selectIndex + 1]);
 
+#ifdef _DEBUG
 		// 隠しステージが解放されていない場合、隠しステージの前のステージを選択中の時に青い四角を描画
 		if (!_manager.GetSaveData().isReleasedSecretStage &&
 			_selectIndex == static_cast<int>(SelectableStages::Num) - 3)	// 隠しステージの一つ手前 = Num - 3
@@ -435,18 +449,19 @@ void SceneStageSelect::Draw()
 				screenH / 2 + 200,
 				0xff0000, true);
 		}
+#endif
 	}
 
 	// 隠しステージ解放時の演出描画
 	if (_isNowReleasedSecretStage)
 	{
-		if (_releasedFrameCount % 10 == 0)
+		if (_releasedFrameCount % kExplosionInterval == 0)
 		{
 			// エフェクト生成位置
 			Vector2 effectPos = { GlobalConstants::kScreenWidth / 2 + kUIControllInterval * kUIMoveScale, GlobalConstants::kScreenHeight / 2 };
-			// -100~100のランダム数値
-			effectPos.x += GetRand(300) - 150;
-			effectPos.y += GetRand(300) - 150;
+			// -n~nのランダム数値
+			effectPos.x += GetRand(kExplosionPosAmplitude) - kExplosionPosAmplitude / 2;
+			effectPos.y += GetRand(kExplosionPosAmplitude) - kExplosionPosAmplitude / 2;
 			// エフェクト生成
 			_pEffectManager->Create(effectPos,EffectType::ExplosionBig);
 		}

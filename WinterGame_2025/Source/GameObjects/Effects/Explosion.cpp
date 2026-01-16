@@ -12,7 +12,6 @@ namespace
 	constexpr int kOneAnimFrame = 4;
 	constexpr int kOneAnimFrameSmall = 2;
 	constexpr int kOneAnimFrameBig = 8;
-	constexpr int kOneAnimFrameHuge = 12;
 }
 
 Explosion::Explosion(int handle,Vector2 pos,ExplosionType type):
@@ -31,7 +30,7 @@ Explosion::Explosion(int handle,Vector2 pos,ExplosionType type):
 		_nowAnim.Init(_handle, 0, Vector2(kGraphSize, kGraphSize), kAnimNum, kOneAnimFrameBig, kDrawScaleBig, false);
 		break;
 	case ExplosionType::Huge:
-		_nowAnim.Init(_handle, 0, Vector2(kGraphSize, kGraphSize), kAnimNum, kOneAnimFrameHuge, kDrawScaleHuge, false);
+		_nowAnim.Init(_handle, 0, Vector2(kGraphSize, kGraphSize), kAnimNum, kOneAnimFrameBig, kDrawScaleHuge, false);
 		break;
 	default:
 		break;
