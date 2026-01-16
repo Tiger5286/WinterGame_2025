@@ -3,10 +3,17 @@
 #include "../Game.h"
 #include "Player.h"
 #include "DxLib.h"
+#include <cassert>
 
 namespace
 {
-	constexpr float kDrawScale = 3.0f;
+	constexpr float kDrawScale = 8.0f;
+
+	const Vector2 kGraphSize = { 32,32 };
+	constexpr int kAnimNum = 6;
+	constexpr int kOneAnimFrame = 6;
+
+	const Vector2 kColliderSize = { 8,64 };
 }
 
 ClearFlag::ClearFlag(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle) :
@@ -14,7 +21,9 @@ ClearFlag::ClearFlag(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handl
 	_pPlayer(pPlayer)
 {
 	_pos = ChipPosToGamePos(chipPos);
-	_pCollider = std::make_shared<BoxCollider>(_pos, Vector2(GlobalConstants::kDrawChipSize, GlobalConstants::kDrawChipSize));
+	_pCollider = std::make_shared<BoxCollider>(_pos, kColliderSize);
+
+	_anim.Init(_handle, 0, kGraphSize, kAnimNum, kOneAnimFrame, kDrawScale);
 }
 
 ClearFlag::~ClearFlag()
@@ -29,12 +38,17 @@ void ClearFlag::Init()
 
 void ClearFlag::Update(Map& map)
 {
-	// âΩÇ‡ÇµÇ»Ç¢
+	assert(false && "ClearFlag::Update(Map& map)Ç™åƒÇŒÇÍÇƒÇ¢Ç‹Ç∑ÅBClearFlag::Update()ÇégópÇµÇƒÇ≠ÇæÇ≥Ç¢");
+}
+
+void ClearFlag::Update()
+{
+	_anim.Update();
 }
 
 void ClearFlag::Draw(Vector2 cameraOffset)
 {
-	DrawRotaGraph(static_cast<int>(_pos.x - cameraOffset.x), static_cast<int>(_pos.y - cameraOffset.y), kDrawScale, 0.0, _handle, true);
+	_anim.Draw(_pos - cameraOffset, false);
 #ifdef _DEBUG
 	_pCollider->Draw(cameraOffset);
 #endif // _DEBUG
@@ -51,6 +65,7 @@ void ClearFlag::InitPosFromStage(std::vector<uint16_t>& objectData, Size mapSize
 			if (data == ObjectData::ClearFlag)
 			{
 				_pos = ChipPosToGamePos(Vector2(static_cast<float>(w), static_cast<float>(h)));
+				_pos.y -= kGraphSize.y * kDrawScale / 2;
 				_pCollider->SetPos(_pos);
 				return;
 			}

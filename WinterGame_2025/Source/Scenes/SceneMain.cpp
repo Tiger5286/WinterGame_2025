@@ -184,9 +184,10 @@ void SceneMain::Update(Input& input)
 		_pBossHPUI->Update();
 	}
 
-	// ゴール判定
+	// ゴールオブジェクト
 	if (_pClearFlag != nullptr)
 	{
+		_pClearFlag->Update();
 		if (_pPlayer->GetCollider()->CheckCollision(_pClearFlag->GetCollider()))
 		{	// プレイヤーとゴール旗が接触したらステージクリアへ
 			StageClear();
