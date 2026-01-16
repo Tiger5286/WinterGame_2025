@@ -45,7 +45,7 @@ TutorialScene::TutorialScene(SceneManager& manager, TutorialStep nowStep):
 		_tutorialText = "アクションを駆使して大穴を飛び越えろ！";
 		break;
 	case TutorialStep::Complete:
-		_tutorialText = "赤い旗に触れればクリアだ！\n\n目指せ全ステージクリア！";
+		_tutorialText = "ワープゲートに触れたらボス戦だ！\n\n目指せ全ステージクリア！";
 		break;
 	}
 }
