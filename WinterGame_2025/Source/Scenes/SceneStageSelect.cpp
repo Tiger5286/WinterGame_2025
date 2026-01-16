@@ -40,7 +40,7 @@ namespace
 	constexpr int kRequiredNumberOfPress = 10;
 	constexpr int kReleaseFrame = 100;
 	constexpr int kExplosionInterval = 10;
-	constexpr int kExplosionPosAmplitude = 300;
+	constexpr int kExplosionPosAmplitude = 400;
 }
 
 SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
@@ -263,11 +263,16 @@ void SceneStageSelect::Update(Input& input)
 	if (_isNowReleasedSecretStage)
 	{
 		_releasedFrameCount++;
+		if (_releasedFrameCount % kExplosionInterval == 0)
+		{
+			SoundManager::GetInstance().PlaySoundGame("EnemyDeath");
+		}
 		if (_releasedFrameCount > kReleaseFrame)
 		{
 			_isNowReleasedSecretStage = false;
 			_pEffectManager->Create(Vector2{ GlobalConstants::kScreenWidth / 2 + kUIControllInterval * kUIMoveScale, GlobalConstants::kScreenHeight / 2 }, EffectType::ExplosionHuge);
 			_manager.ReleaseSecretStage();
+			SoundManager::GetInstance().PlaySoundGame("ExplosionLong");
 		}
 	}
 

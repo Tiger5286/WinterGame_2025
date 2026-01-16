@@ -45,6 +45,7 @@ SoundManager::SoundManager()
 	// “G‚ÌŒø‰Ê‰¹
 	LoadSound("EnemyDamage", "data/Sounds/Enemy/EnemyDamage.mp3", SoundType::SE);
 	LoadSound("EnemyDeath", "data/Sounds/Enemy/EnemyDeath.mp3", SoundType::SE);
+	LoadSound("ExplosionLong", "data/Sounds/Enemy/ExplosionLong.mp3", SoundType::SE);
 	LoadSound("Barrier", "data/Sounds/Enemy/Barrier.mp3", SoundType::SE);
 }
 
