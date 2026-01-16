@@ -41,11 +41,19 @@ namespace
 	constexpr int kReleaseFrame = 100;
 	constexpr int kExplosionInterval = 10;
 	constexpr int kExplosionPosAmplitude = 400;
+
+	// レーザー
+	constexpr int kLaserGraphWidth = 16;
+	constexpr int kLaserGraphHeight = 120;
+	constexpr int kLaserAnimNum = 4;
+	constexpr int kLaserOneAnimFrame = 6;
+	constexpr int kLaserPosX = GlobalConstants::kScreenWidth / 2 + 325;
+	constexpr float kLaserScale = 9.0f;
 }
 
 SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 	SceneBase(manager),
-	_frame(kUIControllInterval)
+	_uiControllFrame(kUIControllInterval)
 {
 	// 画像のロード
 	_bgHandle = LoadGraph("data/map/bg.png");
@@ -96,6 +104,8 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 	_numberGraphHandle = LoadGraph("data/UI/NumberText.png");
 	// ハイスコアのテキスト画像ロード
 	_highScoreTextHandle = LoadGraph("data/UI/HighScoreText.png");
+	// レーザーの画像ロード
+	_longLaserHandle = LoadGraph("data/UI/LongLaser.png");
 
 	auto selectableStage = StageToSelectableStage(playedStage);
 
@@ -143,7 +153,7 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 		isSelectPenultimate && !manager.GetSaveData().isReleasedSecretStage)
 	{
 		_isUIMoveRight = false;
-		_frame = -kUIControllInterval;
+		_uiControllFrame = -kUIControllInterval;
 	}
 
 	// エフェクトマネージャーを生成
@@ -177,17 +187,17 @@ void SceneStageSelect::Init()
 void SceneStageSelect::Update(Input& input)
 {
 	// UI移動演出用フレームカウントの更新
-	if (_frame < kUIControllInterval && _isUIMoveRight)
+	if (_uiControllFrame < kUIControllInterval && _isUIMoveRight)
 	{	// 右移動中
-		_frame++;
+		_uiControllFrame++;
 	}
-	if (_frame > -kUIControllInterval && !_isUIMoveRight)
+	if (_uiControllFrame > -kUIControllInterval && !_isUIMoveRight)
 	{	// 左移動中
-		_frame--;
+		_uiControllFrame--;
 	}
 
 	// UI移動演出中は操作が効かないようにする
-	if (_frame == kUIControllInterval || _frame == -kUIControllInterval)
+	if (_uiControllFrame == kUIControllInterval || _uiControllFrame == -kUIControllInterval)
 	{
 		if (input.IsTriggered("right"))
 		{
@@ -202,7 +212,7 @@ void SceneStageSelect::Update(Input& input)
 					{
 						_selectIndex++;
 						_isUIMoveRight = false;
-						_frame = 0;
+						_uiControllFrame = 0;
 						SoundManager::GetInstance().PlaySoundGame("Select");
 					}
 					else	// 隠しステージが解放されていない場合、右入力カウントを増やす
@@ -219,7 +229,7 @@ void SceneStageSelect::Update(Input& input)
 				{
 					_selectIndex++;
 					_isUIMoveRight = false;
-					_frame = 0;
+					_uiControllFrame = 0;
 					SoundManager::GetInstance().PlaySoundGame("Select");
 				}
 			}
@@ -234,7 +244,7 @@ void SceneStageSelect::Update(Input& input)
 			{
 				_selectIndex--;
 				_isUIMoveRight = true;
-				_frame = 0;
+				_uiControllFrame = 0;
 				SoundManager::GetInstance().PlaySoundGame("Select");
 			}
 			else
@@ -292,11 +302,11 @@ void SceneStageSelect::Draw()
 	constexpr int screenH = GlobalConstants::kScreenHeight;
 
 	// 背景
-	if (_frame < kUIControllInterval && _frame > 0)
+	if (_uiControllFrame < kUIControllInterval && _uiControllFrame > 0)
 	{
 		_bgOffsetX += kDrawBgGap;
 	}
-	if (_frame > -kUIControllInterval && _frame < 0)
+	if (_uiControllFrame > -kUIControllInterval && _uiControllFrame < 0)
 	{
 		_bgOffsetX -= kDrawBgGap;
 	}
@@ -305,8 +315,8 @@ void SceneStageSelect::Draw()
 	DrawExtendGraph(screenW + _bgOffsetX, 0, screenW * 2 + _bgOffsetX, screenH, _bgHandle, false);
 
 	// ステージUIの描画
-	float progress = abs(static_cast<float>(_frame) / kUIControllInterval);
-	int posX = _frame * kUIMoveScale;
+	float progress = abs(static_cast<float>(_uiControllFrame) / kUIControllInterval);
+	int posX = _uiControllFrame * kUIMoveScale;
 	int sidePosX = kUIControllInterval * kUIMoveScale;
 	SetDrawBright(128, 128, 128);	// 移動中のUIは暗く表示
 	if (_isUIMoveRight)		// UIが右に移動するとき
@@ -371,7 +381,7 @@ void SceneStageSelect::Draw()
 	SetDrawBright(255, 255, 255);	// 明るさを元に戻す
 
 	// UI移動中は描画しない
-	if (_frame == kUIControllInterval || _frame == -kUIControllInterval)
+	if (_uiControllFrame == kUIControllInterval || _uiControllFrame == -kUIControllInterval)
 	{
 		// ステージアイコンの描画
 		// 選択中のステージアイコン
@@ -427,6 +437,19 @@ void SceneStageSelect::Draw()
 		// 明るさを元に戻す
 		SetDrawBright(255, 255, 255);
 
+		// 先に行けないことを表すレーザーの描画
+		if (_selectIndex == _manager.GetSaveData().clearedStage && _selectIndex != 3)
+		{
+			_laserAnimFrame++;
+
+			int animIndex = (_laserAnimFrame / kLaserOneAnimFrame) % kLaserAnimNum;
+
+			DrawRectRotaGraph(kLaserPosX, screenH / 2,
+				animIndex * kLaserGraphWidth, 0,
+				kLaserGraphWidth, kLaserGraphHeight,
+				kLaserScale, 0.0, _longLaserHandle, true);
+		}
+
 		// ステージ名の描画
 		DrawRotaGraph(screenW / 2, kStageNameY, kStageNameScale, 0.0, _stageNameHandles[_selectIndex], true);
 		// ハイスコアの描画
@@ -435,25 +458,31 @@ void SceneStageSelect::Draw()
 			_numberGraphHandle, _manager.GetSaveData().highScores[_selectIndex + 1]);
 
 #ifdef _DEBUG
-		// 隠しステージが解放されていない場合、隠しステージの前のステージを選択中の時に青い四角を描画
-		if (!_manager.GetSaveData().isReleasedSecretStage &&
-			_selectIndex == static_cast<int>(SelectableStages::Num) - 3)	// 隠しステージの一つ手前 = Num - 3
-		{
-			DrawBox(screenW / 2 + 250 - 25,
-				screenH / 2 - 200,
-				screenW / 2 + 250 + 35,
-				screenH / 2 + 200,
-				0x0000ff, true);
-		}
-		// 選択できないステージを表す赤い四角を描画
-		if (_selectIndex == _manager.GetSaveData().clearedStage)
-		{
-			DrawBox(screenW / 2 + 250 - 25,
-				screenH / 2 - 200,
-				screenW / 2 + 250 + 25,
-				screenH / 2 + 200,
-				0xff0000, true);
-		}
+		//// 隠しステージが解放されていない場合、隠しステージの前のステージを選択中の時に青い四角を描画
+		//if (!_manager.GetSaveData().isReleasedSecretStage &&
+		//	_selectIndex == static_cast<int>(SelectableStages::Num) - 3)	// 隠しステージの一つ手前 = Num - 3
+		//{
+		//	DrawBox(screenW / 2 + 250 - 25,
+		//		screenH / 2 - 200,
+		//		screenW / 2 + 250 + 35,
+		//		screenH / 2 + 200,
+		//		0x0000ff, true);
+		//}
+		//// 選択できないステージを表す赤い四角を描画
+		//if (_selectIndex == _manager.GetSaveData().clearedStage)
+		//{
+		//	DrawBox(screenW / 2 + 250 - 25,
+		//		screenH / 2 - 200,
+		//		screenW / 2 + 250 + 25,
+		//		screenH / 2 + 200,
+		//		0xff0000, true);
+		//}
+
+		//DrawBox(screenW / 2 + 300 - 24 * 3 / 2,
+		//	0,
+		//	screenW / 2 + 300 + 24 * 3 / 2,
+		//	screenH,
+		//	0xff0000, true);
 #endif
 	}
 
@@ -476,6 +505,6 @@ void SceneStageSelect::Draw()
 #ifdef _DEBUG
 	DrawString(0, 0, "SceneStageSelect",0xffffff);
 	DrawFormatString(0, 16, 0xffffff, "selectIndex:%d",_selectIndex);
-	DrawFormatString(0, 100, 0xffffff, "frame:%d", _frame);
+	DrawFormatString(0, 100, 0xffffff, "frame:%d", _uiControllFrame);
 #endif
 }

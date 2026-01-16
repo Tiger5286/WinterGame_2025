@@ -26,8 +26,9 @@ private:
 	std::vector<int> _stageNameHandles;
 	int _numberGraphHandle = -1;
 	int _highScoreTextHandle = -1;
+	int _longLaserHandle = -1;
 
-	int _frame;
+	int _uiControllFrame;
 	// UIがどっちに移動しているかどうかのフラグ
 	// (UIが右に移動=左入力)
 	bool _isUIMoveRight = true;
@@ -38,6 +39,8 @@ private:
 	bool _isNowReleasedSecretStage = false;
 	int _releasedFrameCount = 0;
 	std::shared_ptr<EffectManager> _pEffectManager;
+	// レーザーのアニメーションに使うフレームカウント
+	int _laserAnimFrame = 0;
 
 	int _selectIndex;	// 現在選択中のインデックス
 	std::vector<std::string> _stageList;	// ステージリスト
