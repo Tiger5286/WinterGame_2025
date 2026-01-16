@@ -5,7 +5,8 @@ enum class ExplosionType
 {
     Normal,
     Small,
-    Big
+    Big,
+    Huge
 };
 
 class Explosion :

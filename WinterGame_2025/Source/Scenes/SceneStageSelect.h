@@ -5,6 +5,9 @@
 #include <functional>
 #include <string>
 #include <map>
+#include <memory>
+
+class EffectManager;
 
 class SceneStageSelect : public SceneBase
 {
@@ -31,8 +34,13 @@ private:
 	int _bgOffsetX = 0;
 	// 隠しステージ開放に使う右入力カウント
 	int _inputRightCount = 0;
+	// 隠しステージ解放の演出に使ういろいろ
+	bool _isNowReleasedSecretStage = false;
+	int _releasedFrameCount = 0;
+	std::shared_ptr<EffectManager> _pEffectManager;
 
 	int _selectIndex;	// 現在選択中のインデックス
 	std::vector<std::string> _stageList;	// ステージリスト
 	std::map<std::string, std::function<void()>> _execTable;	// ステージ名と実行関数の対応表
+
 };

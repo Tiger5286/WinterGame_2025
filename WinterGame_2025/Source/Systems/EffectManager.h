@@ -10,6 +10,7 @@ enum class EffectType
 	Explosion,
 	ExplosionSmall,
 	ExplosionBig,
+	ExplosionHuge,
 	ItemGet,
 	SmallDust,
 	BigDust,

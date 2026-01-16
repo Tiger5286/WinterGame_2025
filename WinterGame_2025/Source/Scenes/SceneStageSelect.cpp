@@ -8,6 +8,7 @@
 #include "../Game.h"
 #include "../Systems/SoundManager.h"
 #include "../Utility/IntGraphDrawer.h"
+#include "../Systems/EffectManager.h"
 #include <cassert>
 
 namespace
@@ -132,6 +133,9 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 		_frame = -kUIControllInterval;
 	}
 
+	// エフェクトマネージャーを生成
+	_pEffectManager = std::make_shared<EffectManager>();
+
 	// bgm再生
 	SoundManager::GetInstance().PlaySoundGame("StageSelectBGM", true, true);
 }
@@ -193,7 +197,7 @@ void SceneStageSelect::Update(Input& input)
 						_inputRightCount++;
 						if (_inputRightCount >= 15)	// 15回右入力したら隠しステージ解放
 						{
-							_manager.ReleaseSecretStage();
+							_isNowReleasedSecretStage = true;
 						}
 						SoundManager::GetInstance().PlaySoundGame("Beep");
 					}
@@ -241,6 +245,20 @@ void SceneStageSelect::Update(Input& input)
 			return;
 		}
 	}
+
+	// 隠しステージ解放の演出関連
+	if (_isNowReleasedSecretStage)
+	{
+		_releasedFrameCount++;
+		if (_releasedFrameCount > 100)
+		{
+			_isNowReleasedSecretStage = false;
+			_pEffectManager->Create(Vector2{ GlobalConstants::kScreenWidth / 2 + kUIControllInterval * kUIMoveScale, GlobalConstants::kScreenHeight / 2 }, EffectType::ExplosionHuge);
+			_manager.ReleaseSecretStage();
+		}
+	}
+
+	_pEffectManager->Update();
 
 #ifdef _DEBUG
 	if (input.IsTriggered("select"))
@@ -419,6 +437,21 @@ void SceneStageSelect::Draw()
 		}
 	}
 
+	// 隠しステージ解放時の演出描画
+	if (_isNowReleasedSecretStage)
+	{
+		if (_releasedFrameCount % 10 == 0)
+		{
+			// エフェクト生成位置
+			Vector2 effectPos = { GlobalConstants::kScreenWidth / 2 + kUIControllInterval * kUIMoveScale, GlobalConstants::kScreenHeight / 2 };
+			// -100~100のランダム数値
+			effectPos.x += GetRand(300) - 150;
+			effectPos.y += GetRand(300) - 150;
+			// エフェクト生成
+			_pEffectManager->Create(effectPos,EffectType::ExplosionBig);
+		}
+	}
+	_pEffectManager->Draw(Vector2(0.0f,0.0f));
 
 #ifdef _DEBUG
 	DrawString(0, 0, "SceneStageSelect",0xffffff);

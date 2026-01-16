@@ -69,6 +69,9 @@ void EffectManager::Create(Vector2 pos,EffectType type)
 	case EffectType::ExplosionBig:
 		_pEffects.push_back(std::make_shared<Explosion>(_explosionH, pos, ExplosionType::Big));
 		break;
+	case EffectType::ExplosionHuge:
+		_pEffects.push_back(std::make_shared<Explosion>(_explosionH, pos, ExplosionType::Huge));
+		break;
 	case EffectType::ItemGet:
 		_pEffects.push_back(std::make_shared<ItemGet>(_itemGetH, pos));
 		break;
