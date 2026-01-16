@@ -246,6 +246,12 @@ void SceneMain::Draw()
 	// ƒ}ƒbƒv‚Ì•`‰æ
 	_pMap->Draw(_pCamera->GetDrawOffset());
 
+	// ƒS[ƒ‹‚Ì•`‰æ
+	if (_pClearFlag != nullptr)
+	{
+		_pClearFlag->Draw(_pCamera->GetDrawOffset());
+	}
+
 	// ƒMƒ~ƒbƒN‚Ì•`‰æ
 	_pGimmickManager->Draw(_pCamera->GetDrawOffset());
 	
@@ -260,12 +266,6 @@ void SceneMain::Draw()
 
 	// ƒGƒtƒFƒNƒg‚Ì•`‰æ
 	_pEffectManager->Draw(_pCamera->GetDrawOffset());
-
-	// ƒS[ƒ‹Šø‚Ì•`‰æ
-	if (_pClearFlag != nullptr)
-	{
-		_pClearFlag->Draw(_pCamera->GetDrawOffset());
-	}
 
 	// ƒvƒŒƒCƒ„[‚Ì•`‰æ
 	_pPlayer->Draw(_pCamera->GetDrawOffset());
