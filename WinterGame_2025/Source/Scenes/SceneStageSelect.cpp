@@ -438,7 +438,8 @@ void SceneStageSelect::Draw()
 		SetDrawBright(255, 255, 255);
 
 		// 先に行けないことを表すレーザーの描画
-		if (_selectIndex == _manager.GetSaveData().clearedStage && _selectIndex != 3)
+		if (_selectIndex == _manager.GetSaveData().clearedStage &&
+			_selectIndex < 3)
 		{
 			_laserAnimFrame++;
 
