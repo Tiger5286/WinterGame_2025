@@ -144,6 +144,8 @@ void HammerBoss::Update(Map& map)
 			_pEffectManager->Create(impactPos, EffectType::ExplosionFloor);
 			_pAttackCollider->SetPosToBox(impactPos);
 			_pAttackCollider->SetIsEnabled(true);
+			// 音を出す
+			SoundManager::GetInstance().PlaySoundGame("EnemyDeath");
 		}
 		if (_frame > kImpactFrame)
 		{
@@ -151,7 +153,10 @@ void HammerBoss::Update(Map& map)
 			_pAttackCollider->SetPosToBox({ wavePos.x + kWaveAttackColliderOffsetX,wavePos.y });
 			if (_frame % kWaveEffectIntervalFrame == 0)
 			{
+				// エフェクトを出す
 				_pEffectManager->Create(wavePos, EffectType::ExplosionUpward);
+				// 音を出す
+				SoundManager::GetInstance().PlaySoundGame("ExplosionSmall");
 			}
 		}
 		if (_frame == kAnimEndFrame)
@@ -180,6 +185,8 @@ void HammerBoss::Update(Map& map)
 			_pCamera->Shake(kCameraShakeFrame, kCameraShakePowerWeak);
 			// ボール落下エリアをランダムで設定
 			_fBArea = GetRand(kFBAreaNum - 1);
+			// 音を出す
+			SoundManager::GetInstance().PlaySoundGame("Damage");
 		}
 		// 攻撃判定を無効化
 		if (_frame % kAnimEndFrame == kImpactFrame + kHammerAttackColliderDurationFrame)
@@ -249,11 +256,13 @@ void HammerBoss::Draw(Vector2 offset)
 				explosionPosGap.x = static_cast<float>(GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis);
 				explosionPosGap.y = static_cast<float>(GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis);
 				_pEffectManager->Create(GetColliderPos() + explosionPosGap, EffectType::ExplosionSmall);
+				SoundManager::GetInstance().PlaySoundGame("ExplosionSmall");
 			}
 		}
 		if (_frame == kDeathFrame)
 		{
 			_pEffectManager->Create(GetColliderPos(), EffectType::ExplosionBig);
+			SoundManager::GetInstance().PlaySoundGame("ExplosionLong");
 		}
 	}
 	else

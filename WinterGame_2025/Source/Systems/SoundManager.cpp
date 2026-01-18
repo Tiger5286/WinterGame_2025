@@ -46,7 +46,12 @@ SoundManager::SoundManager()
 	LoadSound("EnemyDamage", "data/Sounds/Enemy/EnemyDamage.mp3", SoundType::SE);
 	LoadSound("EnemyDeath", "data/Sounds/Enemy/EnemyDeath.mp3", SoundType::SE);
 	LoadSound("ExplosionLong", "data/Sounds/Enemy/ExplosionLong.mp3", SoundType::SE);
+	LoadSound("ExplosionSmall", "data/Sounds/Enemy/ExplosionSmall.mp3", SoundType::SE);
 	LoadSound("Barrier", "data/Sounds/Enemy/Barrier.mp3", SoundType::SE);
+	LoadSound("Bounce", "data/Sounds/Enemy/Bounce.mp3", SoundType::SE);
+	LoadSound("LaserActive", "data/Sounds/Enemy/LaserActive.mp3", SoundType::SE);
+	LoadSound("FallLanding", "data/Sounds/Enemy/FallLanding.mp3", SoundType::SE);
+	LoadSound("WalkBossRun", "data/Sounds/Enemy/WalkBossRun.mp3", SoundType::SE);
 }
 
 SoundManager::~SoundManager()

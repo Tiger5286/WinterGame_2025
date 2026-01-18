@@ -2,6 +2,7 @@
 #include "../Utility/CircleCollider.h"
 #include "Player.h"
 #include "Dxlib.h"
+#include "../Systems/SoundManager.h"
 
 namespace
 {
@@ -47,12 +48,14 @@ void FallBall::Update(Map& map)
 	_frame++;	// 指定したフレーム経過後のみ跳ねるようにする
 	if (!_isBounced && _frame > kAfterBounceFrame)
 	{
+		// 底面がマップに当たったら跳ねる
 		HitDirection hitDir = MapCollision(map);
 		if (hitDir.down)
 		{
 			_isBounced = true;
 			_vel.y = -kBouncePower;
 			_pCollider->SetIsEnabled(false);
+			SoundManager::GetInstance().PlaySoundGame("Bounce");
 		}
 	}
 	else

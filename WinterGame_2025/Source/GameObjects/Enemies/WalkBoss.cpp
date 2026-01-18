@@ -167,6 +167,17 @@ void WalkBoss::Update(Map& map)
 		// 最初は走るモーションだけ
 		ChangeAnim(_tackleAnim);
 
+		// レーザーの起動音を鳴らす
+		if (_frame == 1)
+		{
+			SoundManager::GetInstance().PlaySoundGame("LaserActive");
+		}
+
+		// 足音を鳴らす
+		if (_frame % 10 == 0)
+		{
+			SoundManager::GetInstance().PlaySoundGame("WalkBossRun");
+		}
 
 		// 走り出す
 		if (_frame == kRunReadyFrame)
@@ -182,6 +193,7 @@ void WalkBoss::Update(Map& map)
 			ChangeState(WalkBossState::Stun);
 			_frame = 0;
 			_pCamera->Shake(kCameraShakeFrame, kCameraShakePower);
+			SoundManager::GetInstance().PlaySoundGame("Damage");
 		}
 	}
 	// 壁走り突進の時の処理
@@ -192,6 +204,13 @@ void WalkBoss::Update(Map& map)
 		if (_frame == 1)
 		{
 			ChangeAnim(_tackleAnim);
+			SoundManager::GetInstance().PlaySoundGame("LaserActive");
+		}
+
+		// 足音を鳴らす
+		if (_frame % 10 == 0)
+		{
+			SoundManager::GetInstance().PlaySoundGame("WalkBossRun");
 		}
 
 		// 走り出す
@@ -239,6 +258,14 @@ void WalkBoss::Update(Map& map)
 	// 天井走りの時の処理
 	if (_state == WalkBossState::CeilingRun)
 	{
+		_frame++;
+
+		// 足音を鳴らす
+		if (_frame % 10 == 0)
+		{
+			SoundManager::GetInstance().PlaySoundGame("WalkBossRun");
+		}
+
 		_vel.y = -1.0f;	// 天井に張り付くようにY速度を上向きにする
 		_isTurn ? _vel.x = kRunSpeed : _vel.x = -kRunSpeed;
 		float toPlayerDis = _pPlayer->GetPos().x - _pos.x;
@@ -258,6 +285,7 @@ void WalkBoss::Update(Map& map)
 		{
 			_pCamera->Shake(kCameraShakeFrame, kCameraShakePower);
 			ChangeState(WalkBossState::Idle);
+			SoundManager::GetInstance().PlaySoundGame("FallLanding");
 		}
 	}
 	// 死亡時の処理
