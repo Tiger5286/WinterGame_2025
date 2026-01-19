@@ -202,6 +202,9 @@
     <ClCompile Include="Source\GameObjects\Spike.cpp" />
     <ClCompile Include="Source\Scenes\TutorialScene.cpp" />
     <ClCompile Include="Source\UI\TutorialUI.cpp" />
+    <ClCompile Include="Source\Title\TitlePlayer.cpp" />
+    <ClCompile Include="Source\Title\TitleEnemy.cpp" />
+    <ClCompile Include="Source\Title\TitleBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Utility\IntGraphDrawer.h" />
@@ -263,6 +266,9 @@
     <ClInclude Include="Source\GameObjects\Spike.h" />
     <ClInclude Include="Source\Scenes\TutorialScene.h" />
     <ClInclude Include="Source\UI\TutorialUI.h" />
+    <ClInclude Include="Source\Title\TitlePlayer.h" />
+    <ClInclude Include="Source\Title\TitleEnemy.h" />
+    <ClInclude Include="Source\Title\TitleBullet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

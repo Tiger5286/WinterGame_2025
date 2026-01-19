@@ -10,7 +10,7 @@ namespace
 	constexpr int kGraphSize = 16;
 	constexpr float kDrawScale = 4.5f;
 	// アニメーション関連
-	constexpr int kAnimNum = 4;
+	constexpr int kIdleAnimNum = 4;
 	constexpr int kOneAnimFrame = 6;
 	// 当たり判定
 	constexpr int kColliderRadius = 30;
@@ -28,7 +28,7 @@ FallBall::FallBall(std::shared_ptr<Player> pPlayer, Vector2 mapSize, int handle)
 	_pPlayer(pPlayer),
 	_kMapSize(mapSize)
 {
-	_nowAnim.Init(_handle, 0, Vector2(kGraphSize, kGraphSize), kAnimNum, kOneAnimFrame, kDrawScale);
+	_nowAnim.Init(_handle, 0, Vector2(kGraphSize, kGraphSize), kIdleAnimNum, kOneAnimFrame, kDrawScale);
 	_pCollider = std::make_shared<CircleCollider>(_pos, static_cast<float>(kColliderRadius));
 }
 

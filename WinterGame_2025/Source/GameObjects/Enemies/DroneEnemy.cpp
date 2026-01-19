@@ -10,7 +10,7 @@ namespace
 	constexpr int kGraphWidth = 32;
 	constexpr int kGraphHeight = 16;
 	const Vector2 kGraphSize = Vector2(kGraphWidth, kGraphHeight);
-	constexpr int kAnimNum = 4;
+	constexpr int kIdleAnimNum = 4;
 	constexpr int kOneAnimFrame = 6;
 	constexpr float kDrawScale = 3.0f;
 
@@ -46,7 +46,7 @@ DroneEnemy::DroneEnemy(Vector2 firstPos, std::shared_ptr<Player> pPlayer,std::sh
 	_frame(kAttackCoolTime),
 	_pCamera(pCamera)
 {
-	_nowAnim.Init(_handle, 0, kGraphSize, kAnimNum, kOneAnimFrame, kDrawScale);
+	_nowAnim.Init(_handle, 0, kGraphSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
 	_pos = ChipPosToGamePos(firstPos);
 	_firstPosY = _pos.y;
 	_frame = kFirstFrame;	// èoåªÇµÇƒÇ©ÇÁçUåÇâ¬î\Ç…Ç»ÇÈÇ‹Ç≈ÇÃéûä‘Çämï€

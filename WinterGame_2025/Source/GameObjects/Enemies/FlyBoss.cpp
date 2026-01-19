@@ -18,7 +18,7 @@ namespace
 	constexpr float kDrawScale = 6.0f;
 
 	// アニメーション関連
-	constexpr int kAnimNum = 5;
+	constexpr int kIdleAnimNum = 5;
 	constexpr int kOneAnimFrame = 6;
 
 	constexpr int kBarrierGraphSize = 16;
@@ -80,7 +80,7 @@ FlyBoss::FlyBoss(Vector2 pos, std::shared_ptr<Player> pPlayer, std::shared_ptr<C
 	_enemyManager(enemyManager),
 	_bulletManager(bulletManager)
 {
-	_nowAnim.Init(_handle, 0, Vector2(kGraphSize, kGraphSize), kAnimNum, kOneAnimFrame, kDrawScale);
+	_nowAnim.Init(_handle, 0, Vector2(kGraphSize, kGraphSize), kIdleAnimNum, kOneAnimFrame, kDrawScale);
 	_pos = ChipPosToGamePos(pos);
 	_pCollider = std::make_shared<CircleCollider>(_pos, static_cast<float>(kColliderRadius));
 

@@ -10,7 +10,7 @@ namespace
 	constexpr float kDrawScale = 8.0f;
 
 	const Vector2 kGraphSize = { 32,32 };
-	constexpr int kAnimNum = 6;
+	constexpr int kIdleAnimNum = 6;
 	constexpr int kOneAnimFrame = 6;
 
 	const Vector2 kColliderSize = { 8,64 };
@@ -23,7 +23,7 @@ ClearFlag::ClearFlag(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handl
 	_pos = ChipPosToGamePos(chipPos);
 	_pCollider = std::make_shared<BoxCollider>(_pos, kColliderSize);
 
-	_anim.Init(_handle, 0, kGraphSize, kAnimNum, kOneAnimFrame, kDrawScale);
+	_anim.Init(_handle, 0, kGraphSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
 }
 
 ClearFlag::~ClearFlag()

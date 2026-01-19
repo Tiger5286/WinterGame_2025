@@ -147,6 +147,9 @@
     <ClCompile Include="Source\Scenes\SceneOption.cpp" />
     <ClCompile Include="Source\Utility\IntGraphDrawer.cpp" />
     <ClCompile Include="Source\UI\TutorialUI.cpp" />
+    <ClCompile Include="Source\Title\TitlePlayer.cpp" />
+    <ClCompile Include="Source\Title\TitleEnemy.cpp" />
+    <ClCompile Include="Source\Title\TitleBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GameObjects\Bullet.h">
@@ -268,5 +271,8 @@
     <ClInclude Include="Source\Scenes\SceneOption.h" />
     <ClInclude Include="Source\Utility\IntGraphDrawer.h" />
     <ClInclude Include="Source\UI\TutorialUI.h" />
+    <ClInclude Include="Source\Title\TitlePlayer.h" />
+    <ClInclude Include="Source\Title\TitleEnemy.h" />
+    <ClInclude Include="Source\Title\TitleBullet.h" />
   </ItemGroup>
 </Project>

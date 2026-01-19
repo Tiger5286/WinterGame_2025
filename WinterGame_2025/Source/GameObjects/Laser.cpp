@@ -19,7 +19,7 @@ namespace
 	constexpr int kLauncherAnimIndex = 0;
 	constexpr int kLaserAnimIndex = 1;
 	constexpr int kImpactAnimIndex = 2;
-	constexpr int kAnimNum = 4;
+	constexpr int kIdleAnimNum = 4;
 	constexpr int kOneAnimFrame = 6;
 
 	// 向き関連
@@ -41,9 +41,9 @@ Laser::Laser(Vector2 chipPos, std::shared_ptr<Player> pPlayer, int handle, int l
 	_isDownward ? _pCollider->SetPos(Vector2(_pos.x, _pos.y + laserOffsetY)) : _pCollider->SetPos(Vector2(_pos.x, _pos.y - laserOffsetY));
 
 	// アニメーション初期化
-	_launcherAnim.Init(_handle, kLauncherAnimIndex, kFrameSize, kAnimNum, kOneAnimFrame, kDrawScale);
-	_laserAnim.Init(_handle, kLaserAnimIndex, kFrameSize, kAnimNum, kOneAnimFrame, kDrawScale);
-	_impactAnim.Init(_handle, kImpactAnimIndex, kFrameSize, kAnimNum, kOneAnimFrame, kDrawScale);
+	_launcherAnim.Init(_handle, kLauncherAnimIndex, kFrameSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
+	_laserAnim.Init(_handle, kLaserAnimIndex, kFrameSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
+	_impactAnim.Init(_handle, kImpactAnimIndex, kFrameSize, kIdleAnimNum, kOneAnimFrame, kDrawScale);
 	// 向き調整
 	if (!_isDownward)
 	{

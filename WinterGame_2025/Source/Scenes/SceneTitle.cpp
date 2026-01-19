@@ -9,6 +9,10 @@
 #include "../Game.h"
 #include "../Application.h"
 #include "../Systems/SoundManager.h"
+#include "../Title/TitlePlayer.h"
+#include "../Title/TitleEnemy.h"
+#include "../Title/TitleBullet.h"
+#include "../Systems/EffectManager.h"
 #include <cassert>
 #include <string>
 #include <cmath>
@@ -43,10 +47,14 @@ enum class MenuItems
 SceneTitle::SceneTitle(SceneManager& manager):
 	SceneBase(manager)
 {
+	// 画像をロード
 	_bgHandle = LoadGraph("data/Map/Bg.png");
 	assert(_bgHandle != -1);
 	_titleHandle = LoadGraph("data/UI/Title.png");
 	assert(_titleHandle != -1);
+	_mapHandle = LoadGraph("data/Map/titleMap.png");
+	assert(_mapHandle != -1);
+
 	_menuHandles[static_cast<int>(MenuItems::Start)] = LoadGraph("data/UI/StartButton.png");
 	_menuHandles[static_cast<int>(MenuItems::Option)] = LoadGraph("data/UI/OptionButton.png");
 	_menuHandles[static_cast<int>(MenuItems::Exit)] = LoadGraph("data/UI/ExitButton.png");
@@ -55,8 +63,19 @@ SceneTitle::SceneTitle(SceneManager& manager):
 		assert(handle != -1);
 	}
 
+	// フォントの作成
 	_fontHandle = CreateFontToHandle(GlobalConstants::kMainFontName, 64, -1, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);
 
+	// タイトル用オブジェクトの生成
+	_pEffectManager = std::make_shared<EffectManager>();
+	_pEnemy = std::make_shared<TitleEnemy>(*_pEffectManager);
+	for (auto& bullet : _pBullets)
+	{
+		bullet = std::make_shared<TitleBullet>(*_pEnemy);
+	}
+	_pPlayer = std::make_shared<TitlePlayer>(_pBullets);
+
+	// BGM再生
 	SoundManager::GetInstance().PlaySoundGame("TitleBGM", true,true);
 }
 
@@ -130,6 +149,15 @@ void SceneTitle::Update(Input& input)
 		}
 	}
 
+	// オブジェクト管理
+	_pPlayer->Update(input);
+	_pEnemy->Update();
+	for (auto& bullet : _pBullets)
+	{
+		bullet->Update();
+	}
+	_pEffectManager->Update();
+
 #ifdef _DEBUG
 	if (input.IsTriggered("select"))
 	{
@@ -145,6 +173,17 @@ void SceneTitle::Draw()
 
 	// 背景描画
 	DrawExtendGraph(0, 0, screenW, screenH, _bgHandle, false);
+	// マップ描画
+	DrawExtendGraph(0, 0, screenW, screenH, _mapHandle, true);
+
+	// オブジェクトの描画
+	_pPlayer->Draw();
+	_pEnemy->Draw();
+	for (auto& bullet : _pBullets)
+	{
+		bullet->Draw();
+	}
+	_pEffectManager->Draw(Vector2());
 
 	// タイトル描画
 	float sin = sinf(_frame * kTitleSinRate);
