@@ -197,6 +197,7 @@ void FlyBoss::Update()
 		{
 			CheckIsPlayerOnLeft();
 			_isPlayerOnLeft ? _vel.x = kRunupVel : _vel.x = -kRunupVel;
+			SoundManager::GetInstance().PlaySoundGame("FlyBossTackle");
 		}
 		else
 		{
@@ -243,6 +244,7 @@ void FlyBoss::Update()
 		{
 			_pEffectManager->Create(_pos, EffectType::ItemGet);
 			_enemyManager.Create(ObjectData::DroneEnemy, _pos, false);
+			SoundManager::GetInstance().PlaySoundGame("FlyBossSpawn");
 		}
 
 		_frame++;

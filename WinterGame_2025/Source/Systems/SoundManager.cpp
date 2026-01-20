@@ -52,6 +52,8 @@ SoundManager::SoundManager()
 	LoadSound("LaserActive", "data/Sounds/Enemy/LaserActive.mp3", SoundType::SE);
 	LoadSound("FallLanding", "data/Sounds/Enemy/FallLanding.mp3", SoundType::SE);
 	LoadSound("WalkBossRun", "data/Sounds/Enemy/WalkBossRun.mp3", SoundType::SE);
+	LoadSound("FlyBossTackle", "data/Sounds/Enemy/FlyBossTackle.mp3", SoundType::SE);
+	LoadSound("FlyBossSpawn", "data/Sounds/Enemy/FlyBossSpawn.mp3", SoundType::SE);
 }
 
 SoundManager::~SoundManager()
