@@ -175,6 +175,6 @@ struct SaveData
 	bool isReleasedSecretStage = false;
 	std::array<int, static_cast<int>(SelectableStages::Num)> highScores = {0};
 
-	int bgmVolume = 255;
-	int seVolume = 255;
+	int bgmVolume = 128;
+	int seVolume = 128;
 };
