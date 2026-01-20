@@ -132,7 +132,7 @@ void SceneOption::Draw()
 	DrawExtendGraph(kWindowMargin, kWindowMargin, screenW - kWindowMargin, screenH - kWindowMargin, _bgHandle, true);
 
 	std::string optionText = "ƒIƒvƒVƒ‡ƒ“";
-	int width = GetDrawStringWidthToHandle(optionText.c_str(), optionText.length(), _fontHandle);
+	int width = GetDrawStringWidthToHandle(optionText.c_str(), static_cast<int>(optionText.length()), _fontHandle);
 	DrawStringToHandle(screenW / 2 - width / 2, kOptionTextY, optionText.c_str(), 0xffffff, _fontHandle);
 
 	// ‚»‚ê‚¼‚ê‚Ì—v‘f‚Ì•`‰æ
@@ -262,6 +262,6 @@ void SceneOption::DrawBack(int nowIndex)
 	if (nowIndex == static_cast<int>(OptionMenu::Back)) color = 0x00ff00;
 
 	std::string backText = "–ß‚é";
-	int width = GetDrawStringWidthToHandle(backText.c_str(), backText.length(),_fontHandle);
+	int width = GetDrawStringWidthToHandle(backText.c_str(), static_cast<int>(backText.length()), _fontHandle);
 	DrawStringToHandle(screenW / 2 - width / 2, kBackY, backText.c_str(), color,_fontHandle);
 }

@@ -108,12 +108,12 @@ void ScenePause::Draw()
 	DrawExtendGraph(kWindowMargin, kWindowMargin, screenW - kWindowMargin, screenH - kWindowMargin, _bgHandle, true);
 
 	std::string pauseText = "É|Å[ÉY";
-	int pauseTextWidth = GetDrawStringWidthToHandle(pauseText.c_str(), pauseText.length(), _fontHandle);
+	int pauseTextWidth = GetDrawStringWidthToHandle(pauseText.c_str(), static_cast<int>(pauseText.length()), _fontHandle);
 	DrawStringToHandle(screenW / 2 - pauseTextWidth / 2, kPauseTextY, pauseText.c_str(), 0xffffff, _fontHandle);
 
 	for (int i = 0; i < _menuList.size(); i++)
 	{
-		int menuTextWidth = GetDrawStringWidthToHandle(_menuList[i].c_str(), _menuList[i].length(), _fontHandle);
+		int menuTextWidth = GetDrawStringWidthToHandle(_menuList[i].c_str(), static_cast<int>(_menuList[i].length()), _fontHandle);
 		unsigned int color = 0xffffff;
 		if (i == _selectIndex)
 		{
