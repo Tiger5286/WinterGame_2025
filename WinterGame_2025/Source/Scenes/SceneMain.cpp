@@ -137,7 +137,7 @@ void SceneMain::Update(Input& input)
 	// プレイヤーが死んだときの処理
 	if (!_pPlayer->GetIsAlive())
 	{
-		_manager.SetFadeCirclePos(_pPlayer->GetColliderPos() - _pCamera->GetDrawOffset());	// プレイヤーが死んだ位置にフェードサークルを置く
+		//_manager.SetFadeCirclePos(_pPlayer->GetColliderPos() - _pCamera->GetDrawOffset());	// プレイヤーが死んだ位置にフェードサークルを置く
 		// 全てのステージが未クリアなら再度チュートリアルステージを再生
 		if (_manager.GetSaveData().clearedStage == static_cast<int>(Stages::None))
 		{
@@ -158,7 +158,7 @@ void SceneMain::Update(Input& input)
 	// プレイヤーの落下死でフェード位置が画面外になっている場合、マップの底面にフェード位置を設定する
 	if (circleFadePos.y > _pMap->GetStageSize().y + 100)
 	{
-		circleFadePos.y = _pMap->GetStageSize().y;
+		circleFadePos.y = _pMap->GetStageSize().y - _pCamera->GetDrawOffset().y;
 	}
 	_manager.SetFadeCirclePos(circleFadePos);
 
