@@ -2,10 +2,16 @@
 class IntGraphDrawer
 {
 public:
-	IntGraphDrawer();
-	~IntGraphDrawer();
-
-	static void Draw(int x,int y, float scale, int handle, int value);
+	/// <summary>
+	/// 整数を画像に変換して描画する
+	/// </summary>
+	/// <param name="x">x座標</param>
+	/// <param name="y">y座標</param>
+	/// <param name="scale">描画倍率</param>
+	/// <param name="handle">画像ハンドル</param>
+	/// <param name="value">数値</param>
+	/// <param name="digits">何桁表示するか</param>
+	static void Draw(int x,int y, float scale, int handle, int value,int drawDigits = 5);
 private:
 	/// <summary>
 	/// 桁数を数える

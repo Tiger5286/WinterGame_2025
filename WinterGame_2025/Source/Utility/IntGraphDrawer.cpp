@@ -7,25 +7,23 @@ namespace
 	constexpr int kGraphSize = 130;
 }
 
-IntGraphDrawer::IntGraphDrawer()
-{
-}
-
-IntGraphDrawer::~IntGraphDrawer()
-{
-}
-
-void IntGraphDrawer::Draw(int x, int y, float scale, int handle, int value)
+void IntGraphDrawer::Draw(int x, int y, float scale, int handle, int value,int drawDigits)
 {
 	// Œ…”‚ğŒvZ
 	int digits = CountDigits(value);
 	// ŠeŒ…‚ğ•`‰æ
-	for (int i = 0; i < digits; i++)
+	for (int i = 0; i < drawDigits; i++)
 	{
-		// ¡•`‰æ‚·‚éŒ…‚Ì”’l‚ğæ‚èo‚·
-		int nowDigit = digits - i;
-		// æ‚èo‚µ‚½Œ…‚Ì”’l‚ğæ“¾
-		int digitValue = PickOutDigit(value, nowDigit);
+		// •`‰æ‚·‚éŒ…
+		int nowDigit = drawDigits - i;
+
+		// •`‰æ‚·‚éŒ…‚ªÀÛ‚ÌŒ…”‚ğ’´‚¦‚Ä‚¢‚éê‡‚Í0‚ğ•`‰æ
+		int digitValue = 0;
+		if (!(nowDigit > digits))
+		{
+			// æ‚èo‚µ‚½Œ…‚Ì”’l‚ğæ“¾
+			digitValue = PickOutDigit(value, nowDigit);
+		}
 
 		// •`‰æ
 		DrawRectRotaGraph(static_cast<int>(x + (kGraphSize / 2) * scale + i * (kGraphSize * scale)),
