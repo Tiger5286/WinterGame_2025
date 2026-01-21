@@ -18,6 +18,8 @@ ItemManager::ItemManager(std::shared_ptr<Player> pPlayer,SceneMain& sceneMain,Ef
 	assert(_bigCoinH != -1);
 	_healthItemH = LoadGraph("data/Items/HealthItem.png");
 	assert(_healthItemH != -1);
+	_goldenStatueH = LoadGraph("data/Items/GoldenBlueRobot.png");
+	assert(_goldenStatueH != -1);
 }
 
 ItemManager::~ItemManager()
@@ -25,6 +27,7 @@ ItemManager::~ItemManager()
 	DeleteGraph(_coinH);
 	DeleteGraph(_bigCoinH);
 	DeleteGraph(_healthItemH);
+	DeleteGraph(_goldenStatueH);
 }
 
 void ItemManager::Update()
@@ -80,6 +83,9 @@ void ItemManager::LoadItems(const std::vector<uint16_t>& objectData, Size size)
 				break;
 			case ObjectData::HealthItem:
 				_pItems.push_back(std::make_shared<Item>(pos, ItemType::HealthItem, _pPlayer, _healthItemH));
+				break;
+			case ObjectData::GoldenStatue:
+				_pItems.push_back(std::make_shared<Item>(pos, ItemType::GoldenStatue, _pPlayer, _goldenStatueH));
 				break;
 			default:
 				break;

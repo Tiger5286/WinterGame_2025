@@ -7,7 +7,8 @@ enum ItemType
 {
 	Coin,
 	BigCoin,
-	HealthItem	// ‘Ì—Í‰ñ•œƒAƒCƒeƒ€
+	HealthItem,
+	GoldenStatue
 };
 
 /// <summary>

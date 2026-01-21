@@ -1,5 +1,6 @@
 #include "Item.h"
 #include "../Utility/CircleCollider.h"
+#include "../Utility/BoxCollider.h"
 #include "../Systems/Animation.h"
 #include "../Systems/SoundManager.h"
 #include "Player.h"
@@ -11,6 +12,7 @@ namespace
 	// 画像サイズ
 	constexpr int kGraphSize = 16;
 	const Vector2 kFrameSize = { kGraphSize,kGraphSize };
+	const Vector2 kGoldenStatueFrameSize = { 40,40 };
 
 	// アニメーション関連
 	constexpr int kCoinAnimNum = 4;
@@ -23,11 +25,13 @@ namespace
 	constexpr float kCoinColliderR = 16.0f;
 	constexpr float kBigCoinColliderR = 40.0f;
 	constexpr float kHealthItemColliderR = 24.0f;
+	const Vector2 kGoldenStatueColliderSize = { 100,100 };
 
 	// スコア
 	constexpr int kCoinScore = 100;
 	constexpr int kBigCoinScore = 1000;
 	constexpr int kHealthItemScore = 300;
+	constexpr int kGoldenStatueScore = 10000;
 
 	constexpr int kPlayerHealAmount = 1;
 }
@@ -55,6 +59,12 @@ Item::Item(Vector2 mapChipFirstPos, ItemType type, std::shared_ptr<Player> pPlay
 		_nowAnim.Init(_handle, 0, kFrameSize, kHealthAnimNum, kOneAnimFrame, kDrawScale);
 		_pCollider = std::make_shared<CircleCollider>(Vector2{ 0.0f,0.0f }, kHealthItemColliderR);
 		_score = kHealthItemScore;
+	}
+	else if (_type == ItemType::GoldenStatue)
+	{
+		_nowAnim.Init(_handle, 0, kGoldenStatueFrameSize, 1, kOneAnimFrame, kDrawScale);
+		_pCollider = std::make_shared<BoxCollider>(Vector2{ 0.0f,0.0f }, kGoldenStatueColliderSize);
+		_score = kGoldenStatueScore;
 	}
 	else
 	{
@@ -93,7 +103,12 @@ void Item::Update()
 
 void Item::Draw(Vector2 offset)
 {
-	_nowAnim.Draw(_pos - offset, false);
+	auto drawPos = _pos - offset;
+	if (_type == ItemType::GoldenStatue)
+	{
+		drawPos.y -= 35;
+	}
+	_nowAnim.Draw(drawPos, false);
 #ifdef _DEBUG
 	_pCollider->Draw(offset);
 #endif // _DEBUG
@@ -112,6 +127,9 @@ void Item::GetItem()
 	case ItemType::HealthItem:
 		_pPlayer->Heal(kPlayerHealAmount);
 		SoundManager::GetInstance().PlaySoundGame("Heal");
+		break;
+	case ItemType::GoldenStatue:
+		SoundManager::GetInstance().PlaySoundGame("BigCoin");
 		break;
 	default:
 		assert(false && "不正なItemTypeが指定されました");

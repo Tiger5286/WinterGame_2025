@@ -24,6 +24,7 @@ private:
 	int _coinH = -1;
 	int _bigCoinH = -1;
 	int _healthItemH = -1;
+	int _goldenStatueH = -1;
 
 	std::shared_ptr<Player> _pPlayer;
 	std::vector<std::shared_ptr<Item>> _pItems;
