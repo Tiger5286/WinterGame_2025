@@ -314,87 +314,103 @@ void SceneStageSelect::Draw()
 	DrawExtendGraph(0 + _bgOffsetX, 0, screenW + _bgOffsetX, screenH, _bgHandle, false);
 	DrawExtendGraph(screenW + _bgOffsetX, 0, screenW * 2 + _bgOffsetX, screenH, _bgHandle, false);
 
-	// ステージUIの描画
-	float progress = abs(static_cast<float>(_uiControllFrame) / kUIControllInterval);
-	int posX = _uiControllFrame * kUIMoveScale;
-	int sidePosX = kUIControllInterval * kUIMoveScale;
-	SetDrawBright(128, 128, 128);	// 移動中のUIは暗く表示
-	if (_isUIMoveRight)		// UIが右に移動するとき
+	// 移動中のステージアイコン描画(移動中のみ描画)
+	if (!(_uiControllFrame == kUIControllInterval || _uiControllFrame == -kUIControllInterval))
 	{
-		// 最初のステージ以外を選択中
-		const bool isSelectExceptFirst = (_selectIndex > 0);
-		// 最後のステージ以外を選択中
-		const bool isSelectExceptLast = (_selectIndex < _stageList.size() - 2);
-		// 最後のステージの一つ手前を選択中
-		const bool isSelectPenultimate = (_selectIndex == _stageList.size() - 3);
+		float progress = abs(static_cast<float>(_uiControllFrame) / kUIControllInterval);
+		int posX = _uiControllFrame * kUIMoveScale;
+		int sidePosX = kUIControllInterval * kUIMoveScale;
+		SetDrawBright(128, 128, 128);	// 移動中のUIは暗く表示
+		if (_isUIMoveRight)		// UIが右に移動するとき
+		{
+			// 最初のステージ以外を選択中
+			const bool isSelectExceptFirst = (_selectIndex > 0);
+			// 最後のステージ以外を選択中
+			const bool isSelectExceptLast = (_selectIndex < _stageList.size() - 2);
+			// 最後のステージの一つ手前を選択中
+			const bool isSelectPenultimate = (_selectIndex == _stageList.size() - 3);
 
-		if (isSelectExceptFirst)
-		{
-			DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から現れるUI
-		}
-		if (isSelectExceptLast)
-		{
-			if (isSelectPenultimate)
+			if (isSelectExceptFirst)
 			{
-				if (_manager.GetSaveData().isReleasedSecretStage)
+				DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から現れるUI
+			}
+			if (isSelectExceptLast)
+			{
+				if (isSelectPenultimate)
+				{
+					if (_manager.GetSaveData().isReleasedSecretStage)
+					{
+						DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向で消えるUI
+					}
+				}
+				else
 				{
 					DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向で消えるUI
 				}
 			}
-			else
-			{
-				DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向で消えるUI
-			}
+			DrawRotaGraph(screenW / 2 - sidePosX + posX, screenH / 2, kUIDrawScaleHalf + progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から真ん中に向かうUI
 		}
-		DrawRotaGraph(screenW / 2 - sidePosX + posX, screenH / 2, kUIDrawScaleHalf + progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から真ん中に向かうUI
-	}
-	else	// 左に移動するとき
-	{
-		// 最初のステージ以外を選択中
-		const bool isSelectExceptFirst = (_selectIndex > 1);
-		// 最後のステージ以外を選択中
-		const bool isSelectExceptLast = (_selectIndex < _stageList.size() - 1);
-		// 最後のステージの一つ手前を選択中
-		const bool isSelectPenultimate = (_selectIndex == _stageList.size() - 2);
+		else	// 左に移動するとき
+		{
+			// 最初のステージ以外を選択中
+			const bool isSelectExceptFirst = (_selectIndex > 1);
+			// 最後のステージ以外を選択中
+			const bool isSelectExceptLast = (_selectIndex < _stageList.size() - 1);
+			// 最後のステージの一つ手前を選択中
+			const bool isSelectPenultimate = (_selectIndex == _stageList.size() - 2);
 
-		if (isSelectExceptFirst)
-		{
-			DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向で消えるUI
-		}
-		if (isSelectExceptLast)
-		{
-			if (isSelectPenultimate)	// 隠しステージの前のステージを選択中の時
-			{							// 隠しステージが解放されている場合のみUIを描画
-				if (_manager.GetSaveData().isReleasedSecretStage)
+			if (isSelectExceptFirst)
+			{
+				DrawRotaGraph(screenW / 2 - sidePosX, screenH / 2, kUIDrawScaleHalf - progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向で消えるUI
+			}
+			if (isSelectExceptLast)
+			{
+				if (isSelectPenultimate)	// 隠しステージの前のステージを選択中の時
+				{							// 隠しステージが解放されている場合のみUIを描画
+					if (_manager.GetSaveData().isReleasedSecretStage)
+					{
+						DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から現れるUI
+					}
+				}
+				else	// 隠しステージの前のステージ以外を選択中の時は普通に描画
 				{
 					DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から現れるUI
 				}
 			}
-			else	// 隠しステージの前のステージ以外を選択中の時は普通に描画
-			{
-				DrawRotaGraph(screenW / 2 + sidePosX, screenH / 2, progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から現れるUI
-			}
+			DrawRotaGraph(screenW / 2 + sidePosX + posX, screenH / 2, kUIDrawScaleHalf + progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から真ん中に向かうUI
 		}
-		DrawRotaGraph(screenW / 2 + sidePosX + posX, screenH / 2, kUIDrawScaleHalf + progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 進行方向の反対から真ん中に向かうUI
+		DrawRotaGraph(screenW / 2 + posX, screenH / 2, kUIDrawScale - progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 真ん中から進行方向に向かうUI
+		SetDrawBright(255, 255, 255);	// 明るさを元に戻す
 	}
-	DrawRotaGraph(screenW / 2 + posX, screenH / 2, kUIDrawScale - progress * kUIDrawScaleHalf, 0.0, _emptyStageUIHandle, true);	// 真ん中から進行方向に向かうUI
-	SetDrawBright(255, 255, 255);	// 明るさを元に戻す
 
 	// UI移動中は描画しない
 	if (_uiControllFrame == kUIControllInterval || _uiControllFrame == -kUIControllInterval)
 	{
+		// 先に行けないことを表すレーザーの描画
+		if (_selectIndex == _manager.GetSaveData().clearedStage &&
+			_selectIndex < 3)
+		{
+			_laserAnimFrame++;
+
+			int animIndex = (_laserAnimFrame / kLaserOneAnimFrame) % kLaserAnimNum;
+
+			DrawRectRotaGraph(kLaserPosX, screenH / 2,
+				animIndex * kLaserGraphWidth, 0,
+				kLaserGraphWidth, kLaserGraphHeight,
+				kLaserScale, 0.0, _longLaserHandle, true);
+		}
+
 		// ステージアイコンの描画
 		// 選択中のステージアイコン
+		auto iconHandle = _stageUIHandles[_selectIndex];
 		if (_selectIndex == _manager.GetSaveData().clearedStage)
 		{
 			// 未クリアのステージアイコン
-			DrawRotaGraph(screenW / 2, screenH / 2, kUIDrawScale, 0.0, _stageShadowUIHandles[_selectIndex], true);
+			iconHandle = _stageShadowUIHandles[_selectIndex];
 		}
-		else
-		{
-			// 通常のステージアイコン
-			DrawRotaGraph(screenW / 2, screenH / 2, kUIDrawScale, 0.0, _stageUIHandles[_selectIndex], true);
-		}
+		_frame++;
+		float sin = sinf(_frame * 0.05f) * 0.02f;
+		DrawRotaGraph(screenW / 2, screenH / 2, kUIDrawScale + sin, 0.0, iconHandle, true);
 		// 左右のステージアイコンは暗く表示
 		SetDrawBright(128, 128, 128);
 		// 左のステージアイコン
@@ -436,20 +452,6 @@ void SceneStageSelect::Draw()
 
 		// 明るさを元に戻す
 		SetDrawBright(255, 255, 255);
-
-		// 先に行けないことを表すレーザーの描画
-		if (_selectIndex == _manager.GetSaveData().clearedStage &&
-			_selectIndex < 3)
-		{
-			_laserAnimFrame++;
-
-			int animIndex = (_laserAnimFrame / kLaserOneAnimFrame) % kLaserAnimNum;
-
-			DrawRectRotaGraph(kLaserPosX, screenH / 2,
-				animIndex * kLaserGraphWidth, 0,
-				kLaserGraphWidth, kLaserGraphHeight,
-				kLaserScale, 0.0, _longLaserHandle, true);
-		}
 
 		// ステージ名の描画
 		DrawRotaGraph(screenW / 2, kStageNameY, kStageNameScale, 0.0, _stageNameHandles[_selectIndex], true);

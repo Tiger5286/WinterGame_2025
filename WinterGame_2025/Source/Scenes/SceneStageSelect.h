@@ -42,6 +42,8 @@ private:
 	// レーザーのアニメーションに使うフレームカウント
 	int _laserAnimFrame = 0;
 
+	int _frame = 0;
+
 	int _selectIndex;	// 現在選択中のインデックス
 	std::vector<std::string> _stageList;	// ステージリスト
 	std::map<std::string, std::function<void()>> _execTable;	// ステージ名と実行関数の対応表
