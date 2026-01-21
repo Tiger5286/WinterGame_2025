@@ -23,11 +23,11 @@ namespace
 	constexpr int kStageNameY = GlobalConstants::kScreenHeight / 2 - 350;
 	constexpr float kStageNameScale = 1.0f;
 	// ハイスコア
-	constexpr int kHighScoreTextX = GlobalConstants::kScreenWidth / 2 - 100;
+	constexpr int kHighScoreTextX = GlobalConstants::kScreenWidth / 2 - 150;
 	constexpr int kHighScoreTextY = GlobalConstants::kScreenHeight / 2 + 325;
 	constexpr float kHighScoreTextScale = 0.6f;
 	// ハイスコア(数字部分)
-	constexpr int kHighScoreNumberX = GlobalConstants::kScreenWidth / 2 + 40;
+	constexpr int kHighScoreNumberX = GlobalConstants::kScreenWidth / 2 - 10;
 	constexpr int kHighScoreNumberY = GlobalConstants::kScreenHeight / 2 + 285;
 	constexpr float kHighScoreNumberScale = 0.6f;
 
