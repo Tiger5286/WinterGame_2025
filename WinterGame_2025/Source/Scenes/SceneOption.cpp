@@ -214,10 +214,10 @@ void SceneOption::DrawBgmVolume(int nowIndex)
 	constexpr int screenW = GlobalConstants::kScreenWidth;
 	constexpr int screenH = GlobalConstants::kScreenHeight;
 
-	unsigned int color = 0xff0000;
+	unsigned int color = 0xdd3333;
 	unsigned int textColor = 0xffffff;
-	if (nowIndex == static_cast<int>(OptionMenu::BgmVolume)) color = 0x00ff00;
-	if (nowIndex == static_cast<int>(OptionMenu::BgmVolume)) textColor = 0x00ff00;
+	if (nowIndex == static_cast<int>(OptionMenu::BgmVolume)) color = 0x33dd33;
+	if (nowIndex == static_cast<int>(OptionMenu::BgmVolume)) textColor = 0x33dd33;
 
 	// bgm音量バー
 	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, kBgmY,
@@ -236,10 +236,10 @@ void SceneOption::DrawSeVolume(int nowIndex)
 	constexpr int screenW = GlobalConstants::kScreenWidth;
 	constexpr int screenH = GlobalConstants::kScreenHeight;
 
-	unsigned int color = 0xff0000;
+	unsigned int color = 0xdd3333;
 	unsigned int textColor = 0xffffff;
-	if (nowIndex == static_cast<int>(OptionMenu::SeVolume)) color = 0x00ff00;
-	if (nowIndex == static_cast<int>(OptionMenu::SeVolume)) textColor = 0x00ff00;
+	if (nowIndex == static_cast<int>(OptionMenu::SeVolume)) color = 0x33dd33;
+	if (nowIndex == static_cast<int>(OptionMenu::SeVolume)) textColor = 0x33dd33;
 
 	// se音量バー
 	DrawLine(screenW / 2 - kSoundVolumeBarWidth / 2, kSeY,
@@ -259,7 +259,7 @@ void SceneOption::DrawBack(int nowIndex)
 	constexpr int screenH = GlobalConstants::kScreenHeight;
 
 	unsigned int color = 0xffffff;
-	if (nowIndex == static_cast<int>(OptionMenu::Back)) color = 0x00ff00;
+	if (nowIndex == static_cast<int>(OptionMenu::Back)) color = 0x33dd33;
 
 	std::string backText = "戻る";
 	int width = GetDrawStringWidthToHandle(backText.c_str(), static_cast<int>(backText.length()), _fontHandle);

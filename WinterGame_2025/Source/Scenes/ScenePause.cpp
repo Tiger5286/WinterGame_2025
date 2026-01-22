@@ -122,7 +122,7 @@ void ScenePause::Draw()
 		if (i == _selectIndex)
 		{
 			float sin = sinf(_frame * 0.1f) * 0.5f + 0.5f;	// 0~1の間を往復する
-			color = 0x00ff00;	// 選択中のメニューは緑色にする
+			color = 0x33dd33;	// 選択中のメニューは緑色にする
 			DrawStringToHandle(screenW / 2 - menuTextWidth / 2 - kFontSize - sin * kSinScale, kMenuStartY + i * (kFontSize + kMenuMarginY), "→", color, _fontHandle);
 		}
 		DrawStringToHandle(screenW / 2 - menuTextWidth / 2, kMenuStartY + i * (kFontSize + kMenuMarginY), _menuList[i].c_str(), color, _fontHandle);
