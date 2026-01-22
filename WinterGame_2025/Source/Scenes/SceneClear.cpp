@@ -15,14 +15,14 @@ namespace
 	constexpr int kClearLogoY = GlobalConstants::kScreenHeight / 2 - 100;
 	constexpr float kClearLogoScale = 0.75f;
 	// スコアテキスト画像の位置とスケール
-	constexpr int kScoreTextX = GlobalConstants::kScreenWidth / 2 - 170;
+	constexpr int kScoreTextX = GlobalConstants::kScreenWidth / 2 - 230;
 	constexpr int kScoreTextY = GlobalConstants::kScreenHeight / 2 + 200;
 	constexpr float kScoreTextScale = 0.7f;
 	// スコアのカウントアップに使うLerpの値
 	constexpr float kScoreCountUpLerp = 0.02f;
 	// スコアの位置とスケール
-	constexpr int kScoreX = GlobalConstants::kScreenWidth / 2 - 30;
-	constexpr int kScoreY = GlobalConstants::kScreenHeight / 2 + 160;
+	constexpr int kScoreX = GlobalConstants::kScreenWidth / 2 - 90;
+	constexpr int kScoreY = GlobalConstants::kScreenHeight / 2 + 155;
 	constexpr float kScoreScale = 0.7f;
 	// ハイスコア更新画像の位置とスケールと角度
 	constexpr int kHighScoreTextX = GlobalConstants::kScreenWidth / 2 + 300;
