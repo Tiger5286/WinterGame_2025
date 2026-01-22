@@ -92,7 +92,7 @@ void ScenePause::Update(Input& input)
 		_execTable[_menuList[_selectIndex]]();
 		SoundManager::GetInstance().PlaySoundGame("Decision");
 	}
-	if (input.IsTriggered("back") && input.IsTriggered("start"))
+	if (input.IsTriggered("back") || input.IsTriggered("start"))
 	{
 		_execTable["ÉQÅ[ÉÄÇ…ñﬂÇÈ"]();
 		SoundManager::GetInstance().PlaySoundGame("Cancel");
