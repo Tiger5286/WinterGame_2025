@@ -13,12 +13,13 @@
 namespace
 {
 	constexpr float kGameOverGraphScale = 0.7f;
+	constexpr int kGameOverGraphY = GlobalConstants::kScreenHeight / 2 - 100;
 
 	constexpr float kSelectMenuScale = 0.6f;
 	constexpr float kUnselectMenuScale = 0.4f;
 
-	constexpr int kRestartTextY = GlobalConstants::kScreenHeight / 2 + 300;
-	constexpr int kBackTextY = GlobalConstants::kScreenHeight / 2 + 400;
+	constexpr int kRestartTextY = GlobalConstants::kScreenHeight / 2 + 240;
+	constexpr int kBackTextY = GlobalConstants::kScreenHeight / 2 + 350;
 
 	constexpr float kMenuSinScale = 0.05f;
 }
@@ -99,7 +100,7 @@ void SceneGameOver::Draw()
 	// îwåiÇÃï`âÊ
 	DrawExtendGraph(0, 0, screenW, screenH, _bgHandle, false);
 	// ÉçÉSÇÃï`âÊ
-	DrawRotaGraph(screenW / 2, screenH / 2, kGameOverGraphScale, 0.0, _gameOverHandle, true);
+	DrawRotaGraph(screenW / 2, kGameOverGraphY, kGameOverGraphScale, 0.0, _gameOverHandle, true);
 
 	// ÉÅÉjÉÖÅ[ÇÃï`âÊ
 	float sinScale = sinf(_frame * kMenuSinScale) * kMenuSinScale;
