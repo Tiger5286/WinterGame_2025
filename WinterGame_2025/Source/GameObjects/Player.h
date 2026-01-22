@@ -100,6 +100,7 @@ private:
 	// ジャンプ関連変数
 	int _jumpFrame;		// ジャンプ長押し時間
 	bool _isJumping;	// ジャンプ中フラグ
+	bool _isPrevFrameCanJump;
 
 	bool _isTurn;	// true:左向き/false:右向き
 	Vector2 _shotPos;	// 弾を召喚する位置

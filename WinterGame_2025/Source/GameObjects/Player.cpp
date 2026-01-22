@@ -512,8 +512,13 @@ void Player::Heal(int healAmount)
 
 void Player::Jump()
 {
-	if (_input.IsPressed("jump") && _isGround)
+	if (_input.IsTriggered("jump") && _isGround)
 	{	// ジャンプが入力され、かつ接地しているならジャンプ中
+		_isJumping = true;
+		SoundManager::GetInstance().PlaySoundGame("Jump");
+	}
+	else if (_isGround && _isPrevFrameCanJump)
+	{	// 今のフレームで接地しており、かつ前のフレームで空中でジャンプが入力されていたならジャンプ中
 		_isJumping = true;
 		SoundManager::GetInstance().PlaySoundGame("Jump");
 	}
@@ -538,6 +543,9 @@ void Player::Jump()
 		_jumpFrame = 0;
 		_isJumping = false;
 	}
+
+	// 前のフレームでジャンプが入力されていた、かつ空中にいるかどうかを保存
+	_isPrevFrameCanJump = _input.IsPressed("jump") && !_isGround;
 }
 
 void Player::Move()
