@@ -48,6 +48,8 @@ namespace
 	constexpr int kGaugeLength = 80;
 	constexpr int kGaugeHeight = 10;
 	constexpr int kGaugeBgMargin = 2;
+	// フォントサイズ
+	constexpr int kFontSize = 32;
 }
 
 TutorialUI::TutorialUI(Player& player):
@@ -58,6 +60,8 @@ TutorialUI::TutorialUI(Player& player):
 		_graphHandles.push_back(LoadGraph(kGraphFileNames[i].c_str()));
 		assert(_graphHandles.back() != -1 && "チュートリアル画像を正しくロードできませんでした");
 	}
+
+	_fontHandle = CreateFontToHandle("廻想体 ネクスト UP B", kFontSize, -1);
 }
 
 TutorialUI::~TutorialUI()
@@ -249,6 +253,10 @@ void TutorialUI::DrawChargeShot(const Vector2& drawPos)
 		handle = _graphHandles[static_cast<int>(TutorialGraphs::ButtonXOutline)];
 	}
 	DrawRotaGraph(drawPos.x, drawPos.y, 1.0, 0.0, handle, true);
+
+	std::string text = "長押し";
+	auto textWidth = GetDrawStringWidthToHandle(text.c_str(), text.size(), _fontHandle);
+	DrawStringToHandle(drawPos.x - textWidth / 2, drawPos.y - 64, text.c_str(), 0xffffff, _fontHandle);
 
 	Vector2 gaugeDrawPos = drawPos;
 	gaugeDrawPos.y += 35;

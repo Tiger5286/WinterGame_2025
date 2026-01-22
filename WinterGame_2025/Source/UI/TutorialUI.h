@@ -44,6 +44,7 @@ private:
 	DrawFunc_t _draw = &TutorialUI::DrawMove;
 
 	std::vector<int> _graphHandles;
+	int _fontHandle = -1;
 
 	int _frame = 0;
 
