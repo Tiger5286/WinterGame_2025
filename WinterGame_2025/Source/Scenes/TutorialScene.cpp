@@ -9,7 +9,7 @@ namespace
 	constexpr int kFontSize = 32;
 
 	// Aボタンが効かないフレーム数
-	constexpr int kInputWaitFrame = 45;
+	constexpr int kInputWaitFrame = 30;
 
 
 	constexpr int kFrameLeftPos = 380;
