@@ -15,6 +15,8 @@ public:
 	void Draw() override;
 private:
 	int _fontHandle = -1;
+	int _buttonHandle = -1;
+	int _buttonOutlineHandle = -1;
 
 	std::string _tutorialText;
 	int _frame = 0;

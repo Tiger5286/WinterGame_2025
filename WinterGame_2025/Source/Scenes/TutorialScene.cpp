@@ -7,6 +7,23 @@
 namespace
 {
 	constexpr int kFontSize = 32;
+
+	// Aボタンが効かないフレーム数
+	constexpr int kInputWaitFrame = 45;
+
+
+	constexpr int kFrameLeftPos = 380;
+	constexpr int kFrameTopPos = 380;
+	constexpr int kFrameRightPos = 1000;
+	constexpr int kFrameBottomPos = 600;
+
+	constexpr int kTextPosX = 400;
+	constexpr int kTextPosY = 400;
+
+	constexpr int kButtonUIPosX = 920;
+	constexpr int kButtonUIPosY = 530;
+
+	constexpr int kButtonFlickerFrame = 30;
 }
 
 TutorialScene::TutorialScene(SceneManager& manager, TutorialStep nowStep):
@@ -14,6 +31,10 @@ TutorialScene::TutorialScene(SceneManager& manager, TutorialStep nowStep):
 {
 	_fontHandle = CreateFontToHandle("廻想体 ネクスト UP B", kFontSize, -1);
 	assert(_fontHandle != -1 && "フォントの生成に失敗しました");
+	_buttonHandle = LoadGraph("data/UI/Buttons/button_a.png");
+	assert(_buttonHandle != -1 && "ボタン画像の読み込みに失敗しました");
+	_buttonOutlineHandle = LoadGraph("data/UI/Buttons/button_a_outline.png");
+	assert(_buttonOutlineHandle != -1 && "ボタン画像の読み込みに失敗しました");
 
 	switch (nowStep)
 	{
@@ -61,7 +82,7 @@ void TutorialScene::Init()
 void TutorialScene::Update(Input& input)
 {
 	_frame++;
-	if (input.IsTriggered("decision"))
+	if (input.IsTriggered("decision") && _frame > kInputWaitFrame)
 	{	// メインシーンへ切り替え
 		_manager.PopScene();
 		return;
@@ -70,15 +91,22 @@ void TutorialScene::Update(Input& input)
 
 void TutorialScene::Draw()
 {
+	// 背景の半透明黒枠
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	DrawBox(380, 380, 1000, 600, 0x000000, true);
+	DrawBox(kFrameLeftPos, kFrameTopPos, kFrameRightPos, kFrameBottomPos, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	// 枠線描画
+	DrawBox(kFrameLeftPos, kFrameTopPos, kFrameRightPos, kFrameBottomPos, 0xffffff, false,5);
 
-	DrawStringToHandle(400, 400, _tutorialText.c_str(), 0xffffff,_fontHandle);
-	unsigned int color = 0xffff00;
-	if (_frame % 30 < 15)
+	// テキスト描画
+	DrawStringToHandle(kTextPosX, kTextPosY, _tutorialText.c_str(), 0xffffff,_fontHandle);
+	// AボタンUI描画
+	if (_frame % kButtonFlickerFrame < kButtonFlickerFrame / 2)
 	{
-		color = 0xffffff;
+		DrawGraph(kButtonUIPosX, kButtonUIPosY, _buttonHandle, true);
 	}
-	DrawStringToHandle(850, 570, "Aボタンで進む", color,_fontHandle);
+	else
+	{
+		DrawGraph(kButtonUIPosX, kButtonUIPosY, _buttonOutlineHandle, true);
+	}
 }
