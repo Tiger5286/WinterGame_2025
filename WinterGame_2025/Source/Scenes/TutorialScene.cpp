@@ -66,7 +66,7 @@ TutorialScene::TutorialScene(SceneManager& manager, TutorialStep nowStep):
 		_tutorialText = "アクションを駆使して大穴を飛び越えろ！";
 		break;
 	case TutorialStep::Complete:
-		_tutorialText = "ワープゲートに触れたらボス戦だ！\n\n目指せ全ステージクリア！";
+		_tutorialText = "これで基本操作は全てだ！\n\n目指せ全ステージクリア！";
 		break;
 	}
 }
