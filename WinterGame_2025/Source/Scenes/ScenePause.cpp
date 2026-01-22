@@ -22,6 +22,8 @@ namespace
 	constexpr int kMenuStartY = 400;
 	// メニュー間のY座標の間隔
 	constexpr int kMenuMarginY = 40;
+
+	constexpr int kSinScale = 10;
 }
 
 ScenePause::ScenePause(SceneManager& manager,Stages playingStage) :
@@ -62,6 +64,7 @@ ScenePause::ScenePause(SceneManager& manager,Stages playingStage) :
 ScenePause::~ScenePause()
 {
 	DeleteFontToHandle(_fontHandle);
+	DeleteGraph(_bgHandle);
 }
 
 void ScenePause::Init()
@@ -70,6 +73,7 @@ void ScenePause::Init()
 
 void ScenePause::Update(Input& input)
 {
+	_frame++;
 	if (input.IsTriggered("up"))
 	{
 		// メニューの選択肢を上に移動
@@ -117,8 +121,9 @@ void ScenePause::Draw()
 		unsigned int color = 0xffffff;
 		if (i == _selectIndex)
 		{
+			float sin = sinf(_frame * 0.1f) * 0.5f + 0.5f;	// 0~1の間を往復する
 			color = 0x00ff00;	// 選択中のメニューは緑色にする
-			DrawStringToHandle(screenW / 2 - menuTextWidth / 2 - kFontSize, kMenuStartY + i * (kFontSize + kMenuMarginY), "→", color, _fontHandle);
+			DrawStringToHandle(screenW / 2 - menuTextWidth / 2 - kFontSize - sin * kSinScale, kMenuStartY + i * (kFontSize + kMenuMarginY), "→", color, _fontHandle);
 		}
 		DrawStringToHandle(screenW / 2 - menuTextWidth / 2, kMenuStartY + i * (kFontSize + kMenuMarginY), _menuList[i].c_str(), color, _fontHandle);
 	}

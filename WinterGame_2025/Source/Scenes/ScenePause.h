@@ -23,6 +23,7 @@ private:
     // 背景の画像ハンドル
     int _bgHandle = -1;
 
+    int _frame = 0;
 	Stages _playingStage;    // ポーズ画面に入る前のステージ情報
     int _selectIndex = 0;
 	std::vector<std::string> _menuList;     // ポーズ画面で選択できるメニューリスト
