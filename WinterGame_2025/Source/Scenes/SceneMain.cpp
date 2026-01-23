@@ -199,7 +199,11 @@ void SceneMain::Update(Input& input)
 	// ゴール後のフレーム数をカウントアップ
 	if (_goalAfterFrame > 0) _goalAfterFrame++;
 	// ゴール演出に要するフレーム経過したらステージクリア
-	if (_goalAfterFrame > kGoalFrame) StageClear();
+	if (_goalAfterFrame > kGoalFrame)
+	{
+		_goalAfterFrame = 0;
+		StageClear();
+	}
 
 	if (_nowStage == Stages::Boss1 || 
 		_nowStage == Stages::Boss2 ||
