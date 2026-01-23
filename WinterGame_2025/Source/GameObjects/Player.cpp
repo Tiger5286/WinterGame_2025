@@ -402,7 +402,7 @@ void Player::Draw(Vector2 offset)
 	if (_goalAfterFrame > 0)
 	{
 		// ÉSÅ[Éãââèoï`âÊ
-		DrawRectRotaGraph(drawPos.x, drawPos.y,
+		DrawRectRotaGraph(static_cast<int>(drawPos.x), static_cast<int>(drawPos.y),
 			0, 0,
 			kGraphCutW,kGraphCutH,
 			_scale, _angle, _graphHandles[static_cast<int>(PlayerGraphs::Player)], true);
@@ -910,7 +910,7 @@ void Player::GoalAfterUpdate()
 		_scale -= kDrawScale / kGoalFrame;
 		_angle += 3.14f / 8;
 
-		_pos = _goalPos + _toGoalVec * _goalAfterFrame;
+		_pos = _goalPos + _toGoalVec * static_cast<float>(_goalAfterFrame);
 	}
 }
 
