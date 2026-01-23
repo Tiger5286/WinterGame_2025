@@ -41,6 +41,10 @@ public:
 	/// </summary>
 	/// <param name="healAmount">回復量</param>
 	void Heal(int healAmount);
+	/// <summary>
+	/// ゴールした時に呼ぶ
+	/// </summary>
+	void Goal(const Vector2& goalFlagPos);
 
 private:
 	void Jump();
@@ -56,6 +60,7 @@ private:
 	void UpdateAnim();
 	void UpdateAfterimage();
 	void DrawEffect();
+	void GoalAfterUpdate();
 
 	// 残像を表す構造体
 	struct PlayerAfterimage
@@ -123,6 +128,14 @@ private:
 
 	// チャージショット関連変数
 	int _chargeFrame;
+
+	// ゴール後演出用変数
+	int _goalAfterFrame = 0;
+	Vector2 _goalPos;
+	float _scale;
+	float _angle = 0.0f;
+	Vector2 _goalFlagPos;
+	Vector2 _toGoalVec;
 
 #ifdef _DEBUG
 	// デバッグ用

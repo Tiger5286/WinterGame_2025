@@ -97,6 +97,8 @@ private:
 
 	bool _isClearFading = false;	// ステージクリア時のフェードを行っているかどうか
 
+	int _goalAfterFrame = 0;	// ゴールしてからの経過フレーム数
+
 	Stages _nowStage;	// 今プレイしているステージ
 
 	// ステージを読み込むためのクラスを準備

@@ -99,6 +99,8 @@ namespace
 	constexpr int kSlideDustInterval = 10;	// 壁ずり落ち時の埃エフェクトの間隔
 	constexpr int kWalkSoundInterval = 16;	// 歩行時の足音の間隔
 
+	constexpr int kGoalFrame = 60;	// ゴール演出にかかるフレーム数
+
 	// 画像リスト
 	enum class PlayerGraphs
 	{
@@ -155,7 +157,8 @@ Player::Player(BulletManager& bulletManager,EffectManager& effectManager, bool i
 	_isTurnDashing(false),
 	_chargeFrame(0),
 	_bulletManager(bulletManager),
-	_effectManager(effectManager)
+	_effectManager(effectManager),
+	_scale(kDrawScale)
 {
 #ifdef _DEBUG
 	_isCanFly = false;
@@ -301,6 +304,11 @@ void Player::Update(Map& map)
 	// 画面外に出ないようにする
 	MoveAreaLimit(map);
 
+	if (_goalAfterFrame > 0)
+	{
+		GoalAfterUpdate();
+	}
+
 	// 足音
 	if (_walkSoundFrame % kWalkSoundInterval == 1 &&
 		abs(_vel.x) != 0.0f &&
@@ -390,11 +398,21 @@ void Player::Draw(Vector2 offset)
 			_nowAnim.Draw(drawPos, _isTurn);
 		}
 	}
+
+	if (_goalAfterFrame > 0)
+	{
+		// ゴール演出描画
+		DrawRectRotaGraph(drawPos.x, drawPos.y,
+			0, 0,
+			kGraphCutW,kGraphCutH,
+			_scale, _angle, _graphHandles[static_cast<int>(PlayerGraphs::Player)], true);
+	}
 	else
 	{	// 通常描画
 		_nowAnim.Draw(drawPos, _isTurn);
 	}
-	
+
+
 	SetDrawBright(255, 255, 255);	// 元の色に戻す
 
 	// マズルフラッシュの描画
@@ -508,6 +526,18 @@ void Player::Heal(int healAmount)
 	{
 		_hp = kMaxHp;
 	}
+}
+
+void Player::Goal(const Vector2& goalFlagPos)
+{
+	_goalAfterFrame++;
+	_pCollider->SetIsEnabled(false);
+	_goalPos = _pos;
+	_goalFlagPos = goalFlagPos;
+	_goalFlagPos.y += 50;
+
+	_toGoalVec = _goalFlagPos - _pos;
+	_toGoalVec /= kGoalFrame;
 }
 
 void Player::Jump()
@@ -869,6 +899,18 @@ void Player::DrawEffect()
 			dustPos.y -= kColliderH / 2;	// 少し位置を上げる
 			_effectManager.Create(dustPos, EffectType::SmallDust);
 		}
+	}
+}
+
+void Player::GoalAfterUpdate()
+{
+	if (_goalAfterFrame > 0)
+	{
+		_goalAfterFrame++;
+		_scale -= kDrawScale / kGoalFrame;
+		_angle += 3.14f / 8;
+
+		_pos = _goalPos + _toGoalVec * _goalAfterFrame;
 	}
 }
 

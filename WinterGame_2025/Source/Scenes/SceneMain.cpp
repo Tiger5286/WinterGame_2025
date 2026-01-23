@@ -70,6 +70,8 @@ namespace
 	// Graphsで定義した画像数とkGraphFileNamesで定義したファイル名の要素数が一致していなかったらエラー
 	constexpr int size = sizeof(kGraphFileNames) / sizeof(kGraphFileNames[0]);	// 配列全体のサイズ / 配列の要素一つのサイズ = 配列の要素数
 	static_assert(static_cast<int>(Graphs::Num) == size);
+
+	constexpr int kGoalFrame = 60;	// ゴール演出にかかるフレーム数
 }
 
 SceneMain::SceneMain(SceneManager& manager, Stages stage,int score) :
@@ -189,10 +191,16 @@ void SceneMain::Update(Input& input)
 	{
 		_pClearFlag->Update();
 		if (_pPlayer->GetCollider()->CheckCollision(_pClearFlag->GetCollider()))
-		{	// プレイヤーとゴール旗が接触したらステージクリアへ
-			StageClear();
+		{	// プレイヤーとゴール旗が接触したらゴール演出開始
+			_goalAfterFrame++;
+			_pPlayer->Goal(_pClearFlag->GetColliderPos());
 		}
 	}
+	// ゴール後のフレーム数をカウントアップ
+	if (_goalAfterFrame > 0) _goalAfterFrame++;
+	// ゴール演出に要するフレーム経過したらステージクリア
+	if (_goalAfterFrame > kGoalFrame) StageClear();
+
 	if (_nowStage == Stages::Boss1 || 
 		_nowStage == Stages::Boss2 ||
 		_nowStage == Stages::Boss3 ||
