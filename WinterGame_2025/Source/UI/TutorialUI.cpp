@@ -138,13 +138,13 @@ void TutorialUI::Draw(const Vector2& offset)
 void TutorialUI::DrawChargeGauge(const Vector2& drawPos)
 {
 	// チャージショットのゲージの左端座標
-	const float drawLeftPos = drawPos.x - kGaugeLength / 2;
+	const int drawLeftPos = static_cast<int>(drawPos.x) - kGaugeLength / 2;
 
 	// チャージゲージの背景の黒箱描画
 	DrawBox(drawLeftPos - kGaugeBgMargin,
-		drawPos.y - kGaugeHeight / 2 - kGaugeBgMargin,
+		static_cast<int>(drawPos.y) - kGaugeHeight / 2 - kGaugeBgMargin,
 		drawLeftPos + kGaugeLength + kGaugeBgMargin,
-		drawPos.y + kGaugeHeight / 2 + kGaugeBgMargin,
+		static_cast<int>(drawPos.y) + kGaugeHeight / 2 + kGaugeBgMargin,
 		0x000000, true);
 	// チャージ状況を取得しゲージの長さを計算
 	int nowGaugeLength = static_cast<int>(_player.GetChargeFrame() / static_cast<float>(kChargeFrameMax) * kGaugeLength);
@@ -161,22 +161,22 @@ void TutorialUI::DrawChargeGauge(const Vector2& drawPos)
 		color = 0xffffff;
 	}
 	DrawBox(drawLeftPos,
-		drawPos.y - kGaugeHeight / 2,
+		static_cast<int>(drawPos.y) - kGaugeHeight / 2,
 		drawLeftPos + nowGaugeLength,
-		drawPos.y + kGaugeHeight / 2,
+		static_cast<int>(drawPos.y) + kGaugeHeight / 2,
 		color, true);
 }
 
 void TutorialUI::DrawDashGauge(const Vector2& drawPos)
 {
 	// ゲージの左端座標
-	const float drawLeftPos = drawPos.x - kGaugeLength / 2;
+	const int drawLeftPos = static_cast<int>(drawPos.x) - kGaugeLength / 2;
 
 	// ゲージの背景の黒箱描画
 	DrawBox(drawLeftPos - kGaugeBgMargin,
-		drawPos.y - kGaugeHeight / 2 - kGaugeBgMargin,
+		static_cast<int>(drawPos.y) - kGaugeHeight / 2 - kGaugeBgMargin,
 		drawLeftPos + kGaugeLength + kGaugeBgMargin,
-		drawPos.y + kGaugeHeight / 2 + kGaugeBgMargin,
+		static_cast<int>(drawPos.y) + kGaugeHeight / 2 + kGaugeBgMargin,
 		0x000000, true);
 	// チャージ状況を取得しゲージの長さを計算
 	int nowGaugeLength = static_cast<int>((kDashCoolTime - _player.GetDashCoolTime()) / static_cast<float>(kDashCoolTime) * kGaugeLength);
@@ -193,9 +193,9 @@ void TutorialUI::DrawDashGauge(const Vector2& drawPos)
 		color = 0x00ffff;
 	}
 	DrawBox(drawLeftPos,
-		drawPos.y - kGaugeHeight / 2,
+		static_cast<int>(drawPos.y) - kGaugeHeight / 2,
 		drawLeftPos + nowGaugeLength,
-		drawPos.y + kGaugeHeight / 2,
+		static_cast<int>(drawPos.y) + kGaugeHeight / 2,
 		color, true);
 }
 
@@ -210,7 +210,7 @@ void TutorialUI::DrawMove(const Vector2& drawPos)
 	{
 		handle = _graphHandles[static_cast<int>(TutorialGraphs::DPadLeft)];
 	}
-	DrawRotaGraph(drawPos.x, drawPos.y, 1.0, 0.0, handle, true);
+	DrawRotaGraph(static_cast<int>(drawPos.x), static_cast<int>(drawPos.y), 1.0, 0.0, handle, true);
 }
 
 void TutorialUI::DrawShot(const Vector2& drawPos)
@@ -224,7 +224,7 @@ void TutorialUI::DrawShot(const Vector2& drawPos)
 	{
 		handle = _graphHandles[static_cast<int>(TutorialGraphs::ButtonX)];
 	}
-	DrawRotaGraph(drawPos.x, drawPos.y, 1.0, 0.0, handle, true);
+	DrawRotaGraph(static_cast<int>(drawPos.x), static_cast<int>(drawPos.y), 1.0, 0.0, handle, true);
 }
 
 void TutorialUI::DrawJump(const Vector2& drawPos)
@@ -238,7 +238,7 @@ void TutorialUI::DrawJump(const Vector2& drawPos)
 	{
 		handle = _graphHandles[static_cast<int>(TutorialGraphs::ButtonAOutline)];
 	}
-	DrawRotaGraph(drawPos.x, drawPos.y, 1.0, 0.0, handle, true);
+	DrawRotaGraph(static_cast<int>(drawPos.x), static_cast<int>(drawPos.y), 1.0, 0.0, handle, true);
 }
 
 void TutorialUI::DrawChargeShot(const Vector2& drawPos)
@@ -252,11 +252,11 @@ void TutorialUI::DrawChargeShot(const Vector2& drawPos)
 	{
 		handle = _graphHandles[static_cast<int>(TutorialGraphs::ButtonXOutline)];
 	}
-	DrawRotaGraph(drawPos.x, drawPos.y, 1.0, 0.0, handle, true);
+	DrawRotaGraph(static_cast<int>(drawPos.x), static_cast<int>(drawPos.y), 1.0, 0.0, handle, true);
 
 	std::string text = "長押し";
-	auto textWidth = GetDrawStringWidthToHandle(text.c_str(), text.size(), _fontHandle);
-	DrawStringToHandle(drawPos.x - textWidth / 2, drawPos.y - 64, text.c_str(), 0xffffff, _fontHandle);
+	auto textWidth = GetDrawStringWidthToHandle(text.c_str(), static_cast<int>(text.size()), _fontHandle);
+	DrawStringToHandle(static_cast<int>(drawPos.x) - textWidth / 2, static_cast<int>(drawPos.y) - 64, text.c_str(), 0xffffff, _fontHandle);
 
 	Vector2 gaugeDrawPos = drawPos;
 	gaugeDrawPos.y += 35;
@@ -274,7 +274,7 @@ void TutorialUI::DrawDash(const Vector2& drawPos)
 	{
 		handle = _graphHandles[static_cast<int>(TutorialGraphs::ButtonB)];
 	}
-	DrawRotaGraph(drawPos.x, drawPos.y, 1.0, 0.0, handle, true);
+	DrawRotaGraph(static_cast<int>(drawPos.x), static_cast<int>(drawPos.y), 1.0, 0.0, handle, true);
 
 	Vector2 gaugeDrawPos = drawPos;
 	gaugeDrawPos.y += 35;
@@ -292,6 +292,6 @@ void TutorialUI::DrawWallJump(const Vector2& drawPos)
 	{
 		handle = _graphHandles[static_cast<int>(TutorialGraphs::ButtonA)];
 	}
-	DrawRotaGraph(drawPos.x + kDrawOffsetX, drawPos.y, 1.0, 0.0, handle, true);
-	DrawRotaGraph(drawPos.x - kDrawOffsetX, drawPos.y, 1.0, 0.0, _graphHandles[static_cast<int>(TutorialGraphs::DPadRight)], true);
+	DrawRotaGraph(static_cast<int>(drawPos.x) + kDrawOffsetX, static_cast<int>(drawPos.y), 1.0, 0.0, handle, true);
+	DrawRotaGraph(static_cast<int>(drawPos.x) - kDrawOffsetX, static_cast<int>(drawPos.y), 1.0, 0.0, _graphHandles[static_cast<int>(TutorialGraphs::DPadRight)], true);
 }
