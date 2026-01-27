@@ -19,8 +19,6 @@ public:
 	int GetStageWidth() const;
 	Vector2 GetStageSize() const;
 
-	void LoadMapData(std::string fileName);
-
 	void SetMapData(const std::vector<uint16_t>& mapData, const Size& mapSize);
 
 private:

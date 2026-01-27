@@ -124,46 +124,6 @@ Vector2 Map::GetStageSize() const
 	return Vector2(_mapSize.w * kDrawChipSize, _mapSize.h * kDrawChipSize);
 }
 
-void Map::LoadMapData(std::string fileName)
-{
-	std::ifstream file(fileName);	// ファイルを開く
-	std::string line;	// 1行分のデータを格納する変数
-	std::vector<std::vector<int>> tempData;	// 一時的にマップデータを格納する変数
-
-	while (std::getline(file, line))	// 1行ずつ読み込む
-	{
-		std::istringstream stream(line);	// 文字列ストリームを作成
-		std::string field;	// カンマで区切られた各フィールドを格納する変数
-		std::vector<int> row;	// 1行分のデータを格納する変数
-
-		while (getline(stream, field, ','))		// カンマで区切られたフィールドを読み込む
-		{
-			row.push_back(std::stoi(field));	// 文字列を整数に変換して行に追加
-		}
-		tempData.push_back(row);	// 行をマップデータに追加
-	}
-
-	// Yが1多くて範囲外アクセスするので-1してます
-	// これはcsvの最後に空行があるためです
-	_chipNumY = static_cast<int>(tempData.size() - 1);	// マップの行数を取得
-	if (_chipNumY > 0)	// データが存在する場合
-	{
-		_chipNumX = static_cast<int>(tempData[0].size());	// マップの列数を取得
-	}
-	else
-	{
-		_chipNumX = 0;	// データが存在しない場合は0に設定
-	}
-	_chipData = std::vector<std::vector<int>>(_chipNumX, std::vector<int>(_chipNumY, 0));	// マップデータの初期化
-	for (int y = 0; y < _chipNumY; y++)	// データを転置して格納
-	{
-		for (int x = 0; x < _chipNumX; x++)
-		{
-			_chipData[x][y] = tempData[y][x];
-		}
-	}
-}
-
 void Map::SetMapData(const std::vector<uint16_t>& mapData, const Size& mapSize)
 {
 	_mapSize = mapSize;
