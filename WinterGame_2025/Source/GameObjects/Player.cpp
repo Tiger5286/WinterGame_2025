@@ -391,27 +391,25 @@ void Player::Draw(Vector2 offset)
 	{	// ­‚µˆÃ‚­Â‚İ‚ª‚©‚Á‚½F‚Å•`‰æ
 		SetDrawBright(0xaa, 0xaa, 0xdd);
 	}
-	if (_isFrickering)	// “_–Å’†‚È‚ç
-	{	// ˆê’èŠÔŠu‚Å•`‰æE”ñ•`‰æ‚ğØ‚è‘Ö‚¦‚é
-		if (_invincibleFrame % kFlickerInterval * 2 < kFlickerInterval)
-		{
-			_nowAnim.Draw(drawPos, _isTurn);
-		}
-	}
-
 	if (_goalAfterFrame > 0)
 	{
 		// ƒS[ƒ‹‰‰o•`‰æ
 		DrawRectRotaGraph(static_cast<int>(drawPos.x), static_cast<int>(drawPos.y),
 			0, 0,
-			kGraphCutW,kGraphCutH,
+			kGraphCutW, kGraphCutH,
 			_scale, _angle, _graphHandles[static_cast<int>(PlayerGraphs::Player)], true);
+	}
+	else if (_isFrickering)	// “_–Å’†‚È‚ç
+	{	// ˆê’èŠÔŠu‚Å•`‰æE”ñ•`‰æ‚ğØ‚è‘Ö‚¦‚é
+		if (_invincibleFrame % (kFlickerInterval * 2) < kFlickerInterval)
+		{
+			_nowAnim.Draw(drawPos, _isTurn);
+		}
 	}
 	else
 	{	// ’Êí•`‰æ
 		_nowAnim.Draw(drawPos, _isTurn);
 	}
-
 
 	SetDrawBright(255, 255, 255);	// Œ³‚ÌF‚É–ß‚·
 
