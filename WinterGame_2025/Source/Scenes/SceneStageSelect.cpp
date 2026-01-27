@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "SceneMain.h"
 #include "SceneTitle.h"
+#include "SceneOption.h"
 #include "Dxlib.h"
 #include "DebugScene.h"
 #include "../Game.h"
@@ -273,6 +274,12 @@ void SceneStageSelect::Update(Input& input)
 			SoundManager::GetInstance().StopSound("StageSelectBGM", true);
 			SoundManager::GetInstance().PlaySoundGame("Cancel");
 			_manager.ChangeSceneWithFade(std::make_shared<SceneTitle>(_manager), FadeState::NormalFadeIn);
+			return;
+		}
+		if (input.IsTriggered("start"))
+		{
+			SoundManager::GetInstance().PlaySoundGame("Decision");
+			_manager.PushScene(std::make_shared<SceneOption>(_manager));
 			return;
 		}
 	}
