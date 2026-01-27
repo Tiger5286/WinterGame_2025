@@ -7,7 +7,7 @@ class SceneManager;
 class SceneGameOver : public SceneBase
 {
 public:
-	SceneGameOver(SceneManager& manager,Stages playedStage,int score,bool isGetGoldenStatue);
+	SceneGameOver(SceneManager& manager,Stages playedStage,int score,bool isGetGoldenStatue,int defeatedBossNum = 0);
 	~SceneGameOver();
 
 	void Init();

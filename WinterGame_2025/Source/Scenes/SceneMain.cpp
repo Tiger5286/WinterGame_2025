@@ -72,6 +72,9 @@ namespace
 	static_assert(static_cast<int>(Graphs::Num) == size);
 
 	constexpr int kGoalFrame = 60;	// ゴール演出にかかるフレーム数
+
+	// 隠しステージのボス数
+	constexpr int kSecretBossNum = 3;
 }
 
 SceneMain::SceneMain(SceneManager& manager, Stages stage,int score, bool isGetGoldenStatue) :
@@ -141,14 +144,27 @@ void SceneMain::Update(Input& input)
 	// プレイヤーが死んだときの処理
 	if (!_pPlayer->GetIsAlive())
 	{
-		//_manager.SetFadeCirclePos(_pPlayer->GetColliderPos() - _pCamera->GetDrawOffset());	// プレイヤーが死んだ位置にフェードサークルを置く
 		// 全てのステージが未クリアなら再度チュートリアルステージを再生
 		if (_manager.GetSaveData().clearedStage == static_cast<int>(Stages::None))
 		{
 			SoundManager::GetInstance().StopSound("TutorialBgm", true);
 			_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _nowStage), FadeState::CircleFadeIn, FadeState::CircleFadeOut);
 		}
-		else	// そうでないならゲームオーバーへ
+		else if (_nowStage == Stages::SecretBoss)	// 隠しボスステージなら
+		{
+			// 倒したボスの数をカウント
+			int defeatedBossNum = kSecretBossNum;
+			for (const auto& enemy : _pEnemyManager->GetEnemies())
+			{
+				if (enemy->GetEnemyType() == EnemyType::Boss)
+				{
+					defeatedBossNum--;
+				}
+			}
+			// 倒したボスの数をゲームオーバーシーンに渡す
+			_manager.ChangeSceneWithFade(std::make_shared<SceneGameOver>(_manager, _nowStage, _score, _isGetGoldenStatue,defeatedBossNum), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
+		}
+		else // そうでないならゲームオーバーへ
 		{
 			SoundManager::GetInstance().StopSound("StageBgm", true);
 			SoundManager::GetInstance().StopSound("BossBgm", true);

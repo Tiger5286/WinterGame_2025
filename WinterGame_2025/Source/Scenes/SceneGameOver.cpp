@@ -22,9 +22,11 @@ namespace
 	constexpr int kBackTextY = GlobalConstants::kScreenHeight / 2 + 350;
 
 	constexpr float kMenuSinScale = 0.05f;
+
+	constexpr int kBossScore = 10000;
 }
 
-SceneGameOver::SceneGameOver(SceneManager& manager,Stages playedStage,int score,bool isGetGoldenStatue):
+SceneGameOver::SceneGameOver(SceneManager& manager,Stages playedStage,int score,bool isGetGoldenStatue,int defeatedBossNum):
 	SceneBase(manager),
 	_isSelectRestart(true),
 	_score(score),
@@ -39,6 +41,11 @@ SceneGameOver::SceneGameOver(SceneManager& manager,Stages playedStage,int score,
 	assert(_restartTextHandle != -1);
 	_backTextHandle = LoadGraph("data/UI/BackToStageSelectText.png");
 	assert(_backTextHandle != -1);
+
+	for (int i = 0; i < defeatedBossNum; i++)
+	{
+		_score -= kBossScore;
+	}
 
 	SoundManager::GetInstance().PlaySoundGame("GameOverBgm", true, true);
 }
