@@ -47,14 +47,17 @@ ScenePause::ScenePause(SceneManager& manager,Stages playingStage) :
 
 	// 各メニュー項目の実行内容
 	_execTable["ゲームに戻る"] = [this]() {
+		SoundManager::GetInstance().PlaySoundGame("Cancel");
 		_manager.PopScene();
 		return;
 		};
 	_execTable["オプション"] = [this]() {
+		SoundManager::GetInstance().PlaySoundGame("Decision");
 		_manager.PushScene(std::make_shared<SceneOption>(_manager));
 		return;
 		};
 	_execTable["ステージセレクトに戻る"] = [this]() {
+		SoundManager::GetInstance().PlaySoundGame("Decision");
 		SoundManager::GetInstance().StopSoundAll(true);
 		_manager.ResetSceneWithFade(std::make_shared<SceneStageSelect>(_manager, _playingStage));
 		return;
@@ -90,7 +93,6 @@ void ScenePause::Update(Input& input)
 	{
 		// 選択中のメニュー項目を実行
 		_execTable[_menuList[_selectIndex]]();
-		SoundManager::GetInstance().PlaySoundGame("Decision");
 	}
 	if (input.IsTriggered("back") || input.IsTriggered("start"))
 	{
