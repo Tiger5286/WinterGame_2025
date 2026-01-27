@@ -7,7 +7,7 @@ class SceneManager;
 class SceneGameOver : public SceneBase
 {
 public:
-	SceneGameOver(SceneManager& manager,Stages playedStage,int score);
+	SceneGameOver(SceneManager& manager,Stages playedStage,int score,bool isGetGoldenStatue);
 	~SceneGameOver();
 
 	void Init();
@@ -21,7 +21,9 @@ private:
 	int _restartTextHandle = -1;	// 再挑戦テキストハンドル
 	int _backTextHandle = -1;	// 戻るテキストハンドル
 
-	int _score;	// スコア保存用
+	int _score;	// スコア保存用 
+	bool _isGetGoldenStatue;	// 黄のブルロボ像を獲得したかどうか保存用
+
 	bool _isSelectRestart;	// どっちを選択しているかフラグ
 
 	// 汎用フレームカウント

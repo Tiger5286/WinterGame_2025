@@ -24,10 +24,11 @@ namespace
 	constexpr float kMenuSinScale = 0.05f;
 }
 
-SceneGameOver::SceneGameOver(SceneManager& manager,Stages playedStage,int score):
+SceneGameOver::SceneGameOver(SceneManager& manager,Stages playedStage,int score,bool isGetGoldenStatue):
 	SceneBase(manager),
 	_isSelectRestart(true),
 	_score(score),
+	_isGetGoldenStatue(isGetGoldenStatue),
 	_playedStage(playedStage)
 {
 	_bgHandle = LoadGraph("data/Map/Bg.png");
@@ -73,7 +74,7 @@ void SceneGameOver::Update(Input& input)
 			if (IsBossStage(_playedStage))
 			{
 				// ボスステージならスコアを引き継ぐ
-				_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _playedStage, _score), FadeState::CircleFadeIn);
+				_manager.ChangeSceneWithFade(std::make_shared<SceneMain>(_manager, _playedStage, _score,_isGetGoldenStatue), FadeState::CircleFadeIn);
 				return;
 			}
 			else

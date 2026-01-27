@@ -74,11 +74,12 @@ namespace
 	constexpr int kGoalFrame = 60;	// ゴール演出にかかるフレーム数
 }
 
-SceneMain::SceneMain(SceneManager& manager, Stages stage,int score) :
+SceneMain::SceneMain(SceneManager& manager, Stages stage,int score, bool isGetGoldenStatue) :
 	SceneBase(manager),
 	_frameCount(0),
 	_nowStage(stage),
-	_score(score)
+	_score(score),
+	_isGetGoldenStatue(isGetGoldenStatue)
 {
 	/*画像の読み込み*/
 	_graphHandles.resize(static_cast<int>(Graphs::Num));
@@ -151,7 +152,7 @@ void SceneMain::Update(Input& input)
 		{
 			SoundManager::GetInstance().StopSound("StageBgm", true);
 			SoundManager::GetInstance().StopSound("BossBgm", true);
-			_manager.ChangeSceneWithFade(std::make_shared<SceneGameOver>(_manager, _nowStage,_score), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
+			_manager.ChangeSceneWithFade(std::make_shared<SceneGameOver>(_manager, _nowStage,_score,_isGetGoldenStatue), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
 		}
 		return;
 	}
@@ -452,7 +453,7 @@ void SceneMain::StageClear()
 		SoundManager::GetInstance().StopSound("TutorialBgm", true);
 		SoundManager::GetInstance().StopSound("StageBgm", true);
 		SoundManager::GetInstance().StopSound("BossBgm", true);
-		_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager, _score, _nowStage,_isGetGoldenBlueRobot), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
+		_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager, _score, _nowStage,_isGetGoldenStatue), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
 	}
 	else
 	{

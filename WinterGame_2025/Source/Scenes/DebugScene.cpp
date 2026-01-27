@@ -39,7 +39,7 @@ DebugScene::DebugScene(SceneManager& manager):
 		_manager.ChangeScene(std::make_shared<SceneClear>(_manager, 10000, Stages::Tutorial,false));
 		};
 	_execTable["SceneGameOver"] = [this]() {
-		_manager.ChangeScene(std::make_shared<SceneGameOver>(_manager, Stages::Tutorial, 0));
+		_manager.ChangeScene(std::make_shared<SceneGameOver>(_manager, Stages::Tutorial, 0,false));
 		};
 
 	_tempFontHandle = CreateFontToHandle(GlobalConstants::kMainFontName, 48, -1, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);

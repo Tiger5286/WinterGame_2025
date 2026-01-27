@@ -48,7 +48,7 @@ enum class TutorialStep
 class SceneMain : public SceneBase
 {
 public:
-	SceneMain(SceneManager& manager, Stages stage,int score = 0);
+	SceneMain(SceneManager& manager, Stages stage,int score = 0,bool isGetGoldenStatue = false);
 	~SceneMain();
 
 	void Init() override;
@@ -70,7 +70,7 @@ public:
 	/// <summary>
 	/// 金のブルロボを取得する
 	/// </summary>
-	void CollectGoldenBlueRobot() { _isGetGoldenBlueRobot = true; }
+	void CollectGoldenBlueRobot() { _isGetGoldenStatue = true; }
 
 	const Stages& GetNowStage() const { return _nowStage; }
 
@@ -104,7 +104,7 @@ private:
 
 	int _goalAfterFrame = 0;	// ゴールしてからの経過フレーム数
 
-	bool _isGetGoldenBlueRobot = false; // 金のブルロボを取得したかどうか
+	bool _isGetGoldenStatue; // 金のブルロボを取得したかどうか
 
 	Stages _nowStage;	// 今プレイしているステージ
 
