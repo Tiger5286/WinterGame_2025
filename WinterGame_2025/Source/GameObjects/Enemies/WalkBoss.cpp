@@ -337,11 +337,13 @@ void WalkBoss::Draw(Vector2 offset)
 				explosionPosGap.x = static_cast<float>(GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis);
 				explosionPosGap.y = static_cast<float>(GetRand(kDeathExplosionGapDis * 2) - kDeathExplosionGapDis);
 				_pEffectManager->Create(GetColliderPos() + explosionPosGap, EffectType::ExplosionSmall);
+				SoundManager::GetInstance().PlaySoundGame("ExplosionSmall");
 			}
 		}
 		if (_frame == kDeathFrame)
 		{
 			_pEffectManager->Create(GetColliderPos(), EffectType::ExplosionBig);
+			SoundManager::GetInstance().PlaySoundGame("ExplosionLong");
 		}
 	}
 	else	// í èÌï`âÊ
