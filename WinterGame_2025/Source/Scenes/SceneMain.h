@@ -67,6 +67,11 @@ public:
 	/// <param name="score">加算するスコア</param>
 	void AddScore(int score) { _score += score; }
 
+	/// <summary>
+	/// 金のブルロボを取得する
+	/// </summary>
+	void CollectGoldenBlueRobot() { _isGetGoldenBlueRobot = true; }
+
 	const Stages& GetNowStage() const { return _nowStage; }
 
 private:
@@ -98,6 +103,8 @@ private:
 	bool _isClearFading = false;	// ステージクリア時のフェードを行っているかどうか
 
 	int _goalAfterFrame = 0;	// ゴールしてからの経過フレーム数
+
+	bool _isGetGoldenBlueRobot = false; // 金のブルロボを取得したかどうか
 
 	Stages _nowStage;	// 今プレイしているステージ
 

@@ -174,6 +174,7 @@ struct SaveData
 	int clearedStage = 0;
 	bool isReleasedSecretStage = false;
 	std::array<int, static_cast<int>(SelectableStages::Num)> highScores = {0};
+	std::array<bool, static_cast<int>(SelectableStages::Num)> isGetGoldenBlueRobot = { false };
 
 	int bgmVolume = 128;
 	int seVolume = 128;

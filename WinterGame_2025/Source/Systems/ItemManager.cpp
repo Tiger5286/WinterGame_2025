@@ -43,6 +43,10 @@ void ItemManager::Update()
 			{
 				_sceneMain.AddScore(item->GetScore());
 				_effectManager.Create(item->GetColliderPos(), EffectType::ItemGet);
+				if (item->GetType() == ItemType::GoldenStatue)
+				{
+					_sceneMain.CollectGoldenBlueRobot();
+				}
 			}
 		}
 	}

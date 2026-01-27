@@ -37,7 +37,7 @@ namespace
 	constexpr float kBackTextSinAlphaScale = 0.1f;	// 点滅に使うsinのスケール
 }
 
-SceneClear::SceneClear(SceneManager& manager,int score, Stages clearStage):
+SceneClear::SceneClear(SceneManager& manager,int score, Stages clearStage, bool isCollectedGoldenStatue):
 	SceneBase(manager),
 	_score(score),
 	_clearStage(clearStage)
@@ -60,6 +60,10 @@ SceneClear::SceneClear(SceneManager& manager,int score, Stages clearStage):
 	_isUpdateScore = manager.CheckHighScore(score, selectableStage);
 	// クリア済みステージ登録
 	manager.CheckClearedStage(selectableStage);
+	if (isCollectedGoldenStatue)
+	{
+		manager.CollectGoldenStatue(selectableStage);
+	}
 
 	// BGM再生
 	SoundManager::GetInstance().PlaySoundGame("ClearBgm", true, true);

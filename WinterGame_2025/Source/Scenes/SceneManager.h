@@ -131,6 +131,8 @@ public:
 	/// </summary>
 	void ReleaseSecretStage() { _saveData.isReleasedSecretStage = true; }
 
+	void CollectGoldenStatue(SelectableStages clearedStage);
+
 private:
 	std::list<std::shared_ptr<SceneBase>> _pScenes;
 	std::shared_ptr<Fade> _pFade;

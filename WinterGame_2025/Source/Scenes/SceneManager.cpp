@@ -214,3 +214,8 @@ bool SceneManager::CheckHighScore(int score, SelectableStages clearedStage)
 	}
 	return false;
 }
+
+void SceneManager::CollectGoldenStatue(SelectableStages clearedStage)
+{
+	_saveData.isGetGoldenBlueRobot[static_cast<int>(clearedStage)] = true;
+}

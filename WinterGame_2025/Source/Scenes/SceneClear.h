@@ -5,7 +5,7 @@
 class SceneClear : public SceneBase
 {
 public:
-	SceneClear(SceneManager& manager,int score,Stages clearStage);
+	SceneClear(SceneManager& manager,int score,Stages clearStage,bool isCollectedGoldenStatue);
 	~SceneClear();
 
 	void Init() override;

@@ -27,6 +27,8 @@ private:
 	int _numberGraphHandle = -1;
 	int _highScoreTextHandle = -1;
 	int _longLaserHandle = -1;
+	int _goldenBlueRobotHandle = -1;
+	int _goldenBlueRobotWhiteHandle = -1;
 
 	int _uiControllFrame;
 	// UI‚ª‚Ç‚Á‚¿‚ÉˆÚ“®‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO

@@ -36,7 +36,7 @@ DebugScene::DebugScene(SceneManager& manager):
 		_manager.ChangeScene(std::make_shared<SceneStageSelect>(_manager));
 		};
 	_execTable["SceneClear"] = [this]() {
-		_manager.ChangeScene(std::make_shared<SceneClear>(_manager, 12345, Stages::Tutorial));
+		_manager.ChangeScene(std::make_shared<SceneClear>(_manager, 10000, Stages::Tutorial,false));
 		};
 	_execTable["SceneGameOver"] = [this]() {
 		_manager.ChangeScene(std::make_shared<SceneGameOver>(_manager, Stages::Tutorial, 0));

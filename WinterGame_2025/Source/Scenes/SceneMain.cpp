@@ -452,7 +452,7 @@ void SceneMain::StageClear()
 		SoundManager::GetInstance().StopSound("TutorialBgm", true);
 		SoundManager::GetInstance().StopSound("StageBgm", true);
 		SoundManager::GetInstance().StopSound("BossBgm", true);
-		_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager, _score, _nowStage), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
+		_manager.ChangeSceneWithFade(std::make_shared<SceneClear>(_manager, _score, _nowStage,_isGetGoldenBlueRobot), FadeState::NormalFadeIn, FadeState::CircleFadeOut);
 	}
 	else
 	{

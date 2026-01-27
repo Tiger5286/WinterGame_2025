@@ -102,10 +102,18 @@ SceneStageSelect::SceneStageSelect(SceneManager& manager, Stages playedStage):
 
 	// 数字画像のロード
 	_numberGraphHandle = LoadGraph("data/UI/NumberText.png");
+	assert(_numberGraphHandle != -1);
 	// ハイスコアのテキスト画像ロード
 	_highScoreTextHandle = LoadGraph("data/UI/HighScoreText.png");
+	assert(_highScoreTextHandle != -1);
 	// レーザーの画像ロード
 	_longLaserHandle = LoadGraph("data/UI/LongLaser.png");
+	assert(_longLaserHandle != -1);
+	// ゴールデンブルロボ像の画像ロード
+	_goldenBlueRobotHandle = LoadGraph("data/Items/GoldenBlueRobot.png");
+	assert(_goldenBlueRobotHandle != -1);
+	_goldenBlueRobotWhiteHandle = LoadGraph("data/UI/GoldenBlueRobotWhite.png");
+	assert(_goldenBlueRobotWhiteHandle != -1);
 
 	auto selectableStage = StageToSelectableStage(playedStage);
 
@@ -452,6 +460,16 @@ void SceneStageSelect::Draw()
 
 		// 明るさを元に戻す
 		SetDrawBright(255, 255, 255);
+
+		// ゴールデンブルロボ像の描画
+		if (_manager.GetSaveData().isGetGoldenBlueRobot[_selectIndex + 1])
+		{
+			DrawRotaGraph(screenW / 2 - 450, screenH / 2 + 320, 5.0f, 0.0f, _goldenBlueRobotHandle, true);
+		}
+		else
+		{
+			DrawRotaGraph(screenW / 2 - 450, screenH / 2 + 320, 5.0f, 0.0f, _goldenBlueRobotWhiteHandle, true);
+		}
 
 		// ステージ名の描画
 		DrawRotaGraph(screenW / 2, kStageNameY, kStageNameScale, 0.0, _stageNameHandles[_selectIndex], true);

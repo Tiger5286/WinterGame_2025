@@ -27,6 +27,7 @@ public:
 
 	bool GetIsAlive() const { return _isAlive; }
 	int GetScore() const { return _score; }
+	ItemType GetType() const { return _type; }
 
 private:
 	void GetItem();
