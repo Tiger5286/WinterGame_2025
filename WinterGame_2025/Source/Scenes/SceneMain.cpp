@@ -127,6 +127,7 @@ void SceneMain::Update(Input& input)
 	if (input.IsTriggered("start"))
 	{	// ポーズシーンへ切り替え
 		_manager.PushScene(std::make_shared<ScenePause>(_manager,_nowStage));
+		SoundManager::GetInstance().PlaySoundGame("Decision");
 		return;
 	}
 
