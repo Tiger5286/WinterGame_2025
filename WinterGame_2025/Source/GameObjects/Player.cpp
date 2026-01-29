@@ -530,6 +530,7 @@ void Player::Goal(const Vector2& goalFlagPos)
 {
 	_goalAfterFrame++;
 	_pCollider->SetIsEnabled(false);
+	_isCanControll = false;
 	_goalPos = _pos;
 	_goalFlagPos = goalFlagPos;
 	_goalFlagPos.y += 50;
