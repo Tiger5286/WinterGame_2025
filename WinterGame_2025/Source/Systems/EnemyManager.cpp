@@ -17,6 +17,11 @@
 
 #include "../Scenes/SceneMain.h"
 
+namespace
+{
+	constexpr int kOutOfScreenMargin = 200;	// 画面外マージン
+}
+
 EnemyManager::EnemyManager(std::shared_ptr<Player> pPlayer,
 	std::shared_ptr<Map> pMap,
 	std::shared_ptr<Camera> pCamera,
@@ -69,8 +74,8 @@ void EnemyManager::Update()
 			float toCameraDisX = enemy->GetPos().x - _pCamera->GetPos().x;	// 敵とカメラの距離X
 			float toCameraDisY = enemy->GetPos().y - _pCamera->GetPos().y;	// 敵とカメラの距離Y
 			// カメラの画面内にいる敵だけ更新する
-			if (abs(toCameraDisX) < GlobalConstants::kScreenWidth / 2 + 100 &&
-				abs(toCameraDisY) < GlobalConstants::kScreenHeight / 2 + 100)
+			if (abs(toCameraDisX) < GlobalConstants::kScreenWidth / 2 + kOutOfScreenMargin &&
+				abs(toCameraDisY) < GlobalConstants::kScreenHeight / 2 + kOutOfScreenMargin)
 			{
 				enemy->Update(*_pMap);
 				// 敵が増えたらループを抜ける
