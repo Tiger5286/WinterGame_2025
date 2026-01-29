@@ -301,10 +301,13 @@ void WalkBoss::Update(Map& map)
 	if (isEnableLaser)
 	{
 		_pLaser->SetPos(Vector2(_pos.x, kLaserPosY));	// レーザーの位置を合わせる
+		_pLaser->GetCollider()->SetIsEnabled(true);
+		_pLaser->GetCollider()->SetPos(Vector2(_pos.x, kLaserPosY - 14 * 16 * 3 / 2));
 	}
 	else
 	{
 		_pLaser->SetPos(Vector2(-1, -1));	// レーザーの位置を消す(画面外に行くだけ)
+		_pLaser->GetCollider()->SetIsEnabled(false);
 	}
 
 	// プレイヤーに当たったらダメージを与える
